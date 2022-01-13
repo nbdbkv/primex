@@ -51,7 +51,7 @@ class PasswordResetVerifyView(generics.GenericAPIView):
 class UpdateUserInfoView(generics.UpdateAPIView):
     serializer_class = UpdateUserInfoSerializer
     queryset = User.objects.filter(is_active=True)
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user

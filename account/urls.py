@@ -20,7 +20,7 @@ router = DefaultRouter()
 router.register('devices', FCMDeviceAuthorizedViewSet)
 
 urlpatterns = [
-    path('device/', include('router.urls')),
+    path('device/', include(router.urls)),
     path('token/', TokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
     path('register/', UserRegisterView.as_view()),
