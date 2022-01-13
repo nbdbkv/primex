@@ -1,7 +1,7 @@
+import re
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
@@ -31,6 +31,7 @@ class UserSendCodeSerializer(serializers.Serializer):
     def validate_phone(self, phone):
         try:
             self.instance = User.objects.get(phone=phone)
+            return phone
         except User.DoesNotExist:
             raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
 
@@ -45,6 +46,7 @@ class RegisterCodeVerifySerializer(serializers.Serializer):
     def validate_phone(self, phone):
         try:
             self.instance = User.objects.get(phone=phone)
+            return phone
         except User.DoesNotExist:
             raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
 
@@ -73,6 +75,7 @@ class PasswordResetVerifySerializer(serializers.Serializer):
     def validate_phone(self, phone):
         try:
             self.instance = User.objects.get(phone=phone)
+            return phone
         except User.DoesNotExist:
             raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
 
@@ -90,3 +93,17 @@ class UpdateUserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'patronymic', 'region', 'city')
+
+
+class UserRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = (
+            'is_active', 
+            'is_staff', 
+            'date_joined', 
+            'password', 
+            'last_login',
+            'is_superuser',
+            'groups',
+            'user_permissions')

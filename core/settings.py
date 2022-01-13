@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'fcm_django',
     'django_2gis_maps',
+    'drf_yasg',
 
     ####### apps #######
     'about',
@@ -172,4 +173,15 @@ SIMPLE_JWT = {
 
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+}
+
+SWAGGER_SETTINGS  = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS' : {
+         'Bearer' : {
+             'type' : 'apiKey' ,
+             'name' : 'Authorization' ,
+             'in' : 'header'
+        }
+    }
 }

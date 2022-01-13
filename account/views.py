@@ -1,8 +1,6 @@
-from rest_framework import generics
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from account.messages import Message
@@ -12,7 +10,8 @@ from account.serailizers import (
     PasswordResetVerifySerializer,
     RegisterCodeVerifySerializer,
     UpdateUserInfoSerializer, 
-    UserRegisterSerializer, 
+    UserRegisterSerializer,
+    UserRetrieveSerializer, 
     UserSendCodeSerializer
 )
 
@@ -52,5 +51,16 @@ class PasswordResetVerifyView(generics.GenericAPIView):
 class UpdateUserInfoView(generics.UpdateAPIView):
     serializer_class = UpdateUserInfoSerializer
     queryset = User.objects.filter(is_active=True)
-    permission_classes = [IsOwner]
-    lookup_field = 'phone'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_object(self):
+        return self.request.user
+
+
+class GetUserView(generics.RetrieveAPIView):
+    serializer_class = UserRetrieveSerializer
+    queryset = User.objects.filter(is_active=True)
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
