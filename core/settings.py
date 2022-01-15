@@ -98,6 +98,12 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT')
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'mydatabaseMain',
+#     }
+# }
 
 
 # Password validation
