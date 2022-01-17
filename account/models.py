@@ -7,7 +7,7 @@ from django_2gis_maps.mixins import DoubleGisMixin
 
 from account.validators import PhoneValidator
 from account.managers import UserManager
-from account.choices import PaymentHistoryType
+from account.choices import PaymentHistoryType, UserRole
 
 
 class User(AbstractUser):
@@ -28,6 +28,7 @@ class User(AbstractUser):
     patronymic = models.CharField(_('patronymic'), max_length=30)
     region = models.ForeignKey('Region', on_delete=models.DO_NOTHING, verbose_name=_('region'), null=True)
     city = models.ForeignKey('City', on_delete=models.DO_NOTHING, verbose_name=_('city'), null=True)
+    role = models.PositiveSmallIntegerField(_('role'), choices=UserRole.choices, default=UserRole.CLIENT)
     points = models.PositiveIntegerField(_('user bonus points'), default=0)
     is_active = models.BooleanField(
         _('active'),

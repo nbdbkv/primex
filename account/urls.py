@@ -12,6 +12,7 @@ from account.views import (
     UserSendCodeView,
     RegisterCodeVerifyView,
     PasswordResetVerifyView,
+    PhoneResetVerifyView,
     UpdateUserInfoView
 )
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('code/send/', UserSendCodeView.as_view()),
     path('code/verify/', RegisterCodeVerifyView.as_view()),
     path('password/verify/reset/', PasswordResetVerifyView.as_view()),
+    path('phone/verify/reset/', PhoneResetVerifyView.as_view()),
     path('update/info/', UpdateUserInfoView.as_view()),
     path('get/', GetUserView.as_view())
 ]

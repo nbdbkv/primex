@@ -154,6 +154,9 @@ ACCOUNT_AUTHENTICATION_METHOD = 'phone'
 AUTH_USER_MODEL = 'account.User'
 
 
+SMS_CODE_TIME = 300
+
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
