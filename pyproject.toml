@@ -6,7 +6,7 @@ authors = ["Bakdolot <genry03gh@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = "^4.0.1"
+Django = "3.2"
 djangorestframework = "^3.13.1"
 fcm-django = "^1.0.8"
 psycopg2-binary = "^2.9.3"
@@ -15,6 +15,8 @@ django-2gis-maps = "^1.0.3"
 djangorestframework-simplejwt = "^5.0.0"
 drf-yasg = "^1.20.0"
 redis = "^4.1.0"
+django-redis = "^5.2.0"
+Pillow = "^9.0.0"
 
 [tool.poetry.dev-dependencies]
 
