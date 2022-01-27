@@ -45,6 +45,8 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    EMAIL_FIELD = None
+    REQUIRED_FIELDS = []
     USERNAME_FIELD = 'phone'
 
     class Meta(AbstractUser.Meta):
