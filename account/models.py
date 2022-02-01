@@ -51,7 +51,7 @@ class User(AbstractUser):
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
-
+        
 
 class Region(DoubleGisMixin, models.Model):
     name = map_fields.AddressField(_('name'), max_length=100)
