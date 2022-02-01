@@ -54,7 +54,7 @@ class PasswordResetVerifyView(generics.GenericAPIView):
 
 class PhoneResetVerifyView(generics.GenericAPIView):
     serializer_class = PhoneResetVerifySerializer
-    permission_classes = [permissions.IsAuthenticated] 
+    # permission_classes = [permissions.IsAuthenticated] 
 
     def get_object(self):
         return self.request.user
@@ -68,7 +68,7 @@ class PhoneResetVerifyView(generics.GenericAPIView):
 
 class UpdateUserInfoView(generics.UpdateAPIView):
     serializer_class = UpdateUserInfoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
@@ -76,7 +76,7 @@ class UpdateUserInfoView(generics.UpdateAPIView):
 
 class GetUserView(generics.RetrieveAPIView):
     serializer_class = UserRetrieveSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user

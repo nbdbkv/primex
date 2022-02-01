@@ -56,7 +56,6 @@ unicode_backport = ["unicodedata2"]
 name = "coreapi"
 version = "2.3.3"
 description = "Python client library for Core API."
-
 category = "main"
 optional = false
 python-versions = "*"
@@ -119,6 +118,17 @@ python-versions = "*"
 
 [package.dependencies]
 Django = ">=1.11.0"
+
+[[package]]
+name = "django-cors-headers"
+version = "3.11.0"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=2.2"
 
 [[package]]
 name = "django-redis"
@@ -462,17 +472,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "openapi-codec"
-version = "1.3.2"
-description = "An OpenAPI codec for Core API."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-coreapi = ">=2.2.0"
-
-[[package]]
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
@@ -700,7 +699,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "820dd920d92e6c58f2cbbb7477f081d594d9aabb31b36946e103a3a7b6701fd0"
+content-hash = "3ca7f69bab59244d92aef54557bea05fb4ecdb19b80042274d0d994c68e41fab"
 
 [metadata.files]
 asgiref = [
@@ -741,6 +740,10 @@ django = [
 ]
 django-2gis-maps = [
     {file = "django_2gis_maps-1.0.3.tar.gz", hash = "sha256:b67f28b5aa4829fe75dfdf4eee7c88a80ecf0d5bb45a0e7b2a4359d472d73e9b"},
+]
+django-cors-headers = [
+    {file = "django-cors-headers-3.11.0.tar.gz", hash = "sha256:eb98389bf7a2afc5d374806af4a9149697e3a6955b5a2dc2bf049f7d33647456"},
+    {file = "django_cors_headers-3.11.0-py3-none-any.whl", hash = "sha256:a22be2befd4069c4fc174f11cf067351df5c061a3a5f94a01650b4e928b0372b"},
 ]
 django-redis = [
     {file = "django-redis-5.2.0.tar.gz", hash = "sha256:8a99e5582c79f894168f5865c52bd921213253b7fd64d16733ae4591564465de"},
@@ -1023,9 +1026,6 @@ msgpack = [
     {file = "msgpack-1.0.3-cp39-cp39-win32.whl", hash = "sha256:494471d65b25a8751d19c83f1a482fd411d7ca7a3b9e17d25980a74075ba0e88"},
     {file = "msgpack-1.0.3-cp39-cp39-win_amd64.whl", hash = "sha256:f01b26c2290cbd74316990ba84a14ac3d599af9cebefc543d241a66e785cf17d"},
     {file = "msgpack-1.0.3.tar.gz", hash = "sha256:51fdc7fb93615286428ee7758cecc2f374d5ff363bdd884c7ea622a7a327a81e"},
-]
-openapi-codec = [
-    {file = "openapi-codec-1.3.2.tar.gz", hash = "sha256:1bce63289edf53c601ea3683120641407ff6b708803b8954c8a876fe778d2145"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
