@@ -29,7 +29,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data['password'])
         instance.save()
         return instance
-        
 
 
 class UserSendCodeSerializer(serializers.Serializer):
