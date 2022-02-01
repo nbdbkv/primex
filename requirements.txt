@@ -167,6 +167,9 @@ grpcio==1.43.0; platform_python_implementation != "PyPy" and python_version >= "
     --hash=sha256:5449ae564349e7a738b8c38583c0aad954b0d5d1dd3cea68953bfc32eaee11e3 \
     --hash=sha256:bdf41550815a831384d21a498b20597417fd31bd084deb17d31ceb39ad9acc79 \
     --hash=sha256:735d9a437c262ab039d02defddcb9f8f545d7009ae61c0114e19dda3843febe5
+gunicorn==20.1.0; python_version >= "3.5" \
+    --hash=sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e \
+    --hash=sha256:e0a968b5ba15f8a328fdfd7ab1fcb5af4470c28aaf7e55df02a99bc13138e6e8
 httplib2==0.20.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6" \
     --hash=sha256:6b937120e7d786482881b44b8eec230c1ee1c5c1d06bce8cc865f25abbbf713b \
     --hash=sha256:e404681d2fbcec7506bcb52c503f2b021e95bee0ef7d01e5c221468a2406d8dc
