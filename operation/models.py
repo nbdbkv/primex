@@ -2,7 +2,7 @@ import django
 from django.db import models
 from account.models import User
 from datetime import datetime
-from .calculator import calculatePrice
+from .calculator import calculatePrice, deliveryTime, generateCode
 from  django.utils import timezone
 
 class DeliveryType(models.Model):
@@ -10,7 +10,7 @@ class DeliveryType(models.Model):
         ("авия", "авия"),
         ("авто", "авто")
     ]
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, choices=TYPE_CHOICES)
 
     class Meta:
         verbose_name = 'Тип доставки'
@@ -51,9 +51,19 @@ class Town(models.Model):
 class Direction(models.Model):
     town = models.ForeignKey(Town, on_delete=models.CASCADE)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
+    street = models.CharField(max_length=20, verbose_name='улица')
+    number = models.CharField(max_length=10,  verbose_name='номер кв', default=None)
 
     class Meta:
         verbose_name = 'Direction'
+    def __str__(self):
+        return self.street + self.number
+
+    def delivery_time(self):
+        return deliveryTime(self.town.__str__(), self.area.__str__())
+
+    def generateCodeForParcel(self):
+        return generateCode(self.town.__str__(), self.area.__str__())
 
 class Directions(models.Model):
     name = models.CharField(max_length=20)
@@ -86,7 +96,9 @@ class UserInfo(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     patronymic = models.CharField(max_length=20)
-    zip_code = models.IntegerField()
+    region = models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
+    zip_code = models.IntegerField(default=None)
 
     def __str__(self):
         return self.first_name
@@ -152,9 +164,11 @@ class Parcel(models.Model):
     pay_satus = models.CharField(max_length=25, choices=PAY_STATUS, verbose_name='статус оплаты')
     location_info = models.ForeignKey(Directions, on_delete=models.CASCADE, verbose_name='направления')
     recipient_info = models.CharField(max_length=255,  verbose_name='Получатель')
-    destination_type = models.ForeignKey(DestinationType, on_delete=models.CASCADE, verbose_name='тип назначения')
+    #destination_type = models.ForeignKey(DestinationType, on_delete=models.CASCADE, verbose_name='тип назначения')
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, verbose_name='способ оплаты')
     envelope_type = models.CharField(max_length=20, choices=ENVELOPE, verbose_name='envelope type')
+    delivery_time = models.CharField(max_length=10, verbose_name='Срок доставки')
+    code = models.CharField(max_length=15, verbose_name='Код')
 
     class Meta:
         verbose_name = 'Посылка'
