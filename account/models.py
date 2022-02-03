@@ -28,6 +28,7 @@ class User(AbstractUser):
     city = models.ForeignKey('City', on_delete=models.DO_NOTHING, verbose_name=_('city'), null=True)
     role = models.PositiveSmallIntegerField(_('role'), choices=UserRole.choices, default=UserRole.CLIENT)
     points = models.PositiveIntegerField(_('user bonus points'), default=0)
+    avatar = models.ImageField(_('avatar'), upload_to='user/')
     is_active = models.BooleanField(
         _('active'),
         default=False,
