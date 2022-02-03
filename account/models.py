@@ -23,9 +23,7 @@ class User(AbstractUser):
             'unique': _("A user with that phone number already exists."),
         },
         )
-    first_name = models.CharField(_('first name'), max_length=30)
-    last_name = models.CharField(_('last name'), max_length=30)
-    patronymic = models.CharField(_('patronymic'), max_length=30)
+    info = models.CharField(_('user info'), max_length=255)
     region = models.ForeignKey('Region', on_delete=models.DO_NOTHING, verbose_name=_('region'), null=True)
     city = models.ForeignKey('City', on_delete=models.DO_NOTHING, verbose_name=_('city'), null=True)
     role = models.PositiveSmallIntegerField(_('role'), choices=UserRole.choices, default=UserRole.CLIENT)

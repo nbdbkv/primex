@@ -83,13 +83,11 @@ class ParcelInfo(models.Model):
 
 class UserInfo(models.Model):
     phone = models.CharField(max_length=15)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    patronymic = models.CharField(max_length=20)
+    info = models.CharField(max_length=255)
     zip_code = models.IntegerField()
 
     def __str__(self):
-        return self.first_name
+        return self.info
 
 class ParcelOption(models.Model):
     name = models.CharField(max_length=255)
