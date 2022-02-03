@@ -1,4 +1,4 @@
-def calculatePrice(weight, hight, lenght, width, volume, townLocation, areaLocation, envelop):
+def calculatePrice(weight, hight, lenght, width, townLocation, areaLocation, envelop):
     price = 0
     townLocation = townLocation.__str__()
     if hight <= 20 and lenght <= 20 and width <= 20:
