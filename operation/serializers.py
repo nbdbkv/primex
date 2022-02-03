@@ -10,3 +10,8 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parcel
         fields = ('price',)
+
+class ParcelPaymentWithBonusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Parcel
+        fields = ('price',)

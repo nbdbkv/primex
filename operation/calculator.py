@@ -153,6 +153,5 @@ def generateCode(town, area):
 
     }
 
-    code = towns[town]
-    code += areas[area]
+    code = towns[town] + areas[area]
     return code

@@ -10,7 +10,7 @@ class DeliveryType(models.Model):
         ("авия", "авия"),
         ("авто", "авто")
     ]
-    name = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    name = models.CharField(max_length=50, choices=TYPE_CHOICES)
 
     class Meta:
         verbose_name = 'Тип доставки'
@@ -56,8 +56,9 @@ class Direction(models.Model):
 
     class Meta:
         verbose_name = 'Direction'
+
     def __str__(self):
-        return self.street + self.number
+        return f'{self.town} {self.area} {self.street} {self.number}'
 
     def delivery_time(self):
         return deliveryTime(self.town.__str__(), self.area.__str__())
@@ -67,12 +68,13 @@ class Direction(models.Model):
 
 class Directions(models.Model):
     name = models.CharField(max_length=20)
-    from_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='from+',  verbose_name='от куда')
-    to_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='to', verbose_name='куда')
+    from_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='from+',  verbose_name='Oт куда')
+    to_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='to', verbose_name='Куда')
     dictance_between = models.CharField(max_length=255, verbose_name='дистанция')
 
     class Meta:
         verbose_name = 'Направление'
+
     def __str__(self):
         return self.name
 
@@ -100,8 +102,6 @@ class UserInfo(models.Model):
     city = models.CharField(max_length=20)
     zip_code = models.IntegerField(default=None)
 
-    def __str__(self):
-        return self.first_name
 
 class ParcelOption(models.Model):
     name = models.CharField(max_length=255)
@@ -123,7 +123,7 @@ class DestinationType(models.Model):
         return self.name
 
 class PaymentType(models.Model):
-    type = models.CharField(max_length=20, default="cash")
+    type = models.CharField(max_length=30, default="cash")
 
     class Meta:
         verbose_name = 'Тип оплата'
@@ -161,14 +161,14 @@ class Parcel(models.Model):
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.CASCADE, verbose_name='тип доставки')
     options = models.ManyToManyField(ParcelOption, related_name='options', verbose_name='варианты посылок')
     status = models.ForeignKey(ParcelStatus, models.CASCADE, verbose_name='Статус')
-    pay_satus = models.CharField(max_length=25, choices=PAY_STATUS, verbose_name='статус оплаты')
+    pay_satus = models.CharField(max_length=30, choices=PAY_STATUS, verbose_name='статус оплаты')
     location_info = models.ForeignKey(Directions, on_delete=models.CASCADE, verbose_name='направления')
     recipient_info = models.CharField(max_length=255,  verbose_name='Получатель')
     #destination_type = models.ForeignKey(DestinationType, on_delete=models.CASCADE, verbose_name='тип назначения')
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, verbose_name='способ оплаты')
-    envelope_type = models.CharField(max_length=20, choices=ENVELOPE, verbose_name='envelope type')
-    delivery_time = models.CharField(max_length=10, verbose_name='Срок доставки')
-    code = models.CharField(max_length=15, verbose_name='Код')
+    envelope_type = models.CharField(max_length=30, choices=ENVELOPE, verbose_name='envelope type')
+    delivery_time = models.CharField(max_length=10, verbose_name='Срок доставки', null=True)
+    code = models.CharField(max_length=15, verbose_name='Код', null=True)
 
     class Meta:
         verbose_name = 'Посылка'
