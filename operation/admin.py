@@ -1,12 +1,9 @@
 from django.contrib import admin
-
-from account.models import User
 from .models import (
     Parcel,
     Town,
     Area,
     UserInfo,
-    ParcelOption,
     PaymentType,
     ParcelInfo,
     Recipient,
@@ -18,7 +15,6 @@ from .models import (
     )
 admin.site.register(Town),
 admin.site.register(Area),
-admin.site.register(ParcelOption),
 admin.site.register(Parcel),
 admin.site.register(UserInfo),
 admin.site.register(Recipient),
