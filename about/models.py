@@ -20,7 +20,7 @@ class New(models.Model):
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'))
     border_photo = models.ImageField(_('border image'), upload_to='about/news/')
-    watched_users = models.ManyToManyField(User, verbose_name=_('watched users'))
+    watched_users = models.ManyToManyField(User, verbose_name=_('watched users'), blank=True)
     create_at = models.DateTimeField(_('created date'), auto_now_add=True)
 
 
@@ -33,8 +33,8 @@ class Fillial(DoubleGisMixin, models.Model):
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     location = map_fields.GeoLocationField(_('geolocation'))
-    contact_phone = models.CharField(_('contact phone'), max_length=20)
-    email = models.EmailField(_('email'))
+    contact_phone = models.CharField(_('contact phone'), max_length=20, blank=True)
+    email = models.EmailField(_('email'), blank=True)
 
 
 class Option(models.Model):
