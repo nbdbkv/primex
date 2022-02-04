@@ -1,6 +1,8 @@
 from django.db import models
 from account.models import User
 from .calculator import calculatePrice, deliveryTime, generateCode
+from django_2gis_maps import fields
+from django_2gis_maps.mixins import DoubleGisMixin
 
 class DeliveryType(models.Model):
     name = models.CharField(max_length=50)
@@ -38,11 +40,12 @@ class Town(models.Model):
 
     def __str__(self):
         return self.name
-class Direction(models.Model):
+class Direction(DoubleGisMixin, models.Model):
     town = models.ForeignKey(Town, on_delete=models.CASCADE)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     street = models.CharField(max_length=20, verbose_name='улица')
     number = models.CharField(max_length=10,  verbose_name='номер кв', default='')
+    location = fields.GeoLocationField(verbose_name='локация', default=0)
 
     class Meta:
         verbose_name = 'Направления'
@@ -50,6 +53,7 @@ class Direction(models.Model):
     def delivery_time(self):
         town = self.town.__str__()
         area = self.area.__str__()
+
         return deliveryTime(town, area)
 
     def generateCodeForParcel(self):
