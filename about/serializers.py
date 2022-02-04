@@ -33,7 +33,7 @@ class NewsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = New
-        fields = ['title', 'description', 'border_photo', 'watched_users_count', 'create_at', 'gallery']
+        fields = '__all__'
     
     def get_gallery(self, instance):
         queryset = NewGallery.objects.filter(new=instance)
