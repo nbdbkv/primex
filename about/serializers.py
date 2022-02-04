@@ -24,7 +24,7 @@ class ConatactSerializer(serializers.ModelSerializer):
 class NewGallerySerializer(serializers.ModelSerializer):
     class Meta:
         model = NewGallery
-        fields = '__all__'
+        fields = ['image']
         
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -36,9 +36,10 @@ class NewsSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def get_gallery(self, instance):
+        request = self.context.get('request')
         queryset = NewGallery.objects.filter(new=instance)
-        serializer = NewGallerySerializer(queryset, many=True)
-        return serializer.data
+        images = [request.build_absolute_uri(obj.image.url) for obj in queryset]
+        return images
     
     def get_watched_users_count(self, instance):
         return instance.watched_users.all().count()

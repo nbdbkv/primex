@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
-import pytz
 from dotenv import load_dotenv
 from firebase_admin import initialize_app
 from datetime import timedelta
