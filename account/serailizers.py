@@ -15,7 +15,7 @@ from account.models import User
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('phone', 'password', 'info', 'region', 'city')
+        fields = ('phone', 'password', 'info', 'avatar', 'region', 'city')
     
     def validate_password(self, password):
         try:
@@ -110,7 +110,7 @@ class PhoneResetVerifySerializer(serializers.Serializer):
 class UpdateUserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('info', 'region', 'city')
+        fields = ('info', 'region', 'city', 'avatar')
 
 
 class UserRetrieveSerializer(serializers.ModelSerializer):
