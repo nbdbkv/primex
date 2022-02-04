@@ -2,7 +2,9 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 from rest_framework import generics
 from .models import Parcel
-from .serializers import ParcelSerializer, ParcelPaymentSerializer
+from .serializers import (ParcelSerializer,
+                          ParcelPaymentSerializer,
+                          ParcelPaymentWithBonusSerializer,)
 
 class CreateParcelView(generics.CreateAPIView):
     queryset = Parcel
@@ -22,5 +24,9 @@ class ListParcelView(generics.ListAPIView):
 class PaymentParcelView(generics.RetrieveAPIView):
     queryset = Parcel
     serializer_class = ParcelPaymentSerializer
+
+class PaymentParcelWithBonusView(generics.RetrieveAPIView):
+    queryset = Parcel
+    serializer_class = ParcelPaymentWithBonusSerializer
 
 

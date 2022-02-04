@@ -1,8 +1,6 @@
-from rest_framework import generics
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from account.messages import Message
@@ -11,10 +9,13 @@ from account.models import User
 from account.serailizers import (
     PasswordResetVerifySerializer,
     RegisterCodeVerifySerializer,
+    PhoneResetVerifySerializer,
     UpdateUserInfoSerializer, 
-    UserRegisterSerializer, 
+    UserRegisterSerializer,
+    UserRetrieveSerializer, 
     UserSendCodeSerializer
 )
+
 
 class UserRegisterView(generics.CreateAPIView):
     queryset = User
@@ -27,6 +28,7 @@ class UserSendCodeView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.send_otp_code()
         return Response(Message.CODE_SENT.value, status=status.HTTP_202_ACCEPTED)
 
 
@@ -36,6 +38,7 @@ class RegisterCodeVerifyView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.update()
         return Response(Message.USER_ACTIVATED.value, status=status.HTTP_202_ACCEPTED)
 
 
@@ -45,11 +48,35 @@ class PasswordResetVerifyView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.update()
         return Response(Message.PASSWORD_CHANGED.value, status=status.HTTP_202_ACCEPTED)
+
+
+class PhoneResetVerifyView(generics.GenericAPIView):
+    serializer_class = PhoneResetVerifySerializer
+    # permission_classes = [permissions.IsAuthenticated] 
+
+    def get_object(self):
+        return self.request.user
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.update(instance=self.get_object())
+        return Response(Message.PHONE_CHANGED.value, status=status.HTTP_202_ACCEPTED)
 
 
 class UpdateUserInfoView(generics.UpdateAPIView):
     serializer_class = UpdateUserInfoSerializer
-    queryset = User.objects.filter(is_active=True)
-    permission_classes = [IsOwner]
-    lookup_field = 'phone'
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
+class GetUserView(generics.RetrieveAPIView):
+    serializer_class = UserRetrieveSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user

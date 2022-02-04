@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 class Message(Enum):
     USER_ACTIVATED = {'message': _('User is activated')}
     PASSWORD_CHANGED = {'message': _('Password successfully changed')}
+    PHONE_CHANGED = {'message': _('Phone successfully changed')}
     CODE_SENT = {'message': _('The code was successfully sent')}
 
 

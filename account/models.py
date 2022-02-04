@@ -7,7 +7,7 @@ from django_2gis_maps.mixins import DoubleGisMixin
 
 from account.validators import PhoneValidator
 from account.managers import UserManager
-from account.choices import PaymentHistoryType
+from account.choices import PaymentHistoryType, UserRole
 
 
 class User(AbstractUser):
@@ -23,12 +23,12 @@ class User(AbstractUser):
             'unique': _("A user with that phone number already exists."),
         },
         )
-    email = models.CharField(_('email'), max_length=30, unique=True)
     first_name = models.CharField(_('first name'), max_length=30)
     last_name = models.CharField(_('last name'), max_length=30)
     patronymic = models.CharField(_('patronymic'), max_length=30)
     region = models.ForeignKey('Region', on_delete=models.DO_NOTHING, verbose_name=_('region'), null=True)
-    city = models.ForeignKey('City', on_delete=models.DO_NOTHING, verbose_name=_('city'), null=True)
+    city = models.ForeignKey('City', on_delete=models.DO_NOTHING,  verbose_name=_('city'), null=True)
+    role = models.PositiveSmallIntegerField(_('role'), choices=UserRole.choices, default=UserRole.CLIENT)
     points = models.PositiveIntegerField(_('user bonus points'), default=0)
     is_active = models.BooleanField(
         _('active'),
@@ -41,19 +41,24 @@ class User(AbstractUser):
 
 
     username = None
-    #email = None
+    email = None
 
     objects = UserManager()
 
+    EMAIL_FIELD = None
+    REQUIRED_FIELDS = []
     USERNAME_FIELD = 'phone'
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
 
+        
 
 class Region(DoubleGisMixin, models.Model):
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'))
+    def __str__(self):
+        return self.name
 
 
 class City(DoubleGisMixin, models.Model):
@@ -61,6 +66,8 @@ class City(DoubleGisMixin, models.Model):
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'))
 
+    def __str__(self):
+        return self.name
 
 class DiscountHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
