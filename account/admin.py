@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django_2gis_maps.admin import DoubleGisAdmin
 
 from account.roles.mixins import UserAdminMixin
 from account.roles import operator, subadmin
@@ -18,8 +19,16 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
             not self.get_object(request, obj.id).password == new_password:     
             obj.set_password(new_password)
         return super().save_model(request, obj, form, change)
+
+
+class RegionAdmin(DoubleGisAdmin):
+    multiple_markers = False
+
+
+class CityAdmin(DoubleGisAdmin):
+    multiple_markers = False
     
     
 admin.site.register(User, UserAdmin)
-admin.site.register(Region)
-admin.site.register(City)
+admin.site.register(Region, RegionAdmin)
+admin.site.register(City, CityAdmin)

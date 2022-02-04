@@ -10,7 +10,7 @@ from account.validators import PhoneValidator
 from account.utils import SendSMS, get_otp
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
-from account.models import User
+from account.models import City, Region, User
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -125,3 +125,15 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             'is_superuser',
             'groups',
             'user_permissions')
+
+
+class RegionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = '__all__'
+
+
+class CitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = '__all__'
