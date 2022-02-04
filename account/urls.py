@@ -13,7 +13,9 @@ from account.views import (
     RegisterCodeVerifyView,
     PasswordResetVerifyView,
     PhoneResetVerifyView,
-    UpdateUserInfoView
+    UpdateUserInfoView,
+    RegionsView,
+    CitiesView
 )
 
 router = DefaultRouter()
@@ -29,6 +31,10 @@ urlpatterns = [
     path('code/verify/', RegisterCodeVerifyView.as_view()),
     path('password/verify/reset/', PasswordResetVerifyView.as_view()),
     path('phone/verify/reset/', PhoneResetVerifyView.as_view()),
+    
+    
     path('update/info/', UpdateUserInfoView.as_view()),
-    path('get/', GetUserView.as_view())
+    path('get/', GetUserView.as_view()),
+    path('regions/', RegionsView.as_view()),
+    path('cities/', CitiesView.as_view()),
 ]

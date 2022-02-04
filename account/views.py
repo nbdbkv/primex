@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from account.messages import Message
 from account.permissions import IsOwner
-from account.models import User
+from account.models import City, Region, User
 from account.serailizers import (
     PasswordResetVerifySerializer,
     RegisterCodeVerifySerializer,
@@ -13,7 +13,9 @@ from account.serailizers import (
     UpdateUserInfoSerializer, 
     UserRegisterSerializer,
     UserRetrieveSerializer, 
-    UserSendCodeSerializer
+    UserSendCodeSerializer,
+    RegionsSerializer,
+    CitiesSerializer
 )
 
 
@@ -80,3 +82,13 @@ class GetUserView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+    
+
+class RegionsView(generics.ListAPIView):
+    serializer_class = RegionsSerializer
+    queryset = Region.objects.all()
+
+
+class CitiesView(generics.ListAPIView):
+    serializer_class = CitiesSerializer
+    queryset = City.objects.all()
