@@ -16,11 +16,20 @@ from about.models import (
 class NewGalleryInline(admin.StackedInline):
     model=NewGallery
     extra = 1
-    
+
+
+class AnswerInline(admin.StackedInline):
+    model=Answer
+    extra = 1
+
 
 class NewAdmin(admin.ModelAdmin):
     inlines = [NewGalleryInline,]
     
+    
+class QuestionAdmin(admin.ModelAdmin):
+    inlines = [AnswerInline,]
+
 
 admin.site.register(Partner)
 admin.site.register(Contact)
@@ -28,5 +37,4 @@ admin.site.register(ArticleCategory)
 admin.site.register(New, NewAdmin)
 admin.site.register(Fillial)
 admin.site.register(Option)
-admin.site.register(Question)
-admin.site.register(Answer)
+admin.site.register(Question, QuestionAdmin)
