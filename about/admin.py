@@ -4,9 +4,12 @@ from about.models import (
     Partner,
     Contact,
     New,
+    ArticleCategory,
     NewGallery,
     Fillial,
-    Option
+    Option,
+    Question,
+    Answer
 )
 
 
@@ -21,6 +24,9 @@ class NewAdmin(admin.ModelAdmin):
 
 admin.site.register(Partner)
 admin.site.register(Contact)
+admin.site.register(ArticleCategory)
 admin.site.register(New, NewAdmin)
 admin.site.register(Fillial)
 admin.site.register(Option)
+admin.site.register(Question)
+admin.site.register(Answer)
