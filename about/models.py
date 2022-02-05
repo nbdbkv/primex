@@ -54,5 +54,5 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, verbose_name=_('question'))
+    question = models.ForeignKey(Question, verbose_name=_('question'), on_delete=models.CASCADE)
     text = models.TextField(_('text'))
