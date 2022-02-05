@@ -4,13 +4,15 @@ from about.models import (
     Partner,
     Contact,
     New,
-    Fillial
+    Fillial,
+    Question
 )
 from about.serializers import (
     PartnerSerializer,
     ConatactSerializer,
     NewsSerializer,
-    FillialSerializer
+    FillialSerializer,
+    QuestionSerializer
 )
 
 
@@ -37,3 +39,8 @@ class NewDetailView(generics.RetrieveAPIView):
 class FillialView(generics.ListAPIView):
     queryset = Fillial.objects.all()
     serializer_class = FillialSerializer
+
+
+class QuestionView(generics.ListAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
