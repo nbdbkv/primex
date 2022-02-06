@@ -96,10 +96,10 @@ class Envelope(models.Model):
 
 
 class ParcelInfo(models.Model):
-    width = models.PositiveIntegerField(verbose_name='ширина', blank=True)
-    lenght = models.PositiveIntegerField(verbose_name='длина', blank=True)
-    hight = models.PositiveIntegerField(verbose_name='высота', blank=True)
-    weight = models.PositiveIntegerField(verbose_name='масса', blank=True)
+    width = models.(verbose_name='ширина', blank=True)
+    lenght = models.FloatField(verbose_name='длина', blank=True)
+    hight = models.FloatField(verbose_name='высота', blank=True)
+    weight = models.FloatField(verbose_name='масса', blank=True)
     envelope = models.ForeignKey(Envelope, on_delete=models.CASCADE)
     options = models.ManyToManyField(ParcelOption, related_name='options', verbose_name='варианты посылок')
 
