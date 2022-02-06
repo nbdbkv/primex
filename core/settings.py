@@ -104,6 +104,14 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT')
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'mydatabase', # This is where you put the name of the db file.
+#                  # If one doesn't exist, it will be created at migration time.
+#     }
+# }
+#Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -166,10 +174,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'phone'
 AUTH_USER_MODEL = 'account.User'
 
 
-SMS_CODE_TIME = 200
-NIKITA_LOGIN = os.getenv('NIKITA_LOGIN')
-NIKITA_PASSWORD = os.getenv('NIKITA_PASSWORD')
-NIKITA_SENDER = os.getenv('NIKITA_SENDER')
+SMS_CODE_TIME = 300
 
 
 CACHES = {

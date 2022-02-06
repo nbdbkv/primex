@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django_2gis_maps.admin import DoubleGisAdmin
 from account.models import User
 from .models import (
     Parcel,
@@ -15,10 +15,14 @@ from .models import (
     Envelope,
     Directions,
     Direction,
+    Package,
     )
+
+
+admin.site.register(Package),
+admin.site.register(ParcelOption),
 admin.site.register(Town),
 admin.site.register(Area),
-admin.site.register(ParcelOption),
 admin.site.register(Parcel),
 admin.site.register(UserInfo),
 admin.site.register(Recipient),
