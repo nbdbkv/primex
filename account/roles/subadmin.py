@@ -17,7 +17,7 @@ class UserAdminForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('phone', 'password', 'first_name', 'last_name', 'patronymic', 'region', 'city', 'role')
+        fields = ('phone', 'password', 'info', 'region', 'city', 'role')
     
     
 def get_permission():

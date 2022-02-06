@@ -22,16 +22,16 @@ class UserAdminMixin:
             kwargs['form'] = subadmin.UserAdminForm
         return super().get_form(request, obj, **kwargs)
     
-    def save_model(self, request, obj, form, change) -> None:
-        super().save_model(request, obj, form, change)
-        if obj.role == UserRole.OPERATOR:
-            perm = operator.get_permission()
-        elif obj.role == UserRole.SUBADMIN:
-            perm = subadmin.get_permission()
-        for permission in perm:
-            obj.user_permissions.through.objects.create(user_id=obj.id, permission_id=permission.id)
-        print(obj.get_all_permissions())
-        return obj
+    # def save_model(self, request, obj, form, change) -> None:
+    #     super().save_model(request, obj, form, change)
+    #     if obj.role == UserRole.OPERATOR:
+    #         perm = operator.get_permission()
+    #     elif obj.role == UserRole.SUBADMIN:
+    #         perm = subadmin.get_permission()
+    #     for permission in perm:
+    #         obj.user_permissions.through.objects.create(user_id=obj.id, permission_id=permission.id)
+    #     print(obj.get_all_permissions())
+    #     return obj
 
     
     # def save_form(self, request, form, change):

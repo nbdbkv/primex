@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
-import pytz
 from dotenv import load_dotenv
 from firebase_admin import initialize_app
 from datetime import timedelta
@@ -92,7 +91,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Database
+# # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
     'default': {

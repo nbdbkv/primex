@@ -5,15 +5,17 @@ from about.views import (
     ContactView,
     NewsView,
     NewDetailView,
-    FillialView
+    FillialView,
+    QuestionView
 )
 
 
 urlpatterns = [
     path('partners/', PartnerView.as_view()),
     path('contacts/', ContactView.as_view()),
-    path('news/', NewsView.as_view()),
-    path('new/<int:pk>/', NewDetailView.as_view()),
-    path('fillials/', FillialView.as_view())
+    path('articles/', NewsView.as_view()),
+    path('article/<int:pk>/', NewDetailView.as_view()),
+    path('branch_offices/', FillialView.as_view()),
+    path('questions/', QuestionView.as_view())
 ]
 

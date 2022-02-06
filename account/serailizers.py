@@ -10,12 +10,12 @@ from account.validators import PhoneValidator
 from account.utils import SendSMS, get_otp
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
-from account.models import User
+from account.models import City, Region, User
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('phone', 'password', 'first_name', 'last_name', 'patronymic', 'region', 'city')
+        fields = ('phone', 'password', 'info', 'avatar', 'region', 'city')
     
     def validate_password(self, password):
         try:
@@ -44,10 +44,11 @@ class UserSendCodeSerializer(serializers.Serializer):
     
     def send_otp_code(self):
         data = self.validated_data
+        phone = data['phone']
         code = get_otp()
         print(code)
-        cache.set(code, data['phone'], settings.SMS_CODE_TIME, version=data['type'])
-        SendSMS()
+        cache.set(code, phone, settings.SMS_CODE_TIME, version=data['type'])
+        SendSMS(phone, f'code: {code}').send
 
 
 class RegisterCodeVerifySerializer(serializers.Serializer):
@@ -109,7 +110,7 @@ class PhoneResetVerifySerializer(serializers.Serializer):
 class UpdateUserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'patronymic', 'region', 'city')
+        fields = ('info', 'region', 'city', 'avatar')
 
 
 class UserRetrieveSerializer(serializers.ModelSerializer):
@@ -124,3 +125,15 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             'is_superuser',
             'groups',
             'user_permissions')
+
+
+class RegionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = '__all__'
+
+
+class CitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = '__all__'
