@@ -6,7 +6,6 @@ from .models import (
     Town,
     Area,
     UserInfo,
-    ParcelOption,
     PaymentType,
     ParcelInfo,
     Recipient,
@@ -16,6 +15,7 @@ from .models import (
     Directions,
     Direction,
     Package,
+    ParcelOption,
     )
 
 

@@ -5,7 +5,9 @@ from about.models import (
     Contact,
     New,
     NewGallery,
-    Fillial
+    Fillial,
+    Question,
+    Answer
 )
 
 
@@ -24,7 +26,7 @@ class ConatactSerializer(serializers.ModelSerializer):
 class NewGallerySerializer(serializers.ModelSerializer):
     class Meta:
         model = NewGallery
-        fields = '__all__'
+        fields = ['image']
         
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -36,9 +38,10 @@ class NewsSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def get_gallery(self, instance):
-        queryset = NewGallery.objects.filter(new=instance)
-        serializer = NewGallerySerializer(queryset, many=True)
-        return serializer.data
+        request = self.context.get('request')
+        queryset = NewGallery.objects.filter(new=instance).values_list('image', flat=True)
+        images = [request.build_absolute_uri(image.url) for image in queryset]
+        return images
     
     def get_watched_users_count(self, instance):
         return instance.watched_users.all().count()
@@ -48,3 +51,15 @@ class FillialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fillial
         fields = '__all__'
+        
+
+class QuestionSerializer(serializers.ModelSerializer):
+    answer = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Question
+        fields = '__all__'
+    
+    def get_answer(self, instance):
+        queryset = Answer.objects.filter(question=instance).values_list('text', flat=True)
+        return queryset

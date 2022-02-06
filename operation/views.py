@@ -14,6 +14,7 @@ from .serializers import (
                           DeliveryTypeSerializer,
                           EnvelopeSerializer,
                           RecipientSerializer,
+
                           ParcelDateSerializer,
                           SenderInfoSerializer,
                           PackageTypeSerializer,
@@ -70,6 +71,7 @@ class PackageTypeView(generics.ListAPIView):
     queryset = Package.objects.all()
     serializer_class = PackageTypeSerializer
 
+
 class EnvelopeView(generics.ListAPIView):
     queryset = Envelope.objects.all()
     serializer_class = EnvelopeSerializer
@@ -81,6 +83,7 @@ class RecipientView(generics.CreateAPIView):
 class ParcelDateView(generics.CreateAPIView, generics.ListAPIView):
     queryset = ParcelDate.objects.all()
     serializer_class = ParcelDateSerializer
+
 
 class SenderView(generics.ListCreateAPIView):
     serializer_class = SenderInfoSerializer

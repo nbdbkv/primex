@@ -45,6 +45,7 @@ class Town(models.Model):
     def __str__(self):
         return self.name
 
+
 class Direction(DoubleGisMixin, models.Model):
     town = models.ForeignKey(Town, on_delete=models.CASCADE, verbose_name='город')
     area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name='район', blank=True)
@@ -66,7 +67,7 @@ class Direction(DoubleGisMixin, models.Model):
         return generateCode(town, area)
 
     def __str__(self):
-        return f'{self.town} {self.area.name} {self.street} {self.number}'
+        return f'{self.town} {self.area} {self.street} {self.number}'
 
 class Directions(models.Model):
     from_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='from+',  verbose_name='Oт куда')
@@ -115,7 +116,6 @@ class ParcelInfo(models.Model):
 class UserInfo(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    phone = models.CharField(max_length=15)
     company = models.CharField(max_length=50, null=True)
 
     class Meta:
@@ -162,6 +162,14 @@ class Package(models.Model):
         verbose_name = 'Упаковка'
     def __str__(self):
         return self.package_name
+
+class DeliveryDate(models.Model):
+    date = models.DateTimeField(verbose_name='Дата сдачи груза')
+    class Meta:
+        verbose_name = 'Дата сдачи груза'
+    def __str__(self):
+        return str(self.date)
+
 
 class Parcel(models.Model):
     PAY_STATUS = [
