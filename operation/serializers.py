@@ -70,3 +70,8 @@ class SenderInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('pk', 'first_name', 'last_name', 'phone',)
+
+class ParcelStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Parcel
+        fields = ('pk', 'status',)
