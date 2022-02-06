@@ -1,8 +1,11 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from account.models import User
 from rest_framework import generics
-from .models import (Parcel, Directions, Direction, ParcelInfo, DeliveryType, Envelope, Recipient, DeliveryDate, UserInfo)
-from .serializers import (ParcelSerializer,
+from .models import (Parcel, Directions, Direction, ParcelInfo, DeliveryType, Envelope, Recipient, ParcelDate, UserInfo, Town, Area, Package)
+from .serializers import (
+                          TownSeralizer,
+                          AreaSerializer,
+                          ParcelSerializer,
                           ParcelPaymentSerializer,
                           ParcelPaymentWithBonusSerializer,
                           DirectionsSerializer,
@@ -11,9 +14,18 @@ from .serializers import (ParcelSerializer,
                           DeliveryTypeSerializer,
                           EnvelopeSerializer,
                           RecipientSerializer,
-                          DeliveryDateSerializer,
-                          SenderInfoSerializer
+                          ParcelDateSerializer,
+                          SenderInfoSerializer,
+                          PackageTypeSerializer,
                           )
+
+class TownsView(generics.ListAPIView):
+    queryset = Town.objects.all()
+    serializer_class = TownSeralizer
+
+class AreasView(generics.ListAPIView):
+    queryset = Area.objects.all()
+    serializer_class = AreaSerializer
 
 class CreateParcelView(generics.CreateAPIView):
     queryset = Parcel.objects.all()
@@ -42,17 +54,21 @@ class DirectionsView(generics.CreateAPIView):
     queryset = Directions
     serializer_class = DirectionsSerializer
 
-class DirectionView(generics.CreateAPIView):
-    queryset = Direction
+class DirectionView(generics.ListCreateAPIView):
+    queryset = Direction.objects.all()
     serializer_class = DirectionSerializer
 
 class ParametersView(generics.CreateAPIView):
     queryset = ParcelInfo
     serializer_class = ParametersSerializer
 
-class DeliveryTypeView(generics.ListAPIView):
+class DeliveryTypeView(generics.ListCreateAPIView):
     queryset = DeliveryType.objects.all()
     serializer_class = DeliveryTypeSerializer
+
+class PackageTypeView(generics.ListAPIView):
+    queryset = Package.objects.all()
+    serializer_class = PackageTypeSerializer
 
 class EnvelopeView(generics.ListAPIView):
     queryset = Envelope.objects.all()
@@ -62,9 +78,9 @@ class RecipientView(generics.CreateAPIView):
     queryset = Recipient
     serializer_class = RecipientSerializer
 
-class DeliveryDateView(generics.CreateAPIView):
-    queryset = DeliveryDate
-    serializer_class = DeliveryDateSerializer
+class ParcelDateView(generics.CreateAPIView, generics.ListAPIView):
+    queryset = ParcelDate.objects.all()
+    serializer_class = ParcelDateSerializer
 
 class SenderView(generics.ListCreateAPIView):
     serializer_class = SenderInfoSerializer
