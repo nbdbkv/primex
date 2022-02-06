@@ -24,9 +24,15 @@ deprecated==1.2.13; python_version >= "3.6" and python_full_version < "3.0.0" or
     --hash=sha256:43ac5335da90c31c24ba028af536a91d41d53f9e6901ddb021bcc572ce44e38d
 django-2gis-maps==1.0.3 \
     --hash=sha256:b67f28b5aa4829fe75dfdf4eee7c88a80ecf0d5bb45a0e7b2a4359d472d73e9b
+django-ckeditor==6.2.0 \
+    --hash=sha256:df64dc9e62790ef824f609605d31be847bdbce1cc7aa94e49bd5ca60d7aa79bb \
+    --hash=sha256:9f66420907e41f5b4e698fa5671a00a86995776735f2c4696174aed4640fcbd8
 django-cors-headers==3.11.0; python_version >= "3.7" \
     --hash=sha256:eb98389bf7a2afc5d374806af4a9149697e3a6955b5a2dc2bf049f7d33647456 \
     --hash=sha256:a22be2befd4069c4fc174f11cf067351df5c061a3a5f94a01650b4e928b0372b
+django-js-asset==1.2.2 \
+    --hash=sha256:c163ae80d2e0b22d8fb598047cd0dcef31f81830e127cfecae278ad574167260 \
+    --hash=sha256:8ec12017f26eec524cab436c64ae73033368a372970af4cf42d9354fcb166bdd
 django-redis==5.2.0; python_version >= "3.6" \
     --hash=sha256:8a99e5582c79f894168f5865c52bd921213253b7fd64d16733ae4591564465de \
     --hash=sha256:1d037dc02b11ad7aa11f655d26dac3fb1af32630f61ef4428860a2e29ff92026
@@ -326,6 +332,9 @@ pillow==9.0.0; python_version >= "3.7" \
     --hash=sha256:6c5439bfb35a89cac50e81c751317faea647b9a3ec11c039900cd6915831064d \
     --hash=sha256:95545137fc56ce8c10de646074d242001a112a92de169986abd8c88c27566a05 \
     --hash=sha256:ee6e2963e92762923956fe5d3479b1fdc3b76c83f290aad131a2f98c3df0593e
+platformdirs==2.4.1; python_version >= "3.7" \
+    --hash=sha256:1d7385c7db91728b83efd0ca99a5afb296cab9d0ed8313a45ed8ba17967ecfca \
+    --hash=sha256:440633ddfebcc36264232365d7840a970e75e1018d15b4327d11f91909045fda
 proto-plus==1.19.8; platform_python_implementation != "PyPy" and python_version >= "3.6" \
     --hash=sha256:bdf45f0e0be71510eb2ec9db4da78afde7b5fb8b0a507a36340a9b6ce8e48e58 \
     --hash=sha256:3434eadaed845a337d6c488d2b7d055d733aaa231c0c0d4c778ec720bb91cf87
