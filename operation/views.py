@@ -18,6 +18,7 @@ from .serializers import (
                           ParcelDateSerializer,
                           SenderInfoSerializer,
                           PackageTypeSerializer,
+                          ParcelStatusSerializer,
                           )
 
 class TownsView(generics.ListAPIView):
@@ -84,6 +85,11 @@ class ParcelDateView(generics.CreateAPIView, generics.ListAPIView):
     queryset = ParcelDate.objects.all()
     serializer_class = ParcelDateSerializer
 
+class ParcelStatusView(generics.RetrieveAPIView):
+    serializer_class = ParcelStatusSerializer
+    lookup_field = 'pk'
+    def get_queryset(self):
+        return  Parcel.objects.filter(pk=self.kwargs['pk'])
 
 class SenderView(generics.ListCreateAPIView):
     serializer_class = SenderInfoSerializer
