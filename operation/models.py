@@ -18,7 +18,6 @@ class ParcelStatus(models.Model):
         ("В пути", "В пути")
     ]
     name = models.CharField(max_length=20, choices=PARCEL_STATUS)
-
     class Meta:
         verbose_name = 'Статус'
 
@@ -41,10 +40,8 @@ class Town(models.Model):
     code = models.CharField(max_length=10, verbose_name='код')
     class Meta:
         verbose_name = 'Город'
-
     def __str__(self):
         return self.name
-
 
 class Direction(DoubleGisMixin, models.Model):
     town = models.ForeignKey(Town, on_delete=models.CASCADE, verbose_name='город')
@@ -65,14 +62,12 @@ class Direction(DoubleGisMixin, models.Model):
         town = self.town.__str__()
         area = self.area.__str__()
         return generateCode(town, area)
-
     def __str__(self):
         return f'{self.town} {self.area} {self.street} {self.number}'
 
 class Directions(models.Model):
     from_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='from+',  verbose_name='Oт куда')
     to_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='to', verbose_name='Куда')
-
     class Meta:
         verbose_name = 'Направление'
     def __str__(self):
@@ -94,19 +89,16 @@ class Envelope(models.Model):
     def __str__(self):
         return self.name
 
-
 class ParcelInfo(models.Model):
-    width = models.FloatField(verbose_name='ширина', blank=True)
-    lenght = models.FloatField(verbose_name='длина', blank=True)
-    hight = models.FloatField(verbose_name='высота', blank=True)
-    weight = models.FloatField(verbose_name='масса', blank=True)
+    width = models.PositiveIntegerField( verbose_name='ширина', blank=True)
+    lenght = models.PositiveIntegerField(verbose_name='длина', blank=True)
+    hight = models.PositiveIntegerField(verbose_name='высота', blank=True)
+    weight = models.PositiveIntegerField( verbose_name='масса', blank=True)
     envelope = models.ForeignKey(Envelope, on_delete=models.CASCADE)
     options = models.ManyToManyField(ParcelOption, related_name='options', verbose_name='варианты посылок')
 
-
     class Meta:
         verbose_name = 'Параметры груза'
-
     def calculateParcelPrice(self, townLocation, areaLocation, envelop):
         return calculatePrice(self.weight, self.hight, self.lenght, self.width, townLocation, areaLocation, envelop)
 
@@ -117,20 +109,15 @@ class UserInfo(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     company = models.CharField(max_length=50, null=True)
-
     class Meta:
         verbose_name = 'Данные отправителя'
-
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-
 class PaymentType(models.Model):
     type = models.CharField(max_length=30)
-
     class Meta:
         verbose_name = 'Тип оплата'
-
     def __str__(self):
         return self.type
 
@@ -140,10 +127,8 @@ class Recipient(models.Model):
     phone = models.CharField(max_length=15, verbose_name='Номер телефона')
     company = models.CharField(max_length=35, verbose_name='Называние компании', blank=True)
     email = models.EmailField(null=True, blank=True)
-
     class Meta:
         verbose_name = 'Данные получателя'
-
     def __str__(self):
         return self.first_name
 
@@ -163,25 +148,13 @@ class Package(models.Model):
     def __str__(self):
         return self.package_name
 
-class DeliveryDate(models.Model):
-    date = models.DateTimeField(verbose_name='Дата сдачи груза')
-    class Meta:
-        verbose_name = 'Дата сдачи груза'
-    def __str__(self):
-        return str(self.date)
-
 
 class Parcel(models.Model):
     PAY_STATUS = [
         ('1', 'Оплачено'),
         ('0', 'Не оплачено')
     ]
-    ENVELOPE = [
-        ('NULL', 'Не выбрать'),
-        ('c5', 'Конверт С5'),
-        ('c4', 'Конверт С4'),
-        ('c3', 'Конверт С3')
-    ]
+
     sender = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Отправитель')
     sender_info = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='Мои данные')
     recipient_info = models.ForeignKey(Recipient, on_delete=models.CASCADE, verbose_name='Данные получателя')
@@ -195,7 +168,6 @@ class Parcel(models.Model):
     recipient_info = models.ForeignKey(Recipient, on_delete=models.CASCADE,  verbose_name='Получатель')
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, verbose_name='Cпосоп оплаты', default=1)
     package_type = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='package', verbose_name='Упаковка')
-    #delivery_date = models.ForeignKey(ParcelDate, on_delete=models.CASCADE, related_name='delivery_date')
     code = models.CharField(max_length=15, verbose_name='Код', default='0')
 
     class Meta:

@@ -81,8 +81,8 @@ class RecipientView(generics.CreateAPIView):
     queryset = Recipient
     serializer_class = RecipientSerializer
 
-class ParcelDateView(generics.CreateAPIView, generics.ListAPIView):
-    queryset = ParcelDate.objects.all()
+class ParcelDateView(generics.CreateAPIView):
+    queryset = ParcelDate
     serializer_class = ParcelDateSerializer
 
 class ParcelStatusView(generics.RetrieveAPIView):
