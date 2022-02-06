@@ -22,6 +22,7 @@ from core.yasg import urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('account/', include('account.urls')),
     path('about/', include('about.urls')),
     path('operation/', include('operation.urls')),

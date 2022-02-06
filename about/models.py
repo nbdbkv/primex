@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields as map_fields
 from django_2gis_maps.mixins import DoubleGisMixin
 
+from ckeditor_uploader.fields import RichTextUploadingField
+
 from account.models import User, Region, City
 
 
@@ -22,7 +24,7 @@ class ArticleCategory(models.Model):
 
 class New(models.Model):
     title = models.CharField(_('title'), max_length=255)
-    description = models.TextField(_('description'))
+    description = RichTextUploadingField()
     border_photo = models.ImageField(_('border image'), upload_to='about/news/')
     category = models.ForeignKey(ArticleCategory, on_delete=models.DO_NOTHING, verbose_name=_('article category'))
     watched_users = models.ManyToManyField(User, verbose_name=_('watched users'), blank=True)
