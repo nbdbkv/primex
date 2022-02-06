@@ -195,7 +195,7 @@ class Parcel(models.Model):
     recipient_info = models.ForeignKey(Recipient, on_delete=models.CASCADE,  verbose_name='Получатель')
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, verbose_name='Cпосоп оплаты', default=1)
     package_type = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='package', verbose_name='Упаковка')
-    delivery_date = models.ForeignKey(ParcelDate, on_delete=models.CASCADE, related_name='delivery_date')
+    #delivery_date = models.ForeignKey(ParcelDate, on_delete=models.CASCADE, related_name='delivery_date')
     code = models.CharField(max_length=15, verbose_name='Код', default='0')
 
     class Meta:
