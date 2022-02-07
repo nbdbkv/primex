@@ -6,6 +6,7 @@ from django_2gis_maps.mixins import DoubleGisMixin
 
 class DeliveryType(models.Model):
     name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='operation/delivery_type')
     class Meta:
         verbose_name = 'Тип доставки'
     def __str__(self):
