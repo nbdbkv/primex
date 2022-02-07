@@ -152,6 +152,6 @@ def generateCode(town, area):
         'Кара-Кулжа': '03',
 
     }
+    code = ''
 
-    code = towns[town] + areas[area]
     return code
