@@ -17,6 +17,7 @@ from .views import (CreateParcelView,
                     AreasView,
                     PackageTypeView,
                     ParcelStatusView,
+                    GetDataView,
                     )
 
 urlpatterns = [
@@ -33,7 +34,8 @@ urlpatterns = [
     path('sender/<int:pk>', SenderView.as_view()),
     path('create/', CreateParcelView.as_view()),
     path('status/<int:pk>', ParcelStatusView.as_view()),
+    path('getparcelinfo/<int:pk>', GetDataView.as_view()),
     path('update/<int:pk>', UpdateParcelView.as_view()),
     path('list/', ListParcelView.as_view()),
-    path('bonus/<int:pk>', PaymentParcelWithBonusView.as_view())
+    # path('bonus/<int:pk>', PaymentParcelWithBonusView.as_view())
 ]
