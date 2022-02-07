@@ -18,4 +18,3 @@ urlpatterns = [
     path('branch_offices/', FillialView.as_view()),
     path('questions/', QuestionView.as_view())
 ]
-

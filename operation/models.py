@@ -43,6 +43,7 @@ class Town(models.Model):
     def __str__(self):
         return self.name
 
+
 class Direction(DoubleGisMixin, models.Model):
     town = models.ForeignKey(Town, on_delete=models.CASCADE, verbose_name='город')
     area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name='район', blank=True)
@@ -89,6 +90,7 @@ class Envelope(models.Model):
     def __str__(self):
         return self.name
 
+
 class ParcelInfo(models.Model):
     width = models.PositiveIntegerField( verbose_name='ширина', blank=True)
     lenght = models.PositiveIntegerField(verbose_name='длина', blank=True)
@@ -128,19 +130,23 @@ class Recipient(models.Model):
     phone = models.CharField(max_length=15, verbose_name='Номер телефона')
     company = models.CharField(max_length=35, verbose_name='Называние компании', blank=True)
     email = models.EmailField(null=True, blank=True)
+    
     class Meta:
         verbose_name = 'Данные получателя'
+        
     def __str__(self):
         return self.first_name
 
 class ParcelDate(models.Model):
     create_time = models.DateTimeField(verbose_name='Дата сдачи груза')
     delivery_time = models.DateTimeField(verbose_name='Дата доставки', null=True)
+    
     class Meta:
         verbose_name = 'Дата и время'
     def __str__(self):
         return str(self.create_time)
-
+    
+    
 class Package(models.Model):
     package_name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -148,7 +154,6 @@ class Package(models.Model):
         verbose_name = 'Упаковка'
     def __str__(self):
         return self.package_name
-
 
 class Parcel(models.Model):
     PAY_STATUS = [
