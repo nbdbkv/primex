@@ -16,7 +16,7 @@ def setUserInfo(sender, instance, **kwargs):
 @receiver(post_save, sender=Parcel)
 def calculateParcelPrice(sender,instance, **kwargs):
     price = instance.parcel_info.calculateParcelPrice(instance.location_info.to_location.town, instance.location_info.to_location.area, instance.package_type)
-    #delivery_time = instance.location_info.to_location.delivery_time()
+    delivery_time = instance.location_info.to_location.delivery_time()
     code = instance.location_info.to_location.generateCodeForParcel() + str(instance.id)
     instance.price = price
     instance.code = code
