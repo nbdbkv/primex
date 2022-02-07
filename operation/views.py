@@ -14,7 +14,6 @@ from .serializers import (
                           DeliveryTypeSerializer,
                           EnvelopeSerializer,
                           RecipientSerializer,
-
                           ParcelDateSerializer,
                           SenderInfoSerializer,
                           PackageTypeSerializer,
@@ -95,5 +94,4 @@ class SenderView(generics.ListCreateAPIView):
     serializer_class = SenderInfoSerializer
     lookup_field = 'pk'
     def get_queryset(self):
-        return User.objects.filter(pk = self.kwargs['pk'])
-
+        return User.objects.filter(pk = self.kwargs.get('pk'))

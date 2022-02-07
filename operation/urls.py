@@ -38,3 +38,4 @@ urlpatterns = [
     path('list/', ListParcelView.as_view()),
     path('bonus/<int:pk>', PaymentParcelWithBonusView.as_view())
 ]
+
