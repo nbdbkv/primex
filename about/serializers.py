@@ -32,6 +32,7 @@ class NewGallerySerializer(serializers.ModelSerializer):
 class NewsSerializer(serializers.ModelSerializer):
     gallery = serializers.SerializerMethodField()
     watched_users_count = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
     
     class Meta:
         model = New
@@ -39,12 +40,15 @@ class NewsSerializer(serializers.ModelSerializer):
     
     def get_gallery(self, instance):
         request = self.context.get('request')
-        queryset = NewGallery.objects.filter(new=instance).values_list('image', flat=True)
-        images = [request.build_absolute_uri(image.url) for image in queryset]
+        queryset = NewGallery.objects.filter(new=instance)
+        images = [request.build_absolute_uri(obj.image.url) for obj in queryset]
         return images
     
     def get_watched_users_count(self, instance):
         return instance.watched_users.all().count()
+    
+    def get_category(self, instance):
+        return instance.category.name
 
 
 class FillialSerializer(serializers.ModelSerializer):
