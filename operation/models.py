@@ -109,6 +109,7 @@ class UserInfo(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     company = models.CharField(max_length=50, null=True)
+    sf = models.FloatField
     class Meta:
         verbose_name = 'Данные отправителя'
     def __str__(self):
@@ -155,7 +156,7 @@ class Parcel(models.Model):
         ('0', 'Не оплачено')
     ]
 
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Отправитель')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='senders', verbose_name='Отправитель')
     sender_info = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='Мои данные')
     recipient_info = models.ForeignKey(Recipient, on_delete=models.CASCADE, verbose_name='Данные получателя')
     parcel_info = models.ForeignKey(ParcelInfo, on_delete=models.CASCADE, verbose_name='Параметры груза')
