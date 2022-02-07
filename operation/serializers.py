@@ -5,7 +5,8 @@ from account.models import User
 class ParcelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parcel
-        fields = ('pk', 'price', 'code', 'location_info', 'parcel_info', 'delivery_type', 'sender_info', 'package_type', 'create_at', 'delivery_date', 'recipient_info', 'sender', 'status' )
+        # fields = ('pk', 'price', 'code', 'location_info', 'parcel_info', 'delivery_type', 'sender_info', 'package_type', 'create_at', 'delivery_date', 'recipient_info', 'sender', 'status' )
+        fields = '__all__'
 
 class TownSeralizer(serializers.ModelSerializer):
     class Meta:
@@ -70,7 +71,7 @@ class ParcelDateSerializer(serializers.ModelSerializer):
 class SenderInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('pk', 'first_name', 'last_name', 'phone',)
+        fields = ('pk', 'info', 'phone',)
 
 class ParcelStatusSerializer(serializers.ModelSerializer):
     class Meta:

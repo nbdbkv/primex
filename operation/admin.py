@@ -16,10 +16,8 @@ from .models import (
     Direction,
     Package,
     ParcelOption,
-    DeliveryDate,
     )
 
-admin.site.register(DeliveryDate),
 admin.site.register(Package),
 admin.site.register(ParcelOption),
 admin.site.register(Town),
