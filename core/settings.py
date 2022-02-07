@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+#https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
