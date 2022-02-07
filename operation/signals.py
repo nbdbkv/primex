@@ -20,7 +20,7 @@ def calculateParcelPrice(sender,instance, **kwargs):
     code = instance.location_info.to_location.generateCodeForParcel() + str(instance.id)
     instance.price = price
     instance.code = code
-   # instance.delivery_time = delivery_time
+    instance.delivery_time = delivery_time
 
     # BONUS
     instance.sender.points = math.floor((price / 100) * 5)
