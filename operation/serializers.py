@@ -18,6 +18,7 @@ class ParcelSerializer(serializers.ModelSerializer):
 class DirectionSerializer(serializers.ModelSerializer):
     pass
 
+
 class TownSeralizer(serializers.ModelSerializer):
     direction = DirectionSerializer
 
@@ -93,7 +94,7 @@ class ParcelDateSerializer(serializers.ModelSerializer):
 class SenderInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('pk', 'info', 'phone',)
+        fields = ('pk', 'first_name', 'last_name', 'phone',)
 
 class ParcelStatusSerializer(serializers.ModelSerializer):
     class Meta:

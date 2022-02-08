@@ -82,7 +82,7 @@ class ParcelStatusView(generics.RetrieveAPIView):
     serializer_class = ParcelStatusSerializer
     lookup_field = 'pk'
     def get_queryset(self):
-        return  Parcel.objects.filter(pk=self.kwargs.get('pk'))
+        return  Parcel.objects.filter(pk=self.kwargs['pk'])
 
 class SenderView(generics.ListCreateAPIView):
     serializer_class = SenderInfoSerializer

@@ -11,15 +11,24 @@ from account.models import User, Region, City
 class Partner(models.Model):
     name = models.CharField(_('company name'), max_length=100)
     logo = models.ImageField(_('logo'), upload_to='about/partners/')
+    
+    def __str__(self) -> str:
+        return self.name
 
 
 class Contact(models.Model):
     social = models.CharField(_('social'), max_length=100)
     icon = models.ImageField(_('social icon'), upload_to='about/contacts/')
     
+    def __str__(self) -> str:
+        return self.social
+    
 
 class ArticleCategory(models.Model):
     name = models.CharField(_('name'), max_length=255)
+    
+    def __str__(self) -> str:
+        return self.name
     
 
 class New(models.Model):
@@ -29,6 +38,9 @@ class New(models.Model):
     category = models.ForeignKey(ArticleCategory, on_delete=models.DO_NOTHING, verbose_name=_('article category'))
     watched_users = models.ManyToManyField(User, verbose_name=_('watched users'), blank=True)
     create_at = models.DateTimeField(_('created date'), auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return self.title
 
 
 class NewGallery(models.Model):
@@ -42,6 +54,9 @@ class Fillial(DoubleGisMixin, models.Model):
     location = map_fields.GeoLocationField(_('geolocation'))
     contact_phone = models.CharField(_('contact phone'), max_length=20, blank=True)
     email = models.EmailField(_('email'), blank=True)
+    
+    def __str__(self) -> str:
+        return self.city
 
 
 class Option(models.Model):
@@ -49,10 +64,16 @@ class Option(models.Model):
     value = models.IntegerField(_('value'))
     description = models.TextField(_('description'))
     
+    def __str__(self) -> str:
+        return self.alias
+    
 
 class Question(models.Model):
     title = models.CharField(_('title'), max_length=255)
     text = models.TextField(_('text'))
+    
+    def __str__(self) -> str:
+        return self.title
 
 
 class Answer(models.Model):

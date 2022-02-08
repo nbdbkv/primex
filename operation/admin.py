@@ -19,6 +19,7 @@ from .models import (
     ParcelDate,
 )
 
+
 admin.site.register(ParcelDate),
 admin.site.register(Package),
 admin.site.register(ParcelOption),

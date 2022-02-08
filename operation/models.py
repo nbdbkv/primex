@@ -44,7 +44,6 @@ class Town(models.Model):
     def __str__(self):
         return self.name
 
-
 class Direction(DoubleGisMixin, models.Model):
     town = models.ForeignKey(Town, on_delete=models.CASCADE, verbose_name='город', related_name='town')
     area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name='район', related_name='area', blank=True)
@@ -131,10 +130,9 @@ class Recipient(models.Model):
     phone = models.CharField(max_length=15, verbose_name='Номер телефона')
     company = models.CharField(max_length=35, verbose_name='Называние компании', blank=True)
     email = models.EmailField(null=True, blank=True)
-    
     class Meta:
         verbose_name = 'Данные получателя'
-        
+
     def __str__(self):
         return self.first_name
 

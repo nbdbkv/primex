@@ -37,6 +37,9 @@ class User(AbstractUser):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    
+    def __str__(self) -> str:
+        return self.phone
 
 
     username = None
@@ -55,7 +58,8 @@ class User(AbstractUser):
 
 class Region(DoubleGisMixin, models.Model):
     name = map_fields.AddressField(_('name'), max_length=100)
-    geolocation = map_fields.GeoLocationField(_('geolocation'))
+    geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
+    
     def __str__(self):
         return self.name
 
@@ -63,7 +67,7 @@ class Region(DoubleGisMixin, models.Model):
 class City(DoubleGisMixin, models.Model):
     region = models.ForeignKey(Region, on_delete=models.DO_NOTHING, verbose_name=_('region'))
     name = map_fields.AddressField(_('name'), max_length=100)
-    geolocation = map_fields.GeoLocationField(_('geolocation'))
+    geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
 
     def __str__(self):
         return self.name
@@ -72,6 +76,9 @@ class DiscountHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
     sum = models.PositiveIntegerField(_('sum'))
     # parcel = models.ForeignKey('Parcel', on_delete=models.DO_NOTHING, verbose_name=_('parcel'))
+    
+    def __str__(self) -> str:
+        return f'{self.user} -> {self.sum}'
 
 
 class PaymentHistory(models.Model):
@@ -79,3 +86,6 @@ class PaymentHistory(models.Model):
     # payment = models.ForeignKey('Payment', on_delete=models.DO_NOTHING, verbose_name=_('payment'))
     sum = models.PositiveIntegerField(_('sum'))
     payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
+    
+    def __str__(self) -> str:
+        return f'{self.user} -> {self.sum}'
