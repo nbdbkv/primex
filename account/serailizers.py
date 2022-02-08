@@ -35,10 +35,12 @@ class UserSendCodeSerializer(serializers.Serializer):
     phone = serializers.CharField(validators=[PhoneValidator], required=True)
     type = serializers.ChoiceField(choices=SendCodeType.choices, required=True)
 
-    def validate_phone(self, phone):
+    def validate(self, attrs):
+        if attrs['type'] == SendCodeType.RESET_PHONE:
+            return attrs
         try:
-            self.instance = User.objects.get(phone=phone)
-            return phone
+            self.instance = User.objects.get(phone=attrs['phone'])
+            return attrs
         except User.DoesNotExist:
             raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
     
@@ -117,6 +119,7 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = (
+            'role',
             'is_active', 
             'is_staff', 
             'date_joined', 

@@ -45,6 +45,8 @@ class NewsSerializer(serializers.ModelSerializer):
         return images
     
     def get_watched_users_count(self, instance):
+        user = self.context.get('request').user
+        instance.watched_users.add(user)
         return instance.watched_users.all().count()
     
     def get_category(self, instance):

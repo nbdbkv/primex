@@ -150,6 +150,18 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "django-nested-admin"
+version = "3.4.0"
+description = "Django admin classes that allow for nested inlines"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+python-monkey-business = ">=1.0.0"
+six = "*"
+
+[[package]]
 name = "django-redis"
 version = "5.2.0"
 description = "Full featured redis cache backend for Django."
@@ -621,6 +633,17 @@ python-versions = ">=3.5"
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "python-monkey-business"
+version = "1.0.0"
+description = "Utility functions for monkey-patching python code"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = ">=1.7.0"
+
+[[package]]
 name = "pytz"
 version = "2021.3"
 description = "World timezone definitions, modern and historical"
@@ -744,7 +767,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "4441f2404eee2c14e799e56f5cda7e3640eadfdaf0dcf3dc463d8a85aebd6c77"
+content-hash = "afc60364e0e90d39b13776c3e199dae58c39389ce0fb894fe11e57dfce6c19cc"
 
 [metadata.files]
 asgiref = [
@@ -797,6 +820,10 @@ django-cors-headers = [
 django-js-asset = [
     {file = "django-js-asset-1.2.2.tar.gz", hash = "sha256:c163ae80d2e0b22d8fb598047cd0dcef31f81830e127cfecae278ad574167260"},
     {file = "django_js_asset-1.2.2-py2.py3-none-any.whl", hash = "sha256:8ec12017f26eec524cab436c64ae73033368a372970af4cf42d9354fcb166bdd"},
+]
+django-nested-admin = [
+    {file = "django-nested-admin-3.4.0.tar.gz", hash = "sha256:fbcf20d75a73dcbcc6285793ff936eff8df4deba5b169e0c1ab765394c562805"},
+    {file = "django_nested_admin-3.4.0-py2.py3-none-any.whl", hash = "sha256:c6852c5ac632f4e698b6beda455006fd464c852459e5e858a6db832cdb23d9e1"},
 ]
 django-redis = [
     {file = "django-redis-5.2.0.tar.gz", hash = "sha256:8a99e5582c79f894168f5865c52bd921213253b7fd64d16733ae4591564465de"},
@@ -1255,6 +1282,10 @@ pyparsing = [
 python-dotenv = [
     {file = "python-dotenv-0.19.2.tar.gz", hash = "sha256:a5de49a31e953b45ff2d2fd434bbc2670e8db5273606c1e737cc6b93eff3655f"},
     {file = "python_dotenv-0.19.2-py2.py3-none-any.whl", hash = "sha256:32b2bdc1873fd3a3c346da1c6db83d0053c3c62f28f1f38516070c4c8971b1d3"},
+]
+python-monkey-business = [
+    {file = "python-monkey-business-1.0.0.tar.gz", hash = "sha256:9976522989766f00b2aaa24ec96eacb91a6de7b7001d1452079323b071988e0e"},
+    {file = "python_monkey_business-1.0.0-py2.py3-none-any.whl", hash = "sha256:6d4cf47f011945db838ccf04643acd49b82f7ad6ab7ecba4c8165385687a828a"},
 ]
 pytz = [
     {file = "pytz-2021.3-py2.py3-none-any.whl", hash = "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c"},

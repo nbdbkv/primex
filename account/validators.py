@@ -9,3 +9,11 @@ PhoneValidator = validators.RegexValidator(
         'Phone number must be entered in the format: +996*********** Up to 9 digits allowed.'
     )
 )
+
+
+RegionCodeValidator = validators.RegexValidator(
+    r'[0-9]{2}', 
+    message=_(
+        'Code must be 2 digit'
+    )
+)

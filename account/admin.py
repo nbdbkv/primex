@@ -8,7 +8,8 @@ from account.choices import UserRole
 from account.models import (
     User,
     Region,
-    City
+    City,
+    District
 )
 
 
@@ -28,7 +29,12 @@ class RegionAdmin(DoubleGisAdmin):
 class CityAdmin(DoubleGisAdmin):
     multiple_markers = False
     
+
+class DistrictAdmin(DoubleGisAdmin):
+    multiple_markers = False
+    
     
 admin.site.register(User, UserAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(City, CityAdmin)
+admin.site.register(District, DistrictAdmin)

@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields as map_fields
 from django_2gis_maps.mixins import DoubleGisMixin
 
-from account.validators import PhoneValidator
+from account.validators import PhoneValidator, RegionCodeValidator
 from account.managers import UserManager
 from account.choices import PaymentHistoryType, UserRole
 
@@ -59,6 +59,7 @@ class User(AbstractUser):
 class Region(DoubleGisMixin, models.Model):
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
+    code = models.CharField(_('code'), max_length=4, validators=[RegionCodeValidator])
     
     def __str__(self):
         return self.name
@@ -68,9 +69,21 @@ class City(DoubleGisMixin, models.Model):
     region = models.ForeignKey(Region, on_delete=models.DO_NOTHING, verbose_name=_('region'))
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
+    code = models.CharField(_('code'), max_length=4, validators=[RegionCodeValidator])
 
     def __str__(self):
         return self.name
+
+
+class District(models.Model):
+    city = models.ForeignKey(City, on_delete=models.DO_NOTHING, verbose_name=_('city'))
+    name = map_fields.AddressField(_('name'), max_length=100)
+    geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
+    code = models.CharField(_('code'), max_length=4, validators=[RegionCodeValidator])
+
+    def __str__(self):
+        return self.name
+
 
 class DiscountHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
