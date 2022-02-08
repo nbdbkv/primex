@@ -14,7 +14,6 @@ from .serializers import (
                           DeliveryTypeSerializer,
                           EnvelopeSerializer,
                           RecipientSerializer,
-
                           ParcelDateSerializer,
                           SenderInfoSerializer,
                           PackageTypeSerializer,
@@ -29,13 +28,6 @@ class TownsView(generics.ListAPIView):
 class AreasView(generics.ListAPIView):
     queryset = Area.objects.all()
     serializer_class = AreaSerializer
-
-class CreateParcelView(generics.CreateAPIView):
-    queryset = Parcel.objects.all()
-    serializer_class = ParcelSerializer
-
-    # def perform_create(self, serializer):
-    #     serializer.save(price=100)
 
 class UpdateParcelView(generics.RetrieveUpdateAPIView):
     queryset = Parcel
@@ -103,3 +95,7 @@ class GetDataView(generics.RetrieveAPIView):
     lookup_field = 'pk'
     def get_queryset(self):
         return Parcel.objects.filter(pk=self.kwargs['pk'])
+
+class CreateParcelView(generics.ListCreateAPIView):
+    queryset = Parcel.objects.all()
+    serializer_class = ParcelSerializer

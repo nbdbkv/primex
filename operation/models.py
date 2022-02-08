@@ -6,7 +6,7 @@ from django_2gis_maps.mixins import DoubleGisMixin
 
 class DeliveryType(models.Model):
     name = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='operation/delivery_type')
+    #image = models.ImageField(upload_to='operation/delivery_type')
     class Meta:
         verbose_name = 'Тип доставки'
     def __str__(self):
@@ -46,8 +46,8 @@ class Town(models.Model):
 
 
 class Direction(DoubleGisMixin, models.Model):
-    town = models.ForeignKey(Town, on_delete=models.CASCADE, verbose_name='город')
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name='район', blank=True)
+    town = models.ForeignKey(Town, on_delete=models.CASCADE, verbose_name='город', related_name='town')
+    area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name='район', related_name='area', blank=True)
     street = models.CharField(max_length=30, verbose_name='улица', blank=True)
     number = models.CharField(max_length=25, verbose_name='номер кв', blank=True)
     location = fields.GeoLocationField(verbose_name='локация', blank=True)
@@ -68,8 +68,9 @@ class Direction(DoubleGisMixin, models.Model):
         return f'{self.town} {self.area} {self.street} {self.number}'
 
 class Directions(models.Model):
-    from_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='from+',  verbose_name='Oт куда')
-    to_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='to', verbose_name='Куда')
+    from_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='from_location',  verbose_name='Oт куда')
+    to_location = models.ForeignKey(Direction, on_delete=models.CASCADE, related_name='to_location', verbose_name='Куда')
+
     class Meta:
         verbose_name = 'Направление'
     def __str__(self):
@@ -90,7 +91,6 @@ class Envelope(models.Model):
         verbose_name = 'Конверт'
     def __str__(self):
         return self.name
-
 
 class ParcelInfo(models.Model):
     width = models.PositiveIntegerField( verbose_name='ширина', blank=True)
@@ -161,17 +161,16 @@ class Parcel(models.Model):
         ('1', 'Оплачено'),
         ('0', 'Не оплачено')
     ]
-
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='senders', verbose_name='Отправитель')
     sender_info = models.ForeignKey(UserInfo, on_delete=models.CASCADE, verbose_name='Мои данные')
     recipient_info = models.ForeignKey(Recipient, on_delete=models.CASCADE, verbose_name='Данные получателя')
-    parcel_info = models.ForeignKey(ParcelInfo, on_delete=models.CASCADE, verbose_name='Параметры груза')
+    parcel_info = models.ForeignKey(ParcelInfo, on_delete=models.CASCADE, related_name='parcel_infos', verbose_name='Параметры груза')
     create_at = models.ForeignKey(ParcelDate, on_delete=models.CASCADE, related_name='created_at')
     price = models.DecimalField(max_digits=30, decimal_places=2, default=0, verbose_name='Сумма', null=False)
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.CASCADE, verbose_name='Тип доставки')
     status = models.ForeignKey(ParcelStatus, models.CASCADE, verbose_name='Статус', default=1)
     pay_satus = models.CharField(max_length=30, choices=PAY_STATUS, verbose_name='статус оплаты')
-    location_info = models.ForeignKey(Directions, on_delete=models.CASCADE, verbose_name='направления')
+    location_info = models.ForeignKey(Directions, on_delete=models.CASCADE, related_name='location_info', verbose_name='направления')
     recipient_info = models.ForeignKey(Recipient, on_delete=models.CASCADE,  verbose_name='Получатель')
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE, verbose_name='Cпосоп оплаты', default=1)
     package_type = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='package', verbose_name='Упаковка')
