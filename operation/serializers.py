@@ -22,5 +22,13 @@ from operation.models import (
 )
 
 
-class CreateParcelSerializer(serializers.Serializer):
-    pass
+class CreateParcelInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParcelInfo
+        fields = '__all__'
+
+class ListParcelInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParcelInfo
+        fields = '__all__'
+        depth = 1

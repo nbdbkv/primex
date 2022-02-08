@@ -12,7 +12,6 @@ class UserInfo(models.Model):
     zip_code = models.CharField(_('zip code'), max_length=15, blank=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, verbose_name='user account')
     
-    
 class ParcelDimension(models.Model):
     length = models.FloatField(_('parcel length'))
     width = models.FloatField(_('parcel width'))
@@ -37,6 +36,7 @@ class ParcelInfo(models.Model):
     options = models.ManyToManyField(ParcelOptions, verbose_name=_('options'))
     location_from = models.ForeignKey(Direction, on_delete=models.DO_NOTHING, verbose_name=_('location from'), related_name='location_from')
     location_to = models.ForeignKey(Direction, on_delete=models.DO_NOTHING, verbose_name=_('location to'), related_name='location_to')
+
     
 
 class DeliveryType(models.Model):
@@ -101,10 +101,8 @@ class ParcelPayment(models.Model):
     payment = models.ManyToManyField(Payment, verbose_name=_('payment'))
     price_list = models.ForeignKey(PriceList, on_delete=models.SET_NULL, verbose_name=_('price list'), null=True)
 
-
 class DeliveryStatus(models.Model):
     title = models.CharField(_('title'), max_length=100)
-
 
 class Parcel(models.Model):
     title = models.CharField(_('title'), max_length=255)

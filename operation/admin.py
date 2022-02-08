@@ -32,7 +32,6 @@ class ParcelDimensionInline(NestedStackedInline):
     model = ParcelDimension
     extra = 1
 
-
 class DirectionInline(NestedStackedInline):
     model = Direction
     extra = 1
