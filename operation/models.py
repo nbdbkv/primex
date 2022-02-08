@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields
 from django_2gis_maps.mixins import DoubleGisMixin
-
 from account.models import City, User, Region, District
 from account.validators import PhoneValidator
 
@@ -29,7 +28,6 @@ class Direction(DoubleGisMixin, models.Model):
     city = models.ForeignKey(City, on_delete=models.DO_NOTHING, verbose_name=_('city'), blank=True)
     district = models.ForeignKey(District, on_delete=models.DO_NOTHING, verbose_name=_('district'), blank=True)
     geolocation = fields.GeoLocationField(_('geolocation'), blank=True)
-
 
 class ParcelInfo(models.Model):
     parcel = models.OneToOneField('Parcel', on_delete=models.CASCADE, verbose_name=_('parcel'))
