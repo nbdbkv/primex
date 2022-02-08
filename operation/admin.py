@@ -1,48 +1,40 @@
 from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
-from nested_admin.nested import NestedModelAdmin, NestedStackedInline
+from nested_admin.nested import NestedModelAdmin, NestedStackedInline, NestedInlineModelAdmin
 
 from operation.models import (
-    UserInfo,
-    ParcelDimension,
-    ParcelOptions,
-    Direction,
-    ParcelInfo,
+    DeliveryStatus,
+    ParcelOption,
+    Parcel,
     DeliveryType,
     Packaging,
     PayStatus,
-    PaymentType,
-    Payment,
-    ParcelEnvelop,
+    PriceList,
+    Envelop,
+    PriceEnvelop,
     PaymentDimension,
     DimensionPrice,
-    PriceList,
     ParcelPayment,
-    DeliveryStatus,
-    Parcel
+    PaymentType,
+    Payment,
+    Direction,
+    UserInfo,
+    ParcelDimension
 )
 
 
-class UserInfoInline(NestedStackedInline):
-    model = UserInfo
+class PriceEnvelopInline(NestedStackedInline):
+    model = PriceEnvelop
     extra = 1
 
 
-class ParcelDimensionInline(NestedStackedInline):
-    model = ParcelDimension
+class DimensionPriceInline(NestedStackedInline):
+    model = DimensionPrice
     extra = 1
 
 
-class DirectionInline(NestedStackedInline):
-    model = Direction
-    extra = 1
-    multiple_markers = False
-
-
-class ParcelInfoInline(NestedStackedInline):
-    model = ParcelInfo
-    extra = 1
-    inlines = [UserInfoInline, ParcelDimensionInline, DirectionInline]
+class PriceListAdmin(NestedModelAdmin):
+    inlines = [PriceEnvelopInline, DimensionPriceInline]
 
 
 class PaymentInline(NestedStackedInline):
@@ -56,18 +48,32 @@ class ParcelPaymentInline(NestedStackedInline):
     inlines = [PaymentInline]
 
 
+class DirectionInline(NestedStackedInline):
+    model = Direction
+    extra = 1
+
+
+class UserInfoInline(NestedStackedInline):
+    model = UserInfo
+    extra = 1
+
+
+class ParcelDimensionInline(NestedStackedInline):
+    model = ParcelDimension
+    extra = 1
+
+
 class ParcelAdmin(NestedModelAdmin):
-    inlines = [ParcelInfoInline, ParcelPaymentInline]
+    inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
 
 
 admin.site.register(Parcel, ParcelAdmin)
-admin.site.register(ParcelOptions)
+admin.site.register(PriceList, PriceListAdmin)
+admin.site.register(DeliveryStatus)
+admin.site.register(ParcelOption)
 admin.site.register(DeliveryType)
 admin.site.register(Packaging)
 admin.site.register(PayStatus)
-admin.site.register(PaymentType)
-admin.site.register(ParcelEnvelop)
+admin.site.register(Envelop)
 admin.site.register(PaymentDimension)
-admin.site.register(DimensionPrice)
-admin.site.register(PriceList)
-admin.site.register(DeliveryStatus)
+admin.site.register(PaymentType)
