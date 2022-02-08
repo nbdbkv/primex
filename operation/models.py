@@ -14,7 +14,6 @@ class ParcelOption(models.Model):
     title = models.CharField(_('option title'), max_length=255)
 
 
-
 class Parcel(models.Model):
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'))
@@ -130,3 +129,4 @@ class ParcelDimension(models.Model):
     width = models.FloatField(_('parcel width'))
     height = models.FloatField(_('parcel height'))
     weight = models.FloatField(_('parcel weight'))
+
