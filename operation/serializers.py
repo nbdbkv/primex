@@ -27,6 +27,76 @@ from operation.models import (
 )
 
 
+class DeliveryStatusSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = DeliveryStatus
+        fields = '__all__'
+        
+
+class ParcelOptionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ParcelOption
+        fields = '__all__'
+
+
+class DeliveryTypeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = DeliveryType
+        fields = '__all__'
+
+
+class PackagingSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Packaging
+        fields = '__all__'
+        
+
+class PaymentTypeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PaymentType
+        fields = '__all__'
+        
+
+class DimensionSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PaymentDimension
+        fields = '__all__'
+
+
+class PriceDimensionSerializer(serializers.ModelSerializer):
+    dimension = DimensionSerializer()
+    
+    class Meta:
+        model = DimensionPrice
+        fields = '__all__'
+
+
+class PriceEnvelopSerializer(serializers.ModelSerializer):
+    envelop = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PriceEnvelop
+        fields = '__all__'
+    
+    def get_envelop(self, instance):
+        return instance.envelop.title
+
+
+class PriceListSerializer(serializers.ModelSerializer):
+    dimension = PriceDimensionSerializer(many=True)
+    envelop = PriceEnvelopSerializer(many=True)
+    
+    class Meta:
+        model = PriceList
+        fields = '__all__'
+
+
 class PaymentSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     

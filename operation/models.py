@@ -84,7 +84,7 @@ class PriceEnvelop(models.Model):
     to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True)
-    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'))
+    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'), related_name='envelop')
     
     def __str__(self) -> str:
         return f'{self.from_region} -> {self.to_district}'
@@ -102,7 +102,7 @@ class DimensionPrice(models.Model):
     to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
-    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'))
+    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'), related_name='dimension')
     
     def __str__(self) -> str:
         return f'{self.from_region} -> {self.to_district}'
@@ -159,7 +159,7 @@ class UserInfo(models.Model):
     )
     
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='user_info')
-    phone = models.CharField(_('phone'), max_length=15)
+    phone = models.CharField(_('phone'), max_length=15, validators=[PhoneValidator])
     info = models.CharField(_('user info'), max_length=255, blank=True)
     zip_code = models.CharField(_('zip code'), max_length=15, blank=True)
     type = models.PositiveSmallIntegerField(_('user info type'), choices=TYPE)
