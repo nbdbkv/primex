@@ -9,10 +9,8 @@ from account.validators import PhoneValidator
 class DeliveryStatus(models.Model):
     title = models.CharField(_('title'), max_length=100)
 
-
 class ParcelOption(models.Model):
     title = models.CharField(_('option title'), max_length=255)
-
 
 class Parcel(models.Model):
     title = models.CharField(_('title'), max_length=255)
@@ -38,10 +36,8 @@ class Packaging(models.Model):
     quantity = models.PositiveIntegerField(_('quantity'), default=0),
     unit = models.CharField(_('measuring unit'), max_length=20)
 
-
 class PayStatus(models.Model):
     title = models.CharField(_('status title'), max_length=50)
-    
 
 class PriceList(models.Model):
     from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
@@ -85,7 +81,6 @@ class ParcelPayment(models.Model):
     pay_status = models.ForeignKey(PayStatus, on_delete=models.SET_NULL, null=True, verbose_name=_('pay status'))
     price_list = models.ForeignKey(PriceList, on_delete=models.SET_NULL, verbose_name=_('price list'), null=True)
 
-
 class PaymentType(models.Model):
     title = models.CharField(_('title'), max_length=100)
 
@@ -94,7 +89,6 @@ class Payment(models.Model):
     parcel = models.ForeignKey(ParcelPayment, on_delete=models.CASCADE, verbose_name=_('parcel payment'))
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
     sum = models.DecimalField(_('sum'), max_digits=9, decimal_places=2)
-
 
 class Direction(DoubleGisMixin, models.Model):
     TYPE = (
@@ -129,4 +123,3 @@ class ParcelDimension(models.Model):
     width = models.FloatField(_('parcel width'))
     height = models.FloatField(_('parcel height'))
     weight = models.FloatField(_('parcel weight'))
-
