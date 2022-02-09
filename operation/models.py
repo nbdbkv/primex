@@ -109,7 +109,7 @@ class DimensionPrice(models.Model):
 
 
 class ParcelPayment(models.Model):
-    parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'))
+    parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='payment')
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2)
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.SET_NULL, null=True, verbose_name=_('delivery type'))
     packaging = models.ManyToManyField(Packaging, verbose_name=_('parcel packaging'))
@@ -117,7 +117,7 @@ class ParcelPayment(models.Model):
     price_list = models.ForeignKey(PriceList, on_delete=models.SET_NULL, verbose_name=_('price list'), null=True)
     
     def __str__(self) -> str:
-        return self.parcel
+        return self.parcel.title
 
 
 class PaymentType(models.Model):
@@ -128,12 +128,12 @@ class PaymentType(models.Model):
 
 
 class Payment(models.Model):
-    parcel = models.ForeignKey(ParcelPayment, on_delete=models.CASCADE, verbose_name=_('parcel payment'))
+    parcel = models.ForeignKey(ParcelPayment, on_delete=models.CASCADE, verbose_name=_('parcel payment'), related_name='payment')
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
     sum = models.DecimalField(_('sum'), max_digits=9, decimal_places=2)
     
     def __str__(self) -> str:
-        return self.parcel
+        return self.parcel.parcel.title
 
 
 class Direction(DoubleGisMixin, models.Model):
@@ -143,13 +143,13 @@ class Direction(DoubleGisMixin, models.Model):
     )
     
     type = models.PositiveSmallIntegerField(_('type'), choices=TYPE)
-    parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'))
+    parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='direction')
     city = models.ForeignKey(City, on_delete=models.DO_NOTHING, verbose_name=_('city'), blank=True)
     district = models.ForeignKey(District, on_delete=models.DO_NOTHING, verbose_name=_('district'), blank=True)
     geolocation = fields.GeoLocationField(_('geolocation'), blank=True)
     
     def __str__(self) -> str:
-        return f'{self.type} -> {self.parcel}'
+        return f'{self.type} -> {self.parcel.title}'
 
 
 class UserInfo(models.Model):
@@ -158,23 +158,22 @@ class UserInfo(models.Model):
         (2, 'recipient')
     )
     
-    parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'))
-    phone = models.CharField(_('phone'), max_length=15, validators=[PhoneValidator])
+    parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='user_info')
+    phone = models.CharField(_('phone'), max_length=15)
     info = models.CharField(_('user info'), max_length=255, blank=True)
     zip_code = models.CharField(_('zip code'), max_length=15, blank=True)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, verbose_name='user account')
     type = models.PositiveSmallIntegerField(_('user info type'), choices=TYPE)
     
     def __str__(self) -> str:
-        return f'{self.type} -> {self.parcel}'
+        return f'{self.type} -> {self.parcel.title}'
     
 
 class ParcelDimension(models.Model):
-    parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'))
+    parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='dimension')
     length = models.FloatField(_('parcel length'))
     width = models.FloatField(_('parcel width'))
     height = models.FloatField(_('parcel height'))
     weight = models.FloatField(_('parcel weight'))
     
     def __str__(self) -> str:
-        return self.parcel
+        return self.parcel.title
