@@ -48,7 +48,7 @@ class DeliveryType(models.Model):
 class Packaging(models.Model):
     title = models.CharField(_('title'), max_length=255)
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2)
-    quantity = models.PositiveIntegerField(_('quantity'), default=0),
+    quantity = models.PositiveIntegerField(_('quantity'), default=0)
     unit = models.CharField(_('measuring unit'), max_length=20)
     
     def __str__(self) -> str:
@@ -112,7 +112,7 @@ class DimensionPrice(models.Model):
 
 class ParcelPayment(models.Model):
     parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='payment')
-    price = models.DecimalField(_('price'), max_digits=9, decimal_places=2)
+    price = models.DecimalField(_('price'), max_digits=9, decimal_places=2, blank=True, null=True)
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.SET_NULL, null=True, verbose_name=_('delivery type'))
     packaging = models.ManyToManyField(Packaging, verbose_name=_('parcel packaging'))
     pay_status = models.ForeignKey(PayStatus, on_delete=models.SET_NULL, null=True, verbose_name=_('pay status'))

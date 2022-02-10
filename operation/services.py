@@ -24,12 +24,12 @@ class CalculateParcelPrice:
     
     @staticmethod
     def get_region_from(instance: Parcel) -> Region:
-        region_from = instance.direction.get(type=1)
+        region_from = instance.direction.get(type=1).city.region
         return region_from
     
     @staticmethod
     def get_district_to(instance: Parcel) -> City:
-        district_to = instance.direction.get(type=2)
+        district_to = instance.direction.get(type=2).city
         return district_to
     
     def calculate_dimension_price(self):
@@ -59,7 +59,7 @@ class CalculateParcelPrice:
         envelop = PriceEnvelop.objects.get(
             Q(from_region = self.from_region) & 
             Q(to_district = self.to_district) &
-            Q(envelop = self.instance.payment.envelop)
+            Q(envelop = self.instance.payment.envelop.envelop)
         )
         price = float(envelop.price)
         self.instance.payment.envelop = envelop
@@ -70,7 +70,7 @@ class CalculateParcelPrice:
         packaging = self.instance.payment.packaging.all()
         price = 0
         for pack in packaging:
-            price += float(pack.price * pack.quantity)
+            price += float(pack.price) * int(pack.quantity)
         return price
 
     def calculate_delivery_price(self):

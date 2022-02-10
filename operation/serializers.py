@@ -107,6 +107,8 @@ class PaymentSerializer(serializers.ModelSerializer):
 class ParcelPaymentSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer(many=True)
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
+    price = serializers.DecimalField(9, 2, read_only=True)
+    price_list = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
         model = ParcelPayment
@@ -185,6 +187,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         
         dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
         
-        parcel.price = CalculateParcelPrice(parcel).price
+        parcel.payment.price = CalculateParcelPrice(parcel).price
         parcel.save()
         return parcel
