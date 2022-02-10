@@ -5,7 +5,7 @@ from django.db import transaction
 
 from account.models import City, District
 from account.validators import PhoneValidator
-from operation.services import get_parcel_code
+from operation.services import get_parcel_code, CalculateParcelPrice
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -90,7 +90,6 @@ class PriceEnvelopSerializer(serializers.ModelSerializer):
 
 class PriceListSerializer(serializers.ModelSerializer):
     dimension = PriceDimensionSerializer(many=True)
-    envelop = PriceEnvelopSerializer(many=True)
     
     class Meta:
         model = PriceList
@@ -173,16 +172,19 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         
         parcel_payments = payment.pop('payment')
         packaging = payment.pop('packaging')
-        payment = ParcelPayment.objects.create(parcel_id=parcel.id, **payment)
+        payment = ParcelPayment.objects.create(parcel=parcel, **payment)
         payment.packaging.set(packaging)
         for parcel_pay in parcel_payments:
-            Payment.objects.create(parcel_id=payment.id, **parcel_pay)
+            Payment.objects.create(parcel=payment, **parcel_pay)
         
         for dir in direction:
-            Direction.objects.create(parcel_id=parcel.id, **dir)
+            Direction.objects.create(parcel=parcel, **dir)
         
         for user in user_info:
-            UserInfo.objects.create(parcel_id=parcel.id, **user)
+            UserInfo.objects.create(parcel=parcel, **user)
         
-        dimension = ParcelDimension.objects.create(parcel_id=parcel.id, **dimension)
+        dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
+        
+        parcel.price = CalculateParcelPrice(parcel).price
+        parcel.save()
         return parcel

@@ -84,7 +84,6 @@ class PriceEnvelop(models.Model):
     to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True)
-    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'), related_name='envelop')
     
     def __str__(self) -> str:
         return f'{self.from_region} -> {self.to_district}'
@@ -106,6 +105,9 @@ class DimensionPrice(models.Model):
     
     def __str__(self) -> str:
         return f'{self.from_region} -> {self.to_district}'
+    
+    class Meta:
+        ordering = ['dimension__length', 'dimension__width', 'dimension__height']
 
 
 class ParcelPayment(models.Model):
@@ -114,7 +116,8 @@ class ParcelPayment(models.Model):
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.SET_NULL, null=True, verbose_name=_('delivery type'))
     packaging = models.ManyToManyField(Packaging, verbose_name=_('parcel packaging'))
     pay_status = models.ForeignKey(PayStatus, on_delete=models.SET_NULL, null=True, verbose_name=_('pay status'))
-    price_list = models.ForeignKey(PriceList, on_delete=models.SET_NULL, verbose_name=_('price list'), null=True)
+    price_list = models.ForeignKey(PriceList, on_delete=models.SET_NULL, verbose_name=_('price list'), null=True, blank=True)
+    envelop = models.ForeignKey(PriceEnvelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True, blank=True)
     
     def __str__(self) -> str:
         return self.parcel.title
@@ -150,6 +153,9 @@ class Direction(DoubleGisMixin, models.Model):
     
     def __str__(self) -> str:
         return f'{self.type} -> {self.parcel.title}'
+    
+    class Meta:
+        ordering = ['type']
 
 
 class UserInfo(models.Model):
@@ -166,6 +172,9 @@ class UserInfo(models.Model):
     
     def __str__(self) -> str:
         return f'{self.type} -> {self.parcel.title}'
+    
+    class Meta:
+        ordering = ['type']
     
 
 class ParcelDimension(models.Model):

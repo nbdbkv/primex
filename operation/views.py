@@ -7,7 +7,8 @@ from operation.serializers import (
     DeliveryTypeSerializer,
     PackagingSerializer,
     PaymentTypeSerializer,
-    PriceListSerializer
+    PriceListSerializer,
+    PriceEnvelopSerializer
 )
 from operation.models import (
     DeliveryStatus,
@@ -63,3 +64,8 @@ class PriceListView(generics.ListAPIView):
 class PaymentTypeListView(generics.ListAPIView):
     serializer_class = PaymentTypeSerializer
     queryset = PaymentType.objects.all()
+    
+
+class PriceEnvelopListView(generics.ListAPIView):
+    serializer_class = PriceEnvelopSerializer
+    queryset = PriceEnvelop.objects.all()

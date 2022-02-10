@@ -23,18 +23,13 @@ from operation.models import (
 )
 
 
-class PriceEnvelopInline(NestedStackedInline):
-    model = PriceEnvelop
-    extra = 1
-
-
 class DimensionPriceInline(NestedStackedInline):
     model = DimensionPrice
     extra = 1
 
 
 class PriceListAdmin(NestedModelAdmin):
-    inlines = [PriceEnvelopInline, DimensionPriceInline]
+    inlines = [DimensionPriceInline]
 
 
 class PaymentInline(NestedStackedInline):
@@ -75,5 +70,6 @@ admin.site.register(DeliveryType)
 admin.site.register(Packaging)
 admin.site.register(PayStatus)
 admin.site.register(Envelop)
+admin.site.register(PriceEnvelop)
 admin.site.register(PaymentDimension)
 admin.site.register(PaymentType)
