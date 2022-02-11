@@ -69,3 +69,12 @@ class PaymentTypeListView(generics.ListAPIView):
 class PriceEnvelopListView(generics.ListAPIView):
     serializer_class = PriceEnvelopSerializer
     queryset = PriceEnvelop.objects.all()
+
+
+class ParcelListView(generics.ListAPIView):
+    serializer_class = CreateParcelSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Parcel.objects.filter(sender=user)
+        return queryset

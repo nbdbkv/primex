@@ -23,7 +23,6 @@ class ParcelOption(models.Model):
 
 class Parcel(models.Model):
     title = models.CharField(_('title'), max_length=255)
-    description = models.TextField(_('description'))
     sender = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name=_('sender'))
     status = models.ForeignKey(DeliveryStatus, on_delete=models.SET_NULL, verbose_name=_('delivery status'), null=True)
     code = models.CharField(_('code'), max_length=15)
@@ -167,7 +166,8 @@ class UserInfo(models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='user_info')
     phone = models.CharField(_('phone'), max_length=15, validators=[PhoneValidator])
     info = models.CharField(_('user info'), max_length=255, blank=True)
-    zip_code = models.CharField(_('zip code'), max_length=15, blank=True)
+    company = models.CharField(_('company'), max_length=50)
+    email = models.EmailField(_('email'))
     type = models.PositiveSmallIntegerField(_('user info type'), choices=TYPE)
     
     def __str__(self) -> str:

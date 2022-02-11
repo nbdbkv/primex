@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import (
 from rest_framework.routers import DefaultRouter
 
 from account.views import (
+    DistrictsView,
     GetUserView,
     UserRegisterView,
     UserSendCodeView,
@@ -37,4 +38,5 @@ urlpatterns = [
     path('get/', GetUserView.as_view()),
     path('regions/', RegionsView.as_view()),
     path('cities/', CitiesView.as_view()),
+    path('districts/', DistrictsView.as_view())
 ]

@@ -8,7 +8,8 @@ from operation.views import (
     PackagingListView,
     PriceListView,
     PaymentTypeListView,
-    PriceEnvelopListView
+    PriceEnvelopListView,
+    ParcelListView
 )
 
 
@@ -20,5 +21,6 @@ urlpatterns = [
     path('packaging/', PackagingListView.as_view()),
     path('price_list/', PriceListView.as_view()),
     path('payment_types/', PaymentTypeListView.as_view()),
-    path('envelops_prices/', PriceEnvelopListView.as_view())
+    path('envelops_prices/', PriceEnvelopListView.as_view()),
+    path('parcel_list/', ParcelListView.as_view())
 ]
