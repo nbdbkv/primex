@@ -22,7 +22,7 @@ class ParcelOption(models.Model):
 
 
 class Parcel(models.Model):
-    title = models.CharField(_('title'), max_length=255)
+    title = models.CharField(_('title'), max_length=255, blank=True)
     sender = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name=_('sender'))
     status = models.ForeignKey(DeliveryStatus, on_delete=models.SET_NULL, verbose_name=_('delivery status'), null=True)
     code = models.CharField(_('code'), max_length=15)
@@ -78,21 +78,22 @@ class Envelop(models.Model):
         return self.title
 
 
-class PriceEnvelop(models.Model):
-    from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
-    to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
-    price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
-    envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True)
-    
-    def __str__(self) -> str:
-        return f'{self.from_region} -> {self.to_district}'
-
-
 class PaymentDimension(models.Model):
     length = models.FloatField(_('parcel length'))
     width = models.FloatField(_('parcel width'))
     height = models.FloatField(_('parcel height'))
     weight = models.FloatField(_('parcel weight'))
+
+
+class PriceEnvelop(models.Model):
+    from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
+    to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
+    price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
+    envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True)
+    dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
+    
+    def __str__(self) -> str:
+        return f'{self.from_region} -> {self.to_district}'
 
 
 class DimensionPrice(models.Model):
@@ -166,8 +167,8 @@ class UserInfo(models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='user_info')
     phone = models.CharField(_('phone'), max_length=15, validators=[PhoneValidator])
     info = models.CharField(_('user info'), max_length=255, blank=True)
-    company = models.CharField(_('company'), max_length=50)
-    email = models.EmailField(_('email'))
+    company = models.CharField(_('company'), max_length=50, blank=True)
+    email = models.EmailField(_('email'), blank=True)
     type = models.PositiveSmallIntegerField(_('user info type'), choices=TYPE)
     
     def __str__(self) -> str:

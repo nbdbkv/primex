@@ -56,15 +56,15 @@ class CalculateParcelPrice:
         return price
         
     def calculate_envelop_price(self):
-        envelop = PriceEnvelop.objects.get(
-            Q(from_region = self.from_region) & 
-            Q(to_district = self.to_district) &
-            Q(envelop = self.instance.payment.envelop.envelop)
-        )
+        envelop = self.instance.payment.envelop
         price = float(envelop.price)
-        self.instance.payment.envelop = envelop
-        self.instance.save()
         return price
+    
+    def get_dimension_price(self):
+        if self.instance.dimension:
+            return self.calculate_dimension_price()
+        else:
+            return self.calculate_envelop_price()
     
     def calculate_packaging_price(self):
         packaging = self.instance.payment.packaging.all()
@@ -80,9 +80,8 @@ class CalculateParcelPrice:
 
     @property
     def price(self):
-        dimension_price = self.calculate_dimension_price()
-        envelop_price = self.calculate_envelop_price()
+        dimension_price = self.get_dimension_price()
         packaging_price = self.calculate_packaging_price()
         delivery_price = self.calculate_delivery_price()
-        price = dimension_price + envelop_price + packaging_price + delivery_price
+        price = dimension_price + packaging_price + delivery_price
         return price

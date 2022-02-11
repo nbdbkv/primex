@@ -79,6 +79,7 @@ class PriceDimensionSerializer(serializers.ModelSerializer):
 
 class PriceEnvelopSerializer(serializers.ModelSerializer):
     envelop = serializers.SerializerMethodField()
+    dimension = DimensionSerializer()
     
     class Meta:
         model = PriceEnvelop
@@ -109,6 +110,7 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     price = serializers.DecimalField(9, 2, read_only=True)
     price_list = serializers.PrimaryKeyRelatedField(read_only=True)
+    envelop = PriceEnvelopSerializer()
     
     class Meta:
         model = ParcelPayment
