@@ -161,6 +161,15 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             raise ValidationError({'message': 'wrong type'})
         return direction
     
+    def validate_user_info(self, user_info):
+        if len(user_info) != 2:
+            raise ValidationError({'message': _('user_info must be 2')})
+        if user_info[0].get('type') != 1:
+            raise ValidationError({'message': 'wrong type'})
+        if user_info[1].get('type') != 2:
+            raise ValidationError({'message': 'wrong type'})
+        return user_info
+    
     @transaction.atomic
     def create(self, validated_data):
         payment = validated_data.pop('payment')
