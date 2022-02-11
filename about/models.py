@@ -5,7 +5,7 @@ from django_2gis_maps.mixins import DoubleGisMixin
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from account.models import User, Region, City
+from account.models import User, Region, District
 
 
 class Partner(models.Model):
@@ -50,13 +50,13 @@ class NewGallery(models.Model):
 
 class Fillial(DoubleGisMixin, models.Model):
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
+    district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True)
     location = map_fields.GeoLocationField(_('geolocation'))
     contact_phone = models.CharField(_('contact phone'), max_length=20, blank=True)
     email = models.EmailField(_('email'), blank=True)
     
     def __str__(self) -> str:
-        return self.city
+        return self.district
 
 
 class Option(models.Model):

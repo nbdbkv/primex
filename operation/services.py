@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from account.models import Region, City, District
+from account.models import Region, District
 from operation.models import Parcel, PriceList, PriceEnvelop, Direction, ParcelDimension, DimensionPrice
 
 from uuid import uuid4
@@ -24,12 +24,12 @@ class CalculateParcelPrice:
     
     @staticmethod
     def get_region_from(instance: Parcel) -> Region:
-        region_from = instance.direction.get(type=1).city.region
+        region_from = instance.direction.get(type=1).district.region
         return region_from
     
     @staticmethod
-    def get_district_to(instance: Parcel) -> City:
-        district_to = instance.direction.get(type=2).city
+    def get_district_to(instance: Parcel) -> District:
+        district_to = instance.direction.get(type=2).district
         return district_to
     
     def calculate_dimension_price(self):

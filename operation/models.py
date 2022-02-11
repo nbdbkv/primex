@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields
 from django_2gis_maps.mixins import DoubleGisMixin
 
-from account.models import City, User, Region, District
+from account.models import District, User, Region, Village
 from account.validators import PhoneValidator
 
 
@@ -63,7 +63,7 @@ class PayStatus(models.Model):
 
 class PriceList(models.Model):
     from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
-    to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
+    to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
     kilo = models.PositiveSmallIntegerField(_('kilo price'))
     delivery_time = models.FloatField(_('delivery time in hours'))
     
@@ -87,7 +87,7 @@ class PaymentDimension(models.Model):
 
 class PriceEnvelop(models.Model):
     from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
-    to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
+    to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True)
     dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
@@ -98,7 +98,7 @@ class PriceEnvelop(models.Model):
 
 class DimensionPrice(models.Model):
     from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
-    to_district = models.ForeignKey(City, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
+    to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
     price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'), related_name='dimension')
@@ -147,8 +147,8 @@ class Direction(DoubleGisMixin, models.Model):
     
     type = models.PositiveSmallIntegerField(_('type'), choices=TYPE)
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='direction')
-    city = models.ForeignKey(City, on_delete=models.DO_NOTHING, verbose_name=_('city'), blank=True)
     district = models.ForeignKey(District, on_delete=models.DO_NOTHING, verbose_name=_('district'), blank=True)
+    village = models.ForeignKey(Village, on_delete=models.DO_NOTHING, verbose_name=_('village'), blank=True)
     geolocation = fields.GeoLocationField(_('geolocation'), blank=True)
     
     def __str__(self) -> str:

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
-from account.models import City, District
+from account.models import District, Village
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
 from operation.models import (

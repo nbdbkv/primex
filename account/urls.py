@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
 from rest_framework.routers import DefaultRouter
 
 from account.views import (
-    DistrictsView,
+    VillagesView,
     GetUserView,
     UserRegisterView,
     UserSendCodeView,
@@ -16,7 +16,7 @@ from account.views import (
     PhoneResetVerifyView,
     UpdateUserInfoView,
     RegionsView,
-    CitiesView
+    DistrictsView
 )
 
 router = DefaultRouter()
@@ -37,6 +37,6 @@ urlpatterns = [
     path('update/info/', UpdateUserInfoView.as_view()),
     path('get/', GetUserView.as_view()),
     path('regions/', RegionsView.as_view()),
-    path('cities/', CitiesView.as_view()),
-    path('districts/', DistrictsView.as_view())
+    path('districts/', DistrictsView.as_view()),
+    path('villages/', VillagesView.as_view())
 ]

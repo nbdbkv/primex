@@ -25,7 +25,7 @@ class User(AbstractUser):
         )
     info = models.CharField(_('user info'), max_length=255)
     region = models.ForeignKey('Region', on_delete=models.DO_NOTHING, verbose_name=_('region'), null=True)
-    city = models.ForeignKey('City', on_delete=models.DO_NOTHING,  verbose_name=_('city'), null=True)
+    district = models.ForeignKey('District', on_delete=models.DO_NOTHING,  verbose_name=_('district'), null=True)
     role = models.PositiveSmallIntegerField(_('role'), choices=UserRole.choices, default=UserRole.CLIENT)
     points = models.PositiveIntegerField(_('user bonus points'), default=0)
     avatar = models.ImageField(_('avatar'), upload_to='user/', blank=True)
@@ -65,7 +65,7 @@ class Region(DoubleGisMixin, models.Model):
         return self.name
 
 
-class City(DoubleGisMixin, models.Model):
+class District(DoubleGisMixin, models.Model):
     region = models.ForeignKey(Region, on_delete=models.DO_NOTHING, verbose_name=_('region'))
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
@@ -75,8 +75,8 @@ class City(DoubleGisMixin, models.Model):
         return self.name
 
 
-class District(models.Model):
-    city = models.ForeignKey(City, on_delete=models.DO_NOTHING, verbose_name=_('city'))
+class Village(models.Model):
+    region = models.ForeignKey(Region, on_delete=models.DO_NOTHING, verbose_name=_('region'))
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
     code = models.CharField(_('code'), max_length=4, validators=[RegionCodeValidator])
