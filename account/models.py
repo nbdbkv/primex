@@ -66,7 +66,7 @@ class Region(DoubleGisMixin, models.Model):
 
 
 class District(DoubleGisMixin, models.Model):
-    region = models.ForeignKey(Region, on_delete=models.DO_NOTHING, verbose_name=_('region'))
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name=_('region'))
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
     code = models.CharField(_('code'), max_length=4, validators=[RegionCodeValidator])
@@ -76,7 +76,7 @@ class District(DoubleGisMixin, models.Model):
 
 
 class Village(models.Model):
-    region = models.ForeignKey(Region, on_delete=models.DO_NOTHING, verbose_name=_('region'))
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name=_('region'), null=True)
     name = map_fields.AddressField(_('name'), max_length=100)
     geolocation = map_fields.GeoLocationField(_('geolocation'), blank=True)
     code = models.CharField(_('code'), max_length=4, validators=[RegionCodeValidator])

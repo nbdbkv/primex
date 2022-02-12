@@ -105,6 +105,10 @@ class PaymentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class RetrievePaymentSerializer(PaymentSerializer):
+    type = serializers.SlugRelatedField(slug_field='title', read_only=True)
+
+
 class ParcelPaymentSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer(many=True)
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -117,12 +121,23 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
         exclude = ('pay_status',)
 
 
+class RetrieveParcelPaymentSerializer(ParcelPaymentSerializer):
+    payment = RetrievePaymentSerializer(many=True)
+    delivery_type = DeliveryTypeSerializer()
+    packaging = PackagingSerializer(many=True)
+
+
 class DirectionSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
         model = Direction
         fields = '__all__'
+
+
+class RetrieveDirectionSerializer(DirectionSerializer):
+    district = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    village = serializers.SlugRelatedField(slug_field='name', read_only=True)
         
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -139,6 +154,19 @@ class ParcelDimensionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ParcelDimension
+        fields = '__all__'
+
+
+class RetrieveParcelSerializer(serializers.ModelSerializer):
+    payment = RetrieveParcelPaymentSerializer()
+    direction = RetrieveDirectionSerializer(many=True)
+    user_info = UserInfoSerializer(many=True)
+    dimension = ParcelDimensionSerializer()
+    option = serializers.SlugRelatedField(many=True, slug_field='title', read_only=True)
+    status = serializers.SlugRelatedField(slug_field='title', read_only=True)
+    
+    class Meta:
+        model = Parcel
         fields = '__all__'
 
 

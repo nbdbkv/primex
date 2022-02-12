@@ -35,7 +35,7 @@ class Parcel(models.Model):
     
 
 class DeliveryType(models.Model):
-    icon = models.ImageField(_('icon'), upload_to='project/')
+    icon = models.FileField(_('icon'), upload_to='project/')
     image = models.ImageField(_('image'), upload_to='project/')
     title = models.CharField(_('title'), max_length=255)
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2)

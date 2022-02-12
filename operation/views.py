@@ -8,7 +8,8 @@ from operation.serializers import (
     PackagingSerializer,
     PaymentTypeSerializer,
     PriceListSerializer,
-    PriceEnvelopSerializer
+    PriceEnvelopSerializer,
+    RetrieveParcelSerializer,
 )
 from operation.models import (
     DeliveryStatus,
@@ -72,9 +73,14 @@ class PriceEnvelopListView(generics.ListAPIView):
 
 
 class ParcelListView(generics.ListAPIView):
-    serializer_class = CreateParcelSerializer
+    serializer_class = RetrieveParcelSerializer
     
     def get_queryset(self):
         user = self.request.user
         queryset = Parcel.objects.filter(sender=user)
         return queryset
+
+
+class ParcelRetrieveView(generics.RetrieveAPIView):
+    serializer_class = RetrieveParcelSerializer
+    queryset = Parcel.objects.all()
