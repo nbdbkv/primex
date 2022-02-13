@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.forms import ValidationError
 
 from account.models import Region, District
 from operation.models import Parcel, PriceList, PriceEnvelop, Direction, ParcelDimension, DimensionPrice
@@ -62,7 +63,10 @@ class CalculateParcelPrice:
     
     def get_dimension_price(self):
         if self.instance.dimension:
-            return self.calculate_dimension_price()
+            try:
+                return self.calculate_dimension_price()
+            except DimensionPrice.DoesNotExist:
+                raise ValidationError({'message': 'There is no price for this area'})
         else:
             return self.calculate_envelop_price()
     
