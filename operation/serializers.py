@@ -115,7 +115,6 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     price = serializers.DecimalField(9, 2, read_only=True)
     price_list = serializers.PrimaryKeyRelatedField(read_only=True)
-    envelop = PriceEnvelopSerializer()
     
     class Meta:
         model = ParcelPayment
@@ -126,6 +125,7 @@ class RetrieveParcelPaymentSerializer(ParcelPaymentSerializer):
     payment = RetrievePaymentSerializer(many=True)
     delivery_type = DeliveryTypeSerializer()
     packaging = PackagingSerializer(many=True)
+    envelop = PriceEnvelopSerializer()
 
 
 class DirectionSerializer(serializers.ModelSerializer):
