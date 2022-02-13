@@ -5,6 +5,7 @@ from django_2gis_maps.mixins import DoubleGisMixin
 
 from account.models import District, User, Region, Village
 from account.validators import PhoneValidator
+from operation.choices import DirectionChoices, UserInfoChoices
 
 
 class DeliveryStatus(models.Model):
@@ -140,12 +141,7 @@ class Payment(models.Model):
 
 
 class Direction(DoubleGisMixin, models.Model):
-    TYPE = (
-        (1, 'from'),
-        (2, 'to')
-    )
-    
-    type = models.PositiveSmallIntegerField(_('type'), choices=TYPE)
+    type = models.PositiveSmallIntegerField(_('type'), choices=DirectionChoices.choices)
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='direction')
     district = models.ForeignKey(District, on_delete=models.DO_NOTHING, verbose_name=_('district'), blank=True)
     village = models.ForeignKey(Village, on_delete=models.DO_NOTHING, verbose_name=_('village'), blank=True)
@@ -159,17 +155,12 @@ class Direction(DoubleGisMixin, models.Model):
 
 
 class UserInfo(models.Model):
-    TYPE = (
-        (1, 'sender'),
-        (2, 'recipient')
-    )
-    
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='user_info')
     phone = models.CharField(_('phone'), max_length=15, validators=[PhoneValidator])
     info = models.CharField(_('user info'), max_length=255, blank=True)
     company = models.CharField(_('company'), max_length=50, blank=True)
     email = models.EmailField(_('email'), blank=True)
-    type = models.PositiveSmallIntegerField(_('user info type'), choices=TYPE)
+    type = models.PositiveSmallIntegerField(_('user info type'), choices=UserInfoChoices.choices)
     
     def __str__(self) -> str:
         return f'{self.type} -> {self.parcel.title}'

@@ -6,6 +6,7 @@ from django.db import transaction
 from account.models import District, Village
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
+from operation.choices import DirectionChoices, UserInfoChoices
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -138,6 +139,11 @@ class DirectionSerializer(serializers.ModelSerializer):
 class RetrieveDirectionSerializer(DirectionSerializer):
     district = serializers.SlugRelatedField(slug_field='name', read_only=True)
     village = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    type = serializers.SerializerMethodField()
+    
+    def get_type(self, instance):
+        choice = DirectionChoices
+        return choice.choices[0] if instance.type == choice.FROM else choice.TO
         
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -163,7 +169,7 @@ class RetrieveParcelSerializer(serializers.ModelSerializer):
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer()
     option = serializers.SlugRelatedField(many=True, slug_field='title', read_only=True)
-    status = serializers.SlugRelatedField(slug_field='title', read_only=True)
+    status = DeliveryStatusSerializer()
     
     class Meta:
         model = Parcel
@@ -174,7 +180,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     payment = ParcelPaymentSerializer()
     direction = DirectionSerializer(many=True)
     user_info = UserInfoSerializer(many=True)
-    dimension = ParcelDimensionSerializer()
+    dimension = ParcelDimensionSerializer(required=False)
     
     class Meta:
         model = Parcel
