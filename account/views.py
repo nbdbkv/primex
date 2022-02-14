@@ -5,8 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 from account.messages import Message
 from account.permissions import IsOwner
-from account.models import City, Region, User
+from account.models import District, Village, Region, User
 from account.serailizers import (
+    VillagesSerializer,
     PasswordResetVerifySerializer,
     RegisterCodeVerifySerializer,
     PhoneResetVerifySerializer,
@@ -15,7 +16,7 @@ from account.serailizers import (
     UserRetrieveSerializer, 
     UserSendCodeSerializer,
     RegionsSerializer,
-    CitiesSerializer
+    DistrictsSerializer
 )
 
 
@@ -89,6 +90,11 @@ class RegionsView(generics.ListAPIView):
     queryset = Region.objects.all()
 
 
-class CitiesView(generics.ListAPIView):
-    serializer_class = CitiesSerializer
-    queryset = City.objects.all()
+class DistrictsView(generics.ListAPIView):
+    serializer_class = DistrictsSerializer
+    queryset = District.objects.all()
+    
+
+class VillagesView(generics.ListAPIView):
+    serializer_class = VillagesSerializer
+    queryset = Village.objects.all()

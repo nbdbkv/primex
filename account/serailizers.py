@@ -10,12 +10,12 @@ from account.validators import PhoneValidator
 from account.utils import SendSMS, get_otp
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
-from account.models import City, Region, User
+from account.models import District, Village, Region, User
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('phone', 'password', 'info', 'avatar', 'region', 'city')
+        fields = ('phone', 'password', 'info', 'avatar', 'region', 'district')
     
     def validate_password(self, password):
         try:
@@ -112,7 +112,7 @@ class PhoneResetVerifySerializer(serializers.Serializer):
 class UpdateUserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('info', 'region', 'city', 'avatar')
+        fields = ('info', 'region', 'district', 'avatar')
 
 
 class UserRetrieveSerializer(serializers.ModelSerializer):
@@ -130,13 +130,27 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             'user_permissions')
 
 
+class DistrictsSerializer(serializers.ModelSerializer):
+    region = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    
+    class Meta:
+        model = District
+        fields = '__all__'
+
+
+class VillagesSerializer(serializers.ModelSerializer):
+    region = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    
+    class Meta:
+        model = Village
+        fields = '__all__'
+
+
 class RegionsSerializer(serializers.ModelSerializer):
+    district_set = DistrictsSerializer(many=True)
+    village_set = VillagesSerializer(many=True)
+    
     class Meta:
         model = Region
         fields = '__all__'
-
-
-class CitiesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
-        fields = '__all__'
+    
