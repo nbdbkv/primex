@@ -24,3 +24,10 @@ from operation.models import (
 class ParcelCreateView(generics.CreateAPIView):
     serializer_class = CreateParcelSerializer
     queryset = Parcel
+
+# class GetParcelInfoView(generics.RetrieveAPIView):
+#     serializer_class = GetParcelInfoSerializer
+#
+#     def get_queryset(self, *args, **kwargs):
+#         return Parcel.objects.get(pk=kwargs['pk'])
+

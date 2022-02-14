@@ -68,7 +68,7 @@ class DirectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direction
         fields = '__all__'
-        
+
 
 class UserInfoSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -134,3 +134,10 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         
         dimension = ParcelDimension.objects.create(parcel_id=parcel.id, **dimension)
         return parcel
+
+class GetParcelInfoSerializer(serializers.ModelSerializer):
+    direction = DirectionSerializer()
+
+    class Meta:
+        model = Parcel
+        fields = ('direction',)
