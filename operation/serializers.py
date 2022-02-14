@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
 from account.models import District, Village
+from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
 from operation.choices import DirectionChoices, UserInfoChoices
@@ -137,8 +138,8 @@ class DirectionSerializer(serializers.ModelSerializer):
 
 
 class RetrieveDirectionSerializer(DirectionSerializer):
-    district = serializers.SlugRelatedField(slug_field='name', read_only=True)
-    village = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    district = DistrictsSerializer()
+    village = VillagesSerializer()
     type = serializers.SerializerMethodField()
     
     def get_type(self, instance):
