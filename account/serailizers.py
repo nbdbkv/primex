@@ -131,6 +131,7 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
 
 
 class DistrictsSerializer(serializers.ModelSerializer):
+    region = serializers.SlugRelatedField(slug_field='name', read_only=True)
     
     class Meta:
         model = District
@@ -138,6 +139,7 @@ class DistrictsSerializer(serializers.ModelSerializer):
 
 
 class VillagesSerializer(serializers.ModelSerializer):
+    region = serializers.SlugRelatedField(slug_field='name', read_only=True)
     
     class Meta:
         model = Village
