@@ -87,6 +87,7 @@ class PriceEnvelop(models.Model):
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True)
     dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
+    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'), related_name='envelop')
     
     def __str__(self) -> str:
         return f'{self.from_region} -> {self.to_district}'
@@ -119,6 +120,7 @@ class ParcelPayment(models.Model):
         return self.parcel.title
 
 class PaymentType(models.Model):
+    icon = models.FileField(_('icon'), upload_to='project/')
     title = models.CharField(_('title'), max_length=100)
     
     def __str__(self) -> str:

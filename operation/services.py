@@ -48,8 +48,9 @@ class CalculateParcelPrice:
                 Q(from_region = self.from_region) & 
                 Q(to_district = self.to_district))
         price = float(dimension_price_obj.price)
-        if dif := parcel_dimension.weight // dimension_price_obj.dimension.weight > 1:
-            price += float(dimension_price_obj.price_list.kilo) * dif
+        dimension_weight = dimension_price_obj.dimension.weight
+        if dif := parcel_dimension.weight / dimension_weight > dimension_weight:
+            price += float(dimension_price_obj.price_list.kilo) * (dimension_weight - dif)
         
         self.instance.payment.price_list = dimension_price_obj.price_list
         self.instance.save()

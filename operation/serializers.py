@@ -111,6 +111,7 @@ class PriceEnvelopSerializer(serializers.ModelSerializer):
 
 class PriceListSerializer(serializers.ModelSerializer):
     dimension = PriceDimensionSerializer(many=True)
+    envelop = PriceEnvelopSerializer(many=True)
     
     class Meta:
         model = PriceList

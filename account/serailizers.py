@@ -48,7 +48,6 @@ class UserSendCodeSerializer(serializers.Serializer):
         data = self.validated_data
         phone = data['phone']
         code = get_otp()
-        print(code)
         cache.set(code, phone, settings.SMS_CODE_TIME, version=data['type'])
         SendSMS(phone, f'code: {code}').send
 
@@ -94,10 +93,10 @@ class PasswordResetVerifySerializer(serializers.Serializer):
 
 
 class PhoneResetVerifySerializer(serializers.Serializer):
-    code = serializers.IntegerField(required=True)
+    code = serializers.CharField(required=True)
 
     def validate(self, attrs):
-        phone = cache.get(attrs['code'], version=SendCodeType.RESET_PASSWORD)
+        phone = cache.get(attrs['code'], version=SendCodeType.RESET_PHONE)
         if phone is not None:
             attrs['new_phone'] = phone
             return attrs
