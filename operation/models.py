@@ -36,6 +36,7 @@ class DeliveryType(models.Model):
     icon = models.FileField(_('icon'), upload_to='project/')
     image = models.ImageField(_('image'), upload_to='project/')
     title = models.CharField(_('title'), max_length=255)
+    description = models.TextField(_('description'), blank=True)
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2)
     
     def __str__(self) -> str:
@@ -44,6 +45,7 @@ class DeliveryType(models.Model):
 
 class Packaging(models.Model):
     title = models.CharField(_('title'), max_length=255)
+    description = models.TextField(_('description'), blank=True)
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2)
     quantity = models.PositiveIntegerField(_('quantity'), default=0)
     unit = models.CharField(_('measuring unit'), max_length=20)
