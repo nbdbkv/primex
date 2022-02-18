@@ -4,7 +4,7 @@ from django_2gis_maps import fields
 from django_2gis_maps.mixins import DoubleGisMixin
 from account.models import District, User, Region, Village
 from account.validators import PhoneValidator
-from operation.choices import DirectionChoices, UserInfoChoices
+from operation.choices import DirectionChoices, PayStatusChoices, UserInfoChoices
 
 
 class DeliveryStatus(models.Model):
@@ -13,11 +13,13 @@ class DeliveryStatus(models.Model):
     def __str__(self) -> str:
         return self.title
 
+
 class ParcelOption(models.Model):
     title = models.CharField(_('option title'), max_length=255)
     
     def __str__(self) -> str:
         return self.title
+
 
 class Parcel(models.Model):
     title = models.CharField(_('title'), max_length=255, blank=True)
@@ -30,14 +32,24 @@ class Parcel(models.Model):
     
     def __str__(self) -> str:
         return self.title
+
+
+class Distance(models.Model):
+    from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
+    to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
+    
+    def __str__(self) -> str:
+        return f'{self.from_region} - {self.to_district}'
     
 
 class DeliveryType(models.Model):
-    icon = models.FileField(_('icon'), upload_to='project/')
-    image = models.ImageField(_('image'), upload_to='project/')
+    distance = models.ForeignKey(Distance, on_delete=models.SET_NULL, verbose_name=_('distance'), null=True)
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'), blank=True)
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2)
+    delivery_time = models.PositiveIntegerField(_('time in hour'))
+    icon = models.FileField(_('icon'), upload_to='project/')
+    image = models.ImageField(_('image'), upload_to='project/')
     
     def __str__(self) -> str:
         return self.title
@@ -53,28 +65,6 @@ class Packaging(models.Model):
     def __str__(self) -> str:
         return self.title
 
-class PayStatus(models.Model):
-    title = models.CharField(_('status title'), max_length=50)
-    def __str__(self) -> str:
-        return self.title
-
-
-class PriceList(models.Model):
-    from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
-    to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
-    kilo = models.PositiveSmallIntegerField(_('kilo price'))
-    delivery_time = models.FloatField(_('delivery time in hours'))
-    
-    def __str__(self) -> str:
-        return f'{self.from_region} -> {self.to_district}'
-
-
-class Envelop(models.Model):
-    title = models.CharField(_('envelop title'), max_length=100)
-    
-    def __str__(self) -> str:
-        return self.title
-
 
 class PaymentDimension(models.Model):
     length = models.FloatField(_('parcel length'))
@@ -83,30 +73,15 @@ class PaymentDimension(models.Model):
     weight = models.FloatField(_('parcel weight'))
 
 
-class PriceEnvelop(models.Model):
-    from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
-    to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
+class Envelop(models.Model):
+    distance = models.ForeignKey(Distance, on_delete=models.SET_NULL, verbose_name=_('distance'), null=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
-    envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True)
+    title = models.CharField(_('title'), max_length=255)
     dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
-    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'), related_name='envelop')
+    kilo = models.PositiveIntegerField(_('price per kilo'))
     
     def __str__(self) -> str:
-        return f'{self.from_region} -> {self.to_district}'
-
-
-class DimensionPrice(models.Model):
-    from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
-    to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
-    price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
-    dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
-    price_list = models.ForeignKey(PriceList, on_delete=models.CASCADE, verbose_name=_('price list'), related_name='dimension')
-    
-    def __str__(self) -> str:
-        return f'{self.from_region} -> {self.to_district}'
-    
-    class Meta:
-        ordering = ['dimension__length', 'dimension__width', 'dimension__height']
+        return self.title
 
 
 class ParcelPayment(models.Model):
@@ -114,12 +89,12 @@ class ParcelPayment(models.Model):
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2, blank=True, null=True)
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.SET_NULL, null=True, verbose_name=_('delivery type'))
     packaging = models.ManyToManyField(Packaging, verbose_name=_('parcel packaging'))
-    pay_status = models.ForeignKey(PayStatus, on_delete=models.SET_NULL, null=True, verbose_name=_('pay status'))
-    price_list = models.ForeignKey(PriceList, on_delete=models.SET_NULL, verbose_name=_('price list'), null=True, blank=True)
-    envelop = models.ForeignKey(PriceEnvelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True, blank=True)
+    pay_status = models.CharField(_('status'), choices=PayStatusChoices.choices, max_length=20)
+    envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True, blank=True)
     
     def __str__(self) -> str:
         return self.parcel.title
+
 
 class PaymentType(models.Model):
     icon = models.FileField(_('icon'), upload_to='project/')
@@ -136,6 +111,7 @@ class Payment(models.Model):
     
     def __str__(self) -> str:
         return self.parcel.parcel.title
+
 
 class Direction(DoubleGisMixin, models.Model):
     type = models.PositiveSmallIntegerField(_('type'), choices=DirectionChoices.choices)

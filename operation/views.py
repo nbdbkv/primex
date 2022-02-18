@@ -1,14 +1,12 @@
 from rest_framework import generics
 from operation.serializers import (
-    CreateParcelSerializer,
     DeliveryStatusSerializer,
     ParcelOptionSerializer,
     DeliveryTypeSerializer,
     PackagingSerializer,
+    EnvelopSerializer,
     PaymentTypeSerializer,
-    PriceListSerializer,
-    PriceEnvelopSerializer,
-    RetrieveParcelSerializer,
+    CreateParcelSerializer
 )
 
 from operation.models import (
@@ -17,18 +15,8 @@ from operation.models import (
     Parcel,
     DeliveryType,
     Packaging,
-    PayStatus,
-    PriceList,
     Envelop,
-    PriceEnvelop,
-    PaymentDimension,
-    DimensionPrice,
-    ParcelPayment,
-    PaymentType,
-    Payment,
-    Direction,
-    UserInfo,
-    ParcelDimension
+    PaymentType
 )
 
 
@@ -37,14 +25,14 @@ class ParcelCreateView(generics.CreateAPIView):
     queryset = Parcel
     
 
-class ParcelOptionsListView(generics.ListAPIView):
-    serializer_class = ParcelOptionSerializer
-    queryset = ParcelOption.objects.all()
-
-
 class DeliveryStatusListView(generics.ListAPIView):
     serializer_class = DeliveryStatusSerializer
     queryset = DeliveryStatus.objects.all()
+
+
+class ParcelOptionsListView(generics.ListAPIView):
+    serializer_class = ParcelOptionSerializer
+    queryset = ParcelOption.objects.all()
 
 
 class DeliveryTypeListView(generics.ListAPIView):
@@ -57,30 +45,25 @@ class PackagingListView(generics.ListAPIView):
     queryset = Packaging.objects.all()
     
 
-class PriceListView(generics.ListAPIView):
-    serializer_class = PriceListSerializer
-    queryset = PriceList.objects.all()
+class EnvelopListView(generics.ListAPIView):
+    serializer_class = EnvelopSerializer
+    queryset = Envelop.objects.all()
 
 
 class PaymentTypeListView(generics.ListAPIView):
     serializer_class = PaymentTypeSerializer
     queryset = PaymentType.objects.all()
+
+
+# class ParcelListView(generics.ListAPIView):
+#     serializer_class = RetrieveParcelSerializer
     
-
-class PriceEnvelopListView(generics.ListAPIView):
-    serializer_class = PriceEnvelopSerializer
-    queryset = PriceEnvelop.objects.all()
-
-
-class ParcelListView(generics.ListAPIView):
-    serializer_class = RetrieveParcelSerializer
-    
-    def get_queryset(self):
-        user = self.request.user
-        queryset = Parcel.objects.filter(sender=user)
-        return queryset
+#     def get_queryset(self):
+#         user = self.request.user
+#         queryset = Parcel.objects.filter(sender=user)
+#         return queryset
 
 
-class ParcelRetrieveView(generics.RetrieveAPIView):
-    serializer_class = RetrieveParcelSerializer
-    queryset = Parcel.objects.all()
+# class ParcelRetrieveView(generics.RetrieveAPIView):
+#     serializer_class = RetrieveParcelSerializer
+#     queryset = Parcel.objects.all()

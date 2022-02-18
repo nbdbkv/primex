@@ -1,19 +1,16 @@
 from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
-from nested_admin.nested import NestedModelAdmin, NestedStackedInline, NestedInlineModelAdmin
+from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
     Parcel,
+    Distance,
     DeliveryType,
     Packaging,
-    PayStatus,
-    PriceList,
-    Envelop,
-    PriceEnvelop,
     PaymentDimension,
-    DimensionPrice,
+    Envelop,
     ParcelPayment,
     PaymentType,
     Payment,
@@ -21,15 +18,6 @@ from operation.models import (
     UserInfo,
     ParcelDimension
 )
-
-
-class DimensionPriceInline(NestedStackedInline):
-    model = DimensionPrice
-    extra = 1
-
-
-class PriceListAdmin(NestedModelAdmin):
-    inlines = [DimensionPriceInline]
 
 
 class PaymentInline(NestedStackedInline):
@@ -62,14 +50,12 @@ class ParcelAdmin(NestedModelAdmin):
     inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
 
 
-admin.site.register(Parcel, ParcelAdmin)
-admin.site.register(PriceList, PriceListAdmin)
 admin.site.register(DeliveryStatus)
 admin.site.register(ParcelOption)
+admin.site.register(Parcel, ParcelAdmin)
+admin.site.register(Distance)
 admin.site.register(DeliveryType)
 admin.site.register(Packaging)
-admin.site.register(PayStatus)
-admin.site.register(Envelop)
-admin.site.register(PriceEnvelop)
 admin.site.register(PaymentDimension)
+admin.site.register(Envelop)
 admin.site.register(PaymentType)

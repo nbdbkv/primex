@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.forms import ValidationError
 
 from account.models import Region, District
-from operation.models import Parcel, PriceList, PriceEnvelop, Direction, ParcelDimension, DimensionPrice
+from operation.models import Parcel, Envelop, Direction, ParcelDimension
 
 from uuid import uuid4
 
@@ -35,24 +35,24 @@ class CalculateParcelPrice:
     
     def calculate_dimension_price(self):
         parcel_dimension = self.instance.dimension
-        if dimension_price_obj := DimensionPrice.objects.filter(
-            Q(from_region = self.from_region) & 
-            Q(to_district = self.to_district) & 
+        if dimension_price_obj := Envelop.objects.filter(
+            Q(distance__from_region = self.from_region) & 
+            Q(distance__to_district = self.to_district) & 
             Q(dimension__length__lte = parcel_dimension.length) | 
             Q(dimension__width__lte = parcel_dimension.width) | 
             Q(dimension__height__lte = parcel_dimension.height)
         ):
             dimension_price_obj = dimension_price_obj.last()
         else:
-            dimension_price_obj = DimensionPrice.objects.get(
-                Q(from_region = self.from_region) & 
-                Q(to_district = self.to_district))
+            dimension_price_obj = Envelop.objects.filter(
+                Q(distance__from_region = self.from_region) & 
+                Q(distance__to_district = self.to_district)).first()
         price = float(dimension_price_obj.price)
         dimension_weight = dimension_price_obj.dimension.weight
-        if dif := parcel_dimension.weight / dimension_weight > dimension_weight:
-            price += float(dimension_price_obj.price_list.kilo) * (dimension_weight - dif)
+        if dif := parcel_dimension.weight - dimension_weight > dimension_weight:
+            price += float(dimension_price_obj.kilo) * dif
         
-        self.instance.payment.price_list = dimension_price_obj.price_list
+        self.instance.payment.envelop = dimension_price_obj
         self.instance.save()
         
         return price
@@ -66,7 +66,7 @@ class CalculateParcelPrice:
         if self.instance.dimension:
             try:
                 return self.calculate_dimension_price()
-            except DimensionPrice.DoesNotExist:
+            except Envelop.DoesNotExist:
                 raise ValidationError({'message': 'There is no price for this area'})
         else:
             return self.calculate_envelop_price()
@@ -89,4 +89,8 @@ class CalculateParcelPrice:
         packaging_price = self.calculate_packaging_price()
         delivery_price = self.calculate_delivery_price()
         price = dimension_price + packaging_price + delivery_price
+        bonus = price * 0.05
+        price -= bonus
+        self.instance.sender.points += bonus
+        self.instance.save()
         return price

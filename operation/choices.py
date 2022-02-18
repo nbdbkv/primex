@@ -10,3 +10,8 @@ class DirectionChoices(models.IntegerChoices):
 class UserInfoChoices(models.IntegerChoices):
     SENDER = 1, _('sender')
     RECIPIENT = 2, _('recipient')
+
+
+class PayStatusChoices(models.TextChoices):
+    IN_ANTICIPATION = 'in_anticipation', _('in anticipation')
+    PAID = 'paid', _('paid')
