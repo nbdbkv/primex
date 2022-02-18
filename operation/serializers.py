@@ -183,7 +183,8 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         for user in user_info:
             UserInfo.objects.create(parcel=parcel, **user)
         
-        dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
+        if dimension:
+            dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
         
         parcel.payment.price = CalculateParcelPrice(parcel).price
         parcel.save()

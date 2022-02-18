@@ -1,4 +1,6 @@
 from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+
 from operation.serializers import (
     DeliveryStatusSerializer,
     ParcelOptionSerializer,
@@ -8,7 +10,6 @@ from operation.serializers import (
     PaymentTypeSerializer,
     CreateParcelSerializer
 )
-
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -48,6 +49,8 @@ class PackagingListView(generics.ListAPIView):
 class EnvelopListView(generics.ListAPIView):
     serializer_class = EnvelopSerializer
     queryset = Envelop.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['distance__from_region', 'distance__to_district']
 
 
 class PaymentTypeListView(generics.ListAPIView):

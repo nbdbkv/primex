@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'ckeditor',
+    'django_filters',
     'ckeditor_uploader',
     'nested_admin',
 

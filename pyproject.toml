@@ -23,6 +23,7 @@ wheel = "^0.37.1"
 django-ckeditor = "^6.2.0"
 platformdirs = "^2.4.1"
 django-nested-admin = "^3.4.0"
+django-filter = "^21.1"
 
 [tool.poetry.dev-dependencies]
 
