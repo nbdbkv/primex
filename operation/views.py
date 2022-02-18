@@ -58,15 +58,15 @@ class PaymentTypeListView(generics.ListAPIView):
     queryset = PaymentType.objects.all()
 
 
-# class ParcelListView(generics.ListAPIView):
-#     serializer_class = RetrieveParcelSerializer
+class ParcelListView(generics.ListAPIView):
+    serializer_class = CreateParcelSerializer
     
-#     def get_queryset(self):
-#         user = self.request.user
-#         queryset = Parcel.objects.filter(sender=user)
-#         return queryset
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Parcel.objects.filter(sender=user)
+        return queryset
 
 
-# class ParcelRetrieveView(generics.RetrieveAPIView):
-#     serializer_class = RetrieveParcelSerializer
-#     queryset = Parcel.objects.all()
+class ParcelRetrieveView(generics.RetrieveAPIView):
+    serializer_class = CreateParcelSerializer
+    queryset = Parcel.objects.all()

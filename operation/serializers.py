@@ -101,7 +101,7 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ParcelPayment
-        exclude = ('pay_status',)
+        fields = '__all__'
 
 
 class DirectionSerializer(serializers.ModelSerializer):
@@ -134,10 +134,11 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     direction = DirectionSerializer(many=True)
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer(required=False)
+    code = serializers.CharField(read_only=True)
     
     class Meta:
         model = Parcel
-        exclude = ('code', 'sender', 'create_at')
+        exclude = ('sender', 'create_at')
         
     def validate_direction(self, direction):
         if len(direction) != 2:
