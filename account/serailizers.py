@@ -21,7 +21,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         try:
             validate_password(password)
             return password
-        except ValidationError as exc:
+        except BaseException as err:
             raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
 
     def create(self, validated_data):
