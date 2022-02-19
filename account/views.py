@@ -1,5 +1,6 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 from django.utils.translation import gettext_lazy as _
 
@@ -93,8 +94,12 @@ class RegionsView(generics.ListAPIView):
 class DistrictsView(generics.ListAPIView):
     serializer_class = DistrictsSerializer
     queryset = District.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['region']
     
 
 class VillagesView(generics.ListAPIView):
     serializer_class = VillagesSerializer
     queryset = Village.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['region']

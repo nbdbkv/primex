@@ -8,7 +8,8 @@ from operation.serializers import (
     PackagingSerializer,
     EnvelopSerializer,
     PaymentTypeSerializer,
-    CreateParcelSerializer
+    CreateParcelSerializer,
+    ReatriveParcelSerializer
 )
 from operation.models import (
     DeliveryStatus,
@@ -59,7 +60,7 @@ class PaymentTypeListView(generics.ListAPIView):
 
 
 class ParcelListView(generics.ListAPIView):
-    serializer_class = CreateParcelSerializer
+    serializer_class = ReatriveParcelSerializer
     
     def get_queryset(self):
         user = self.request.user
@@ -68,5 +69,5 @@ class ParcelListView(generics.ListAPIView):
 
 
 class ParcelRetrieveView(generics.RetrieveAPIView):
-    serializer_class = CreateParcelSerializer
+    serializer_class = ReatriveParcelSerializer
     queryset = Parcel.objects.all()
