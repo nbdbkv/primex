@@ -90,7 +90,6 @@ class CalculateParcelPrice:
         delivery_price = self.calculate_delivery_price()
         price = dimension_price + packaging_price + delivery_price
         bonus = price * 0.05
-        price -= bonus
         self.instance.sender.points += bonus
         self.instance.save()
         return price
