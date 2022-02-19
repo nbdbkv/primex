@@ -101,7 +101,7 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ParcelPayment
-        fields = '__all__'
+        exclude = ['pay_status']
 
 
 class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
