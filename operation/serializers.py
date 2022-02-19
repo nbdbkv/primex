@@ -150,7 +150,6 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
     direction = DirectionRetrieveSerializer(many=True)
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer()
-    status = serializers.SlugRelatedField('title', read_only=True)
     option = serializers.SlugRelatedField('title', read_only=True, many=True)
     
     class Meta:

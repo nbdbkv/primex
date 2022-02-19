@@ -119,6 +119,7 @@ class Direction(DoubleGisMixin, models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='direction')
     district = models.ForeignKey(District, on_delete=models.DO_NOTHING, verbose_name=_('district'), blank=True)
     village = models.ForeignKey(Village, on_delete=models.DO_NOTHING, verbose_name=_('village'), blank=True)
+    destination = models.CharField(_('destination'), max_length=255)
     geolocation = fields.GeoLocationField(_('geolocation'), blank=True)
     
     def __str__(self) -> str:
