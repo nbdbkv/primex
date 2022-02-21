@@ -123,7 +123,7 @@ class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
 
 class DirectionSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
-    type = serializers.SerializerMethodField(read_only=True)
+    type = serializers.SerializerMethodField()
     
     class Meta:
         model = Direction
@@ -142,7 +142,7 @@ class DirectionRetrieveSerializer(DirectionSerializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     phone = serializers.CharField(validators=[PhoneValidator])
-    type = serializers.SerializerMethodField(read_only=True)
+    type = serializers.SerializerMethodField()
     
     class Meta:
         model = UserInfo
