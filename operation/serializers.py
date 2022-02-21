@@ -7,7 +7,7 @@ from account.models import User
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
-from operation.choices import DirectionChoices, UserInfoChoices
+from operation.choices import DirectionChoices, PayStatusChoices, UserInfoChoices
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -98,11 +98,17 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer(many=True)
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     price = serializers.DecimalField(9, 2, read_only=True)
+    pay_status = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = ParcelPayment
-        exclude = ['pay_status']
-
+        fields = '__all__'
+    
+    def get_pay_status(self, instance):
+        type = PayStatusChoices.IN_ANTICIPATION if instance.pay_status == 'in_anticipation' \
+            else PayStatusChoices.PAID
+        return type.label
+    
 
 class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer(many=True)
@@ -117,10 +123,15 @@ class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
 
 class DirectionSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
+    type = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Direction
         fields = '__all__'
+    
+    def get_type(self, instance):
+        type = DirectionChoices.FROM if instance.type == 1 else DirectionChoices.TO
+        return type.label
 
 
 class DirectionRetrieveSerializer(DirectionSerializer):
@@ -131,10 +142,15 @@ class DirectionRetrieveSerializer(DirectionSerializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     phone = serializers.CharField(validators=[PhoneValidator])
+    type = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = UserInfo
         fields = '__all__'
+    
+    def get_type(self, instance):
+        type = UserInfoChoices.SENDER if instance.type == 1 else UserInfoChoices.RECIPIENT
+        return type.label
         
 
 class ParcelDimensionSerializer(serializers.ModelSerializer):

@@ -12,7 +12,7 @@ def get_parcel_code(direction: dict) -> str:
     code = district.region.code + district.code
     if village := direction.get('village'):
         code += village.code
-    code += str(uuid4())[:15-len(code)]
+    code = str(code + str(uuid4()).replace('-', ''))[:15]
     return code
 
 
