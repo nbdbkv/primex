@@ -123,34 +123,29 @@ class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
 
 class DirectionSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
-    type = serializers.SerializerMethodField()
     
     class Meta:
         model = Direction
         fields = '__all__'
+
+
+class DirectionRetrieveSerializer(DirectionSerializer):
+    district = DistrictsSerializer()
+    village = VillagesSerializer()
+    type = serializers.SerializerMethodField()
     
     def get_type(self, instance):
         type = DirectionChoices.FROM if instance.type == 1 else DirectionChoices.TO
         return type.label
 
 
-class DirectionRetrieveSerializer(DirectionSerializer):
-    district = DistrictsSerializer()
-    village = VillagesSerializer()
-
-
 class UserInfoSerializer(serializers.ModelSerializer):
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     phone = serializers.CharField(validators=[PhoneValidator])
-    type = serializers.SerializerMethodField()
     
     class Meta:
         model = UserInfo
         fields = '__all__'
-    
-    def get_type(self, instance):
-        type = UserInfoChoices.SENDER if instance.type == 1 else UserInfoChoices.RECIPIENT
-        return type.label
         
 
 class ParcelDimensionSerializer(serializers.ModelSerializer):
