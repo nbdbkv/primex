@@ -1,6 +1,5 @@
 from django.db.models import Q
 from django.forms import ValidationError
-
 from account.models import Region, District
 from operation.models import Parcel, Envelop, Direction, ParcelDimension
 
@@ -91,5 +90,5 @@ class CalculateParcelPrice:
         price = dimension_price + packaging_price + delivery_price
         bonus = price * 0.05
         self.instance.sender.points += bonus
-        self.instance.save()
+        self.instance.sender.save()
         return price

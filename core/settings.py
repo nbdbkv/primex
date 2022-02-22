@@ -161,6 +161,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FIREBASE_APP = initialize_app()
 
+
+EMAIL_FROM = 'some.email634@gmail.com'
+EMAIL_TO = 'genry03gh@gmail.com'
+EMAIL_BCC = 'Qualle'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'some.email634@gmail.com'
+EMAIL_HOST_PASSWORD = 'some_password'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+SERVER_EMAIL = 'some.email634@gmail.com'
+
+
 FCM_DJANGO_SETTINGS = {
     "UPDATE_ON_DUPLICATE_REG_ID": True,
 }

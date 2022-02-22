@@ -6,7 +6,8 @@ from about.views import (
     NewsView,
     NewDetailView,
     FillialView,
-    QuestionView
+    QuestionView,
+    FeedbackView
 )
 
 
@@ -16,5 +17,6 @@ urlpatterns = [
     path('articles/', NewsView.as_view()),
     path('article/<int:pk>/', NewDetailView.as_view()),
     path('branch_offices/', FillialView.as_view()),
-    path('questions/', QuestionView.as_view())
+    path('questions/', QuestionView.as_view()),
+    path('feedback/', FeedbackView.as_view()),
 ]

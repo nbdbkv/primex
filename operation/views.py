@@ -9,7 +9,7 @@ from operation.serializers import (
     EnvelopSerializer,
     PaymentTypeSerializer,
     CreateParcelSerializer,
-    ReatriveParcelSerializer
+    ReatriveParcelSerializer,
 )
 from operation.models import (
     DeliveryStatus,
