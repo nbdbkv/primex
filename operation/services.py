@@ -1,6 +1,5 @@
 from django.db.models import Q
 from django.forms import ValidationError
-
 from account.models import Region, District
 from operation.models import Parcel, Envelop, Direction, ParcelDimension
 
@@ -12,7 +11,7 @@ def get_parcel_code(direction: dict) -> str:
     code = district.region.code + district.code
     if village := direction.get('village'):
         code += village.code
-    code += str(uuid4())[:15-len(code)]
+    code = str(code + str(uuid4()).replace('-', ''))[:15]
     return code
 
 
@@ -90,7 +89,6 @@ class CalculateParcelPrice:
         delivery_price = self.calculate_delivery_price()
         price = dimension_price + packaging_price + delivery_price
         bonus = price * 0.05
-        price -= bonus
         self.instance.sender.points += bonus
-        self.instance.save()
+        self.instance.sender.save()
         return price

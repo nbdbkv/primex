@@ -3,11 +3,10 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
-from account.models import User
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
-from operation.choices import DirectionChoices, UserInfoChoices
+from operation.choices import DirectionChoices, PayStatusChoices, UserInfoChoices
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -22,7 +21,8 @@ from operation.models import (
     Payment,
     Direction,
     UserInfo,
-    ParcelDimension
+    ParcelDimension,
+    User
 )
 
 
@@ -107,10 +107,27 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer(many=True)
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     price = serializers.DecimalField(9, 2, read_only=True)
+    pay_status = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = ParcelPayment
-        exclude = ('pay_status',)
+        fields = '__all__'
+    
+    def get_pay_status(self, instance):
+        type = PayStatusChoices.IN_ANTICIPATION if instance.pay_status == 'in_anticipation' \
+            else PayStatusChoices.PAID
+        return type.label
+    
+
+class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
+    payment = PaymentSerializer(many=True)
+    delivery_type = DeliveryTypeSerializer()
+    packaging = PackagingSerializer(many=True)
+    envelop = EnvelopSerializer()
+    
+    class Meta:
+        model = ParcelPayment
+        fields = '__all__'
 
 
 class DirectionSerializer(serializers.ModelSerializer):
@@ -119,6 +136,16 @@ class DirectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direction
         fields = '__all__'
+
+
+class DirectionRetrieveSerializer(DirectionSerializer):
+    district = DistrictsSerializer()
+    village = VillagesSerializer()
+    type = serializers.SerializerMethodField()
+    
+    def get_type(self, instance):
+        type = DirectionChoices.FROM if instance.type == 1 else DirectionChoices.TO
+        return type.label
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -136,6 +163,18 @@ class ParcelDimensionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParcelDimension
         fields = '__all__'
+        
+
+class ReatriveParcelSerializer(serializers.ModelSerializer):
+    payment = ParcelPaymentRetrieveSerializer()
+    direction = DirectionRetrieveSerializer(many=True)
+    user_info = UserInfoSerializer(many=True)
+    dimension = ParcelDimensionSerializer()
+    option = serializers.SlugRelatedField('title', read_only=True, many=True)
+    
+    class Meta:
+        model = Parcel
+        fields = '__all__'
 
 
 class CreateParcelSerializer(serializers.ModelSerializer):
@@ -143,10 +182,11 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     direction = DirectionSerializer(many=True)
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer(required=False)
-
+    code = serializers.CharField(read_only=True)
+    
     class Meta:
         model = Parcel
-        exclude = ('code', 'sender', 'create_at')
+        exclude = ('sender', 'create_at')
 
     def validate_direction(self, direction):
         if len(direction) != 2:

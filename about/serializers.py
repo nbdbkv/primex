@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 
+from account.validators import PhoneValidator
 from about.models import (
     Partner,
     Contact,
@@ -75,3 +76,8 @@ class QuestionSerializer(serializers.ModelSerializer):
     def get_answer(self, instance):
         queryset = Answer.objects.filter(question=instance).values_list('text', flat=True)
         return queryset
+
+
+class FeedbackSerializer(serializers.Serializer):
+    phone = serializers.CharField(validators=[PhoneValidator], max_length=15)
+    email = serializers.EmailField()

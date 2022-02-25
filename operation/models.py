@@ -90,7 +90,7 @@ class ParcelPayment(models.Model):
     price = models.DecimalField(_('price'), max_digits=9, decimal_places=2, blank=True, null=True)
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.SET_NULL, null=True, verbose_name=_('delivery type'))
     packaging = models.ManyToManyField(Packaging, verbose_name=_('parcel packaging'))
-    pay_status = models.CharField(_('status'), choices=PayStatusChoices.choices, max_length=20)
+    pay_status = models.CharField(_('status'), choices=PayStatusChoices.choices, max_length=20, default=PayStatusChoices.IN_ANTICIPATION)
     envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True, blank=True)
     
     def __str__(self) -> str:
@@ -119,6 +119,7 @@ class Direction(DoubleGisMixin, models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE, verbose_name=_('parcel'), related_name='direction')
     district = models.ForeignKey(District, on_delete=models.DO_NOTHING, verbose_name=_('district'), blank=True)
     village = models.ForeignKey(Village, on_delete=models.DO_NOTHING, verbose_name=_('village'), blank=True)
+    destination = models.CharField(_('destination'), max_length=255, blank=True)
     geolocation = fields.GeoLocationField(_('geolocation'), blank=True)
     
     def __str__(self) -> str:

@@ -9,7 +9,9 @@ from operation.serializers import (
     EnvelopSerializer,
     PaymentTypeSerializer,
     CreateParcelSerializer,
-    GetUserBonusSerializer
+    GetUserBonusSerializer,
+    ReatriveParcelSerializer,
+
 )
 from operation.models import (
     DeliveryStatus,
@@ -63,15 +65,15 @@ class GetUserBonusView(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = Parcel
 
-# class ParcelListView(generics.ListAPIView):
-#     serializer_class = RetrieveParcelSerializer
+class ParcelListView(generics.ListAPIView):
+    serializer_class = ReatriveParcelSerializer
     
-#     def get_queryset(self):
-#         user = self.request.user
-#         queryset = Parcel.objects.filter(sender=user)
-#         return queryset
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Parcel.objects.filter(sender=user)
+        return queryset
 
 
-# class ParcelRetrieveView(generics.RetrieveAPIView):
-#     serializer_class = RetrieveParcelSerializer
-#     queryset = Parcel.objects.all()
+class ParcelRetrieveView(generics.RetrieveAPIView):
+    serializer_class = ReatriveParcelSerializer
+    queryset = Parcel.objects.all()
