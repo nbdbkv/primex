@@ -9,7 +9,7 @@ from operation.serializers import (
     EnvelopSerializer,
     PaymentTypeSerializer,
     CreateParcelSerializer,
-    GetUserBonusSerializer,
+    GetParcelBonusSerializer,
     ReatriveParcelSerializer,
 
 )
@@ -60,8 +60,8 @@ class PaymentTypeListView(generics.ListAPIView):
     serializer_class = PaymentTypeSerializer
     queryset = PaymentType.objects.all()
 
-class GetUserBonusView(generics.RetrieveAPIView):
-    serializer_class = GetUserBonusSerializer
+class GetParcelBonusView(generics.RetrieveAPIView):
+    serializer_class = GetParcelBonusSerializer
     lookup_field = 'pk'
     queryset = Parcel
 

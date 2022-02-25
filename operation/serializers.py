@@ -32,12 +32,10 @@ class UserBonusSerializer(serializers.ModelSerializer):
         fields = ('points',)
 
 
-class GetUserBonusSerializer(serializers.ModelSerializer):
-    sender = UserBonusSerializer()
-
+class GetParcelBonusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parcel
-        fields = ('sender',)
+        fields = ('bonus',)
 
 
 class DeliveryStatusSerializer(serializers.ModelSerializer):
@@ -236,5 +234,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
 
         parcel.payment.price = CalculateParcelPrice(parcel).price
+        parcel.bonus = (parcel.payment.price) * 0.05
         parcel.save()
         return parcel

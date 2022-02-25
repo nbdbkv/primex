@@ -29,6 +29,7 @@ class Parcel(models.Model):
     create_at = models.DateTimeField(_('date creation'), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_('options'))
     sending_date = models.DateTimeField(_('sendin date'))
+    bonus = models.PositiveIntegerField(_('bonus'), blank=True, default=0)
     
     def __str__(self) -> str:
         return self.title
