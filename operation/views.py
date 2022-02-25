@@ -8,7 +8,8 @@ from operation.serializers import (
     PackagingSerializer,
     EnvelopSerializer,
     PaymentTypeSerializer,
-    CreateParcelSerializer
+    CreateParcelSerializer,
+    GetUserBonusSerializer
 )
 from operation.models import (
     DeliveryStatus,
@@ -57,6 +58,10 @@ class PaymentTypeListView(generics.ListAPIView):
     serializer_class = PaymentTypeSerializer
     queryset = PaymentType.objects.all()
 
+class GetUserBonusView(generics.RetrieveAPIView):
+    serializer_class = GetUserBonusSerializer
+    lookup_field = 'pk'
+    queryset = Parcel
 
 # class ParcelListView(generics.ListAPIView):
 #     serializer_class = RetrieveParcelSerializer

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
 
 from about.models import (
     Partner,
@@ -46,8 +48,12 @@ class NewsSerializer(serializers.ModelSerializer):
     
     def get_watched_users_count(self, instance):
         user = self.context.get('request').user
-        instance.watched_users.add(user)
-        return instance.watched_users.all().count()
+        if user.is_authenticated:
+            instance.watched_users.add(user)
+        else:
+            instance.watched_anonymous_users += 1
+            instance.save()
+        return instance.watched_users.all().count() + instance.watched_anonymous_users
     
     def get_category(self, instance):
         return instance.category.name
