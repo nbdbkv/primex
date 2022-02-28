@@ -99,7 +99,8 @@ class ParcelPayment(models.Model):
 
 class PaymentType(models.Model):
     icon = models.FileField(_('icon'), upload_to='project/')
-    title = models.CharField(_('title'), max_length=100, choices=PaymentTypeChoices.choices, unique=True)
+    title = models.CharField(_('title'), max_length=100)
+    type = models.CharField(_('type'), max_length=20, choices=PaymentTypeChoices.choices, unique=True)
     
     def __str__(self) -> str:
         return self.title
