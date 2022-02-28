@@ -21,8 +21,8 @@ class UserAdminForm(forms.ModelForm):
     
     
 def get_permission():
-    exclude_content_type = ContentType.objects.filter(model__in=['DiscountHistory', 'PaymentHistory'])
+    exclude_content_type = ContentType.objects.filter(model='PaymentHistory')
     temp = Permission.objects.filter(content_type=exclude_content_type) \
-        .exclude(code_name__in=['view_discounthistory', 'view_paymenthistory']).values_list('codename', flat=True)
+        .exclude(code_name='view_paymenthistory').values_list('codename', flat=True)
     operator_permissions = Permission.objects.exclude(codename__in=temp)
     return operator_permissions

@@ -37,6 +37,12 @@ class NewsView(generics.ListAPIView):
 class NewDetailView(generics.RetrieveAPIView):
     queryset = New.objects.all()
     serializer_class = NewsSerializer
+    
+    def get_object(self):
+        article = super().get_object()
+        article.watched_count += 1
+        article.save()
+        return article
 
 
 class FillialView(generics.ListAPIView):

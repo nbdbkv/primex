@@ -6,7 +6,7 @@ from django.db import transaction
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
-from operation.choices import DirectionChoices, PayStatusChoices, UserInfoChoices
+from operation.choices import DirectionChoices, PayStatusChoices, PaymentHistoryType, UserInfoChoices, PaymentTypeChoices
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -17,12 +17,20 @@ from operation.models import (
     PaymentDimension,
     Envelop,
     ParcelPayment,
+    PaymentHistory,
     PaymentType,
     Payment,
     Direction,
     UserInfo,
     ParcelDimension
 )
+
+
+class PaymentHistorySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PaymentHistory
+        fields = '__all__'
 
 
 class DeliveryStatusSerializer(serializers.ModelSerializer):
@@ -177,6 +185,14 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parcel
         exclude = ('sender', 'create_at')
+    
+    def validate_payment(self, payment):
+        pay = payment['payment']
+        if pay.type.title == PaymentTypeChoices.BONUS:
+            user = self.context.get('request').user
+            if user.bonus < pay.sum:
+                raise ValidationError({'message': 'You do not have enought bonus'})
+        return payment
         
     def validate_direction(self, direction):
         if len(direction) != 2:
@@ -214,8 +230,19 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         payment = ParcelPayment.objects.create(parcel=parcel, **payment)
         payment.packaging.set(packaging)
         for parcel_pay in parcel_payments:
-            Payment.objects.create(parcel=payment, **parcel_pay)
-        
+            pay = Payment.objects.create(parcel=payment, **parcel_pay)
+            
+            if pay.type.title == PaymentTypeChoices.BONUS:
+                parcel.sender.bonus -= pay.sum
+                parcel.sender.save()
+                PaymentHistory.objects.create(
+                    user = parcel.sender,
+                    parcel = parcel,
+                    sum = pay.sum,
+                    payment_type = PaymentHistoryType.CREDIT,
+                    type = pay.type,
+                )
+
         for dir in direction:
             Direction.objects.create(parcel=parcel, **dir)
         

@@ -1,7 +1,9 @@
 from django.db.models import Q
 from django.forms import ValidationError
+
 from account.models import Region, District
-from operation.models import Parcel, Envelop, Direction, ParcelDimension
+from operation.models import Parcel, Envelop, Direction, ParcelDimension, PaymentHistory
+from operation.choices import PaymentHistoryType
 
 from uuid import uuid4
 
@@ -89,6 +91,13 @@ class CalculateParcelPrice:
         delivery_price = self.calculate_delivery_price()
         price = dimension_price + packaging_price + delivery_price
         bonus = price * 0.05
+        PaymentHistory.objects.create(
+            user = self.instance.sender,
+            parcel = self.instance,
+            type = self.instance.payment.payment.type,
+            sum = bonus,
+            payment_type = PaymentHistoryType.DEBIT
+        )
         self.instance.sender.points += bonus
         self.instance.sender.save()
         return price

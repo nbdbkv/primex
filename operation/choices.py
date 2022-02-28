@@ -15,3 +15,13 @@ class UserInfoChoices(models.IntegerChoices):
 class PayStatusChoices(models.TextChoices):
     IN_ANTICIPATION = 'in_anticipation', _('in anticipation')
     PAID = 'paid', _('paid')
+
+
+class PaymentTypeChoices(models.TextChoices):
+    CASH = 'cash', _('cash')
+    BONUS = 'bonus', _('bonus')
+
+
+class PaymentHistoryType(models.IntegerChoices):
+    CREDIT = 1, _('credit')
+    DEBIT = 2, _('debit')

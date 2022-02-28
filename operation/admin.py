@@ -16,7 +16,8 @@ from operation.models import (
     Payment,
     Direction,
     UserInfo,
-    ParcelDimension
+    ParcelDimension,
+    PaymentHistory
 )
 
 
@@ -48,6 +49,9 @@ class ParcelDimensionInline(NestedStackedInline):
 
 class ParcelAdmin(NestedModelAdmin):
     inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
+    
+
+# class PaymentHistoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(DeliveryStatus)
@@ -59,3 +63,4 @@ admin.site.register(Packaging)
 admin.site.register(PaymentDimension)
 admin.site.register(Envelop)
 admin.site.register(PaymentType)
+admin.site.register(PaymentHistory)
