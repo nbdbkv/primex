@@ -20,6 +20,11 @@ class PayStatusChoices(models.TextChoices):
 class PaymentTypeChoices(models.TextChoices):
     CASH = 'cash', _('cash')
     BONUS = 'bonus', _('bonus')
+    MBANK = 'Mbank', _('Mbank')
+    MEGAPAY = 'Megapay', _('Megapay')
+    BALANCE = 'Balance', _('balance')
+    O_PAY = 'O Pay', _('O_pay')
+    ELSOM = 'Elsom', _('Elsom')
 
 
 class PaymentHistoryType(models.IntegerChoices):
