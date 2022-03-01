@@ -9,9 +9,8 @@ from operation.serializers import (
     EnvelopSerializer,
     PaymentTypeSerializer,
     CreateParcelSerializer,
-    GetParcelBonusSerializer,
     ReatriveParcelSerializer,
-
+    PaymentHistorySerializer
 )
 from operation.models import (
     DeliveryStatus,
@@ -20,8 +19,20 @@ from operation.models import (
     DeliveryType,
     Packaging,
     Envelop,
+    PaymentHistory,
     PaymentType
 )
+
+
+class PaymentHistoryView(generics.ListAPIView):
+    serializer_class = PaymentHistorySerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['parcel', 'type', 'payment_type']
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = PaymentHistory.objects.filter(user=user)
+        return queryset
 
 
 class ParcelCreateView(generics.CreateAPIView):

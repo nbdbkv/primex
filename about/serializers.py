@@ -34,7 +34,6 @@ class NewGallerySerializer(serializers.ModelSerializer):
 
 class NewsSerializer(serializers.ModelSerializer):
     gallery = serializers.SerializerMethodField()
-    watched_users_count = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     
     class Meta:
@@ -46,16 +45,7 @@ class NewsSerializer(serializers.ModelSerializer):
         queryset = NewGallery.objects.filter(new=instance)
         images = [request.build_absolute_uri(obj.image.url) for obj in queryset]
         return images
-    
-    def get_watched_users_count(self, instance):
-        user = self.context.get('request').user
-        if user.is_authenticated:
-            instance.watched_users.add(user)
-        else:
-            instance.watched_anonymous_users += 1
-            instance.save()
-        return instance.watched_users.all().count() + instance.watched_anonymous_users
-    
+
     def get_category(self, instance):
         return instance.category.name
 

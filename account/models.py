@@ -7,7 +7,7 @@ from django_2gis_maps.mixins import DoubleGisMixin
 
 from account.validators import PhoneValidator, RegionCodeValidator
 from account.managers import UserManager
-from account.choices import PaymentHistoryType, UserRole
+from account.choices import UserRole
 
 
 class User(AbstractUser):
@@ -83,22 +83,3 @@ class Village(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class DiscountHistory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
-    sum = models.PositiveIntegerField(_('sum'))
-    # parcel = models.ForeignKey('Parcel', on_delete=models.DO_NOTHING, verbose_name=_('parcel'))
-    
-    def __str__(self) -> str:
-        return f'{self.user} -> {self.sum}'
-
-
-class PaymentHistory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
-    # payment = models.ForeignKey('Payment', on_delete=models.DO_NOTHING, verbose_name=_('payment'))
-    sum = models.PositiveIntegerField(_('sum'))
-    payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
-    
-    def __str__(self) -> str:
-        return f'{self.user} -> {self.sum}'

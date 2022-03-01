@@ -7,11 +7,11 @@ from operation.views import (
     DeliveryTypeListView,
     PackagingListView,
     EnvelopListView,
+    PaymentHistoryView,
     PaymentTypeListView,
     GetParcelBonusView,
     ParcelListView,
-    ParcelRetrieveView
-
+    ParcelRetrieveView,
 )
 
 
@@ -26,5 +26,6 @@ urlpatterns = [
     path('bonus/<int:pk>', GetParcelBonusView.as_view()),
     path('parcel_list/', ParcelListView.as_view()),
     path('parcel/<int:pk>/', ParcelRetrieveView.as_view()),
+    path('payment_history/', PaymentHistoryView.as_view())
 ]
 

@@ -36,8 +36,7 @@ class New(models.Model):
     description = RichTextUploadingField()
     border_photo = models.ImageField(_('border image'), upload_to='about/news/')
     category = models.ForeignKey(ArticleCategory, on_delete=models.DO_NOTHING, verbose_name=_('article category'))
-    watched_users = models.ManyToManyField(User, verbose_name=_('watched users'), blank=True)
-    watched_anonymous_users = models.PositiveIntegerField(_('watched anonymous users'), default=0, blank=True)
+    watched_count = models.PositiveIntegerField(_('watched count'))
     create_at = models.DateTimeField(_('created date'), auto_now_add=True)
     
     def __str__(self) -> str:

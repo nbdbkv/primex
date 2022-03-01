@@ -4,7 +4,7 @@ from django_2gis_maps import fields
 from django_2gis_maps.mixins import DoubleGisMixin
 from account.models import District, User, Region, Village
 from account.validators import PhoneValidator
-from operation.choices import DirectionChoices, PayStatusChoices, UserInfoChoices
+from operation.choices import DirectionChoices, PayStatusChoices, PaymentTypeChoices, UserInfoChoices, PaymentHistoryType
 
 
 class DeliveryStatus(models.Model):
@@ -101,6 +101,7 @@ class ParcelPayment(models.Model):
 class PaymentType(models.Model):
     icon = models.FileField(_('icon'), upload_to='project/')
     title = models.CharField(_('title'), max_length=100)
+    type = models.CharField(_('type'), max_length=20, choices=PaymentTypeChoices.choices, unique=True)
     
     def __str__(self) -> str:
         return self.title
@@ -154,3 +155,14 @@ class ParcelDimension(models.Model):
     
     def __str__(self) -> str:
         return self.parcel.title
+
+
+class PaymentHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
+    parcel = models.ForeignKey(Parcel, on_delete=models.DO_NOTHING, verbose_name=_('parcel'))
+    type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
+    sum = models.PositiveIntegerField(_('sum'))
+    payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
+    
+    def __str__(self) -> str:
+        return f'{self.user} -> {self.sum}'
