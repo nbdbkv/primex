@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
+from account.models import User
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
@@ -191,9 +192,10 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     def validate_payment(self, payment):
         pay = payment['payment']
         payment_type = pay[0]['type']
+        payment_sum = pay[0]['sum']
         if payment_type.title == PaymentTypeChoices.BONUS:
             user = self.context.get('request').user
-            if user.bonus < payment_type.sum:
+            if user.points < payment_sum:
                 raise ValidationError({'message': 'You do not have enought bonus'})
         return payment
 
@@ -221,6 +223,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         direction = validated_data.pop('direction')
         user_info = validated_data.pop('user_info')
         dimension = validated_data.pop('dimension')
+        pay_with_bonus = False
 
         validated_data['code'] = get_parcel_code(direction[1])
         validated_data['sender'] = self.context.get('request').user
@@ -232,11 +235,12 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         packaging = payment.pop('packaging')
         payment = ParcelPayment.objects.create(parcel=parcel, **payment)
         payment.packaging.set(packaging)
+
         for parcel_pay in parcel_payments:
             pay = Payment.objects.create(parcel=payment, **parcel_pay)
-
             if pay.type.title == PaymentTypeChoices.BONUS:
-                parcel.sender.bonus -= pay.sum
+                pay_with_bonus = True
+                parcel.sender.points -= pay.sum
                 spent_bonuses = -abs(pay.sum)
                 parcel.sender.save()
                 PaymentHistory.objects.create(
@@ -257,6 +261,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
 
-        parcel.payment.price = CalculateParcelPrice(parcel).price
+        parcel.payment.price = CalculateParcelPrice(parcel, pay_with_bonus).price
         parcel.save()
         return parcel

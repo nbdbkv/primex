@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.forms import ValidationError
+from decimal import Decimal
 
 from account.models import Region, District
 from operation.models import Parcel, Envelop, Direction, ParcelDimension, PaymentHistory
@@ -18,51 +19,52 @@ def get_parcel_code(direction: dict) -> str:
 
 
 class CalculateParcelPrice:
-    
-    def __init__(self, instance: Parcel):
+
+    def __init__(self, instance: Parcel, pay_with_bonus):
         self.instance = instance
         self.from_region = self.get_region_from(instance)
         self.to_district = self.get_district_to(instance)
-    
+        self.pay_with_bonus = pay_with_bonus
+
     @staticmethod
     def get_region_from(instance: Parcel) -> Region:
         region_from = instance.direction.get(type=1).district.region
         return region_from
-    
+
     @staticmethod
     def get_district_to(instance: Parcel) -> District:
         district_to = instance.direction.get(type=2).district
         return district_to
-    
+
     def calculate_dimension_price(self):
         parcel_dimension = self.instance.dimension
         if dimension_price_obj := Envelop.objects.filter(
-            Q(distance__from_region = self.from_region) & 
-            Q(distance__to_district = self.to_district) & 
-            Q(dimension__length__lte = parcel_dimension.length) | 
-            Q(dimension__width__lte = parcel_dimension.width) | 
-            Q(dimension__height__lte = parcel_dimension.height)
+                Q(distance__from_region=self.from_region) &
+                Q(distance__to_district=self.to_district) &
+                Q(dimension__length__lte=parcel_dimension.length) |
+                Q(dimension__width__lte=parcel_dimension.width) |
+                Q(dimension__height__lte=parcel_dimension.height)
         ):
             dimension_price_obj = dimension_price_obj.last()
         else:
             dimension_price_obj = Envelop.objects.filter(
-                Q(distance__from_region = self.from_region) & 
-                Q(distance__to_district = self.to_district)).first()
+                Q(distance__from_region=self.from_region) &
+                Q(distance__to_district=self.to_district)).first()
         price = float(dimension_price_obj.price)
         dimension_weight = dimension_price_obj.dimension.weight
         if dif := parcel_dimension.weight - dimension_weight > dimension_weight:
             price += float(dimension_price_obj.kilo) * dif
-        
+
         self.instance.payment.envelop = dimension_price_obj
         self.instance.save()
-        
+
         return price
-        
+
     def calculate_envelop_price(self):
         envelop = self.instance.payment.envelop
         price = float(envelop.price)
         return price
-    
+
     def get_dimension_price(self):
         if self.instance.dimension:
             try:
@@ -71,7 +73,7 @@ class CalculateParcelPrice:
                 raise ValidationError({'message': 'There is no price for this area'})
         else:
             return self.calculate_envelop_price()
-    
+
     def calculate_packaging_price(self):
         packaging = self.instance.payment.packaging.all()
         price = 0
@@ -91,13 +93,15 @@ class CalculateParcelPrice:
         delivery_price = self.calculate_delivery_price()
         price = dimension_price + packaging_price + delivery_price
         bonus = price * 0.05
-        PaymentHistory.objects.create(
-            user = self.instance.sender,
-            parcel = self.instance,
-            type = self.instance.payment.payment.type,
-            sum = bonus,
-            payment_type = PaymentHistoryType.DEBIT
-        )
-        self.instance.sender.points += bonus
+        if self.pay_with_bonus is not True:
+            PaymentHistory.objects.create(
+                user=self.instance.sender,
+                parcel=self.instance,
+                type=self.instance.payment.payment.name,
+                sum=bonus,
+                payment_type=PaymentHistoryType.DEBIT
+            )
+
+        self.instance.sender.points += Decimal(bonus)
         self.instance.sender.save()
         return price
