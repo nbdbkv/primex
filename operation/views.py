@@ -1,6 +1,5 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-
 from operation.serializers import (
     DeliveryStatusSerializer,
     ParcelOptionSerializer,
@@ -10,7 +9,8 @@ from operation.serializers import (
     PaymentTypeSerializer,
     CreateParcelSerializer,
     ReatriveParcelSerializer,
-    PaymentHistorySerializer
+    PaymentHistorySerializer,
+    BonusSerializer,
 )
 from operation.models import (
     DeliveryStatus,
@@ -23,6 +23,14 @@ from operation.models import (
     PaymentType
 )
 
+
+class BonusView(generics.ListAPIView):
+    serializer_class = BonusSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = PaymentHistory.objects.filter(user=user)
+        return queryset
 
 class PaymentHistoryView(generics.ListAPIView):
     serializer_class = PaymentHistorySerializer
@@ -71,10 +79,6 @@ class PaymentTypeListView(generics.ListAPIView):
     serializer_class = PaymentTypeSerializer
     queryset = PaymentType.objects.all()
 
-class GetParcelBonusView(generics.RetrieveAPIView):
-    serializer_class = GetParcelBonusSerializer
-    lookup_field = 'pk'
-    queryset = Parcel
 
 class ParcelListView(generics.ListAPIView):
     serializer_class = ReatriveParcelSerializer

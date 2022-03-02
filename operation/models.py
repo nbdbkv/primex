@@ -29,7 +29,6 @@ class Parcel(models.Model):
     create_at = models.DateTimeField(_('date creation'), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_('options'))
     sending_date = models.DateTimeField(_('sendin date'))
-    bonus = models.PositiveIntegerField(_('bonus'), blank=True, default=0)
     
     def __str__(self) -> str:
         return self.title
@@ -163,6 +162,7 @@ class PaymentHistory(models.Model):
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
     sum = models.PositiveIntegerField(_('sum'))
     payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
-    
+    spent_bonuses = models.IntegerField(_('spent_bonuses'), blank=True, null=True)
+
     def __str__(self) -> str:
         return f'{self.user} -> {self.sum}'

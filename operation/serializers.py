@@ -6,7 +6,8 @@ from django.db import transaction
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
-from operation.choices import DirectionChoices, PayStatusChoices, PaymentHistoryType, UserInfoChoices, PaymentTypeChoices
+from operation.choices import DirectionChoices, PayStatusChoices, PaymentHistoryType, UserInfoChoices, \
+    PaymentTypeChoices
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -23,14 +24,20 @@ from operation.models import (
     Direction,
     UserInfo,
     ParcelDimension,
-    User
 )
 
+
 class PaymentHistorySerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = PaymentHistory
         fields = '__all__'
+
+
+class BonusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentHistory
+        exclude = ('user', 'payment_type', 'type',)
+        depth = 1
 
 
 class DeliveryStatusSerializer(serializers.ModelSerializer):
@@ -105,19 +112,19 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParcelPayment
         fields = '__all__'
-    
+
     def get_pay_status(self, instance):
         type = PayStatusChoices.IN_ANTICIPATION if instance.pay_status == 'in_anticipation' \
             else PayStatusChoices.PAID
         return type.label
-    
+
 
 class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer(many=True)
     delivery_type = DeliveryTypeSerializer()
     packaging = PackagingSerializer(many=True)
     envelop = EnvelopSerializer()
-    
+
     class Meta:
         model = ParcelPayment
         fields = '__all__'
@@ -135,7 +142,7 @@ class DirectionRetrieveSerializer(DirectionSerializer):
     district = DistrictsSerializer()
     village = VillagesSerializer()
     type = serializers.SerializerMethodField()
-    
+
     def get_type(self, instance):
         type = DirectionChoices.FROM if instance.type == 1 else DirectionChoices.TO
         return type.label
@@ -156,7 +163,7 @@ class ParcelDimensionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParcelDimension
         fields = '__all__'
-        
+
 
 class ReatriveParcelSerializer(serializers.ModelSerializer):
     payment = ParcelPaymentRetrieveSerializer()
@@ -164,7 +171,7 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer()
     option = serializers.SlugRelatedField('title', read_only=True, many=True)
-    
+
     class Meta:
         model = Parcel
         fields = '__all__'
@@ -176,16 +183,17 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer(required=False)
     code = serializers.CharField(read_only=True)
-    
+
     class Meta:
         model = Parcel
         exclude = ('sender', 'create_at')
 
     def validate_payment(self, payment):
         pay = payment['payment']
-        if pay.type.title == PaymentTypeChoices.BONUS:
+        payment_type = pay[0]['type']
+        if payment_type.title == PaymentTypeChoices.BONUS:
             user = self.context.get('request').user
-            if user.bonus < pay.sum:
+            if user.bonus < payment_type.sum:
                 raise ValidationError({'message': 'You do not have enought bonus'})
         return payment
 
@@ -226,16 +234,18 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         payment.packaging.set(packaging)
         for parcel_pay in parcel_payments:
             pay = Payment.objects.create(parcel=payment, **parcel_pay)
-            
+
             if pay.type.title == PaymentTypeChoices.BONUS:
                 parcel.sender.bonus -= pay.sum
+                spent_bonuses = -abs(pay.sum)
                 parcel.sender.save()
                 PaymentHistory.objects.create(
-                    user = parcel.sender,
-                    parcel = parcel,
-                    sum = pay.sum,
-                    payment_type = PaymentHistoryType.CREDIT,
-                    type = pay.type,
+                    user=parcel.sender,
+                    parcel=parcel,
+                    sum=pay.sum,
+                    payment_type=PaymentHistoryType.CREDIT,
+                    type=pay.type,
+                    spent_bonuses=spent_bonuses
                 )
 
         for dir in direction:
