@@ -178,6 +178,7 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
 class BonusHistorySerializer(serializers.ModelSerializer):
     code = serializers.SerializerMethodField()
     icon = serializers.SerializerMethodField()
+    parcel_sum = serializers.SerializerMethodField()
     
     class Meta:
         model = PaymentHistory
@@ -191,6 +192,9 @@ class BonusHistorySerializer(serializers.ModelSerializer):
         image = instance.parcel.payment.delivery_type.icon.url
         url = request.build_absolute_uri(image)
         return url
+    
+    def get_parcel_sum(self, instance):
+        return instance.parcel.payment.price
 
 
 class CreateParcelSerializer(serializers.ModelSerializer):
@@ -207,9 +211,9 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     def validate_payment(self, payment):
         pay_list = payment['payment']
         for pay in pay_list:
-            if pay['type'] == PaymentTypeChoices.BONUS:
+            if pay['type'].type == PaymentTypeChoices.BONUS:
                 user = self.context.get('request').user
-                if user.bonus < pay['sum']:
+                if user.points < pay['sum']:
                     raise ValidationError({'message': 'You do not have enought bonus'})
             return payment
         
