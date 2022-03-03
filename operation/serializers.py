@@ -276,5 +276,5 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
         
         parcel.payment.price = CalculateParcelPrice(parcel).price
-        parcel.save()
+        parcel.payment.save()
         return parcel
