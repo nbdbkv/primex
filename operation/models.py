@@ -162,6 +162,7 @@ class PaymentHistory(models.Model):
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
     sum = models.PositiveIntegerField(_('sum'))
     payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
+    create_at = models.DateTimeField(_('created date'), auto_now_add=True)
     
     def __str__(self) -> str:
         return f'{self.user} -> {self.sum}'

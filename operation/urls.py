@@ -24,7 +24,7 @@ urlpatterns = [
     path('envelops/', EnvelopListView.as_view()),
     path('payment_types/', PaymentTypeListView.as_view()),
     path('parcel_list/', ParcelListView.as_view()),
-    path('parcel/<int:pk>/', ParcelRetrieveView.as_view()),
+    path('parcel/<str:code>/', ParcelRetrieveView.as_view()),
     path('payment_history/', PaymentHistoryView.as_view()),
     path('bonus/', BonusHistoryView.as_view()),
 ]

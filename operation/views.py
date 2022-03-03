@@ -87,8 +87,6 @@ class PaymentTypeListView(generics.ListAPIView):
 
 class ParcelListView(generics.ListAPIView):
     serializer_class = ReatriveParcelSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['code']
     
     def get_queryset(self):
         user = self.request.user
@@ -99,3 +97,4 @@ class ParcelListView(generics.ListAPIView):
 class ParcelRetrieveView(generics.RetrieveAPIView):
     serializer_class = ReatriveParcelSerializer
     queryset = Parcel.objects.all()
+    lookup_field = 'code'

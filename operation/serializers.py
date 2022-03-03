@@ -205,12 +205,13 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         exclude = ('sender', 'create_at')
     
     def validate_payment(self, payment):
-        pay = payment['payment']
-        if pay.type.title == PaymentTypeChoices.BONUS:
-            user = self.context.get('request').user
-            if user.bonus < pay.sum:
-                raise ValidationError({'message': 'You do not have enought bonus'})
-        return payment
+        pay_list = payment['payment']
+        for pay in pay_list:
+            if pay.type.title == PaymentTypeChoices.BONUS:
+                user = self.context.get('request').user
+                if user.bonus < pay.sum:
+                    raise ValidationError({'message': 'You do not have enought bonus'})
+            return payment
         
     def validate_direction(self, direction):
         if len(direction) != 2:
