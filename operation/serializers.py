@@ -173,6 +173,15 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parcel
         fields = '__all__'
+        
+
+class BonusHistorySerializer(serializers.ModelSerializer):
+    code = serializers.SlugRelatedField('parcel__code', read_only=True)
+    icon = serializers.SlugRelatedField('parcel__payment__delivery_type__icon', read_only=True)
+    
+    class Meta:
+        model = PaymentHistory
+        fields = '__all__'
 
 
 class CreateParcelSerializer(serializers.ModelSerializer):
