@@ -34,13 +34,6 @@ class PaymentHistorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BonusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PaymentHistory
-        exclude = ('user', 'payment_type', 'type',)
-        depth = 1
-
-
 class DeliveryStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeliveryStatus
@@ -69,6 +62,14 @@ class DeliveryTypeSerializer(serializers.ModelSerializer):
         model = DeliveryType
         fields = '__all__'
 
+
+class BonusSerializer(serializers.ModelSerializer):
+    delivery_type = DeliveryTypeSerializer(read_only=True)
+
+    class Meta:
+        model = PaymentHistory
+        fields = ( 'sum', 'payment_type', 'spent_bonuses', 'parcel', 'type', 'delivery_type', )
+        depth = 1
 
 class PackagingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -190,13 +191,14 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         exclude = ('sender', 'create_at')
 
     def validate_payment(self, payment):
-        pay = payment['payment']
-        payment_type = pay[0]['type']
-        payment_sum = pay[0]['sum']
-        if payment_type.title == PaymentTypeChoices.BONUS:
+        pay = payment['pay_with_bonus']
+        #if payment_type.title == PaymentTypeChoices.BONUS:
+        if pay > 0:
             user = self.context.get('request').user
-            if user.points < payment_sum:
+            if user.points < pay:
                 raise ValidationError({'message': 'You do not have enought bonus'})
+            # elif payment_with_bonus > payment_sum:
+            #     raise ValidationError({'message': 'the bonus exceeded the cost of payment'})
         return payment
 
     def validate_direction(self, direction):
@@ -238,19 +240,29 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
         for parcel_pay in parcel_payments:
             pay = Payment.objects.create(parcel=payment, **parcel_pay)
-            if pay.type.title == PaymentTypeChoices.BONUS:
-                pay_with_bonus = True
-                parcel.sender.points -= pay.sum
-                spent_bonuses = -abs(pay.sum)
-                parcel.sender.save()
-                PaymentHistory.objects.create(
-                    user=parcel.sender,
-                    parcel=parcel,
-                    sum=pay.sum,
-                    payment_type=PaymentHistoryType.CREDIT,
-                    type=pay.type,
-                    spent_bonuses=spent_bonuses
-                )
+            #if pay.type.title == PaymentTypeChoices.BONUS:
+            # if pay.parcel.pay_with_bonus > 0:
+            #     parcel.sender.points -= pay.sum
+            #     parcel.sender.save()
+            #     pay_with_bonus = True
+            #     spent_bonuses = -abs(pay.sum)
+            #     if pay_with_bonus == pay.sum:
+            #         parcel.sender.points -= pay.sum
+            #         spent_bonuses = -abs(pay.sum)
+            #         pay_with_bonus = True
+            #         PaymentHistory.objects.create(
+            #             user=parcel.sender,
+            #             parcel=parcel,
+            #             sum=pay.sum,
+            #             payment_type=PaymentHistoryType.CREDIT,
+            #             type=pay.type,
+            #             spent_bonuses=spent_bonuses
+            #         )
+            #     elif pay_with_bonus < pay.sum:
+            #         pay.sum -= pay_with_bonus
+            #         pay.save()
+
+
 
         for dir in direction:
             Direction.objects.create(parcel=parcel, **dir)
@@ -261,6 +273,8 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
 
+
         parcel.payment.price = CalculateParcelPrice(parcel, pay_with_bonus).price
         parcel.save()
+
         return parcel
