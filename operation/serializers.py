@@ -169,6 +169,28 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parcel
         fields = '__all__'
+        
+
+class BonusHistorySerializer(serializers.ModelSerializer):
+    code = serializers.SerializerMethodField()
+    icon = serializers.SerializerMethodField()
+    parcel_sum = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PaymentHistory
+        fields = '__all__'
+    
+    def get_code(self, instance):
+        return instance.parcel.code
+    
+    def get_icon(self, instance):
+        request = self.context.get('request')
+        image = instance.parcel.payment.delivery_type.icon.url
+        url = request.build_absolute_uri(image)
+        return url
+    
+    def get_parcel_sum(self, instance):
+        return instance.parcel.payment.price
 
 
 class CreateParcelSerializer(serializers.ModelSerializer):
@@ -184,8 +206,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
     def validate_payment(self, payment):
         pay_list = payment['payment']
-        print(payment)
-
         for pay in pay_list:
             if pay['type'].type == PaymentTypeChoices.BONUS:
                 user = self.context.get('request').user

@@ -60,7 +60,7 @@ class FeedbackView(generics.GenericAPIView):
     
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(request.data).data
-        text = f'Email: {serializer.get("email")}\n' \
+        text = f'Name: {serializer.get("name")}\n' \
                 f'Phone: {serializer.get("phone")}'
         send_email(text)
         return Response()

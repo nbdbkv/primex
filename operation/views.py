@@ -1,7 +1,9 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from operation.choices import PaymentHistoryType, PaymentTypeChoices
 
 from operation.serializers import (
+    BonusHistorySerializer,
     DeliveryStatusSerializer,
     ParcelOptionSerializer,
     DeliveryTypeSerializer,
@@ -35,6 +37,15 @@ class PaymentHistoryView(generics.ListAPIView):
         return queryset
 
 
+class BonusHistoryView(generics.ListAPIView):
+    serializer_class = BonusHistorySerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = PaymentHistory.objects.filter(user=user, type__type=PaymentTypeChoices.BONUS)
+        return queryset
+
+
 class ParcelCreateView(generics.CreateAPIView):
     serializer_class = CreateParcelSerializer
     queryset = Parcel
@@ -53,6 +64,8 @@ class ParcelOptionsListView(generics.ListAPIView):
 class DeliveryTypeListView(generics.ListAPIView):
     serializer_class = DeliveryTypeSerializer
     queryset = DeliveryType.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['distance__from_region', 'distance__to_district']
     
 
 class PackagingListView(generics.ListAPIView):
@@ -84,3 +97,4 @@ class ParcelListView(generics.ListAPIView):
 class ParcelRetrieveView(generics.RetrieveAPIView):
     serializer_class = ReatriveParcelSerializer
     queryset = Parcel.objects.all()
+    lookup_field = 'code'

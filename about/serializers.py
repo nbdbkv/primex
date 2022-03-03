@@ -68,4 +68,4 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class FeedbackSerializer(serializers.Serializer):
     phone = serializers.CharField(validators=[PhoneValidator], max_length=15)
-    email = serializers.EmailField()
+    name = serializers.CharField()

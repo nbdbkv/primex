@@ -25,7 +25,7 @@ class Parcel(models.Model):
     title = models.CharField(_('title'), max_length=255, blank=True)
     sender = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name=_('sender'))
     status = models.ForeignKey(DeliveryStatus, on_delete=models.SET_NULL, verbose_name=_('delivery status'), null=True)
-    code = models.CharField(_('code'), max_length=15)
+    code = models.CharField(_('code'), max_length=15, unique=True)
     create_at = models.DateTimeField(_('date creation'), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_('options'))
     sending_date = models.DateTimeField(_('sendin date'))
@@ -162,6 +162,7 @@ class PaymentHistory(models.Model):
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
     sum = models.PositiveIntegerField(_('sum'))
     payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
+    create_at = models.DateTimeField(_('created date'), auto_now_add=True)
     
     def __str__(self) -> str:
         return f'{self.user} -> {self.sum}'

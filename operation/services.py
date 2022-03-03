@@ -4,8 +4,8 @@ from django.db.models import Q
 from django.forms import ValidationError
 
 from account.models import Region, District
-from operation.models import Parcel, Envelop, Direction, ParcelDimension, PaymentHistory
-from operation.choices import PaymentHistoryType
+from operation.models import Parcel, Envelop, Direction, ParcelDimension, PaymentHistory, PaymentType
+from operation.choices import PaymentHistoryType, PaymentTypeChoices
 
 from uuid import uuid4
 
@@ -97,7 +97,7 @@ class CalculateParcelPrice:
         PaymentHistory.objects.create(
             user = self.instance.sender,
             parcel = self.instance,
-            type = self.pay_type,
+            type = PaymentType.objects.get(type=PaymentTypeChoices.BONUS),
             sum = bonus,
             payment_type = PaymentHistoryType.DEBIT
         )
