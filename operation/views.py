@@ -53,6 +53,8 @@ class ParcelOptionsListView(generics.ListAPIView):
 class DeliveryTypeListView(generics.ListAPIView):
     serializer_class = DeliveryTypeSerializer
     queryset = DeliveryType.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['distance__from_region', 'distance__to_district']
     
 
 class PackagingListView(generics.ListAPIView):
@@ -84,3 +86,5 @@ class ParcelListView(generics.ListAPIView):
 class ParcelRetrieveView(generics.RetrieveAPIView):
     serializer_class = ReatriveParcelSerializer
     queryset = Parcel.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['code']
