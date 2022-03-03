@@ -187,7 +187,7 @@ class BonusHistorySerializer(serializers.ModelSerializer):
         return instance.parcel.code
     
     def get_icon(self, instance):
-        return instance.parcel.payment.delivery_type.icon
+        return instance.parcel.payment.delivery_type.icon.url
 
 
 class CreateParcelSerializer(serializers.ModelSerializer):
