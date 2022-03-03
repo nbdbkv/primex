@@ -103,7 +103,7 @@ class PaymentType(models.Model):
     type = models.CharField(_('type'), max_length=20, choices=PaymentTypeChoices.choices, unique=True)
     
     def __str__(self) -> str:
-        return self.title
+        return self.type
 
 
 class Payment(models.Model):
