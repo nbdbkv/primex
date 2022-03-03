@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db.models import Q
 from django.forms import ValidationError
 
@@ -19,11 +21,12 @@ def get_parcel_code(direction: dict) -> str:
 
 class CalculateParcelPrice:
     
-    def __init__(self, instance: Parcel):
+    def __init__(self, instance: Parcel, payType):
         self.instance = instance
         self.from_region = self.get_region_from(instance)
         self.to_district = self.get_district_to(instance)
-    
+        self.pay_type = payType
+
     @staticmethod
     def get_region_from(instance: Parcel) -> Region:
         region_from = instance.direction.get(type=1).district.region
@@ -94,10 +97,10 @@ class CalculateParcelPrice:
         PaymentHistory.objects.create(
             user = self.instance.sender,
             parcel = self.instance,
-            type = self.instance.payment.payment.type,
+            type = self.pay_type,
             sum = bonus,
             payment_type = PaymentHistoryType.DEBIT
         )
-        self.instance.sender.points += bonus
+        self.instance.sender.points += Decimal(bonus)
         self.instance.sender.save()
         return price
