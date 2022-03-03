@@ -256,7 +256,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             pay = Payment.objects.create(parcel=payment, **parcel_pay)
             
             if pay.type.title == PaymentTypeChoices.BONUS:
-                parcel.sender.bonus -= pay.sum
+                parcel.sender.points -= pay.sum
                 parcel.sender.save()
                 PaymentHistory.objects.create(
                     user = parcel.sender,
