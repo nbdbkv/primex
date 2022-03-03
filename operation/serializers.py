@@ -176,8 +176,8 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
         
 
 class BonusHistorySerializer(serializers.ModelSerializer):
-    code = serializers.SlugRelatedField('parcel__code', read_only=True)
-    icon = serializers.SlugRelatedField('parcel__payment__delivery_type__icon', read_only=True)
+    code = serializers.SerializerMethodField(lambda instance: instance.parcel.code)
+    icon = serializers.SerializerMethodField(lambda instance: instance.parcel.payment.delivery_type.icon)
     
     class Meta:
         model = PaymentHistory
