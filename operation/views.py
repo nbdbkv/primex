@@ -85,6 +85,7 @@ class ParcelListView(generics.ListAPIView):
     
     def get_queryset(self):
         user = self.request.user
+        print(user)
         queryset = Parcel.objects.filter(sender=user)
         return queryset
 

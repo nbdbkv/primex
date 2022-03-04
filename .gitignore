@@ -8,8 +8,8 @@ db.sqlite3
 db.sqlite3-journal
 media
 .idea
-mydatabase3
 mydatabase1
+mydatabase2
 mydatabase
 migrations
 static
