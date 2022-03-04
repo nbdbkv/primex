@@ -25,7 +25,7 @@ class Parcel(models.Model):
     title = models.CharField(_('title'), max_length=255, blank=True)
     sender = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name=_('sender'))
     status = models.ForeignKey(DeliveryStatus, on_delete=models.SET_NULL, verbose_name=_('delivery status'), null=True)
-    code = models.CharField(_('code'), max_length=15)
+    code = models.CharField(_('code'), max_length=15, unique=True)
     create_at = models.DateTimeField(_('date creation'), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_('options'))
     sending_date = models.DateTimeField(_('sendin date'))
@@ -92,9 +92,6 @@ class ParcelPayment(models.Model):
     packaging = models.ManyToManyField(Packaging, verbose_name=_('parcel packaging'))
     pay_status = models.CharField(_('status'), choices=PayStatusChoices.choices, max_length=20, default=PayStatusChoices.IN_ANTICIPATION)
     envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True, blank=True)
-    pay_with_bonus = models.PositiveIntegerField(_('pay_with_bonus'), blank=True, null=True)
-    paid = models.PositiveIntegerField(_('paid money'), blank=True, null=True)
-    remaining = models.PositiveIntegerField(_('remaining money'), blank=True, null=True)
 
     def __str__(self) -> str:
         return self.parcel.title
@@ -106,13 +103,13 @@ class PaymentType(models.Model):
     type = models.CharField(_('type'), max_length=20, choices=PaymentTypeChoices.choices, unique=True)
     
     def __str__(self) -> str:
-        return self.title
+        return self.type
 
 
 class Payment(models.Model):
     parcel = models.ForeignKey(ParcelPayment, on_delete=models.CASCADE, verbose_name=_('parcel payment'), related_name='payment')
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
-    sum = models.DecimalField(_('sum'), max_digits=9, decimal_places=2)
+    sum = models.DecimalField(_('sum'), max_digits=9, decimal_places=2, blank=True)
 
     def __str__(self) -> str:
         return self.parcel.parcel.title
@@ -165,8 +162,7 @@ class PaymentHistory(models.Model):
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
     sum = models.PositiveIntegerField(_('sum'))
     payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
-    delivery_type = models.ForeignKey(DeliveryType, on_delete=models.DO_NOTHING, verbose_name=_('delivery_type'), null=True)
-    spent_bonuses = models.IntegerField(_('spent_bonuses'), blank=True, null=True)
+    create_at = models.DateTimeField(_('created date'), auto_now_add=True)
 
     def __str__(self) -> str:
         return f'{self.user} -> {self.sum}'

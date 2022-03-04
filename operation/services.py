@@ -1,10 +1,12 @@
+from decimal import Decimal
+
 from django.db.models import Q
 from django.forms import ValidationError
 from decimal import Decimal
 
 from account.models import Region, District
-from operation.models import Parcel, Envelop, Direction, ParcelDimension, PaymentHistory
-from operation.choices import PaymentHistoryType
+from operation.models import Parcel, Envelop, Direction, ParcelDimension, PaymentHistory, PaymentType
+from operation.choices import PaymentHistoryType, PaymentTypeChoices
 
 from uuid import uuid4
 
@@ -19,13 +21,10 @@ def get_parcel_code(direction: dict) -> str:
 
 
 class CalculateParcelPrice:
-
-    def __init__(self, instance: Parcel, pay_with_bonus):
+    def __init__(self, instance: Parcel):
         self.instance = instance
         self.from_region = self.get_region_from(instance)
         self.to_district = self.get_district_to(instance)
-        self.pay_with_bonus = pay_with_bonus
-
 
     @staticmethod
     def get_region_from(instance: Parcel) -> Region:
@@ -94,60 +93,15 @@ class CalculateParcelPrice:
         delivery_price = self.calculate_delivery_price()
         price = int(dimension_price + packaging_price + delivery_price)
         bonus = price * 0.05
-        pay_bonus = int(self.instance.payment.pay_with_bonus)
-        paid = 0
-        remaining = 0
-
-        payWithBonus = PayWithBonus(inctance=self.instance, pay_bonus=pay_bonus, price=price)
-        if self.instance.payment.pay_with_bonus > 0:
-            if pay_bonus > price:
-                pay_bonus = price
-                paid, remaining = payWithBonus.bonusMore()
-            if price == pay_bonus:
-                paid, remaining = payWithBonus.equals()
-            elif price > pay_bonus:
-                paid, remaining = payWithBonus.more()
-            self.instance.payment.remaining = remaining
-            self.instance.payment.paid = paid
-            self.instance.payment.save()
 
         PaymentHistory.objects.create(
-            user=self.instance.sender,
-            parcel=self.instance,
-            type=self.instance.payment.payment.name,
-            sum=bonus,
-            payment_type=PaymentHistoryType.DEBIT,
-            spent_bonuses= -abs(pay_bonus),
-            delivery_type = self.instance.payment.delivery_type
-            )
-
+            user = self.instance.sender,
+            parcel = self.instance,
+            type = PaymentType.objects.get(type=PaymentTypeChoices.BONUS),
+            sum = bonus,
+            payment_type = PaymentHistoryType.DEBIT
+        )
         self.instance.sender.points += Decimal(bonus)
         self.instance.sender.save()
         return price
-
-class PayWithBonus:
-
-    def __init__(self, inctance: Parcel, pay_bonus, price):
-        self.inctance = inctance
-        self.pay_bonus = pay_bonus
-        self.price = price
-
-    def equals(self):
-        self.inctance.sender.points -= self.pay_bonus
-        self.inctance.payment.pay_status = 'paid'
-        return self.pay_bonus, 0
-
-    def more(self):
-        remaining = self.price - self.pay_bonus
-        self.inctance.sender.points -= self.pay_bonus
-        self.inctance.sender.save()
-        return self.pay_bonus, remaining
-
-    def bonusMore(self):
-        self.pay_bonus = self.price
-        self.inctance.sender.points -= self.pay_bonus
-        self.inctance.payment.pay_with_bonus = self.pay_bonus
-        self.inctance.payment.pay_status = 'paid'
-        self.inctance.sender.save()
-        return self.pay_bonus, 0
 

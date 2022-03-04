@@ -1,6 +1,10 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+
+from operation.choices import PaymentHistoryType, PaymentTypeChoices
+
 from operation.serializers import (
+    BonusHistorySerializer,
     DeliveryStatusSerializer,
     ParcelOptionSerializer,
     DeliveryTypeSerializer,
@@ -10,7 +14,6 @@ from operation.serializers import (
     CreateParcelSerializer,
     ReatriveParcelSerializer,
     PaymentHistorySerializer,
-    BonusSerializer,
 )
 from operation.models import (
     DeliveryStatus,
@@ -23,15 +26,6 @@ from operation.models import (
     PaymentType
 )
 
-
-class BonusView(generics.ListAPIView):
-    serializer_class = BonusSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-        queryset = PaymentHistory.objects.filter(user=user)
-        return queryset
-
 class PaymentHistoryView(generics.ListAPIView):
     serializer_class = PaymentHistorySerializer
     filter_backends = [DjangoFilterBackend]
@@ -40,6 +34,15 @@ class PaymentHistoryView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = PaymentHistory.objects.filter(user=user)
+        return queryset
+
+
+class BonusHistoryView(generics.ListAPIView):
+    serializer_class = BonusHistorySerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = PaymentHistory.objects.filter(user=user, type__type=PaymentTypeChoices.BONUS)
         return queryset
 
 
@@ -61,6 +64,8 @@ class ParcelOptionsListView(generics.ListAPIView):
 class DeliveryTypeListView(generics.ListAPIView):
     serializer_class = DeliveryTypeSerializer
     queryset = DeliveryType.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['distance__from_region', 'distance__to_district']
     
 
 class PackagingListView(generics.ListAPIView):
@@ -93,3 +98,4 @@ class ParcelListView(generics.ListAPIView):
 class ParcelRetrieveView(generics.RetrieveAPIView):
     serializer_class = ReatriveParcelSerializer
     queryset = Parcel.objects.all()
+    lookup_field = 'code'
