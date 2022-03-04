@@ -46,10 +46,19 @@ class ParcelDimensionInline(NestedStackedInline):
     model = ParcelDimension
     extra = 1
 
-
 class ParcelAdmin(NestedModelAdmin):
     inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
-    
+    list_display = ("sender", "code", "create_at", "from_region", "to_district",)
+
+    def from_region (self, obj):
+        parcel_payment = ParcelPayment.objects.get(parcel=obj)
+        from_region = parcel_payment.delivery_type.distance.from_region.name
+        return from_region
+
+    def to_district(self, obj):
+        parcel_payment = ParcelPayment.objects.get(parcel=obj)
+        to_dictrict = parcel_payment.delivery_type.distance.to_district.name
+        return to_dictrict
 
 # class PaymentHistoryAdmin(admin.ModelAdmin):
 
