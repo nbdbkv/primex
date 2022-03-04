@@ -109,7 +109,7 @@ class PaymentType(models.Model):
 class Payment(models.Model):
     parcel = models.ForeignKey(ParcelPayment, on_delete=models.CASCADE, verbose_name=_('parcel payment'), related_name='payment')
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
-    sum = models.DecimalField(_('sum'), max_digits=9, decimal_places=2)
+    sum = models.DecimalField(_('sum'), max_digits=9, decimal_places=2, blank=True)
     
     def __str__(self) -> str:
         return self.parcel.parcel.title
