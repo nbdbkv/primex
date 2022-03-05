@@ -1,0 +1,426 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-05 19:38+0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: about/models.py:12
+msgid "company name"
+msgstr "название компании"
+
+#: about/models.py:13
+msgid "logo"
+msgstr "лого"
+
+#: about/models.py:20
+msgid "social"
+msgstr "социальная сеть"
+
+#: about/models.py:21
+msgid "social icon"
+msgstr "иконка социальной сети"
+
+#: about/models.py:28 account/models.py:60 account/models.py:70
+#: account/models.py:80
+msgid "name"
+msgstr "название"
+
+#: about/models.py:35 about/models.py:72 operation/models.py:11
+#: operation/models.py:25 operation/models.py:47 operation/models.py:59
+#: operation/models.py:79 operation/models.py:102
+msgid "title"
+msgstr "название"
+
+#: about/models.py:37
+msgid "border image"
+msgstr "фото"
+
+#: about/models.py:38
+msgid "article category"
+msgstr "категория"
+
+#: about/models.py:39
+msgid "watched count"
+msgstr "колво просмотров"
+
+#: about/models.py:40 operation/models.py:165
+msgid "created date"
+msgstr "дата создания"
+
+#: about/models.py:47 operation/models.py:52
+msgid "image"
+msgstr "фото"
+
+#: about/models.py:54 account/models.py:61 account/models.py:71
+#: account/models.py:81 operation/models.py:124
+msgid "geolocation"
+msgstr "геолокация"
+
+#: about/models.py:55
+msgid "contact phone"
+msgstr "контактный номер"
+
+#: about/models.py:56 operation/models.py:138
+msgid "email"
+msgstr "email"
+
+#: about/models.py:63
+msgid "alias"
+msgstr "псевдоним"
+
+#: about/models.py:64
+msgid "value"
+msgstr "значение"
+
+#: about/models.py:65 operation/models.py:48 operation/models.py:60
+#: operation/models.py:80
+msgid "description"
+msgstr "описание"
+
+#: about/models.py:73 about/models.py:81
+msgid "text"
+msgstr "текст"
+
+#: about/models.py:80
+msgid "question"
+msgstr "вопрос"
+
+#: account/choices.py:6
+msgid "register"
+msgstr "регистрация"
+
+#: account/choices.py:7
+msgid "reset password"
+msgstr "сброс пароля"
+
+#: account/choices.py:8
+msgid "reset phone"
+msgstr "сброс тел. номера"
+
+#: account/choices.py:12
+msgid "client"
+msgstr "клиент"
+
+#: account/choices.py:13
+msgid "courier"
+msgstr "курьер"
+
+#: account/choices.py:14
+msgid "operator"
+msgstr "оператор"
+
+#: account/choices.py:15
+msgid "subadmin"
+msgstr "субадмин"
+
+#: account/messages.py:6
+msgid "User is activated"
+msgstr "Пользователь активирован"
+
+#: account/messages.py:7
+msgid "Password successfully changed"
+msgstr "Пароль успешно изменен"
+
+#: account/messages.py:8
+msgid "Phone successfully changed"
+msgstr "Тел. номер успешно изменен"
+
+#: account/messages.py:9
+msgid "The code was successfully sent"
+msgstr "Код отправлен"
+
+#: account/messages.py:13
+msgid "A user with that phone number does not exists."
+msgstr "Пользователь с таким номером не существует"
+
+#: account/messages.py:14
+msgid "Wrong otp code"
+msgstr "Не правельный код"
+
+#: account/messages.py:15
+msgid "provide a strong password!"
+msgstr "Введите надежный пароль"
+
+#: account/models.py:17
+msgid "user phone number"
+msgstr "Тел. номер"
+
+#: account/models.py:20
+msgid "Required. 9 digits in format: 996*********** without \"+\"."
+msgstr "Требуется. 9 цифр в формате: 996*********** без \"+\"."
+
+#: account/models.py:23
+msgid "A user with that phone number already exists."
+msgstr "Пользователь с таким номером уже существует"
+
+#: account/models.py:26 operation/models.py:136
+msgid "user info"
+msgstr "Информация о пользователе"
+
+#: account/models.py:27 account/models.py:69 account/models.py:79
+msgid "region"
+msgstr "регион"
+
+#: account/models.py:28 operation/models.py:121
+msgid "district"
+msgstr "район"
+
+#: account/models.py:29
+msgid "role"
+msgstr "роль"
+
+#: account/models.py:30
+msgid "user bonus points"
+msgstr "бонусные баллы"
+
+#: account/models.py:31
+msgid "avatar"
+msgstr "аватар"
+
+#: account/models.py:33
+msgid "active"
+msgstr "активирован"
+
+#: account/models.py:36
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: account/models.py:62 account/models.py:72 account/models.py:82
+#: operation/models.py:28
+msgid "code"
+msgstr "код"
+
+#: account/validators.py:9
+msgid ""
+"Phone number must be entered in the format: +996*********** Up to 9 digits "
+"allowed."
+msgstr "Номер телефона должен быть введен в формате: +996*********** Допускается до 9 цифр"
+
+#: account/validators.py:17
+msgid "Code must be 2 digit"
+msgstr "код должен состоять из 2 цифр"
+
+#: operation/choices.py:6
+msgid "from"
+msgstr "от"
+
+#: operation/choices.py:7
+msgid "to"
+msgstr "в"
+
+#: operation/choices.py:11 operation/models.py:26
+msgid "sender"
+msgstr "отправитель"
+
+#: operation/choices.py:12
+msgid "recipient"
+msgstr "получатель"
+
+#: operation/choices.py:16
+msgid "in anticipation"
+msgstr "в ожидании"
+
+#: operation/choices.py:17
+msgid "paid"
+msgstr "оплаченио"
+
+#: operation/choices.py:21
+msgid "cash"
+msgstr "наличные"
+
+#: operation/choices.py:22
+msgid "bonus"
+msgstr "бонус"
+
+#: operation/choices.py:23
+msgid "Mbank"
+msgstr "Мбанк"
+
+#: operation/choices.py:24
+msgid "Megapay"
+msgstr "Мегапей"
+
+#: operation/choices.py:25
+msgid "balance"
+msgstr "Баланс"
+
+#: operation/choices.py:26
+msgid "O_pay"
+msgstr "О деньги"
+
+#: operation/choices.py:27
+msgid "Elsom"
+msgstr "Элсом"
+
+#: operation/choices.py:31
+msgid "credit"
+msgstr "Кредит"
+
+#: operation/choices.py:32
+msgid "debit"
+msgstr "Дебит"
+
+#: operation/models.py:18
+msgid "option title"
+msgstr "название"
+
+#: operation/models.py:27
+msgid "delivery status"
+msgstr "статус отправки"
+
+#: operation/models.py:29
+msgid "date creation"
+msgstr "дата создания"
+
+#: operation/models.py:30
+msgid "options"
+msgstr "опции"
+
+#: operation/models.py:31
+msgid "sendin date"
+msgstr "дата отправки"
+
+#: operation/models.py:38
+msgid "from region"
+msgstr "от региона"
+
+#: operation/models.py:39
+msgid "to district"
+msgstr "в район"
+
+#: operation/models.py:46 operation/models.py:77
+msgid "distance"
+msgstr ""
+
+#: operation/models.py:49 operation/models.py:61 operation/models.py:78
+#: operation/models.py:90
+msgid "price"
+msgstr "цена"
+
+#: operation/models.py:50
+msgid "time in hour"
+msgstr "время в часах"
+
+#: operation/models.py:51 operation/models.py:101
+msgid "icon"
+msgstr "иконка"
+
+#: operation/models.py:62
+msgid "quantity"
+msgstr "количество"
+
+#: operation/models.py:63
+msgid "measuring unit"
+msgstr "единица измерения"
+
+#: operation/models.py:70 operation/models.py:150
+msgid "parcel length"
+msgstr "длина"
+
+#: operation/models.py:71 operation/models.py:151
+msgid "parcel width"
+msgstr "ширина"
+
+#: operation/models.py:72 operation/models.py:152
+msgid "parcel height"
+msgstr "высота"
+
+#: operation/models.py:73 operation/models.py:153
+msgid "parcel weight"
+msgstr "вес"
+
+#: operation/models.py:81
+msgid "dimension"
+msgstr "размер"
+
+#: operation/models.py:82
+msgid "price per kilo"
+msgstr "цена за килограмм"
+
+#: operation/models.py:89 operation/models.py:120 operation/models.py:134
+#: operation/models.py:149 operation/models.py:161
+msgid "parcel"
+msgstr "посылка"
+
+#: operation/models.py:91
+msgid "delivery type"
+msgstr "тип отправки"
+
+#: operation/models.py:92
+msgid "parcel packaging"
+msgstr "упаковка"
+
+#: operation/models.py:93
+msgid "status"
+msgstr "статус"
+
+#: operation/models.py:94
+msgid "envelop"
+msgstr "конверт"
+
+#: operation/models.py:103 operation/models.py:111 operation/models.py:119
+#: operation/models.py:162
+msgid "type"
+msgstr "тип"
+
+#: operation/models.py:110
+msgid "parcel payment"
+msgstr "оплата посылки"
+
+#: operation/models.py:112 operation/models.py:163
+msgid "sum"
+msgstr "сумма"
+
+#: operation/models.py:122
+msgid "village"
+msgstr "село"
+
+#: operation/models.py:123
+msgid "destination"
+msgstr "направление"
+
+#: operation/models.py:135
+msgid "phone"
+msgstr "телефонный номер"
+
+#: operation/models.py:137
+msgid "company"
+msgstr "компания"
+
+#: operation/models.py:139
+msgid "user info type"
+msgstr "тип"
+
+#: operation/models.py:160
+msgid "user"
+msgstr "пользователе"
+
+#: operation/models.py:164
+msgid "payment type"
+msgstr "тип оплаты"
+
+#: operation/serializers.py:226
+msgid "direction must be 2"
+msgstr "направлений должно быть 2"
+
+#: operation/serializers.py:235
+msgid "user_info must be 2"
+msgstr "информация пользователей должно быть 2"
