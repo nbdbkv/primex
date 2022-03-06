@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
+from account.models import User
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
@@ -23,7 +24,7 @@ from operation.models import (
     Payment,
     Direction,
     UserInfo,
-    ParcelDimension
+    ParcelDimension,
 )
 
 
@@ -252,9 +253,9 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         packaging = payment.pop('packaging')
         payment = ParcelPayment.objects.create(parcel=parcel, **payment)
         payment.packaging.set(packaging)
+
         for parcel_pay in parcel_payments:
             pay = Payment.objects.create(parcel=payment, **parcel_pay)
-
             if pay.type.title == PaymentTypeChoices.BONUS:
                 parcel.sender.points -= pay.sum
                 parcel.sender.save()

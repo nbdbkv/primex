@@ -33,7 +33,6 @@ class Parcel(models.Model):
     def __str__(self) -> str:
         return self.title
 
-
 class Distance(models.Model):
     from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
     to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
@@ -92,7 +91,7 @@ class ParcelPayment(models.Model):
     packaging = models.ManyToManyField(Packaging, verbose_name=_('parcel packaging'))
     pay_status = models.CharField(_('status'), choices=PayStatusChoices.choices, max_length=20, default=PayStatusChoices.IN_ANTICIPATION)
     envelop = models.ForeignKey(Envelop, on_delete=models.SET_NULL, verbose_name=_('envelop'), null=True, blank=True)
-    
+
     def __str__(self) -> str:
         return self.parcel.title
 
@@ -110,7 +109,7 @@ class Payment(models.Model):
     parcel = models.ForeignKey(ParcelPayment, on_delete=models.CASCADE, verbose_name=_('parcel payment'), related_name='payment')
     type = models.ForeignKey(PaymentType, on_delete=models.SET_NULL, verbose_name=_('type'), null=True)
     sum = models.DecimalField(_('sum'), max_digits=9, decimal_places=2, blank=True)
-    
+
     def __str__(self) -> str:
         return self.parcel.parcel.title
 
@@ -163,6 +162,6 @@ class PaymentHistory(models.Model):
     sum = models.PositiveIntegerField(_('sum'))
     payment_type = models.PositiveSmallIntegerField(_('payment type'), choices=PaymentHistoryType.choices)
     create_at = models.DateTimeField(_('created date'), auto_now_add=True)
-    
+
     def __str__(self) -> str:
         return f'{self.user} -> {self.sum}'

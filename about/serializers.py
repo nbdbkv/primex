@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
 
 from account.validators import PhoneValidator
 from about.models import (
@@ -43,7 +45,7 @@ class NewsSerializer(serializers.ModelSerializer):
         queryset = NewGallery.objects.filter(new=instance)
         images = [request.build_absolute_uri(obj.image.url) for obj in queryset]
         return images
-    
+
     def get_category(self, instance):
         return instance.category.name
 

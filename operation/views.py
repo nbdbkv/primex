@@ -1,5 +1,6 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+
 from operation.choices import PaymentHistoryType, PaymentTypeChoices
 
 from operation.serializers import (
@@ -12,7 +13,7 @@ from operation.serializers import (
     PaymentTypeSerializer,
     CreateParcelSerializer,
     ReatriveParcelSerializer,
-    PaymentHistorySerializer
+    PaymentHistorySerializer,
 )
 from operation.models import (
     DeliveryStatus,
@@ -24,7 +25,6 @@ from operation.models import (
     PaymentHistory,
     PaymentType
 )
-
 
 class PaymentHistoryView(generics.ListAPIView):
     serializer_class = PaymentHistorySerializer
@@ -90,6 +90,7 @@ class ParcelListView(generics.ListAPIView):
     
     def get_queryset(self):
         user = self.request.user
+        print(user)
         queryset = Parcel.objects.filter(sender=user)
         return queryset
 

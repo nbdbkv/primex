@@ -48,6 +48,7 @@ class UserSendCodeSerializer(serializers.Serializer):
         data = self.validated_data
         phone = data['phone']
         code = get_otp()
+        print(code)
         cache.set(code, phone, settings.SMS_CODE_TIME, version=data['type'])
         SendSMS(phone, f'code: {code}').send
 
