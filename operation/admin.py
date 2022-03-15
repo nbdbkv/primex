@@ -2,6 +2,7 @@ from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 
+from .choices import DirectionChoices
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -48,17 +49,15 @@ class ParcelDimensionInline(NestedStackedInline):
 
 class ParcelAdmin(NestedModelAdmin):
     inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
-    list_display = ("sender", "code", "create_at", "from_region", "to_district",)
+    list_display = ("sender", "code", "create_at", "from_district", "to_district",)
 
-    def from_region (self, obj):
-        parcel_payment = ParcelPayment.objects.get(parcel=obj)
-        from_region = parcel_payment.delivery_type.distance.from_region.name
-        return from_region
+    def from_district(self, obj):
+        from_dis = obj.direction.filter(type=DirectionChoices.FROM).district.name
+        return from_dis
 
     def to_district(self, obj):
-        parcel_payment = ParcelPayment.objects.get(parcel=obj)
-        to_dictrict = parcel_payment.delivery_type.distance.to_district.name
-        return to_dictrict
+        to_dis = obj.direction.filter(type=DirectionChoices.TO).district.name
+        return to_dis
 
 # class PaymentHistoryAdmin(admin.ModelAdmin):
 
