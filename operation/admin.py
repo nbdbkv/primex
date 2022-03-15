@@ -52,11 +52,11 @@ class ParcelAdmin(NestedModelAdmin):
     list_display = ("sender", "code", "create_at", "from_district", "to_district",)
 
     def from_district(self, obj):
-        from_dis = obj.direction.filter(type=DirectionChoices.FROM).district.name
+        from_dis = obj.direction.get(type=DirectionChoices.FROM).district.name
         return from_dis
 
     def to_district(self, obj):
-        to_dis = obj.direction.filter(type=DirectionChoices.TO).district.name
+        to_dis = obj.direction.get(type=DirectionChoices.TO).district.name
         return to_dis
 
 # class PaymentHistoryAdmin(admin.ModelAdmin):
