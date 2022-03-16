@@ -73,7 +73,7 @@ class PaymentDimension(models.Model):
 
 
 class Envelop(models.Model):
-    distance = models.ForeignKey(Distance, on_delete=models.SET_NULL, verbose_name=_('distance'), null=True)
+    distance = models.ForeignKey(Distance, on_delete=models.SET_NULL, verbose_name=_('distance'), null=True, blank=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'))
