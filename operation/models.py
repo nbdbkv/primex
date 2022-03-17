@@ -29,6 +29,9 @@ class Parcel(models.Model):
     create_at = models.DateTimeField(_('date creation'), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_('options'))
     sending_date = models.DateTimeField(_('sendin date'))
+
+    class Meta:
+        verbose_name=_('parcel')
     
     def __str__(self) -> str:
         return self.title

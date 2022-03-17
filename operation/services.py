@@ -44,7 +44,9 @@ class CalculateParcelPrice:
                 Q(dimension__length__lte=parcel_dimension.length) |
                 Q(dimension__width__lte=parcel_dimension.width) |
                 Q(dimension__height__lte=parcel_dimension.height)
+
         ):
+            print("super")
             dimension_price_obj = dimension_price_obj.last()
         else:
             dimension_price_obj = Envelop.objects.filter(
@@ -53,8 +55,13 @@ class CalculateParcelPrice:
         price = float(dimension_price_obj.price)
         dimension_weight = dimension_price_obj.dimension.weight
         if dif := parcel_dimension.weight - dimension_weight > dimension_weight:
+            dif = parcel_dimension.weight - dimension_weight
             price += float(dimension_price_obj.kilo) * dif
 
+            print("from calculate dimension price")
+            print(dimension_weight)
+            print(parcel_dimension.weight)
+            print(price)
         self.instance.payment.envelop = dimension_price_obj
         self.instance.save()
 
@@ -103,5 +110,6 @@ class CalculateParcelPrice:
         )
         self.instance.sender.points += Decimal(bonus)
         self.instance.sender.save()
+        print(price)
         return price
 
