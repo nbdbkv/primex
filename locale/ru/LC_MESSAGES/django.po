@@ -52,7 +52,7 @@ msgstr "контактный номер"
 
 #: about/models.py:32
 msgid "Contacts"
-msgstr ""
+msgstr "Контакты"
 
 #: about/models.py:36 account/models.py:59 account/models.py:73
 #: account/models.py:87
@@ -95,11 +95,11 @@ msgstr "дата создания"
 
 #: about/models.py:58
 msgid "New"
-msgstr ""
+msgstr "Новость"
 
 #: about/models.py:59
 msgid "News"
-msgstr ""
+msgstr "Новости"
 
 #: about/models.py:63 operation/models.py:68
 msgid "image"
@@ -107,11 +107,11 @@ msgstr "фото"
 
 #: about/models.py:67
 msgid "New gallery"
-msgstr ""
+msgstr "галерия"
 
 #: about/models.py:68
 msgid "New galleries"
-msgstr ""
+msgstr "галерия"
 
 #: about/models.py:74 account/models.py:60 account/models.py:74
 #: account/models.py:88 operation/models.py:168
@@ -130,11 +130,11 @@ msgstr "email"
 
 #: about/models.py:82
 msgid "Fillial"
-msgstr ""
+msgstr "Филлиал"
 
 #: about/models.py:83
 msgid "Fillials"
-msgstr ""
+msgstr "Филлиалы"
 
 #: about/models.py:87
 msgid "alias"
@@ -473,15 +473,15 @@ msgstr "в район"
 
 #: operation/models.py:57
 msgid "Distance"
-msgstr ""
+msgstr "Дистанция"
 
 #: operation/models.py:58
 msgid "Distances"
-msgstr ""
+msgstr "Дистанции"
 
 #: operation/models.py:62 operation/models.py:105
 msgid "distance"
-msgstr ""
+msgstr "дистанция"
 
 #: operation/models.py:65 operation/models.py:81 operation/models.py:106
 #: operation/models.py:122
@@ -724,416 +724,417 @@ msgstr "направлений должно быть 2"
 msgid "user_info must be 2"
 msgstr "информация пользователей должно быть 2"
 
-#~ msgid "Invalid basic header. No credentials provided."
-#~ msgstr "Недопустимый заголовок. Не предоставлены учетные данные."
+msgid "Invalid basic header. No credentials provided."
+msgstr "Недопустимый заголовок. Не предоставлены учетные данные."
 
-#~ msgid "Invalid basic header. Credentials string should not contain spaces."
-#~ msgstr ""
-#~ "Недопустимый заголовок. Учетные данные не должны содержать пробелов."
+msgid "Invalid basic header. Credentials string should not contain spaces."
+msgstr ""
+"Недопустимый заголовок. Учетные данные не должны содержать пробелов."
 
-#~ msgid "Invalid basic header. Credentials not correctly base64 encoded."
-#~ msgstr ""
-#~ "Недопустимый заголовок. Учетные данные некорректно закодированны в base64."
+msgid "Invalid basic header. Credentials not correctly base64 encoded."
+msgstr ""
+"Недопустимый заголовок. Учетные данные некорректно закодированны в base64."
 
-#~ msgid "Invalid username/password."
-#~ msgstr "Недопустимые имя пользователя или пароль."
+msgid "Invalid username/password."
+msgstr "Недопустимые имя пользователя или пароль."
 
-#~ msgid "User inactive or deleted."
-#~ msgstr "Пользователь неактивен или удален."
+msgid "User inactive or deleted."
+msgstr "Пользователь неактивен или удален."
 
-#~ msgid "Invalid token header. No credentials provided."
-#~ msgstr "Недопустимый заголовок токена. Не предоставлены учетные данные."
+msgid "Invalid token header. No credentials provided."
+msgstr "Недопустимый заголовок токена. Не предоставлены учетные данные."
 
-#~ msgid "Invalid token header. Token string should not contain spaces."
-#~ msgstr "Недопустимый заголовок токена. Токен не должен содержать пробелов."
+msgid "Invalid token header. Token string should not contain spaces."
+msgstr "Недопустимый заголовок токена. Токен не должен содержать пробелов."
 
-#~ msgid ""
-#~ "Invalid token header. Token string should not contain invalid characters."
-#~ msgstr ""
-#~ "Недопустимый заголовок токена. Токен не должен содержать недопустимые "
-#~ "символы."
+msgid ""
+"Invalid token header. Token string should not contain invalid characters."
+msgstr ""
+"Недопустимый заголовок токена. Токен не должен содержать недопустимые "
+"символы."
 
-#~ msgid "Invalid token."
-#~ msgstr "Недопустимый токен."
+msgid "Invalid token."
+msgstr "Недопустимый токен."
 
-#~ msgid "Auth Token"
-#~ msgstr "Токен аутентификации"
+msgid "Auth Token"
+msgstr "Токен аутентификации"
 
-#~ msgid "Key"
-#~ msgstr "Ключ"
+msgid "Key"
+msgstr "Ключ"
 
-#~ msgid "User"
-#~ msgstr "Пользователь"
+msgid "User"
+msgstr "Пользователь"
 
-#~ msgid "Created"
-#~ msgstr "Создан"
+msgid "Created"
+msgstr "Создан"
 
-#~ msgid "Token"
-#~ msgstr "Токен"
+msgid "Token"
+msgstr "Токен"
 
-#~ msgid "Tokens"
-#~ msgstr "Токены"
+msgid "Tokens"
+msgstr "Токены"
 
-#~ msgid "Username"
-#~ msgstr "Имя пользователя"
+msgid "Username"
+msgstr "Имя пользователя"
 
-#~ msgid "Password"
-#~ msgstr "Пароль"
+msgid "Password"
+msgstr "Пароль"
 
-#~ msgid "Unable to log in with provided credentials."
-#~ msgstr "Невозможно войти с предоставленными учетными данными."
+msgid "Unable to log in with provided credentials."
+msgstr "Невозможно войти с предоставленными учетными данными."
 
-#~ msgid "Must include \"username\" and \"password\"."
-#~ msgstr "Должен включать \"username\" и \"password\"."
+msgid "Must include \"username\" and \"password\"."
+msgstr "Должен включать \"username\" и \"password\"."
 
-#~ msgid "A server error occurred."
-#~ msgstr "Произошла ошибка сервера."
+msgid "A server error occurred."
+msgstr "Произошла ошибка сервера."
 
-#~ msgid "Malformed request."
-#~ msgstr "Искаженный запрос."
+msgid "Malformed request."
+msgstr "Искаженный запрос."
 
-#~ msgid "Incorrect authentication credentials."
-#~ msgstr "Некорректные учетные данные."
+msgid "Incorrect authentication credentials."
+msgstr "Некорректные учетные данные."
 
-#~ msgid "Authentication credentials were not provided."
-#~ msgstr "Учетные данные не были предоставлены."
+msgid "Authentication credentials were not provided."
+msgstr "Учетные данные не были предоставлены."
 
-#~ msgid "You do not have permission to perform this action."
-#~ msgstr "У вас нет прав для выполнения этой операции."
+msgid "You do not have permission to perform this action."
+msgstr "У вас нет прав для выполнения этой операции."
 
-#~ msgid "Not found."
-#~ msgstr "Не найдено."
-
-#, python-brace-format
-#~ msgid "Method \"{method}\" not allowed."
-#~ msgstr "Метод \"{method}\" не разрешен."
-
-#~ msgid "Could not satisfy the request Accept header."
-#~ msgstr "Невозможно удовлетворить \"Accept\" заголовок запроса."
+msgid "Not found."
+msgstr "Не найдено."
 
 #, python-brace-format
-#~ msgid "Unsupported media type \"{media_type}\" in request."
-#~ msgstr "Неподдерживаемый тип данных \"{media_type}\" в запросе."
+msgid "Method \"{method}\" not allowed."
+msgstr "Метод \"{method}\" не разрешен."
 
-#~ msgid "Request was throttled."
-#~ msgstr "Запрос был проигнорирован."
-
-#~ msgid "This field is required."
-#~ msgstr "Это поле обязательно."
-
-#~ msgid "This field may not be null."
-#~ msgstr "Это поле не может быть null."
-
-#~ msgid "This field may not be blank."
-#~ msgstr "Это поле не может быть пустым."
+msgid "Could not satisfy the request Accept header."
+msgstr "Невозможно удовлетворить \"Accept\" заголовок запроса."
 
 #, python-brace-format
-#~ msgid "Ensure this field has no more than {max_length} characters."
-#~ msgstr "Убедитесь, что в этом поле не больше {max_length} символов."
+msgid "Unsupported media type \"{media_type}\" in request."
+msgstr "Неподдерживаемый тип данных \"{media_type}\" в запросе."
+
+msgid "Request was throttled."
+msgstr "Запрос был проигнорирован."
+
+msgid "This field is required."
+msgstr "Это поле обязательно."
+
+msgid "This field may not be null."
+msgstr "Это поле не может быть null."
+
+msgid "This field may not be blank."
+msgstr "Это поле не может быть пустым."
 
 #, python-brace-format
-#~ msgid "Ensure this field has at least {min_length} characters."
-#~ msgstr "Убедитесь, что в этом поле как минимум {min_length} символов."
-
-#~ msgid "Enter a valid email address."
-#~ msgstr "Введите корректный адрес электронной почты."
-
-#~ msgid "This value does not match the required pattern."
-#~ msgstr "Значение не соответствует требуемому паттерну."
-
-#~ msgid ""
-#~ "Enter a valid \"slug\" consisting of letters, numbers, underscores or "
-#~ "hyphens."
-#~ msgstr ""
-#~ "Введите корректный \"slug\", состоящий из букв, цифр, знаков "
-#~ "подчеркивания или дефисов."
-
-#~ msgid "Enter a valid URL."
-#~ msgstr "Введите корректный URL."
-
-#~ msgid "Enter a valid IPv4 or IPv6 address."
-#~ msgstr "Введите действительный адрес IPv4 или IPv6."
-
-#~ msgid "A valid integer is required."
-#~ msgstr "Требуется целочисленное значение."
+msgid "Ensure this field has no more than {max_length} characters."
+msgstr "Убедитесь, что в этом поле не больше {max_length} символов."
 
 #, python-brace-format
-#~ msgid "Ensure this value is less than or equal to {max_value}."
-#~ msgstr "Убедитесь, что значение меньше или равно {max_value}."
+msgid "Ensure this field has at least {min_length} characters."
+msgstr "Убедитесь, что в этом поле как минимум {min_length} символов."
+
+msgid "Enter a valid email address."
+msgstr "Введите корректный адрес электронной почты."
+
+msgid "This value does not match the required pattern."
+msgstr "Значение не соответствует требуемому паттерну."
+
+msgid ""
+"Enter a valid \"slug\" consisting of letters, numbers, underscores or "
+"hyphens."
+msgstr ""
+"Введите корректный \"slug\", состоящий из букв, цифр, знаков "
+"подчеркивания или дефисов."
+
+msgid "Enter a valid URL."
+msgstr "Введите корректный URL."
+
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr "Введите действительный адрес IPv4 или IPv6."
+
+msgid "A valid integer is required."
+msgstr "Требуется целочисленное значение."
 
 #, python-brace-format
-#~ msgid "Ensure this value is greater than or equal to {min_value}."
-#~ msgstr "Убедитесь, что значение больше или равно {min_value}."
-
-#~ msgid "String value too large."
-#~ msgstr "Слишком длинное значение."
-
-#~ msgid "A valid number is required."
-#~ msgstr "Требуется численное значение."
+msgid "Ensure this value is less than or equal to {max_value}."
+msgstr "Убедитесь, что значение меньше или равно {max_value}."
 
 #, python-brace-format
-#~ msgid "Ensure that there are no more than {max_digits} digits in total."
-#~ msgstr "Убедитесь, что в числе не больше {max_digits} знаков."
+msgid "Ensure this value is greater than or equal to {min_value}."
+msgstr "Убедитесь, что значение больше или равно {min_value}."
+
+msgid "String value too large."
+msgstr "Слишком длинное значение."
+
+msgid "A valid number is required."
+msgstr "Требуется численное значение."
 
 #, python-brace-format
-#~ msgid ""
-#~ "Ensure that there are no more than {max_decimal_places} decimal places."
-#~ msgstr ""
-#~ "Убедитесь, что в числе не больше {max_decimal_places} знаков в дробной "
-#~ "части."
+msgid "Ensure that there are no more than {max_digits} digits in total."
+msgstr "Убедитесь, что в числе не больше {max_digits} знаков."
 
 #, python-brace-format
-#~ msgid ""
-#~ "Ensure that there are no more than {max_whole_digits} digits before the "
-#~ "decimal point."
-#~ msgstr ""
-#~ "Убедитесь, что в числе не больше {max_whole_digits} знаков в целой части."
+msgid ""
+"Ensure that there are no more than {max_decimal_places} decimal places."
+msgstr ""
+"Убедитесь, что в числе не больше {max_decimal_places} знаков в дробной "
+"части."
 
 #, python-brace-format
-#~ msgid ""
-#~ "Datetime has wrong format. Use one of these formats instead: {format}."
-#~ msgstr ""
-#~ "Неправильный формат datetime. Используйте один из этих форматов:  "
-#~ "{format}."
-
-#~ msgid "Expected a datetime but got a date."
-#~ msgstr "Ожидался datetime, но был получен date."
+msgid ""
+"Ensure that there are no more than {max_whole_digits} digits before the "
+"decimal point."
+msgstr ""
+"Убедитесь, что в числе не больше {max_whole_digits} знаков в целой части."
 
 #, python-brace-format
-#~ msgid "Date has wrong format. Use one of these formats instead: {format}."
-#~ msgstr ""
-#~ "Неправильный формат date. Используйте один из этих форматов: {format}."
+msgid ""
+"Datetime has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+"Неправильный формат datetime. Используйте один из этих форматов:  "
+"{format}."
 
-#~ msgid "Expected a date but got a datetime."
-#~ msgstr "Ожидался date, но был получен datetime."
-
-#, python-brace-format
-#~ msgid "Time has wrong format. Use one of these formats instead: {format}."
-#~ msgstr ""
-#~ "Неправильный формат времени. Используйте один из этих форматов: {format}."
+msgid "Expected a datetime but got a date."
+msgstr "Ожидался datetime, но был получен date."
 
 #, python-brace-format
-#~ msgid ""
-#~ "Duration has wrong format. Use one of these formats instead: {format}."
-#~ msgstr "Неправильный формат. Используйте один из этих форматов: {format}."
+msgid "Date has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+"Неправильный формат date. Используйте один из этих форматов: {format}."
+
+msgid "Expected a date but got a datetime."
+msgstr "Ожидался date, но был получен datetime."
 
 #, python-brace-format
-#~ msgid "\"{input}\" is not a valid choice."
-#~ msgstr "\"{input}\" не является корректным значением."
+msgid "Time has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+"Неправильный формат времени. Используйте один из этих форматов: {format}."
 
 #, python-brace-format
-#~ msgid "More than {count} items..."
-#~ msgstr "Элементов больше чем {count}"
+msgid ""
+"Duration has wrong format. Use one of these formats instead: {format}."
+msgstr "Неправильный формат. Используйте один из этих форматов: {format}."
 
 #, python-brace-format
-#~ msgid "Expected a list of items but got type \"{input_type}\"."
-#~ msgstr "Ожидался list со значениями, но был получен \"{input_type}\"."
-
-#~ msgid "This selection may not be empty."
-#~ msgstr "Выбор не может быть пустым."
+msgid "\"{input}\" is not a valid choice."
+msgstr "\"{input}\" не является корректным значением."
 
 #, python-brace-format
-#~ msgid "\"{input}\" is not a valid path choice."
-#~ msgstr "\"{input}\" не является корректным путем до файла"
-
-#~ msgid "No file was submitted."
-#~ msgstr "Не был загружен файл."
-
-#~ msgid ""
-#~ "The submitted data was not a file. Check the encoding type on the form."
-#~ msgstr "Загруженный файл не является корректным файлом."
-
-#~ msgid "No filename could be determined."
-#~ msgstr "Невозможно определить имя файла."
-
-#~ msgid "The submitted file is empty."
-#~ msgstr "Загруженный файл пуст."
+msgid "More than {count} items..."
+msgstr "Элементов больше чем {count}"
 
 #, python-brace-format
-#~ msgid ""
-#~ "Ensure this filename has at most {max_length} characters (it has "
-#~ "{length})."
-#~ msgstr ""
-#~ "Убедитесь, что имя файла меньше {max_length} символов (сейчас {length})."
+msgid "Expected a list of items but got type \"{input_type}\"."
+msgstr "Ожидался list со значениями, но был получен \"{input_type}\"."
 
-#~ msgid ""
-#~ "Upload a valid image. The file you uploaded was either not an image or a "
-#~ "corrupted image."
-#~ msgstr ""
-#~ "Загрузите корректное изображение. Загруженный файл не является "
-#~ "изображением, либо является испорченным."
-
-#~ msgid "This list may not be empty."
-#~ msgstr "Этот список не может быть пустым."
+msgid "This selection may not be empty."
+msgstr "Выбор не может быть пустым."
 
 #, python-brace-format
-#~ msgid "Expected a dictionary of items but got type \"{input_type}\"."
-#~ msgstr "Ожидался словарь со значениями, но был получен \"{input_type}\"."
+msgid "\"{input}\" is not a valid path choice."
+msgstr "\"{input}\" не является корректным путем до файла"
 
-#~ msgid "Value must be valid JSON."
-#~ msgstr "Значение должно быть правильным JSON."
+msgid "No file was submitted."
+msgstr "Не был загружен файл."
 
-#~ msgid "Search"
-#~ msgstr "Поиск"
+msgid ""
+"The submitted data was not a file. Check the encoding type on the form."
+msgstr "Загруженный файл не является корректным файлом."
 
-#~ msgid "Ordering"
-#~ msgstr "Порядок сортировки"
+msgid "No filename could be determined."
+msgstr "Невозможно определить имя файла."
 
-#~ msgid "ascending"
-#~ msgstr "по возрастанию"
-
-#~ msgid "descending"
-#~ msgstr "по убыванию"
-
-#~ msgid "Invalid page."
-#~ msgstr "Неправильная страница"
-
-#~ msgid "Invalid cursor"
-#~ msgstr "Не корректный курсор"
+msgid "The submitted file is empty."
+msgstr "Загруженный файл пуст."
 
 #, python-brace-format
-#~ msgid "Invalid pk \"{pk_value}\" - object does not exist."
-#~ msgstr "Недопустимый первичный ключ \"{pk_value}\" - объект не существует."
+msgid ""
+"Ensure this filename has at most {max_length} characters (it has "
+"{length})."
+msgstr ""
+"Убедитесь, что имя файла меньше {max_length} символов (сейчас {length})."
+
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+"Загрузите корректное изображение. Загруженный файл не является "
+"изображением, либо является испорченным."
+
+msgid "This list may not be empty."
+msgstr "Этот список не может быть пустым."
 
 #, python-brace-format
-#~ msgid "Incorrect type. Expected pk value, received {data_type}."
-#~ msgstr ""
-#~ "Некорректный тип. Ожидалось значение первичного ключа, получен "
-#~ "{data_type}."
+msgid "Expected a dictionary of items but got type \"{input_type}\"."
+msgstr "Ожидался словарь со значениями, но был получен \"{input_type}\"."
 
-#~ msgid "Invalid hyperlink - No URL match."
-#~ msgstr "Недопустимая ссылка - нет совпадения по URL."
+msgid "Value must be valid JSON."
+msgstr "Значение должно быть правильным JSON."
 
-#~ msgid "Invalid hyperlink - Incorrect URL match."
-#~ msgstr "Недопустимая ссылка - некорректное совпадение по URL,"
+msgid "Search"
+msgstr "Поиск"
 
-#~ msgid "Invalid hyperlink - Object does not exist."
-#~ msgstr "Недопустимая ссылка - объект не существует."
+msgid "Ordering"
+msgstr "Порядок сортировки"
 
-#, python-brace-format
-#~ msgid "Incorrect type. Expected URL string, received {data_type}."
-#~ msgstr "Некорректный тип. Ожидался URL, получен {data_type}."
+msgid "ascending"
+msgstr "по возрастанию"
 
-#, python-brace-format
-#~ msgid "Object with {slug_name}={value} does not exist."
-#~ msgstr "Объект с {slug_name}={value} не существует."
+msgid "descending"
+msgstr "по убыванию"
 
-#~ msgid "Invalid value."
-#~ msgstr "Недопустимое значение."
+msgid "Invalid page."
+msgstr "Неправильная страница"
 
-#, python-brace-format
-#~ msgid "Invalid data. Expected a dictionary, but got {datatype}."
-#~ msgstr ""
-#~ "Недопустимые данные. Ожидался dictionary, но был получен {datatype}."
-
-#~ msgid "Filters"
-#~ msgstr "Фильтры"
-
-#~ msgid "None"
-#~ msgstr "Ничего"
-
-#~ msgid "No items to select."
-#~ msgstr "Нет элементов для выбора"
-
-#~ msgid "This field must be unique."
-#~ msgstr "Это поле должно быть уникально."
+msgid "Invalid cursor"
+msgstr "Не корректный курсор"
 
 #, python-brace-format
-#~ msgid "The fields {field_names} must make a unique set."
-#~ msgstr ""
-#~ "Поля {field_names} должны производить массив с уникальными значениями."
+msgid "Invalid pk \"{pk_value}\" - object does not exist."
+msgstr "Недопустимый первичный ключ \"{pk_value}\" - объект не существует."
 
 #, python-brace-format
-#~ msgid "This field must be unique for the \"{date_field}\" date."
-#~ msgstr "Это поле должно быть уникально для даты \"{date_field}\"."
+msgid "Incorrect type. Expected pk value, received {data_type}."
+msgstr ""
+"Некорректный тип. Ожидалось значение первичного ключа, получен "
+"{data_type}."
+
+msgid "Invalid hyperlink - No URL match."
+msgstr "Недопустимая ссылка - нет совпадения по URL."
+
+msgid "Invalid hyperlink - Incorrect URL match."
+msgstr "Недопустимая ссылка - некорректное совпадение по URL,"
+
+msgid "Invalid hyperlink - Object does not exist."
+msgstr "Недопустимая ссылка - объект не существует."
 
 #, python-brace-format
-#~ msgid "This field must be unique for the \"{date_field}\" month."
-#~ msgstr "Это поле должно быть уникально для месяца \"{date_field}\"."
+msgid "Incorrect type. Expected URL string, received {data_type}."
+msgstr "Некорректный тип. Ожидался URL, получен {data_type}."
 
 #, python-brace-format
-#~ msgid "This field must be unique for the \"{date_field}\" year."
-#~ msgstr "Это поле должно быть уникально для года \"{date_field}\"."
+msgid "Object with {slug_name}={value} does not exist."
+msgstr "Объект с {slug_name}={value} не существует."
 
-#~ msgid "Invalid version in \"Accept\" header."
-#~ msgstr "Недопустимая версия в заголовке \"Accept\"."
+msgid "Invalid value."
+msgstr "Недопустимое значение."
 
-#~ msgid "Invalid version in URL path."
-#~ msgstr "Недопустимая версия в пути URL."
+#, python-brace-format
+msgid "Invalid data. Expected a dictionary, but got {datatype}."
+msgstr ""
+"Недопустимые данные. Ожидался dictionary, но был получен {datatype}."
 
-#~ msgid "Invalid version in URL path. Does not match any version namespace."
-#~ msgstr ""
-#~ "Недопустимая версия в пути URL. Не соответствует ни одному version "
-#~ "namespace."
+msgid "Filters"
+msgstr "Фильтры"
 
-#~ msgid "Invalid version in hostname."
-#~ msgstr "Недопустимая версия в имени хоста."
+msgid "None"
+msgstr "Ничего"
 
-#~ msgid "Invalid version in query parameter."
-#~ msgstr "Недопустимая версия в параметре запроса."
+msgid "No items to select."
+msgstr "Нет элементов для выбора"
 
-#~ msgid "Authorization header must contain two space-delimited values"
-#~ msgstr ""
-#~ "Заголовок авторизации должен содержать два значения, разделенных пробелом"
+msgid "This field must be unique."
+msgstr "Это поле должно быть уникально."
 
-#~ msgid "Given token not valid for any token type"
-#~ msgstr "Данный токен недействителен для любого типа токена"
+#, python-brace-format
+msgid "The fields {field_names} must make a unique set."
+msgstr ""
+"Поля {field_names} должны производить массив с уникальными значениями."
 
-#~ msgid "Token contained no recognizable user identification"
-#~ msgstr "Токен не содержит идентификатор пользователя"
+#, python-brace-format
+msgid "This field must be unique for the \"{date_field}\" date."
+msgstr "Это поле должно быть уникально для даты \"{date_field}\"."
 
-#~ msgid "User not found"
-#~ msgstr "Пользователь не найден"
+#, python-brace-format
+msgid "This field must be unique for the \"{date_field}\" month."
+msgstr "Это поле должно быть уникально для месяца \"{date_field}\"."
 
-#~ msgid "User is inactive"
-#~ msgstr "Пользователь неактивен"
+#, python-brace-format
+msgid "This field must be unique for the \"{date_field}\" year."
+msgstr "Это поле должно быть уникально для года \"{date_field}\"."
 
-#~ msgid "Unrecognized algorithm type '{}'"
-#~ msgstr "Нераспознанный тип алгоритма '{}'"
+msgid "Invalid version in \"Accept\" header."
+msgstr "Недопустимая версия в заголовке \"Accept\"."
 
-#~ msgid "Token is invalid or expired"
-#~ msgstr "Токен недействителен или просрочен"
+msgid "Invalid version in URL path."
+msgstr "Недопустимая версия в пути URL."
 
-#~ msgid "No active account found with the given credentials"
-#~ msgstr "Не найдено активной учетной записи с указанными данными"
+msgid "Invalid version in URL path. Does not match any version namespace."
+msgstr ""
+"Недопустимая версия в пути URL. Не соответствует ни одному version "
+"namespace."
 
-#~ msgid ""
-#~ "The '{}' setting has been removed. Please refer to '{}' for available "
-#~ "settings."
-#~ msgstr ""
-#~ "Параметр '{}' был удален. Пожалуйста, обратитесь к '{}' для просмотра "
-#~ "доступных настроек."
+msgid "Invalid version in hostname."
+msgstr "Недопустимая версия в имени хоста."
 
-#~ msgid "jti"
-#~ msgstr "jti"
+msgid "Invalid version in query parameter."
+msgstr "Недопустимая версия в параметре запроса."
 
-#~ msgid "created at"
-#~ msgstr "создан"
+msgid "Authorization header must contain two space-delimited values"
+msgstr ""
+"Заголовок авторизации должен содержать два значения, разделенных пробелом"
 
-#~ msgid "expires at"
-#~ msgstr "истекает"
+msgid "Given token not valid for any token type"
+msgstr "Данный токен недействителен для любого типа токена"
 
-#~ msgid "Token Blacklist"
-#~ msgstr "Token Blacklist"
+msgid "Token contained no recognizable user identification"
+msgstr "Токен не содержит идентификатор пользователя"
 
-#~ msgid "Cannot create token with no type or lifetime"
-#~ msgstr "Невозможно создать токен без типа или времени жизни"
+msgid "User not found"
+msgstr "Пользователь не найден"
 
-#~ msgid "Token has no id"
-#~ msgstr "У токена нет идентификатора"
+msgid "User is inactive"
+msgstr "Пользователь неактивен"
 
-#~ msgid "Token has no type"
-#~ msgstr "Токен не имеет типа"
+msgid "Unrecognized algorithm type '{}'"
+msgstr "Нераспознанный тип алгоритма '{}'"
 
-#~ msgid "Token has wrong type"
-#~ msgstr "Токен имеет неправильный тип"
+msgid "Token is invalid or expired"
+msgstr "Токен недействителен или просрочен"
 
-#~ msgid "Token has no '{}' claim"
-#~ msgstr "Токен не содержит '{}'"
+msgid "No active account found with the given credentials"
+msgstr "Не найдено активной учетной записи с указанными данными"
 
-#~ msgid "Token '{}' claim has expired"
-#~ msgstr "Токен имеет просроченное значение '{}'"
+msgid ""
+"The '{}' setting has been removed. Please refer to '{}' for available "
+"settings."
+msgstr ""
+"Параметр '{}' был удален. Пожалуйста, обратитесь к '{}' для просмотра "
+"доступных настроек."
 
-#~ msgid "Token is blacklisted"
-#~ msgstr "Токен занесен в черный список"
+msgid "jti"
+msgstr "jti"
+
+msgid "created at"
+msgstr "создан"
+
+msgid "expires at"
+msgstr "истекает"
+
+msgid "Token Blacklist"
+msgstr "Token Blacklist"
+
+msgid "Cannot create token with no type or lifetime"
+msgstr "Невозможно создать токен без типа или времени жизни"
+
+msgid "Token has no id"
+msgstr "У токена нет идентификатора"
+
+msgid "Token has no type"
+msgstr "Токен не имеет типа"
+
+msgid "Token has wrong type"
+msgstr "Токен имеет неправильный тип"
+
+msgid "Token has no '{}' claim"
+msgstr "Токен не содержит '{}'"
+
+msgid "Token '{}' claim has expired"
+msgstr "Токен имеет просроченное значение '{}'"
+
+
+msgid "Token is blacklisted"
+msgstr "Токен занесен в черный список"
 
