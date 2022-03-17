@@ -15,6 +15,10 @@ class Partner(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    class Meta:
+        verbose_name = _('Partner')
+        verbose_name_plural = _('Partners')
+
 
 class Contact(models.Model):
     social = models.CharField(_('social'), max_length=100)
@@ -23,12 +27,20 @@ class Contact(models.Model):
     def __str__(self) -> str:
         return self.social
     
+    class Meta:
+        verbose_name = _('Contact')
+        verbose_name_plural = _('Contacts')
+    
 
 class ArticleCategory(models.Model):
     name = models.CharField(_('name'), max_length=255)
     
     def __str__(self) -> str:
         return self.name
+
+    class Meta:
+        verbose_name = _('Article category')
+        verbose_name_plural = _('Article categories')
     
 
 class New(models.Model):
@@ -42,10 +54,18 @@ class New(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    class Meta:
+        verbose_name = _('New')
+        verbose_name_plural = _('News')
+
 
 class NewGallery(models.Model):
     image = models.ImageField(_('image'), upload_to='about/news/')
     new = models.ForeignKey(New, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('New gallery')
+        verbose_name_plural = _('New galleries')
 
 
 class Fillial(DoubleGisMixin, models.Model):
@@ -57,6 +77,10 @@ class Fillial(DoubleGisMixin, models.Model):
     
     def __str__(self) -> str:
         return self.district
+    
+    class Meta:
+        verbose_name = _('Fillial')
+        verbose_name_plural = _('Fillials')
 
 
 class Option(models.Model):
@@ -66,6 +90,10 @@ class Option(models.Model):
     
     def __str__(self) -> str:
         return self.alias
+
+    class Meta:
+        verbose_name = _('Option')
+        verbose_name_plural = _('Options')
     
 
 class Question(models.Model):
@@ -75,7 +103,15 @@ class Question(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    class Meta:
+        verbose_name = _('Question')
+        verbose_name_plural = _('Questions')
+
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, verbose_name=_('question'), on_delete=models.CASCADE)
     text = models.TextField(_('text'))
+
+    class Meta:
+        verbose_name = _('Answer')
+        verbose_name_plural = _('Answers')

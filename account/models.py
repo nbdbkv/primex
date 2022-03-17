@@ -53,7 +53,6 @@ class User(AbstractUser):
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
-
         
 
 class Region(DoubleGisMixin, models.Model):
@@ -63,6 +62,10 @@ class Region(DoubleGisMixin, models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = _('Region')
+        verbose_name_plural = _('Regions')
 
 
 class District(DoubleGisMixin, models.Model):
@@ -73,6 +76,10 @@ class District(DoubleGisMixin, models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = _('District')
+        verbose_name_plural = _('Districts')
 
 
 class Village(models.Model):
@@ -83,3 +90,7 @@ class Village(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _('Village')
+        verbose_name_plural = _('Villages')
