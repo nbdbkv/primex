@@ -45,10 +45,8 @@ msgid "social icon"
 msgstr "иконка социальной сети"
 
 #: about/models.py:31
-#, fuzzy
-#| msgid "contact phone"
 msgid "Contact"
-msgstr "контактный номер"
+msgstr "Контактны"
 
 #: about/models.py:32
 msgid "Contacts"
@@ -60,16 +58,12 @@ msgid "name"
 msgstr "название"
 
 #: about/models.py:42
-#, fuzzy
-#| msgid "article category"
 msgid "Article category"
-msgstr "категория"
+msgstr "Категория новости"
 
 #: about/models.py:43
-#, fuzzy
-#| msgid "article category"
 msgid "Article categories"
-msgstr "категория"
+msgstr "Категории новостей"
 
 #: about/models.py:47 about/models.py:100 operation/models.py:11
 #: operation/models.py:33 operation/models.py:63 operation/models.py:79
@@ -148,32 +142,24 @@ msgid "description"
 msgstr "описание"
 
 #: about/models.py:95
-#, fuzzy
-#| msgid "options"
 msgid "Option"
-msgstr "опции"
+msgstr "Опция"
 
 #: about/models.py:96
-#, fuzzy
-#| msgid "options"
 msgid "Options"
-msgstr "опции"
+msgstr "Опции"
 
 #: about/models.py:101 about/models.py:113
 msgid "text"
 msgstr "текст"
 
 #: about/models.py:107
-#, fuzzy
-#| msgid "question"
 msgid "Question"
-msgstr "вопрос"
+msgstr "Вопрос"
 
 #: about/models.py:108
-#, fuzzy
-#| msgid "question"
 msgid "Questions"
-msgstr "вопрос"
+msgstr "Вопросы"
 
 #: about/models.py:112
 msgid "question"
@@ -295,40 +281,28 @@ msgid "code"
 msgstr "код"
 
 #: account/models.py:67
-#, fuzzy
-#| msgid "region"
 msgid "Region"
-msgstr "регион"
+msgstr "Регион"
 
 #: account/models.py:68
-#, fuzzy
-#| msgid "region"
 msgid "Regions"
-msgstr "регионы"
+msgstr "Регионы"
 
 #: account/models.py:81
-#, fuzzy
-#| msgid "district"
 msgid "District"
-msgstr "район"
+msgstr "Район"
 
 #: account/models.py:82
-#, fuzzy
-#| msgid "district"
 msgid "Districts"
-msgstr "районы"
+msgstr "Районы"
 
 #: account/models.py:95
-#, fuzzy
-#| msgid "village"
 msgid "Village"
-msgstr "село"
+msgstr "Село"
 
 #: account/models.py:96
-#, fuzzy
-#| msgid "village"
 msgid "Villages"
-msgstr "селы"
+msgstr "Селы"
 
 #: account/validators.py:9
 msgid ""
@@ -403,32 +377,24 @@ msgid "debit"
 msgstr "Дебит"
 
 #: operation/models.py:17
-#, fuzzy
-#| msgid "delivery status"
 msgid "Delivery status"
-msgstr "статус отправки"
+msgstr "Статус отправки"
 
 #: operation/models.py:18
-#, fuzzy
-#| msgid "delivery status"
 msgid "Delivery statuses"
-msgstr "статусы отправки"
+msgstr "Статусы отправки"
 
 #: operation/models.py:22
 msgid "option title"
 msgstr "название"
 
 #: operation/models.py:28
-#, fuzzy
-#| msgid "parcel packaging"
 msgid "Parcel option"
-msgstr "упаковка"
+msgstr "Опция пасылки"
 
 #: operation/models.py:29
-#, fuzzy
-#| msgid "options"
 msgid "Parcel options"
-msgstr "опции"
+msgstr "Опции посылок"
 
 #: operation/models.py:35
 msgid "delivery status"
@@ -447,16 +413,12 @@ msgid "sendin date"
 msgstr "дата отправки"
 
 #: operation/models.py:45
-#, fuzzy
-#| msgid "parcel"
 msgid "Parcel"
-msgstr "посылка"
+msgstr "Посылка"
 
 #: operation/models.py:46
-#, fuzzy
-#| msgid "parcel"
 msgid "Parcels"
-msgstr "посылка"
+msgstr "Посылки"
 
 #: operation/models.py:50
 msgid "from region"
@@ -492,16 +454,12 @@ msgid "icon"
 msgstr "иконка"
 
 #: operation/models.py:74
-#, fuzzy
-#| msgid "delivery type"
 msgid "Delivery type"
-msgstr "тип отправки"
+msgstr "Тип отправки"
 
 #: operation/models.py:75
-#, fuzzy
-#| msgid "delivery type"
 msgid "Delivery types"
-msgstr "тип отправки"
+msgstr "Типы отправок"
 
 #: operation/models.py:82
 msgid "quantity"
@@ -512,16 +470,12 @@ msgid "measuring unit"
 msgstr "единица измерения"
 
 #: operation/models.py:89
-#, fuzzy
-#| msgid "parcel packaging"
 msgid "Packaging"
-msgstr "упаковка"
+msgstr "Упаковка"
 
 #: operation/models.py:90
-#, fuzzy
-#| msgid "parcel packaging"
 msgid "Packagings"
-msgstr "упаковка"
+msgstr "Упаковки"
 
 #: operation/models.py:94 operation/models.py:198
 msgid "parcel length"
@@ -540,16 +494,12 @@ msgid "parcel weight"
 msgstr "вес"
 
 #: operation/models.py:100
-#, fuzzy
-#| msgid "dimension"
 msgid "Payment dimension"
-msgstr "размер"
+msgstr "Размер посылки"
 
 #: operation/models.py:101
-#, fuzzy
-#| msgid "dimension"
 msgid "Payment dimensions"
-msgstr "размер"
+msgstr "Размеры посылок"
 
 #: operation/models.py:109
 msgid "dimension"
@@ -560,16 +510,12 @@ msgid "price per kilo"
 msgstr "цена за килограмм"
 
 #: operation/models.py:116
-#, fuzzy
-#| msgid "envelop"
 msgid "Envelop"
-msgstr "конверт"
+msgstr "Конверт"
 
 #: operation/models.py:117
-#, fuzzy
-#| msgid "envelop"
 msgid "Envelops"
-msgstr "конверт"
+msgstr "Конверты"
 
 #: operation/models.py:121 operation/models.py:164 operation/models.py:180
 #: operation/models.py:197 operation/models.py:213
@@ -593,16 +539,12 @@ msgid "envelop"
 msgstr "конверт"
 
 #: operation/models.py:132
-#, fuzzy
-#| msgid "parcel payment"
 msgid "Parcel payment"
-msgstr "оплата посылки"
+msgstr "Оплата посылки"
 
 #: operation/models.py:133
-#, fuzzy
-#| msgid "parcel payment"
 msgid "Parcel payments"
-msgstr "оплата посылки"
+msgstr "Оплаты посылок"
 
 #: operation/models.py:139 operation/models.py:151 operation/models.py:163
 #: operation/models.py:214
@@ -610,16 +552,12 @@ msgid "type"
 msgstr "тип"
 
 #: operation/models.py:145
-#, fuzzy
-#| msgid "payment type"
 msgid "Payment type"
-msgstr "тип оплаты"
+msgstr "Тип оплаты"
 
 #: operation/models.py:146
-#, fuzzy
-#| msgid "payment type"
 msgid "Payment types"
-msgstr "тип оплаты"
+msgstr "Типы оплат"
 
 #: operation/models.py:150
 msgid "parcel payment"
@@ -630,16 +568,12 @@ msgid "sum"
 msgstr "сумма"
 
 #: operation/models.py:158
-#, fuzzy
-#| msgid "payment type"
 msgid "Payment"
-msgstr "тип оплаты"
+msgstr "Оплата"
 
 #: operation/models.py:159
-#, fuzzy
-#| msgid "payment type"
 msgid "Payments"
-msgstr "тип оплаты"
+msgstr "Оплаты"
 
 #: operation/models.py:166
 msgid "village"
@@ -650,16 +584,12 @@ msgid "destination"
 msgstr "направление"
 
 #: operation/models.py:175
-#, fuzzy
-#| msgid "geolocation"
 msgid "Direction"
-msgstr "геолокация"
+msgstr "Направления"
 
 #: operation/models.py:176
-#, fuzzy
-#| msgid "direction must be 2"
 msgid "Directions"
-msgstr "направлений должно быть 2"
+msgstr "Направлении"
 
 #: operation/models.py:181
 msgid "phone"
@@ -674,22 +604,16 @@ msgid "user info type"
 msgstr "тип"
 
 #: operation/models.py:192 operation/models.py:193
-#, fuzzy
-#| msgid "user info"
 msgid "User info"
 msgstr "Информация о пользователе"
 
 #: operation/models.py:207
-#, fuzzy
-#| msgid "dimension"
 msgid "Parcel dimension"
-msgstr "размер"
+msgstr "Размер посылки"
 
 #: operation/models.py:208
-#, fuzzy
-#| msgid "dimension"
 msgid "Parcel dimensions"
-msgstr "размер"
+msgstr "Размеры посылок"
 
 #: operation/models.py:212
 msgid "user"
@@ -700,16 +624,12 @@ msgid "payment type"
 msgstr "тип оплаты"
 
 #: operation/models.py:223
-#, fuzzy
-#| msgid "payment type"
 msgid "Payment history"
-msgstr "история оплаты"
+msgstr "История оплат"
 
 #: operation/models.py:224
-#, fuzzy
-#| msgid "payment type"
 msgid "Payment histories"
-msgstr "истории оплат"
+msgstr "Истории оплат"
 
 #: operation/serializers.py:223
 msgid "direction must be 2"
