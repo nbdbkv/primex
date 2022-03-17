@@ -49,6 +49,7 @@ class ParcelDimensionInline(NestedStackedInline):
 
 class ParcelAdmin(NestedModelAdmin):
     inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
+
     list_display = ("sender", "code", "create_at", "from_district", "to_district",)
 
     def from_district(self, obj):

@@ -115,6 +115,7 @@ msgstr ""
 
 #: about/models.py:74 account/models.py:60 account/models.py:74
 #: account/models.py:88 operation/models.py:168
+
 msgid "geolocation"
 msgstr "геолокация"
 
@@ -123,6 +124,7 @@ msgid "contact phone"
 msgstr "контактный номер"
 
 #: about/models.py:76 operation/models.py:184
+
 msgid "email"
 msgstr "email"
 
@@ -144,6 +146,7 @@ msgstr "значение"
 
 #: about/models.py:89 operation/models.py:64 operation/models.py:80
 #: operation/models.py:108
+
 msgid "description"
 msgstr "описание"
 
@@ -256,6 +259,7 @@ msgid "A user with that phone number already exists."
 msgstr "Пользователь с таким номером уже существует"
 
 #: account/models.py:26 operation/models.py:182
+
 msgid "user info"
 msgstr "Информация о пользователе"
 
@@ -264,6 +268,7 @@ msgid "region"
 msgstr "регион"
 
 #: account/models.py:28 operation/models.py:165
+
 msgid "district"
 msgstr "район"
 
@@ -1131,3 +1136,4 @@ msgstr "информация пользователей должно быть 2"
 
 #~ msgid "Token is blacklisted"
 #~ msgstr "Токен занесен в черный список"
+

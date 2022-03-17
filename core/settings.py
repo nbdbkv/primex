@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     ####### apps #######
     'about',
     'account',
-    'operation'
+    'operation',
+    'megapay',
 ]
 
 MIDDLEWARE = [
