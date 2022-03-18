@@ -1033,5 +1033,7 @@ msgstr "Токен не содержит '{}'"
 msgid "Token '{}' claim has expired"
 msgstr "Токен имеет просроченное значение '{}'"
 
+
 msgid "Token is blacklisted"
 msgstr "Токен занесен в черный список"
+
