@@ -59,6 +59,7 @@ class CalculateParcelPrice:
                 Q(distance__from_region=self.from_region) &
                 Q(distance__to_district=self.to_district)).first()
         price = float(dimension_price_obj.price)
+        print(dimension_price_obj)
         dimension_weight = dimension_price_obj.dimension.weight
 
         if parcel_dimension.weight > dimension_weight:
@@ -78,7 +79,7 @@ class CalculateParcelPrice:
         if self.instance.dimension:
             try:
                 return self.calculate_dimension_price()
-            except Envelop.DoesNotExist:
+            except KeyError:
                 raise ValidationError({'message': 'There is no price for this area'})
         else:
             return self.calculate_envelop_price()
