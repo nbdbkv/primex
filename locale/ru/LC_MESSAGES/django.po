@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-17 13:58+0600\n"
+"POT-Creation-Date: 2022-03-18 00:49+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,8 +66,8 @@ msgid "Article categories"
 msgstr "Категории новостей"
 
 #: about/models.py:47 about/models.py:100 operation/models.py:11
-#: operation/models.py:33 operation/models.py:63 operation/models.py:79
-#: operation/models.py:107 operation/models.py:138
+#: operation/models.py:33 operation/models.py:66 operation/models.py:82
+#: operation/models.py:110 operation/models.py:141
 msgid "title"
 msgstr "название"
 
@@ -83,7 +83,7 @@ msgstr "категория"
 msgid "watched count"
 msgstr "колво просмотров"
 
-#: about/models.py:52 operation/models.py:217
+#: about/models.py:52 operation/models.py:220
 msgid "created date"
 msgstr "дата создания"
 
@@ -95,7 +95,7 @@ msgstr "Новость"
 msgid "News"
 msgstr "Новости"
 
-#: about/models.py:63 operation/models.py:68
+#: about/models.py:63 operation/models.py:71
 msgid "image"
 msgstr "фото"
 
@@ -108,7 +108,7 @@ msgid "New galleries"
 msgstr "галерия"
 
 #: about/models.py:74 account/models.py:60 account/models.py:74
-#: account/models.py:88 operation/models.py:168
+#: account/models.py:88 operation/models.py:171
 msgid "geolocation"
 msgstr "геолокация"
 
@@ -116,7 +116,7 @@ msgstr "геолокация"
 msgid "contact phone"
 msgstr "контактный номер"
 
-#: about/models.py:76 operation/models.py:184
+#: about/models.py:76 operation/models.py:187
 msgid "email"
 msgstr "email"
 
@@ -136,8 +136,8 @@ msgstr "псевдоним"
 msgid "value"
 msgstr "значение"
 
-#: about/models.py:89 operation/models.py:64 operation/models.py:80
-#: operation/models.py:108
+#: about/models.py:89 operation/models.py:67 operation/models.py:83
+#: operation/models.py:111
 msgid "description"
 msgstr "описание"
 
@@ -241,7 +241,7 @@ msgstr "Требуется. 9 цифр в формате: 996*********** без 
 msgid "A user with that phone number already exists."
 msgstr "Пользователь с таким номером уже существует"
 
-#: account/models.py:26 operation/models.py:182
+#: account/models.py:26 operation/models.py:185
 msgid "user info"
 msgstr "Информация о пользователе"
 
@@ -249,7 +249,7 @@ msgstr "Информация о пользователе"
 msgid "region"
 msgstr "регион"
 
-#: account/models.py:28 operation/models.py:165
+#: account/models.py:28 operation/models.py:168
 msgid "district"
 msgstr "район"
 
@@ -315,6 +315,26 @@ msgstr ""
 #: account/validators.py:17
 msgid "Code must be 2 digit"
 msgstr "код должен состоять из 2 цифр"
+
+#: operation/admin.py:57
+#, fuzzy
+#| msgid "to district"
+msgid "From district"
+msgstr "в район"
+
+#: operation/admin.py:65 operation/models.py:53
+msgid "from region"
+msgstr "от региона"
+
+#: operation/admin.py:70 operation/models.py:54
+msgid "to district"
+msgstr "в район"
+
+#: operation/apps.py:8
+#, fuzzy
+#| msgid "Options"
+msgid "Operations"
+msgstr "Опции"
 
 #: operation/choices.py:6
 msgid "from"
@@ -412,222 +432,214 @@ msgstr "опции"
 msgid "sendin date"
 msgstr "дата отправки"
 
-#: operation/models.py:45
-msgid "Parcel"
-msgstr "Посылка"
-
-#: operation/models.py:46
-msgid "Parcels"
-msgstr "Посылки"
-
-#: operation/models.py:50
-msgid "from region"
-msgstr "от региона"
-
-#: operation/models.py:51
-msgid "to district"
-msgstr "в район"
-
-#: operation/models.py:57
-msgid "Distance"
-msgstr "Дистанция"
-
-#: operation/models.py:58
-msgid "Distances"
-msgstr "Дистанции"
-
-#: operation/models.py:62 operation/models.py:105
-msgid "distance"
-msgstr "дистанция"
-
-#: operation/models.py:65 operation/models.py:81 operation/models.py:106
-#: operation/models.py:122
-msgid "price"
-msgstr "цена"
-
-#: operation/models.py:66
-msgid "time in hour"
-msgstr "время в часах"
-
-#: operation/models.py:67 operation/models.py:137
-msgid "icon"
-msgstr "иконка"
-
-#: operation/models.py:74
-msgid "Delivery type"
-msgstr "Тип отправки"
-
-#: operation/models.py:75
-msgid "Delivery types"
-msgstr "Типы отправок"
-
-#: operation/models.py:82
-msgid "quantity"
-msgstr "количество"
-
-#: operation/models.py:83
-msgid "measuring unit"
-msgstr "единица измерения"
-
-#: operation/models.py:89
-msgid "Packaging"
-msgstr "Упаковка"
-
-#: operation/models.py:90
-msgid "Packagings"
-msgstr "Упаковки"
-
-#: operation/models.py:94 operation/models.py:198
-msgid "parcel length"
-msgstr "длина"
-
-#: operation/models.py:95 operation/models.py:199
-msgid "parcel width"
-msgstr "ширина"
-
-#: operation/models.py:96 operation/models.py:200
-msgid "parcel height"
-msgstr "высота"
-
-#: operation/models.py:97 operation/models.py:201
-msgid "parcel weight"
-msgstr "вес"
-
-#: operation/models.py:100
-msgid "Payment dimension"
-msgstr "Размер посылки"
-
-#: operation/models.py:101
-msgid "Payment dimensions"
-msgstr "Размеры посылок"
-
-#: operation/models.py:109
-msgid "dimension"
-msgstr "размер"
-
-#: operation/models.py:110
-msgid "price per kilo"
-msgstr "цена за килограмм"
-
-#: operation/models.py:116
-msgid "Envelop"
-msgstr "Конверт"
-
-#: operation/models.py:117
-msgid "Envelops"
-msgstr "Конверты"
-
-#: operation/models.py:121 operation/models.py:164 operation/models.py:180
-#: operation/models.py:197 operation/models.py:213
+#: operation/models.py:42 operation/models.py:124 operation/models.py:167
+#: operation/models.py:183 operation/models.py:200 operation/models.py:216
 msgid "parcel"
 msgstr "посылка"
 
-#: operation/models.py:123
+#: operation/models.py:48
+msgid "Parcel"
+msgstr "Посылка"
+
+#: operation/models.py:49
+msgid "Parcels"
+msgstr "Посылки"
+
+#: operation/models.py:60
+msgid "Distance"
+msgstr "Дистанция"
+
+#: operation/models.py:61
+msgid "Distances"
+msgstr "Дистанции"
+
+#: operation/models.py:65 operation/models.py:108
+msgid "distance"
+msgstr "дистанция"
+
+#: operation/models.py:68 operation/models.py:84 operation/models.py:109
+#: operation/models.py:125
+msgid "price"
+msgstr "цена"
+
+#: operation/models.py:69
+msgid "time in hour"
+msgstr "время в часах"
+
+#: operation/models.py:70 operation/models.py:140
+msgid "icon"
+msgstr "иконка"
+
+#: operation/models.py:77
+msgid "Delivery type"
+msgstr "Тип отправки"
+
+#: operation/models.py:78
+msgid "Delivery types"
+msgstr "Типы отправок"
+
+#: operation/models.py:85
+msgid "quantity"
+msgstr "количество"
+
+#: operation/models.py:86
+msgid "measuring unit"
+msgstr "единица измерения"
+
+#: operation/models.py:92
+msgid "Packaging"
+msgstr "Упаковка"
+
+#: operation/models.py:93
+msgid "Packagings"
+msgstr "Упаковки"
+
+#: operation/models.py:97 operation/models.py:201
+msgid "parcel length"
+msgstr "длина"
+
+#: operation/models.py:98 operation/models.py:202
+msgid "parcel width"
+msgstr "ширина"
+
+#: operation/models.py:99 operation/models.py:203
+msgid "parcel height"
+msgstr "высота"
+
+#: operation/models.py:100 operation/models.py:204
+msgid "parcel weight"
+msgstr "вес"
+
+#: operation/models.py:103
+msgid "Payment dimension"
+msgstr "Размер посылки"
+
+#: operation/models.py:104
+msgid "Payment dimensions"
+msgstr "Размеры посылок"
+
+#: operation/models.py:112
+msgid "dimension"
+msgstr "размер"
+
+#: operation/models.py:113
+msgid "price per kilo"
+msgstr "цена за килограмм"
+
+#: operation/models.py:119
+msgid "Envelop"
+msgstr "Конверт"
+
+#: operation/models.py:120
+msgid "Envelops"
+msgstr "Конверты"
+
+#: operation/models.py:126
 msgid "delivery type"
 msgstr "тип отправки"
 
-#: operation/models.py:124
+#: operation/models.py:127
 msgid "parcel packaging"
 msgstr "упаковка"
 
-#: operation/models.py:125
+#: operation/models.py:128
 msgid "status"
 msgstr "статус"
 
-#: operation/models.py:126
+#: operation/models.py:129
 msgid "envelop"
 msgstr "конверт"
 
-#: operation/models.py:132
+#: operation/models.py:135
 msgid "Parcel payment"
 msgstr "Оплата посылки"
 
-#: operation/models.py:133
+#: operation/models.py:136
 msgid "Parcel payments"
 msgstr "Оплаты посылок"
 
-#: operation/models.py:139 operation/models.py:151 operation/models.py:163
-#: operation/models.py:214
+#: operation/models.py:142 operation/models.py:154 operation/models.py:166
+#: operation/models.py:217
 msgid "type"
 msgstr "тип"
 
-#: operation/models.py:145
+#: operation/models.py:148
 msgid "Payment type"
 msgstr "Тип оплаты"
 
-#: operation/models.py:146
+#: operation/models.py:149
 msgid "Payment types"
 msgstr "Типы оплат"
 
-#: operation/models.py:150
+#: operation/models.py:153
 msgid "parcel payment"
 msgstr "оплата посылки"
 
-#: operation/models.py:152 operation/models.py:215
+#: operation/models.py:155 operation/models.py:218
 msgid "sum"
 msgstr "сумма"
 
-#: operation/models.py:158
+#: operation/models.py:161
 msgid "Payment"
 msgstr "Оплата"
 
-#: operation/models.py:159
+#: operation/models.py:162
 msgid "Payments"
 msgstr "Оплаты"
 
-#: operation/models.py:166
+#: operation/models.py:169
 msgid "village"
 msgstr "село"
 
-#: operation/models.py:167
+#: operation/models.py:170
 msgid "destination"
 msgstr "направление"
 
-#: operation/models.py:175
+#: operation/models.py:178
 msgid "Direction"
 msgstr "Направления"
 
-#: operation/models.py:176
+#: operation/models.py:179
 msgid "Directions"
 msgstr "Направлении"
 
-#: operation/models.py:181
+#: operation/models.py:184
 msgid "phone"
 msgstr "телефонный номер"
 
-#: operation/models.py:183
+#: operation/models.py:186
 msgid "company"
 msgstr "компания"
 
-#: operation/models.py:185
+#: operation/models.py:188
 msgid "user info type"
 msgstr "тип"
 
-#: operation/models.py:192 operation/models.py:193
+#: operation/models.py:195 operation/models.py:196
 msgid "User info"
 msgstr "Информация о пользователе"
 
-#: operation/models.py:207
+#: operation/models.py:210
 msgid "Parcel dimension"
 msgstr "Размер посылки"
 
-#: operation/models.py:208
+#: operation/models.py:211
 msgid "Parcel dimensions"
 msgstr "Размеры посылок"
 
-#: operation/models.py:212
+#: operation/models.py:215
 msgid "user"
 msgstr "пользователе"
 
-#: operation/models.py:216
+#: operation/models.py:219
 msgid "payment type"
 msgstr "тип оплаты"
 
-#: operation/models.py:223
+#: operation/models.py:226
 msgid "Payment history"
 msgstr "История оплат"
 
-#: operation/models.py:224
+#: operation/models.py:227
 msgid "Payment histories"
 msgstr "Истории оплат"
 
@@ -719,14 +731,12 @@ msgstr "У вас нет прав для выполнения этой опер�
 msgid "Not found."
 msgstr "Не найдено."
 
-#, python-brace-format
 msgid "Method \"{method}\" not allowed."
 msgstr "Метод \"{method}\" не разрешен."
 
 msgid "Could not satisfy the request Accept header."
 msgstr "Невозможно удовлетворить \"Accept\" заголовок запроса."
 
-#, python-brace-format
 msgid "Unsupported media type \"{media_type}\" in request."
 msgstr "Неподдерживаемый тип данных \"{media_type}\" в запросе."
 
@@ -742,11 +752,9 @@ msgstr "Это поле не может быть null."
 msgid "This field may not be blank."
 msgstr "Это поле не может быть пустым."
 
-#, python-brace-format
 msgid "Ensure this field has no more than {max_length} characters."
 msgstr "Убедитесь, что в этом поле не больше {max_length} символов."
 
-#, python-brace-format
 msgid "Ensure this field has at least {min_length} characters."
 msgstr "Убедитесь, что в этом поле как минимум {min_length} символов."
 
@@ -772,11 +780,9 @@ msgstr "Введите действительный адрес IPv4 или IPv6.
 msgid "A valid integer is required."
 msgstr "Требуется целочисленное значение."
 
-#, python-brace-format
 msgid "Ensure this value is less than or equal to {max_value}."
 msgstr "Убедитесь, что значение меньше или равно {max_value}."
 
-#, python-brace-format
 msgid "Ensure this value is greater than or equal to {min_value}."
 msgstr "Убедитесь, что значение больше или равно {min_value}."
 
@@ -786,25 +792,21 @@ msgstr "Слишком длинное значение."
 msgid "A valid number is required."
 msgstr "Требуется численное значение."
 
-#, python-brace-format
 msgid "Ensure that there are no more than {max_digits} digits in total."
 msgstr "Убедитесь, что в числе не больше {max_digits} знаков."
 
-#, python-brace-format
 msgid ""
 "Ensure that there are no more than {max_decimal_places} decimal places."
 msgstr ""
 "Убедитесь, что в числе не больше {max_decimal_places} знаков в дробной "
 "части."
 
-#, python-brace-format
 msgid ""
 "Ensure that there are no more than {max_whole_digits} digits before the "
 "decimal point."
 msgstr ""
 "Убедитесь, что в числе не больше {max_whole_digits} знаков в целой части."
 
-#, python-brace-format
 msgid ""
 "Datetime has wrong format. Use one of these formats instead: {format}."
 msgstr ""
@@ -814,7 +816,6 @@ msgstr ""
 msgid "Expected a datetime but got a date."
 msgstr "Ожидался datetime, но был получен date."
 
-#, python-brace-format
 msgid "Date has wrong format. Use one of these formats instead: {format}."
 msgstr ""
 "Неправильный формат date. Используйте один из этих форматов: {format}."
@@ -822,32 +823,26 @@ msgstr ""
 msgid "Expected a date but got a datetime."
 msgstr "Ожидался date, но был получен datetime."
 
-#, python-brace-format
 msgid "Time has wrong format. Use one of these formats instead: {format}."
 msgstr ""
 "Неправильный формат времени. Используйте один из этих форматов: {format}."
 
-#, python-brace-format
 msgid ""
 "Duration has wrong format. Use one of these formats instead: {format}."
 msgstr "Неправильный формат. Используйте один из этих форматов: {format}."
 
-#, python-brace-format
 msgid "\"{input}\" is not a valid choice."
 msgstr "\"{input}\" не является корректным значением."
 
-#, python-brace-format
 msgid "More than {count} items..."
 msgstr "Элементов больше чем {count}"
 
-#, python-brace-format
 msgid "Expected a list of items but got type \"{input_type}\"."
 msgstr "Ожидался list со значениями, но был получен \"{input_type}\"."
 
 msgid "This selection may not be empty."
 msgstr "Выбор не может быть пустым."
 
-#, python-brace-format
 msgid "\"{input}\" is not a valid path choice."
 msgstr "\"{input}\" не является корректным путем до файла"
 
@@ -864,7 +859,6 @@ msgstr "Невозможно определить имя файла."
 msgid "The submitted file is empty."
 msgstr "Загруженный файл пуст."
 
-#, python-brace-format
 msgid ""
 "Ensure this filename has at most {max_length} characters (it has "
 "{length})."
@@ -881,7 +875,6 @@ msgstr ""
 msgid "This list may not be empty."
 msgstr "Этот список не может быть пустым."
 
-#, python-brace-format
 msgid "Expected a dictionary of items but got type \"{input_type}\"."
 msgstr "Ожидался словарь со значениями, но был получен \"{input_type}\"."
 
@@ -906,11 +899,9 @@ msgstr "Неправильная страница"
 msgid "Invalid cursor"
 msgstr "Не корректный курсор"
 
-#, python-brace-format
 msgid "Invalid pk \"{pk_value}\" - object does not exist."
 msgstr "Недопустимый первичный ключ \"{pk_value}\" - объект не существует."
 
-#, python-brace-format
 msgid "Incorrect type. Expected pk value, received {data_type}."
 msgstr ""
 "Некорректный тип. Ожидалось значение первичного ключа, получен "
@@ -925,18 +916,15 @@ msgstr "Недопустимая ссылка - некорректное сов�
 msgid "Invalid hyperlink - Object does not exist."
 msgstr "Недопустимая ссылка - объект не существует."
 
-#, python-brace-format
 msgid "Incorrect type. Expected URL string, received {data_type}."
 msgstr "Некорректный тип. Ожидался URL, получен {data_type}."
 
-#, python-brace-format
 msgid "Object with {slug_name}={value} does not exist."
 msgstr "Объект с {slug_name}={value} не существует."
 
 msgid "Invalid value."
 msgstr "Недопустимое значение."
 
-#, python-brace-format
 msgid "Invalid data. Expected a dictionary, but got {datatype}."
 msgstr ""
 "Недопустимые данные. Ожидался dictionary, но был получен {datatype}."
@@ -953,20 +941,16 @@ msgstr "Нет элементов для выбора"
 msgid "This field must be unique."
 msgstr "Это поле должно быть уникально."
 
-#, python-brace-format
 msgid "The fields {field_names} must make a unique set."
 msgstr ""
 "Поля {field_names} должны производить массив с уникальными значениями."
 
-#, python-brace-format
 msgid "This field must be unique for the \"{date_field}\" date."
 msgstr "Это поле должно быть уникально для даты \"{date_field}\"."
 
-#, python-brace-format
 msgid "This field must be unique for the \"{date_field}\" month."
 msgstr "Это поле должно быть уникально для месяца \"{date_field}\"."
 
-#, python-brace-format
 msgid "This field must be unique for the \"{date_field}\" year."
 msgstr "Это поле должно быть уникально для года \"{date_field}\"."
 
