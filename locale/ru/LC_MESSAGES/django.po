@@ -721,19 +721,12 @@ msgid "Authentication credentials were not provided."
 msgstr "Учетные данные не были предоставлены."
 
 
+msgid "You do not have permission to perform this action."
+msgstr "У вас нет прав для выполнения этой операции."
+
+
 msgid "Method \"{method}\" not allowed."
 msgstr "Метод \"{method}\" не разрешен."
-
-
-msgid "Not found."
-msgstr "Не найдено."
-
-msgid "Unsupported media type \"{media_type}\" in request."
-msgstr "Неподдерживаемый тип данных \"{media_type}\" в запросе."
-
-
-msgid "Could not satisfy the request Accept header."
-msgstr "Невозможно удовлетворить \"Accept\" заголовок запроса."
 
 msgid "Unsupported media type \"{media_type}\" in request."
 msgstr "Неподдерживаемый тип данных \"{media_type}\" в запросе."
@@ -744,17 +737,18 @@ msgstr "Запрос был проигнорирован."
 msgid "This field is required."
 msgstr "Это поле обязательно."
 
+msgid "This field may not be null."
+msgstr "Это поле не может быть null."
+
+msgid "This field may not be blank."
+msgstr "Это поле не может быть пустым."
+
 msgid "Ensure this field has no more than {max_length} characters."
 msgstr "Убедитесь, что в этом поле не больше {max_length} символов."
 
 msgid "Ensure this field has at least {min_length} characters."
 msgstr "Убедитесь, что в этом поле как минимум {min_length} символов."
 
-msgid "Enter a valid email address."
-msgstr "Введите корректный адрес электронной почты."
-
-msgid "This value does not match the required pattern."
-msgstr "Значение не соответствует требуемому паттерну."
 
 msgid "Enter a valid \"slug\" consisting of letters, numbers, underscores or hyphens."
 msgstr "Введите корректный \"slug\", состоящий из букв, цифр, знаков подчеркивания или дефисов."
@@ -762,6 +756,14 @@ msgstr "Введите корректный \"slug\", состоящий из б
 msgid "Enter a valid URL."
 msgstr "Введите корректный URL."
 
+msgid "Enter a valid URL."
+msgstr "Введите корректный URL."
+
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr "Введите действительный адрес IPv4 или IPv6."
+
+msgid "A valid integer is required."
+msgstr "Требуется целочисленное значение."
 
 msgid "Ensure this value is less than or equal to {max_value}."
 msgstr "Убедитесь, что значение меньше или равно {max_value}."
@@ -769,45 +771,33 @@ msgstr "Убедитесь, что значение меньше или равн
 msgid "Ensure this value is greater than or equal to {min_value}."
 msgstr "Убедитесь, что значение больше или равно {min_value}."
 
+msgid "String value too large."
+msgstr "Слишком длинное значение."
 
-msgid "Ensure this value is less than or equal to {max_value}."
-msgstr "Убедитесь, что значение меньше или равно {max_value}."
-
-msgid "Ensure this value is greater than or equal to {min_value}."
-msgstr "Убедитесь, что значение больше или равно {min_value}."
-
+msgid "A valid number is required."
+msgstr "Требуется численное значение."
 
 msgid "Ensure that there are no more than {max_digits} digits in total."
 msgstr "Убедитесь, что в числе не больше {max_digits} знаков."
 
-msgid ""
-"Ensure that there are no more than {max_decimal_places} decimal places."
-msgstr ""
-"Убедитесь, что в числе не больше {max_decimal_places} знаков в дробной "
-"части."
-
-msgid ""
-"Ensure that there are no more than {max_whole_digits} digits before the "
-"decimal point."
-msgstr ""
-"Убедитесь, что в числе не больше {max_whole_digits} знаков в целой части."
-
-msgid ""
-"Datetime has wrong format. Use one of these formats instead: {format}."
-msgstr ""
-"Неправильный формат datetime. Используйте один из этих форматов:  "
-"{format}."
+msgid "Ensure that there are no more than {max_decimal_places} decimal places."
+msgstr "Убедитесь, что в числе не больше {max_decimal_places} знаков в дробной части."
 
 msgid "Ensure that there are no more than {max_whole_digits} digits before the decimal point."
 msgstr "Убедитесь, что в числе не больше {max_whole_digits} знаков в целой части."
 
-
-msgid "Date has wrong format. Use one of these formats instead: {format}."
-msgstr "Неправильный формат date. Используйте один из этих форматов: {format}."
-
+msgid "Datetime has wrong format. Use one of these formats instead: {format}."
+msgstr "Неправильный формат datetime. Используйте один из этих форматов:  {format}."
 
 msgid "Expected a datetime but got a date."
 msgstr "Ожидался datetime, но был получен date."
+
+msgid "Date has wrong format. Use one of these formats instead: {format}."
+msgstr ""
+"Неправильный формат date. Используйте один из этих форматов: {format}."
+
+msgid "Expected a date but got a datetime."
+msgstr "Ожидался date, но был получен datetime."
 
 msgid "Time has wrong format. Use one of these formats instead: {format}."
 msgstr ""
@@ -826,26 +816,11 @@ msgstr "Элементов больше чем {count}"
 msgid "Expected a list of items but got type \"{input_type}\"."
 msgstr "Ожидался list со значениями, но был получен \"{input_type}\"."
 
-
-msgid "More than {count} items..."
-msgstr "Элементов больше чем {count}"
-
-
-msgid "\"{input}\" is not a valid path choice."
-msgstr "\"{input}\" не является корректным путем до файла"
-
-msgid "This selection may not be empty."
-msgstr "Выбор не может быть пустым."
-
-msgid "\"{input}\" is not a valid path choice."
-msgstr "\"{input}\" не является корректным путем до файла"
-
 msgid "No file was submitted."
 msgstr "Не был загружен файл."
 
-msgid "The submitted data was not a file. Check the encoding type on the form."
-msgstr "Загруженный файл не является корректным файлом."
-
+msgid "\"{input}\" is not a valid path choice."
+msgstr "\"{input}\" не является корректным путем до файла"
 
 msgid "Ensure this filename has at most {max_length} characters (it has {length})."
 msgstr "Убедитесь, что имя файла меньше {max_length} символов (сейчас {length})."
@@ -856,9 +831,17 @@ msgstr "Загруженный файл пуст."
 msgid "Ensure this filename has at most {max_length} characters (it has {length})."
 msgstr "Убедитесь, что имя файла меньше {max_length} символов (сейчас {length})."
 
+msgid "No filename could be determined."
+msgstr "Невозможно определить имя файла."
 
-msgid "Expected a dictionary of items but got type \"{input_type}\"."
-msgstr "Ожидался словарь со значениями, но был получен \"{input_type}\"."
+msgid "The submitted file is empty."
+msgstr "Загруженный файл пуст."
+
+msgid "Ensure this filename has at most {max_length} characters (it has {length})."
+msgstr "Убедитесь, что имя файла меньше {max_length} символов (сейчас {length})."
+
+msgid "Upload a valid image. The file you uploaded was either not an image or a corrupted image."
+msgstr"Загрузите корректное изображение. Загруженный файл не является изображением, либо является испорченным."
 
 msgid "This list may not be empty."
 msgstr "Этот список не может быть пустым."
@@ -881,16 +864,27 @@ msgstr "по возрастанию"
 msgid "descending"
 msgstr "по убыванию"
 
+msgid "Invalid page."
+msgstr "Неправильная страница"
+
+msgid "Invalid cursor"
+msgstr "Не корректный курсор"
+
 msgid "Invalid pk \"{pk_value}\" - object does not exist."
 msgstr "Недопустимый первичный ключ \"{pk_value}\" - объект не существует."
 
 msgid "Incorrect type. Expected pk value, received {data_type}."
-msgstr "Некорректный тип. Ожидалось значение первичного ключа, получен {data_type}."
-
-msgid "Invalid pk \"{pk_value}\" - object does not exist."
-msgstr "Недопустимый первичный ключ \"{pk_value}\" - объект не существует."
+msgstr ""
+"Некорректный тип. Ожидалось значение первичного ключа, получен "
+"{data_type}."
 
 msgid "Invalid hyperlink - No URL match."msgstr "Недопустимая ссылка - нет совпадения по URL."
+
+msgid "Invalid hyperlink - Incorrect URL match."
+msgstr "Недопустимая ссылка - некорректное совпадение по URL,"
+
+msgid "Invalid hyperlink - Object does not exist."
+msgstr "Недопустимая ссылка - объект не существует."
 
 msgid "Incorrect type. Expected URL string, received {data_type}."
 msgstr "Некорректный тип. Ожидался URL, получен {data_type}."
@@ -898,16 +892,11 @@ msgstr "Некорректный тип. Ожидался URL, получен {d
 msgid "Object with {slug_name}={value} does not exist."
 msgstr "Объект с {slug_name}={value} не существует."
 
-"Incorrect type. Expected URL string, received {data_type}."
-"Некорректный тип. Ожидался URL, получен {data_type}."
-
-msgid "Invalid data. Expected a dictionary, but got {datatype}."
-msgstr "Недопустимые данные. Ожидался dictionary, но был получен {datatype}."
-
 msgid "Invalid value."
 msgstr "Недопустимое значение."
 
 msgid "Invalid data. Expected a dictionary, but got {datatype}."
+
 msgstr "Недопустимые данные. Ожидался dictionary, но был получен {datatype}."
 
 msgid "Filters"
@@ -916,18 +905,17 @@ msgstr "Фильтры"
 msgid "None"
 msgstr "Ничего"
 
+msgid "No items to select."
+msgstr "Нет элементов для выбора"
+
+msgid "This field must be unique."
+msgstr "Это поле должно быть уникально."
+
 msgid "The fields {field_names} must make a unique set."
-msgstr ""
-"Поля {field_names} должны производить массив с уникальными значениями."
+msgstr "Поля {field_names} должны производить массив с уникальными значениями."
 
 msgid "This field must be unique for the \"{date_field}\" date."
 msgstr "Это поле должно быть уникально для даты \"{date_field}\"."
-
-msgid "This field must be unique for the \"{date_field}\" month."
-msgstr "Это поле должно быть уникально для месяца \"{date_field}\"."
-
-msgid "This field must be unique for the \"{date_field}\" year."
-msgstr "Это поле должно быть уникально для года \"{date_field}\"."
 
 msgid "This field must be unique for the \"{date_field}\" month."
 msgstr "Это поле должно быть уникально для месяца \"{date_field}\"."

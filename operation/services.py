@@ -59,7 +59,6 @@ class CalculateParcelPrice:
                 Q(distance__from_region=self.from_region) &
                 Q(distance__to_district=self.to_district)).first()
         price = float(dimension_price_obj.price)
-        print(dimension_price_obj)
         dimension_weight = dimension_price_obj.dimension.weight
 
         if parcel_dimension.weight > dimension_weight:
