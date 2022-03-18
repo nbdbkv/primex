@@ -28,6 +28,6 @@ urlpatterns = [
     path('parcel/<str:code>/', ParcelRetrieveView.as_view()),
     path('payment_history/', PaymentHistoryView.as_view()),
     path('bonus/', BonusHistoryView.as_view()),
-    path('print/<int:pk>/', PrintView.as_view())
+    path('print/<int:pk>/', PrintView.as_view(), name='print')
 ]
 

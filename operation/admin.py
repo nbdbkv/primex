@@ -2,6 +2,7 @@ from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 from django.utils.translation import gettext_lazy as _
+from django.http.response import HttpResponseRedirect
 
 from .choices import DirectionChoices
 from operation.models import (
@@ -58,9 +59,13 @@ class From_district(NestedStackedInline):
 
 
 class ParcelAdmin(NestedModelAdmin):
+    save_on_top = True
     inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
-
+    change_form_template = "admin/print_receipt.html"
     list_display = ("sender", "code", "create_at", "from_district", "to_district", )
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        return super().change_view(request, object_id, form_url='', extra_context={'obj_id': object_id})
 
     @admin.display(description=_('from region'))
     def from_district(self, obj):
@@ -71,6 +76,7 @@ class ParcelAdmin(NestedModelAdmin):
     def to_district(self, obj):
         to_dis = obj.direction.get(type=DirectionChoices.TO).district.name
         return to_dis
+
 
 
 # class PaymentHistoryAdmin(admin.ModelAdmin):
