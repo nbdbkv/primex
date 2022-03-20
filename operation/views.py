@@ -27,6 +27,8 @@ from operation.models import (
     PaymentHistory,
     PaymentType
 )
+from operation.filters import EnvelopFilter
+
 
 class PaymentHistoryView(generics.ListAPIView):
     serializer_class = PaymentHistorySerializer
@@ -79,10 +81,10 @@ class EnvelopListView(generics.ListAPIView):
     serializer_class = EnvelopSerializer
     queryset = Envelop.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['distance__from_region', 'distance__to_district']
+    filterset_class = EnvelopFilter
 
 
-class PaymentTypeListView(generics.ListAPIView):
+class PaymentTypeListView(generics.ListAPIView): 
     serializer_class = PaymentTypeSerializer
     queryset = PaymentType.objects.all()
 
