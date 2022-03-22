@@ -242,6 +242,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         direction = validated_data.pop('direction')
         user_info = validated_data.pop('user_info')
         dimension = validated_data.pop('dimension')
+        envelop = payment['envelop']
 
         validated_data['code'] = get_parcel_code(direction[1])
         validated_data['sender'] = self.context.get('request').user
@@ -275,7 +276,8 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
-
+        if envelop:
+            envelop = Envelop.objects.get(title=envelop)
         parcel.payment.price = CalculateParcelPrice(parcel).price
         parcel.payment.save()
         return parcel
