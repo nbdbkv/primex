@@ -70,12 +70,6 @@ class ParcelAdmin(NestedModelAdmin):
         return to_dis
 
 
-<<<<<<< HEAD
-=======
-# class PaymentHistoryAdmin(admin.ModelAdmin):
-
-
->>>>>>> 8aa8261b8ff289317f7ceb73dd06a1eb4f378ddf
 admin.site.register(DeliveryStatus)
 admin.site.register(ParcelOption)
 admin.site.register(Parcel, ParcelAdmin)

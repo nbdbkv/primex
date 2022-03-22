@@ -29,9 +29,5 @@ urlpatterns = [
     path('payment_history/', PaymentHistoryView.as_view()),
     path('bonus/', BonusHistoryView.as_view()),
     path('print/<int:pk>/', PrintView.as_view(), name='print')
-<<<<<<< HEAD
-
-=======
->>>>>>> 8aa8261b8ff289317f7ceb73dd06a1eb4f378ddf
 ]
 

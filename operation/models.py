@@ -95,6 +95,7 @@ class PaymentDimension(models.Model):
     width = models.FloatField(_('parcel width'))
     height = models.FloatField(_('parcel height'))
     weight = models.FloatField(_('parcel weight'))
+    price = models.DecimalField(_('dimension price'), max_digits=9, decimal_places=2, blank=True)
 
     class Meta:
         verbose_name = _('Payment dimension')
