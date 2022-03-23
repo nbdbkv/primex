@@ -12,6 +12,7 @@ mydatabase1
 mydatabase2
 mydatabase
 migrations
+megapay/
 static
 staticfiles
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/

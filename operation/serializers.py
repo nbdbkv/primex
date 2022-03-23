@@ -243,6 +243,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         direction = validated_data.pop('direction')
         user_info = validated_data.pop('user_info')
         dimension = validated_data.pop('dimension')
+        envelop = payment['envelop']
 
         validated_data['code'] = get_parcel_code(direction[1])
         validated_data['sender'] = self.context.get('request').user

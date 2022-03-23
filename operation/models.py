@@ -13,12 +13,20 @@ class DeliveryStatus(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    class Meta:
+        verbose_name = _('Delivery status')
+        verbose_name_plural = _('Delivery statuses')
+
 
 class ParcelOption(models.Model):
     title = models.CharField(_('option title'), max_length=255)
     
     def __str__(self) -> str:
         return self.title
+
+    class Meta:
+        verbose_name = _('Parcel option')
+        verbose_name_plural = _('Parcel options')
 
 
 class Parcel(models.Model):
@@ -33,12 +41,21 @@ class Parcel(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    class Meta:
+        verbose_name = _('Parcel')
+        verbose_name_plural = _('Parcels')
+
+
 class Distance(models.Model):
     from_region = models.ForeignKey(Region, on_delete=models.SET_NULL, verbose_name=_('from region'), null=True)
     to_district = models.ForeignKey(District, on_delete=models.SET_NULL, verbose_name=_('to district'), null=True)
     
     def __str__(self) -> str:
         return f'{self.from_region} - {self.to_district}'
+
+    class Meta:
+        verbose_name = _('Distance')
+        verbose_name_plural = _('Distances')
     
 
 class DeliveryType(models.Model):
@@ -53,6 +70,10 @@ class DeliveryType(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    class Meta:
+        verbose_name = _('Delivery type')
+        verbose_name_plural = _('Delivery types')
+
 
 class Packaging(models.Model):
     title = models.CharField(_('title'), max_length=255)
@@ -64,6 +85,10 @@ class Packaging(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    class Meta:
+        verbose_name = _('Packaging')
+        verbose_name_plural = _('Packagings')
+
 
 class PaymentDimension(models.Model):
     length = models.FloatField(_('parcel length'))
@@ -72,16 +97,25 @@ class PaymentDimension(models.Model):
     weight = models.FloatField(_('parcel weight'))
     price = models.DecimalField(_('diminsion price'), max_digits=9, decimal_places=2)
 
+    class Meta:
+        verbose_name = _('Payment dimension')
+        verbose_name_plural = _('Payment dimensions')
+
+
 class Envelop(models.Model):
     distance = models.ForeignKey(Distance, on_delete=models.SET_NULL, verbose_name=_('distance'), null=True, blank=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'))
-    dimension = models.ManyToManyField(PaymentDimension, verbose_name=_('dimension'), null=True)
+    dimension = models.ManyToManyField(PaymentDimension, verbose_name=_('dimension'))
     kilo = models.PositiveIntegerField(_('price per kilo'))
     
     def __str__(self) -> str:
         return self.title
+
+    class Meta:
+        verbose_name = _('Envelop')
+        verbose_name_plural = _('Envelops')
 
 
 class ParcelPayment(models.Model):
@@ -95,6 +129,10 @@ class ParcelPayment(models.Model):
     def __str__(self) -> str:
         return self.parcel.title
 
+    class Meta:
+        verbose_name = _('Parcel payment')
+        verbose_name_plural = _('Parcel payments')
+
 
 class PaymentType(models.Model):
     icon = models.FileField(_('icon'), upload_to='project/')
@@ -104,6 +142,10 @@ class PaymentType(models.Model):
     def __str__(self) -> str:
         return self.type
 
+    class Meta:
+        verbose_name = _('Payment type')
+        verbose_name_plural = _('Payment types')
+
 
 class Payment(models.Model):
     parcel = models.ForeignKey(ParcelPayment, on_delete=models.CASCADE, verbose_name=_('parcel payment'), related_name='payment')
@@ -112,6 +154,10 @@ class Payment(models.Model):
 
     def __str__(self) -> str:
         return self.parcel.parcel.title
+
+    class Meta:
+        verbose_name = _('Payment')
+        verbose_name_plural = _('Payments')
 
 
 class Direction(DoubleGisMixin, models.Model):
@@ -127,6 +173,8 @@ class Direction(DoubleGisMixin, models.Model):
     
     class Meta:
         ordering = ['type']
+        verbose_name = _('Direction')
+        verbose_name_plural = _('Directions')
 
 
 class UserInfo(models.Model):
@@ -142,6 +190,8 @@ class UserInfo(models.Model):
     
     class Meta:
         ordering = ['type']
+        verbose_name = _('User info')
+        verbose_name_plural = _('User info')
     
 
 class ParcelDimension(models.Model):
@@ -154,6 +204,10 @@ class ParcelDimension(models.Model):
     def __str__(self) -> str:
         return self.parcel.title
 
+    class Meta:
+        verbose_name = _('Parcel dimension')
+        verbose_name_plural = _('Parcel dimensions')
+
 
 class PaymentHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'))
@@ -165,3 +219,7 @@ class PaymentHistory(models.Model):
 
     def __str__(self) -> str:
         return f'{self.user} -> {self.sum}'
+
+    class Meta:
+        verbose_name = _('Payment history')
+        verbose_name_plural = _('Payment histories')

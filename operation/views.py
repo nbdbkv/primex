@@ -1,7 +1,9 @@
+from django.shortcuts import render
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from django.views.generic import TemplateView
 
-from operation.choices import PaymentHistoryType, PaymentTypeChoices
+from operation.choices import PaymentHistoryType, PaymentTypeChoices, DirectionChoices
 
 from operation.serializers import (
     BonusHistorySerializer,
@@ -99,3 +101,23 @@ class ParcelRetrieveView(generics.RetrieveAPIView):
     serializer_class = ReatriveParcelSerializer
     queryset = Parcel.objects.all()
     lookup_field = 'code'
+
+class PrintView(TemplateView):
+    model = Parcel
+    template_name = "index.html"
+    def get(self, request, pk,  *args, **kwargs):
+        parcel = Parcel.objects.get(pk=pk)
+        sender = parcel.user_info.get(type=1)
+        recipient = parcel.user_info.get(type=2)
+
+        fro_m = parcel.direction.get(type=DirectionChoices.FROM).district.name
+        to = parcel.direction.get(type=DirectionChoices.TO).district.name
+
+        context = {
+            "data": parcel,
+            "sender": sender,
+            "recipient": recipient,
+            "from": fro_m,
+            "to": to,
+        }
+        return render(request, self.template_name, context)

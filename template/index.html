@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>print</title>
+</head>
+<style>
+    @media print{
+        @page{
+            size: 70mm 70mm;
+            }
+        }
+
+    div {
+        padding: 20px;
+        margin: 20px;
+        }
+</style>
+<body>
+    <div>
+        <h4> Код: {{ data.code }}<br>
+            Отправитель: {{ sender.info }}<br>
+            Тел: {{ sender.phone }}<br>
+            Получатель: {{ recipient.info }}<br>
+            Тел: {{ recipient.phone }}<br>
+            От куда: {{ from }}<br>
+            Куда: {{ to }}
+        </h4>
+    </div>
+    <script>
+        window.print()
+    </script>
+</body>
+</html>

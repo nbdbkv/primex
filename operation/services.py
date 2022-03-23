@@ -85,7 +85,7 @@ class CalculateParcelPrice:
         if self.instance.dimension:
             try:
                 return self.calculate_dimension_price()
-            except Envelop.DoesNotExist:
+            except KeyError:
                 raise ValidationError({'message': 'There is no price for this area'})
         else:
             return self.calculate_envelop_price()
