@@ -12,12 +12,12 @@ from account.serailizers import (
     PasswordResetVerifySerializer,
     RegisterCodeVerifySerializer,
     PhoneResetVerifySerializer,
-    UpdateUserInfoSerializer, 
+    UpdateUserInfoSerializer,
     UserRegisterSerializer,
-    UserRetrieveSerializer, 
+    UserRetrieveSerializer,
     UserSendCodeSerializer,
     RegionsSerializer,
-    DistrictsSerializer
+    DistrictsSerializer,
 )
 
 
@@ -58,7 +58,7 @@ class PasswordResetVerifyView(generics.GenericAPIView):
 
 class PhoneResetVerifyView(generics.GenericAPIView):
     serializer_class = PhoneResetVerifySerializer
-    # permission_classes = [permissions.IsAuthenticated] 
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
@@ -84,7 +84,7 @@ class GetUserView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
-    
+
 
 class RegionsView(generics.ListAPIView):
     serializer_class = RegionsSerializer
@@ -95,11 +95,11 @@ class DistrictsView(generics.ListAPIView):
     serializer_class = DistrictsSerializer
     queryset = District.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['region']
-    
+    filterset_fields = ["region"]
+
 
 class VillagesView(generics.ListAPIView):
     serializer_class = VillagesSerializer
     queryset = Village.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['region']
+    filterset_fields = ["region"]

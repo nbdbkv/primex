@@ -25,7 +25,7 @@ from operation.models import (
     Packaging,
     Envelop,
     PaymentHistory,
-    PaymentType
+    PaymentType,
 )
 from operation.filters import EnvelopFilter
 
@@ -33,8 +33,8 @@ from operation.filters import EnvelopFilter
 class PaymentHistoryView(generics.ListAPIView):
     serializer_class = PaymentHistorySerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['parcel', 'type', 'payment_type']
-    
+    filterset_fields = ["parcel", "type", "payment_type"]
+
     def get_queryset(self):
         user = self.request.user
         queryset = PaymentHistory.objects.filter(user=user)
@@ -43,17 +43,19 @@ class PaymentHistoryView(generics.ListAPIView):
 
 class BonusHistoryView(generics.ListAPIView):
     serializer_class = BonusHistorySerializer
-    
+
     def get_queryset(self):
         user = self.request.user
-        queryset = PaymentHistory.objects.filter(user=user, type__type=PaymentTypeChoices.BONUS)
+        queryset = PaymentHistory.objects.filter(
+            user=user, type__type=PaymentTypeChoices.BONUS
+        )
         return queryset
 
 
 class ParcelCreateView(generics.CreateAPIView):
     serializer_class = CreateParcelSerializer
     queryset = Parcel
-    
+
 
 class DeliveryStatusListView(generics.ListAPIView):
     serializer_class = DeliveryStatusSerializer
@@ -69,13 +71,13 @@ class DeliveryTypeListView(generics.ListAPIView):
     serializer_class = DeliveryTypeSerializer
     queryset = DeliveryType.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['distance__from_region', 'distance__to_district']
-    
+    filterset_fields = ["distance__from_region", "distance__to_district"]
+
 
 class PackagingListView(generics.ListAPIView):
     serializer_class = PackagingSerializer
     queryset = Packaging.objects.all()
-    
+
 
 class EnvelopListView(generics.ListAPIView):
     serializer_class = EnvelopSerializer
@@ -84,14 +86,14 @@ class EnvelopListView(generics.ListAPIView):
     filterset_class = EnvelopFilter
 
 
-class PaymentTypeListView(generics.ListAPIView): 
+class PaymentTypeListView(generics.ListAPIView):
     serializer_class = PaymentTypeSerializer
     queryset = PaymentType.objects.all()
 
 
 class ParcelListView(generics.ListAPIView):
     serializer_class = ReatriveParcelSerializer
-    
+
     def get_queryset(self):
         user = self.request.user
         print(user)
@@ -102,12 +104,14 @@ class ParcelListView(generics.ListAPIView):
 class ParcelRetrieveView(generics.RetrieveAPIView):
     serializer_class = ReatriveParcelSerializer
     queryset = Parcel.objects.all()
-    lookup_field = 'code'
+    lookup_field = "code"
+
 
 class PrintView(TemplateView):
     model = Parcel
     template_name = "index.html"
-    def get(self, request, pk,  *args, **kwargs):
+
+    def get(self, request, pk, *args, **kwargs):
         parcel = Parcel.objects.get(pk=pk)
         sender = parcel.user_info.get(type=1)
         recipient = parcel.user_info.get(type=2)

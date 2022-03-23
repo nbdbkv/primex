@@ -16,27 +16,25 @@ from account.views import (
     PhoneResetVerifyView,
     UpdateUserInfoView,
     RegionsView,
-    DistrictsView
+    DistrictsView,
 )
 
 router = DefaultRouter()
 
-router.register('devices', FCMDeviceAuthorizedViewSet)
+router.register("devices", FCMDeviceAuthorizedViewSet)
 
 urlpatterns = [
-    path('device/', include(router.urls)),
-    path('token/', TokenObtainPairView.as_view()),
-    path('token/refresh/', TokenRefreshView.as_view()),
-    path('register/', UserRegisterView.as_view()),
-    path('code/send/', UserSendCodeView.as_view()),
-    path('code/verify/', RegisterCodeVerifyView.as_view()),
-    path('password/verify/reset/', PasswordResetVerifyView.as_view()),
-    path('phone/verify/reset/', PhoneResetVerifyView.as_view()),
-    
-    
-    path('update/info/', UpdateUserInfoView.as_view()),
-    path('get/', GetUserView.as_view()),
-    path('regions/', RegionsView.as_view()),
-    path('districts/', DistrictsView.as_view()),
-    path('villages/', VillagesView.as_view())
+    path("device/", include(router.urls)),
+    path("token/", TokenObtainPairView.as_view()),
+    path("token/refresh/", TokenRefreshView.as_view()),
+    path("register/", UserRegisterView.as_view()),
+    path("code/send/", UserSendCodeView.as_view()),
+    path("code/verify/", RegisterCodeVerifyView.as_view()),
+    path("password/verify/reset/", PasswordResetVerifyView.as_view()),
+    path("phone/verify/reset/", PhoneResetVerifyView.as_view()),
+    path("update/info/", UpdateUserInfoView.as_view()),
+    path("get/", GetUserView.as_view()),
+    path("regions/", RegionsView.as_view()),
+    path("districts/", DistrictsView.as_view()),
+    path("villages/", VillagesView.as_view()),
 ]

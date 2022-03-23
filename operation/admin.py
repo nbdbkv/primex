@@ -20,7 +20,7 @@ from operation.models import (
     Direction,
     UserInfo,
     ParcelDimension,
-    PaymentHistory
+    PaymentHistory,
 )
 
 
@@ -52,19 +52,32 @@ class ParcelDimensionInline(NestedStackedInline):
 
 class ParcelAdmin(NestedModelAdmin):
     save_on_top = True
-    inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
+    inlines = [
+        ParcelPaymentInline,
+        DirectionInline,
+        UserInfoInline,
+        ParcelDimensionInline,
+    ]
     change_form_template = "admin/print_receipt.html"
-    list_display = ("sender", "code", "create_at", "from_district", "to_district", )
+    list_display = (
+        "sender",
+        "code",
+        "create_at",
+        "from_district",
+        "to_district",
+    )
 
-    def change_view(self, request, object_id, form_url='', extra_context=None):
-        return super().change_view(request, object_id, form_url='', extra_context={'obj_id': object_id})
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        return super().change_view(
+            request, object_id, form_url="", extra_context={"obj_id": object_id}
+        )
 
-    @admin.display(description=_('from region'))
+    @admin.display(description=_("from region"))
     def from_district(self, obj):
         from_dis = obj.direction.get(type=DirectionChoices.FROM).district.name
         return from_dis
 
-    @admin.display(description=_('to district'))
+    @admin.display(description=_("to district"))
     def to_district(self, obj):
         to_dis = obj.direction.get(type=DirectionChoices.TO).district.name
         return to_dis
