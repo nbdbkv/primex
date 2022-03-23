@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline
+from django.utils.translation import gettext_lazy as _
 
 from .choices import DirectionChoices
 from operation.models import (
@@ -51,10 +52,12 @@ class ParcelAdmin(NestedModelAdmin):
     inlines = [ParcelPaymentInline, DirectionInline, UserInfoInline, ParcelDimensionInline]
     list_display = ("sender", "code", "create_at", "from_district", "to_district",)
 
+    @admin.display(description=_('from region'))
     def from_district(self, obj):
         from_dis = obj.direction.get(type=DirectionChoices.FROM).district.name
         return from_dis
 
+    @admin.display(description=_('to district'))
     def to_district(self, obj):
         to_dis = obj.direction.get(type=DirectionChoices.TO).district.name
         return to_dis

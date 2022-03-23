@@ -239,6 +239,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         payment = validated_data.pop('payment')
+        envelop = (payment['envelop'])
         direction = validated_data.pop('direction')
         user_info = validated_data.pop('user_info')
         dimension = validated_data.pop('dimension')
@@ -276,6 +277,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
 
-        parcel.payment.price = CalculateParcelPrice(parcel).price
+        parcel.payment.price = CalculateParcelPrice(parcel, envelop).price
         parcel.payment.save()
         return parcel

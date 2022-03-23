@@ -70,14 +70,14 @@ class PaymentDimension(models.Model):
     width = models.FloatField(_('parcel width'))
     height = models.FloatField(_('parcel height'))
     weight = models.FloatField(_('parcel weight'))
-
+    price = models.DecimalField(_('diminsion price'), max_digits=9, decimal_places=2)
 
 class Envelop(models.Model):
     distance = models.ForeignKey(Distance, on_delete=models.SET_NULL, verbose_name=_('distance'), null=True, blank=True)
     price = models.DecimalField(_('price'), max_digits=6, decimal_places=2)
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'))
-    dimension = models.ForeignKey(PaymentDimension, on_delete=models.SET_NULL, verbose_name=_('dimension'), null=True)
+    dimension = models.ManyToManyField(PaymentDimension, verbose_name=_('dimension'), null=True)
     kilo = models.PositiveIntegerField(_('price per kilo'))
     
     def __str__(self) -> str:
