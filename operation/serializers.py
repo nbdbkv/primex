@@ -7,8 +7,13 @@ from account.models import User
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
 from operation.services import get_parcel_code, CalculateParcelPrice
-from operation.choices import DirectionChoices, PayStatusChoices, PaymentHistoryType, UserInfoChoices, \
-    PaymentTypeChoices
+from operation.choices import (
+    DirectionChoices,
+    PayStatusChoices,
+    PaymentHistoryType,
+    UserInfoChoices,
+    PaymentTypeChoices,
+)
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -31,29 +36,29 @@ from operation.models import (
 class PaymentHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentHistory
-        fields = '__all__'
+        fields = "__all__"
         depth = 1
 
 
 class DeliveryStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeliveryStatus
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ParcelOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParcelOption
-        fields = '__all__'
+        fields = "__all__"
 
 
 class DistanceSerializer(serializers.ModelSerializer):
-    from_region = serializers.SlugRelatedField('name', read_only=True)
-    to_district = serializers.SlugRelatedField('name', read_only=True)
+    from_region = serializers.SlugRelatedField("name", read_only=True)
+    to_district = serializers.SlugRelatedField("name", read_only=True)
 
     class Meta:
         model = Distance
-        fields = '__all__'
+        fields = "__all__"
 
 
 class DeliveryTypeSerializer(serializers.ModelSerializer):
@@ -61,19 +66,19 @@ class DeliveryTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DeliveryType
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PackagingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Packaging
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PaymentDimensionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentDimension
-        fields = '__all__'
+        fields = "__all__"
 
 
 class EnvelopSerializer(serializers.ModelSerializer):
@@ -81,13 +86,13 @@ class EnvelopSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Envelop
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PaymentTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentType
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -95,7 +100,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ParcelPaymentSerializer(serializers.ModelSerializer):
@@ -106,11 +111,14 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ParcelPayment
-        fields = '__all__'
+        fields = "__all__"
 
     def get_pay_status(self, instance):
-        type = PayStatusChoices.IN_ANTICIPATION if instance.pay_status == 'in_anticipation' \
+        type = (
+            PayStatusChoices.IN_ANTICIPATION
+            if instance.pay_status == "in_anticipation"
             else PayStatusChoices.PAID
+        )
         return type.label
 
 
@@ -122,7 +130,7 @@ class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ParcelPayment
-        fields = '__all__'
+        fields = "__all__"
 
 
 class DirectionSerializer(serializers.ModelSerializer):
@@ -130,7 +138,7 @@ class DirectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Direction
-        fields = '__all__'
+        fields = "__all__"
 
 
 class DirectionRetrieveSerializer(DirectionSerializer):
@@ -149,7 +157,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserInfo
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ParcelDimensionSerializer(serializers.ModelSerializer):
@@ -157,7 +165,7 @@ class ParcelDimensionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ParcelDimension
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ReatriveParcelSerializer(serializers.ModelSerializer):
@@ -165,35 +173,35 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
     direction = DirectionRetrieveSerializer(many=True)
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer()
-    option = serializers.SlugRelatedField('title', read_only=True, many=True)
+    option = serializers.SlugRelatedField("title", read_only=True, many=True)
 
     class Meta:
         model = Parcel
-        fields = '__all__'
-        
+        fields = "__all__"
+
 
 class BonusHistorySerializer(serializers.ModelSerializer):
     sending_date = serializers.SerializerMethodField()
     code = serializers.SerializerMethodField()
     icon = serializers.SerializerMethodField()
     parcel_sum = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = PaymentHistory
-        fields = '__all__'
-    
+        fields = "__all__"
+
     def get_code(self, instance):
         return instance.parcel.code
-    
+
     def get_icon(self, instance):
-        request = self.context.get('request')
+        request = self.context.get("request")
         image = instance.parcel.payment.delivery_type.icon.url
         url = request.build_absolute_uri(image)
         return url
-    
+
     def get_parcel_sum(self, instance):
         return instance.parcel.payment.price
-    
+
     def get_sending_date(self, instance):
         return instance.parcel.sending_date
 
@@ -207,52 +215,51 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Parcel
-        exclude = ('sender', 'create_at')
+        exclude = ("sender", "create_at")
 
     def validate_payment(self, payment):
-        pay_list = payment['payment']
+        pay_list = payment["payment"]
         for pay in pay_list:
-            if pay['type'].type == PaymentTypeChoices.BONUS:
-                user = self.context.get('request').user
-                if user.points < pay['sum']:
-                    raise ValidationError({'message': 'You do not have enought bonus'})
+            if pay["type"].type == PaymentTypeChoices.BONUS:
+                user = self.context.get("request").user
+                if user.points < pay["sum"]:
+                    raise ValidationError({"message": "You do not have enought bonus"})
             return payment
 
     def validate_direction(self, direction):
         if len(direction) != 2:
-            raise ValidationError({'message': _('direction must be 2')})
-        if direction[0].get('type') != 1:
-            raise ValidationError({'message': 'wrong type'})
-        if direction[1].get('type') != 2:
-            raise ValidationError({'message': 'wrong type'})
+            raise ValidationError({"message": _("direction must be 2")})
+        if direction[0].get("type") != 1:
+            raise ValidationError({"message": "wrong type"})
+        if direction[1].get("type") != 2:
+            raise ValidationError({"message": "wrong type"})
         return direction
 
     def validate_user_info(self, user_info):
         if len(user_info) != 2:
-            raise ValidationError({'message': _('user_info must be 2')})
-        if user_info[0].get('type') != 1:
-            raise ValidationError({'message': 'wrong type'})
-        if user_info[1].get('type') != 2:
-            raise ValidationError({'message': 'wrong type'})
+            raise ValidationError({"message": _("user_info must be 2")})
+        if user_info[0].get("type") != 1:
+            raise ValidationError({"message": "wrong type"})
+        if user_info[1].get("type") != 2:
+            raise ValidationError({"message": "wrong type"})
         return user_info
 
     @transaction.atomic
     def create(self, validated_data):
-        payment = validated_data.pop('payment')
-        envelop = (payment['envelop'])
-        direction = validated_data.pop('direction')
-        user_info = validated_data.pop('user_info')
-        dimension = validated_data.pop('dimension')
-        envelop = payment['envelop']
+        payment = validated_data.pop("payment")
+        direction = validated_data.pop("direction")
+        user_info = validated_data.pop("user_info")
+        dimension = validated_data.pop("dimension")
+        envelop = payment["envelop"]
 
-        validated_data['code'] = get_parcel_code(direction[1])
-        validated_data['sender'] = self.context.get('request').user
-        options = validated_data.pop('option')
+        validated_data["code"] = get_parcel_code(direction[1])
+        validated_data["sender"] = self.context.get("request").user
+        options = validated_data.pop("option")
         parcel = Parcel.objects.create(**validated_data)
         parcel.option.set(options)
 
-        parcel_payments = payment.pop('payment')
-        packaging = payment.pop('packaging')
+        parcel_payments = payment.pop("payment")
+        packaging = payment.pop("packaging")
         payment = ParcelPayment.objects.create(parcel=parcel, **payment)
         payment.packaging.set(packaging)
 

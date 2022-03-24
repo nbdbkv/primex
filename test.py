@@ -18,16 +18,15 @@ def calc_diagonal(arr):
     len_arr = len(arr)
     for i in range(len_arr):
         diagonal_sum += arr[i][i]
-        diagonal_1_sum += arr[i][len_arr - i -1]
-    return {1: diagonal_sum / len_arr,
-            2: diagonal_1_sum / len_arr}
+        diagonal_1_sum += arr[i][len_arr - i - 1]
+    return {1: diagonal_sum / len_arr, 2: diagonal_1_sum / len_arr}
 
 
 def print_arrary(arr):
     for i in arr:
         for j in i:
-            print(j, end='\t')
-        print('\n')
+            print(j, end="\t")
+        print("\n")
 
 
 arr = generate_array(5)

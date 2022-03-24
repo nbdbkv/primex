@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
         Create and save a user with the given username, email, and password.
         """
         if not phone:
-            raise ValueError('The given phone must be set')
+            raise ValueError("The given phone must be set")
         # Lookup the real model class from the global app registry so this
         # manager method can be used in migrations. This is fine because
         # managers are by definition working on the real model.
@@ -23,35 +23,36 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, phone, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
         return self._create_user(phone, password, **extra_fields)
 
     def create_superuser(self, phone, password=None, **extra_fields):
-        extra_fields['is_staff'] = True
-        extra_fields['is_superuser'] = True
-        extra_fields['is_active'] = True
+        extra_fields["is_staff"] = True
+        extra_fields["is_superuser"] = True
+        extra_fields["is_active"] = True
 
         return self._create_user(phone, password, **extra_fields)
 
-    def with_perm(self, perm, is_active=True, include_superusers=True, backend=None, obj=None):
+    def with_perm(
+        self, perm, is_active=True, include_superusers=True, backend=None, obj=None
+    ):
         if backend is None:
             backends = auth._get_backends(return_tuples=True)
             if len(backends) == 1:
                 backend, _ = backends[0]
             else:
                 raise ValueError(
-                    'You have multiple authentication backends configured and '
-                    'therefore must provide the `backend` argument.'
+                    "You have multiple authentication backends configured and "
+                    "therefore must provide the `backend` argument."
                 )
         elif not isinstance(backend, str):
             raise TypeError(
-                'backend must be a dotted import path string (got %r).'
-                % backend
+                "backend must be a dotted import path string (got %r)." % backend
             )
         else:
             backend = auth.load_backend(backend)
-        if hasattr(backend, 'with_perm'):
+        if hasattr(backend, "with_perm"):
             return backend.with_perm(
                 perm,
                 is_active=is_active,

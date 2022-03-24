@@ -7,16 +7,16 @@ from about.views import (
     NewDetailView,
     FillialView,
     QuestionView,
-    FeedbackView
+    FeedbackView,
 )
 
 
 urlpatterns = [
-    path('partners/', PartnerView.as_view()),
-    path('contacts/', ContactView.as_view()),
-    path('articles/', NewsView.as_view()),
-    path('article/<int:pk>/', NewDetailView.as_view()),
-    path('branch_offices/', FillialView.as_view()),
-    path('questions/', QuestionView.as_view()),
-    path('feedback/', FeedbackView.as_view()),
+    path("partners/", PartnerView.as_view()),
+    path("contacts/", ContactView.as_view()),
+    path("articles/", NewsView.as_view()),
+    path("article/<int:pk>/", NewDetailView.as_view()),
+    path("branch_offices/", FillialView.as_view()),
+    path("questions/", QuestionView.as_view()),
+    path("feedback/", FeedbackView.as_view()),
 ]

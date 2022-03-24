@@ -17,12 +17,15 @@ class UserAdminForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('phone', 'password', 'info', 'region', 'district', 'role')
-    
-    
+        fields = ("phone", "password", "info", "region", "district", "role")
+
+
 def get_permission():
-    exclude_content_type = ContentType.objects.filter(model='PaymentHistory')
-    temp = Permission.objects.filter(content_type=exclude_content_type) \
-        .exclude(code_name='view_paymenthistory').values_list('codename', flat=True)
+    exclude_content_type = ContentType.objects.filter(model="PaymentHistory")
+    temp = (
+        Permission.objects.filter(content_type=exclude_content_type)
+        .exclude(code_name="view_paymenthistory")
+        .values_list("codename", flat=True)
+    )
     operator_permissions = Permission.objects.exclude(codename__in=temp)
     return operator_permissions

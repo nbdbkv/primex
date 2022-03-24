@@ -5,18 +5,27 @@ from django.forms import ValidationError
 from decimal import Decimal
 
 from account.models import Region, District
-from operation.models import Parcel, Envelop, Direction, ParcelDimension, PaymentHistory, PaymentType, PaymentDimension
+from operation.models import (
+    Parcel,
+    Envelop,
+    Direction,
+    ParcelDimension,
+    PaymentHistory,
+    PaymentType,
+    PaymentDimension,
+    Town
+)
 from operation.choices import PaymentHistoryType, PaymentTypeChoices
 
 from uuid import uuid4
 
 
 def get_parcel_code(direction: dict) -> str:
-    district = direction.get('district')
+    district = direction.get("district")
     code = district.region.code + district.code
-    if village := direction.get('village'):
+    if village := direction.get("village"):
         code += village.code
-    code = str(code + str(uuid4()).replace('-', ''))[:15]
+    code = str(code + str(uuid4()).replace("-", ""))[:15]
     return code
 
 
@@ -38,17 +47,23 @@ class CalculateParcelPrice:
         return district_to
 
     def calculate_dimension_cube(self, parcel_dimension):
-        cube = ((parcel_dimension.length * parcel_dimension.width * parcel_dimension.height) / 1000000)
-        price = (cube * 1500)
-        if self.to_district.name == 'Ош' or self.to_district.name == 'Жалал Абад':
+        test = 0
+        towns = Town.objects.all()
+        print(self.to_district.name)
+        for town in towns:
+            if town.name == self.to_district.name:
+                test = 1
+        if test:
             cube = ((parcel_dimension.length * parcel_dimension.width * parcel_dimension.height) / 1000000)
             price = (cube * 1000)
+        else:
+            cube = ((parcel_dimension.length * parcel_dimension.width * parcel_dimension.height) / 1000000)
+            price = (cube * 1500)
         return price
 
     def calculate_dimension_price(self):
         parcel_dimension = self.instance.dimension
         dimension = self.envelop.dimension.filter().first()
-
         test = 0
         price = 0
         print(self.to_district.name)
@@ -56,8 +71,10 @@ class CalculateParcelPrice:
                 dimension.width >= parcel_dimension.width and \
                 dimension.height >= parcel_dimension.height:
             test = 1
+
         elif not test:
             dimension = self.envelop.dimension.filter().last()
+
         if not test and (dimension.length >= parcel_dimension.length and \
                 dimension.width >= parcel_dimension.width and \
                 dimension.height >= parcel_dimension.height):
@@ -68,6 +85,7 @@ class CalculateParcelPrice:
             price = self.calculate_dimension_cube(parcel_dimension)
         price += float(dimension.price)
         dimension_weight = dimension.weight
+
         if parcel_dimension.weight > dimension_weight:
             dif = parcel_dimension.weight - dimension_weight
             price += float(self.envelop.kilo) * dif
@@ -86,7 +104,7 @@ class CalculateParcelPrice:
             try:
                 return self.calculate_dimension_price()
             except KeyError:
-                raise ValidationError({'message': 'There is no price for this area'})
+                raise ValidationError({"message": "There is no price for this area"})
         else:
             return self.calculate_envelop_price()
 
@@ -116,7 +134,7 @@ class CalculateParcelPrice:
             parcel=self.instance,
             type=PaymentType.objects.get(type=PaymentTypeChoices.BONUS),
             sum=bonus,
-            payment_type=PaymentHistoryType.DEBIT
+            payment_type=PaymentHistoryType.DEBIT,
         )
         self.instance.sender.points += Decimal(bonus)
         self.instance.sender.save()

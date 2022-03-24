@@ -9,26 +9,30 @@ from about.models import (
     Fillial,
     Option,
     Question,
-    Answer
+    Answer,
 )
 
 
 class NewGalleryInline(admin.StackedInline):
-    model=NewGallery
+    model = NewGallery
     extra = 1
 
 
 class AnswerInline(admin.StackedInline):
-    model=Answer
+    model = Answer
     extra = 1
 
 
 class NewAdmin(admin.ModelAdmin):
-    inlines = [NewGalleryInline,]
-    
-    
+    inlines = [
+        NewGalleryInline,
+    ]
+
+
 class QuestionAdmin(admin.ModelAdmin):
-    inlines = [AnswerInline,]
+    inlines = [
+        AnswerInline,
+    ]
 
 
 admin.site.register(Partner)
