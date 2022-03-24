@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from core.yasg import urlpatterns
+from core.yasg import urlpatterns as yasg
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,7 +27,8 @@ urlpatterns = [
     path("account/", include("account.urls")),
     path("about/", include("about.urls")),
     path("operation/", include("operation.urls")),
-] + urlpatterns
+    path("payment/", include("cashbox.urls")),
+] + yasg
 
 
 if settings.DEBUG:

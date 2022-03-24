@@ -25,6 +25,7 @@ class PaymentTypeChoices(models.TextChoices):
     BALANCE = "Balance", _("balance")
     O_PAY = "O Pay", _("O_pay")
     ELSOM = "Elsom", _("Elsom")
+    OPTIMA = "Optima", _("Optima")
 
 
 class PaymentHistoryType(models.IntegerChoices):
