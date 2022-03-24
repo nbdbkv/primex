@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "about",
     "account",
     "operation",
+    "cashbox",
 ]
 
 MIDDLEWARE = [
@@ -219,6 +220,8 @@ SWAGGER_SETTINGS = {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
     },
 }
+
+CASHBOX_SECRET = os.getenv("CASHBOX_SECRET")
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 

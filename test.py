@@ -1,34 +1,23 @@
-from random import randint
+import hashlib
+from decimal import Decimal, getcontext
 
 
-def generate_array(num) -> list:
-    res = []
-    for _ in range(num):
-        lis = []
-        for _ in range(num):
-            lis.append(randint(10, 99))
-        res.append(lis)
-        del lis
-    return res
+def get_hash(data: dict) -> str:
+    data = [i[1] for i in sorted(data.items())]
+    obj_str = "&".join(map(str, data))
+    print(obj_str)
+    hash1 = hashlib.sha1(bytes(obj_str, "utf-8"))
+    pbhash = hash1.hexdigest()
+    return pbhash
 
 
-def calc_diagonal(arr):
-    diagonal_sum = 0
-    diagonal_1_sum = 0
-    len_arr = len(arr)
-    for i in range(len_arr):
-        diagonal_sum += arr[i][i]
-        diagonal_1_sum += arr[i][len_arr - i - 1]
-    return {1: diagonal_sum / len_arr, 2: diagonal_1_sum / len_arr}
-
-
-def print_arrary(arr):
-    for i in arr:
-        for j in i:
-            print(j, end="\t")
-        print("\n")
-
-
-arr = generate_array(5)
-print_arrary(arr)
-print(calc_diagonal(arr))
+if __name__ == "__main__":
+    getcontext().prec = 2
+    data = {
+        "operation_id": 123,
+        "secret": "804c7624029744988d892b163fdd0362",
+        "amount": Decimal("1234.00"),
+        "parcel_code": "string",
+    }
+    hash1 = get_hash(data)
+    print(hash1)
