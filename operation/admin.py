@@ -2,7 +2,7 @@ from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 from django.utils.translation import gettext_lazy as _
-from django.http.response import HttpResponseRedirect
+
 
 from .choices import DirectionChoices
 from operation.models import (

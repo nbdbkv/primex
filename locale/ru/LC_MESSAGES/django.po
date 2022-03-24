@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-18 00:49+0600\n"
+"POT-Creation-Date: 2022-03-24 11:49+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,8 +52,8 @@ msgstr "Контактны"
 msgid "Contacts"
 msgstr "Контакты"
 
-#: about/models.py:36 account/models.py:59 account/models.py:73
-#: account/models.py:87
+#: about/models.py:36 account/models.py:64 account/models.py:80
+#: account/models.py:96 operation/models.py:307
 msgid "name"
 msgstr "название"
 
@@ -65,9 +65,9 @@ msgstr "Категория новости"
 msgid "Article categories"
 msgstr "Категории новостей"
 
-#: about/models.py:47 about/models.py:100 operation/models.py:11
-#: operation/models.py:33 operation/models.py:66 operation/models.py:82
-#: operation/models.py:110 operation/models.py:141
+#: about/models.py:47 about/models.py:102 operation/models.py:17
+#: operation/models.py:39 operation/models.py:82 operation/models.py:98
+#: operation/models.py:127 operation/models.py:181
 msgid "title"
 msgstr "название"
 
@@ -75,101 +75,101 @@ msgstr "название"
 msgid "border image"
 msgstr "фото"
 
-#: about/models.py:50
+#: about/models.py:51
 msgid "article category"
 msgstr "категория"
 
-#: about/models.py:51
+#: about/models.py:53
 msgid "watched count"
 msgstr "колво просмотров"
 
-#: about/models.py:52 operation/models.py:220
+#: about/models.py:54 operation/models.py:297
 msgid "created date"
 msgstr "дата создания"
 
-#: about/models.py:58
+#: about/models.py:60
 msgid "New"
 msgstr "Новость"
 
-#: about/models.py:59
+#: about/models.py:61
 msgid "News"
 msgstr "Новости"
 
-#: about/models.py:63 operation/models.py:71
+#: about/models.py:65 operation/models.py:87
 msgid "image"
 msgstr "фото"
 
-#: about/models.py:67
+#: about/models.py:69
 msgid "New gallery"
 msgstr "галерия"
 
-#: about/models.py:68
+#: about/models.py:70
 msgid "New galleries"
 msgstr "галерия"
 
-#: about/models.py:74 account/models.py:60 account/models.py:74
-#: account/models.py:88 operation/models.py:171
+#: about/models.py:76 account/models.py:65 account/models.py:81
+#: account/models.py:97 operation/models.py:230
 msgid "geolocation"
 msgstr "геолокация"
 
-#: about/models.py:75
+#: about/models.py:77
 msgid "contact phone"
 msgstr "контактный номер"
 
-#: about/models.py:76 operation/models.py:187
+#: about/models.py:78 operation/models.py:251
 msgid "email"
 msgstr "email"
 
-#: about/models.py:82
+#: about/models.py:84
 msgid "Fillial"
 msgstr "Филлиал"
 
-#: about/models.py:83
+#: about/models.py:85
 msgid "Fillials"
 msgstr "Филлиалы"
 
-#: about/models.py:87
+#: about/models.py:89
 msgid "alias"
 msgstr "псевдоним"
 
-#: about/models.py:88
+#: about/models.py:90
 msgid "value"
 msgstr "значение"
 
-#: about/models.py:89 operation/models.py:67 operation/models.py:83
-#: operation/models.py:111
+#: about/models.py:91 operation/models.py:83 operation/models.py:99
+#: operation/models.py:128 operation/models.py:216
 msgid "description"
 msgstr "описание"
 
-#: about/models.py:95
+#: about/models.py:97
 msgid "Option"
 msgstr "Опция"
 
-#: about/models.py:96
+#: about/models.py:98
 msgid "Options"
 msgstr "Опции"
 
-#: about/models.py:101 about/models.py:113
+#: about/models.py:103 about/models.py:117
 msgid "text"
 msgstr "текст"
 
-#: about/models.py:107
+#: about/models.py:109
 msgid "Question"
 msgstr "Вопрос"
 
-#: about/models.py:108
+#: about/models.py:110
 msgid "Questions"
 msgstr "Вопросы"
 
-#: about/models.py:112
+#: about/models.py:115
 msgid "question"
 msgstr "вопрос"
 
-#: about/models.py:116
+#: about/models.py:120
 msgid "Answer"
 msgstr "Ответ"
 
-#: about/models.py:117
+#: about/models.py:121
 msgid "Answers"
 msgstr "Ответы"
 
@@ -241,66 +241,66 @@ msgstr "Требуется. 9 цифр в формате: 996*********** без 
 msgid "A user with that phone number already exists."
 msgstr "Пользователь с таким номером уже существует"
 
-#: account/models.py:26 operation/models.py:185
+#: account/models.py:26 operation/models.py:249
 msgid "user info"
 msgstr "Информация о пользователе"
 
-#: account/models.py:27 account/models.py:72 account/models.py:86
+#: account/models.py:28 account/models.py:78 account/models.py:94
 msgid "region"
 msgstr "регион"
 
-#: account/models.py:28 operation/models.py:168
+#: account/models.py:31 operation/models.py:224
 msgid "district"
 msgstr "район"
 
-#: account/models.py:29
+#: account/models.py:34
 msgid "role"
 msgstr "роль"
 
-#: account/models.py:30
+#: account/models.py:36
 msgid "user bonus points"
 msgstr "бонусные баллы"
 
-#: account/models.py:31
+#: account/models.py:37
 msgid "avatar"
 msgstr "аватар"
 
-#: account/models.py:33
+#: account/models.py:39
 msgid "active"
 msgstr "активирован"
 
-#: account/models.py:36
+#: account/models.py:42
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: account/models.py:61 account/models.py:75 account/models.py:89
-#: operation/models.py:36
+#: account/models.py:66 account/models.py:82 account/models.py:98
+#: operation/models.py:49
 msgid "code"
 msgstr "код"
 
-#: account/models.py:67
+#: account/models.py:72
 msgid "Region"
 msgstr "Регион"
 
-#: account/models.py:68
+#: account/models.py:73
 msgid "Regions"
 msgstr "Регионы"
 
-#: account/models.py:81
+#: account/models.py:88
 msgid "District"
 msgstr "Район"
 
-#: account/models.py:82
+#: account/models.py:89
 msgid "Districts"
 msgstr "Районы"
 
-#: account/models.py:95
+#: account/models.py:104
 msgid "Village"
 msgstr "Село"
 
-#: account/models.py:96
+#: account/models.py:105
 msgid "Villages"
 msgstr "Селы"
 
@@ -312,29 +312,17 @@ msgstr ""
 "Номер телефона должен быть введен в формате: +996*********** Допускается до "
 "9 цифр"
 
-#: account/validators.py:17
+#: account/validators.py:15
 msgid "Code must be 2 digit"
 msgstr "код должен состоять из 2 цифр"
 
-#: operation/admin.py:57
-#, fuzzy
-#| msgid "to district"
-msgid "From district"
-msgstr "в район"
-
-#: operation/admin.py:65 operation/models.py:53
+#: operation/admin.py:75 operation/models.py:64
 msgid "from region"
 msgstr "от региона"
 
-#: operation/admin.py:70 operation/models.py:54
+#: operation/admin.py:80 operation/models.py:67
 msgid "to district"
 msgstr "в район"
-
-#: operation/apps.py:8
-#, fuzzy
-#| msgid "Options"
-msgid "Operations"
-msgstr "Опции"
 
 #: operation/choices.py:6
 msgid "from"
@@ -344,7 +332,7 @@ msgstr "от"
 msgid "to"
 msgstr "в"
 
-#: operation/choices.py:11 operation/models.py:34
+#: operation/choices.py:11 operation/models.py:41
 msgid "sender"
 msgstr "отправитель"
 
@@ -396,260 +384,282 @@ msgstr "Кредит"
 msgid "debit"
 msgstr "Дебит"
 
-#: operation/models.py:17
+#: operation/models.py:23
 msgid "Delivery status"
 msgstr "Статус отправки"
 
-#: operation/models.py:18
+#: operation/models.py:24
 msgid "Delivery statuses"
 msgstr "Статусы отправки"
 
-#: operation/models.py:22
+#: operation/models.py:28
 msgid "option title"
 msgstr "название"
 
-#: operation/models.py:28
+#: operation/models.py:34
 msgid "Parcel option"
 msgstr "Опция пасылки"
 
-#: operation/models.py:29
+#: operation/models.py:35
 msgid "Parcel options"
 msgstr "Опции посылок"
 
-#: operation/models.py:35
+#: operation/models.py:46
 msgid "delivery status"
 msgstr "статус отправки"
 
-#: operation/models.py:37
+#: operation/models.py:50
 msgid "date creation"
 msgstr "дата создания"
 
-#: operation/models.py:38
+#: operation/models.py:51
 msgid "options"
 msgstr "опции"
 
-#: operation/models.py:39
+#: operation/models.py:52
 msgid "sendin date"
 msgstr "дата отправки"
 
-#: operation/models.py:42 operation/models.py:124 operation/models.py:167
-#: operation/models.py:183 operation/models.py:200 operation/models.py:216
-msgid "parcel"
-msgstr "посылка"
-
-#: operation/models.py:48
+#: operation/models.py:58
 msgid "Parcel"
 msgstr "Посылка"
 
-#: operation/models.py:49
+#: operation/models.py:59
 msgid "Parcels"
 msgstr "Посылки"
 
-#: operation/models.py:60
+#: operation/models.py:74
 msgid "Distance"
 msgstr "Дистанция"
 
-#: operation/models.py:61
+#: operation/models.py:75
 msgid "Distances"
 msgstr "Дистанции"
 
-#: operation/models.py:65 operation/models.py:108
+#: operation/models.py:80 operation/models.py:125
 msgid "distance"
 msgstr "дистанция"
 
-#: operation/models.py:68 operation/models.py:84 operation/models.py:109
-#: operation/models.py:125
+#: operation/models.py:84 operation/models.py:100 operation/models.py:117
+#: operation/models.py:126 operation/models.py:148
 msgid "price"
 msgstr "цена"
 
-#: operation/models.py:69
+#: operation/models.py:85
 msgid "time in hour"
 msgstr "время в часах"
 
-#: operation/models.py:70 operation/models.py:140
+#: operation/models.py:86 operation/models.py:180
 msgid "icon"
 msgstr "иконка"
 
-#: operation/models.py:77
+#: operation/models.py:93
 msgid "Delivery type"
 msgstr "Тип отправки"
 
-#: operation/models.py:78
+#: operation/models.py:94
 msgid "Delivery types"
 msgstr "Типы отправок"
 
-#: operation/models.py:85
+#: operation/models.py:101
 msgid "quantity"
 msgstr "количество"
 
-#: operation/models.py:86
+#: operation/models.py:102
 msgid "measuring unit"
 msgstr "единица измерения"
 
-#: operation/models.py:92
+#: operation/models.py:108
 msgid "Packaging"
 msgstr "Упаковка"
 
-#: operation/models.py:93
+#: operation/models.py:109
 msgid "Packagings"
 msgstr "Упаковки"
 
-#: operation/models.py:97 operation/models.py:201
+#: operation/models.py:113 operation/models.py:272
 msgid "parcel length"
 msgstr "длина"
 
-#: operation/models.py:98 operation/models.py:202
+#: operation/models.py:114 operation/models.py:273
 msgid "parcel width"
 msgstr "ширина"
 
-#: operation/models.py:99 operation/models.py:203
+#: operation/models.py:115 operation/models.py:274
 msgid "parcel height"
 msgstr "высота"
 
-#: operation/models.py:100 operation/models.py:204
+#: operation/models.py:116 operation/models.py:275
 msgid "parcel weight"
 msgstr "вес"
 
-#: operation/models.py:103
+#: operation/models.py:120
 msgid "Payment dimension"
 msgstr "Размер посылки"
 
-#: operation/models.py:104
+#: operation/models.py:121
 msgid "Payment dimensions"
 msgstr "Размеры посылок"
 
-#: operation/models.py:112
+#: operation/models.py:129
 msgid "dimension"
 msgstr "размер"
 
-#: operation/models.py:113
+#: operation/models.py:130
 msgid "price per kilo"
 msgstr "цена за килограмм"
 
-#: operation/models.py:119
+#: operation/models.py:136
 msgid "Envelop"
 msgstr "Конверт"
 
-#: operation/models.py:120
+#: operation/models.py:137
 msgid "Envelops"
 msgstr "Конверты"
 
-#: operation/models.py:126
+#: operation/models.py:144 operation/models.py:220 operation/models.py:245
+#: operation/models.py:269 operation/models.py:288
+msgid "parcel"
+msgstr "посылка"
+
+#: operation/models.py:154
 msgid "delivery type"
 msgstr "тип отправки"
 
-#: operation/models.py:127
+#: operation/models.py:156
 msgid "parcel packaging"
 msgstr "упаковка"
 
-#: operation/models.py:128
+#: operation/models.py:158
 msgid "status"
 msgstr "статус"
 
-#: operation/models.py:129
+#: operation/models.py:166
 msgid "envelop"
 msgstr "конверт"
 
-#: operation/models.py:135
+#: operation/models.py:175
 msgid "Parcel payment"
 msgstr "Оплата посылки"
 
-#: operation/models.py:136
+#: operation/models.py:176
 msgid "Parcel payments"
 msgstr "Оплаты посылок"
 
-#: operation/models.py:142 operation/models.py:154 operation/models.py:166
-#: operation/models.py:217
+#: operation/models.py:183 operation/models.py:202 operation/models.py:215
+#: operation/models.py:291
 msgid "type"
 msgstr "тип"
 
-#: operation/models.py:148
+#: operation/models.py:190
 msgid "Payment type"
 msgstr "Тип оплаты"
 
-#: operation/models.py:149
+#: operation/models.py:191
 msgid "Payment types"
 msgstr "Типы оплат"
 
-#: operation/models.py:153
+#: operation/models.py:198
 msgid "parcel payment"
 msgstr "оплата посылки"
 
-#: operation/models.py:155 operation/models.py:218
+#: operation/models.py:204 operation/models.py:293
 msgid "sum"
 msgstr "сумма"
 
-#: operation/models.py:161
+#: operation/models.py:210
 msgid "Payment"
 msgstr "Оплата"
 
-#: operation/models.py:162
+#: operation/models.py:211
 msgid "Payments"
 msgstr "Оплаты"
 
-#: operation/models.py:169
+#: operation/models.py:227
 msgid "village"
 msgstr "село"
 
-#: operation/models.py:170
+#: operation/models.py:229
 msgid "destination"
 msgstr "направление"
 
-#: operation/models.py:178
+#: operation/models.py:237
 msgid "Direction"
 msgstr "Направления"
 
-#: operation/models.py:179
+#: operation/models.py:238
 msgid "Directions"
 msgstr "Направлении"
 
-#: operation/models.py:184
+#: operation/models.py:248
 msgid "phone"
 msgstr "телефонный номер"
 
-#: operation/models.py:186
+#: operation/models.py:250
 msgid "company"
 msgstr "компания"
 
-#: operation/models.py:188
+#: operation/models.py:253
 msgid "user info type"
 msgstr "тип"
 
-#: operation/models.py:195 operation/models.py:196
+#: operation/models.py:261 operation/models.py:262
 msgid "User info"
 msgstr "Информация о пользователе"
 
-#: operation/models.py:210
+#: operation/models.py:281
 msgid "Parcel dimension"
 msgstr "Размер посылки"
 
-#: operation/models.py:211
+#: operation/models.py:282
 msgid "Parcel dimensions"
 msgstr "Размеры посылок"
 
-#: operation/models.py:215
+#: operation/models.py:286
 msgid "user"
 msgstr "пользователе"
 
-#: operation/models.py:219
+#: operation/models.py:295
 msgid "payment type"
 msgstr "тип оплаты"
 
-#: operation/models.py:226
+#: operation/models.py:303
 msgid "Payment history"
 msgstr "История оплат"
 
-#: operation/models.py:227
+#: operation/models.py:304
 msgid "Payment histories"
 msgstr "Истории оплат"
 
-#: operation/serializers.py:223
+#: operation/models.py:310
+msgid "Town"
+msgstr ""
+
+#: operation/models.py:311
+msgid "Towns"
+msgstr ""
+
+#: operation/serializers.py:231
 msgid "direction must be 2"
 msgstr "направлений должно быть 2"
 
-#: operation/serializers.py:232
+#: operation/serializers.py:240
 msgid "user_info must be 2"
 msgstr "информация пользователей должно быть 2"
+
+#, fuzzy
+msgid "to district"
+msgstr "в район"
+
+msgid "From district"
+msgstr "в район"
+
+#, fuzzy
+msgid "Options"
+msgstr "Параметры"
+
+msgid "Operations"
+msgstr "Опции"
 
 msgid "Invalid basic header. No credentials provided."
 msgstr "Недопустимый заголовок. Не предоставлены учетные данные."
@@ -720,10 +730,8 @@ msgstr "Некорректные учетные данные."
 msgid "Authentication credentials were not provided."
 msgstr "Учетные данные не были предоставлены."
 
-
 msgid "You do not have permission to perform this action."
 msgstr "У вас нет прав для выполнения этой операции."
-
 
 msgid "Method \"{method}\" not allowed."
 msgstr "Метод \"{method}\" не разрешен."
@@ -749,12 +757,8 @@ msgstr "Убедитесь, что в этом поле не больше {max_l
 msgid "Ensure this field has at least {min_length} characters."
 msgstr "Убедитесь, что в этом поле как минимум {min_length} символов."
 
-
 msgid "Enter a valid \"slug\" consisting of letters, numbers, underscores or hyphens."
 msgstr "Введите корректный \"slug\", состоящий из букв, цифр, знаков подчеркивания или дефисов."
-
-msgid "Enter a valid URL."
-msgstr "Введите корректный URL."
 
 msgid "Enter a valid URL."
 msgstr "Введите корректный URL."
@@ -787,24 +791,21 @@ msgid "Ensure that there are no more than {max_whole_digits} digits before the d
 msgstr "Убедитесь, что в числе не больше {max_whole_digits} знаков в целой части."
 
 msgid "Datetime has wrong format. Use one of these formats instead: {format}."
-msgstr "Неправильный формат datetime. Используйте один из этих форматов:  {format}."
+msgstr "Неправильный формат datetime. Используйте один из этих форматов: {format}."
 
 msgid "Expected a datetime but got a date."
 msgstr "Ожидался datetime, но был получен date."
 
 msgid "Date has wrong format. Use one of these formats instead: {format}."
-msgstr ""
-"Неправильный формат date. Используйте один из этих форматов: {format}."
+msgstr "Неправильный формат date. Используйте один из этих форматов: {format}."
 
 msgid "Expected a date but got a datetime."
 msgstr "Ожидался date, но был получен datetime."
 
 msgid "Time has wrong format. Use one of these formats instead: {format}."
-msgstr ""
-"Неправильный формат времени. Используйте один из этих форматов: {format}."
+msgstr "Неправильный формат времени. Используйте один из этих форматов: {format}."
 
-msgid ""
-"Duration has wrong format. Use one of these formats instead: {format}."
+msgid "Duration has wrong format. Use one of these formats instead: {format}."
 msgstr "Неправильный формат. Используйте один из этих форматов: {format}."
 
 msgid "\"{input}\" is not a valid choice."
@@ -828,20 +829,11 @@ msgstr "Убедитесь, что имя файла меньше {max_length} �
 msgid "The submitted file is empty."
 msgstr "Загруженный файл пуст."
 
-msgid "Ensure this filename has at most {max_length} characters (it has {length})."
-msgstr "Убедитесь, что имя файла меньше {max_length} символов (сейчас {length})."
-
 msgid "No filename could be determined."
 msgstr "Невозможно определить имя файла."
 
-msgid "The submitted file is empty."
-msgstr "Загруженный файл пуст."
-
-msgid "Ensure this filename has at most {max_length} characters (it has {length})."
-msgstr "Убедитесь, что имя файла меньше {max_length} символов (сейчас {length})."
-
 msgid "Upload a valid image. The file you uploaded was either not an image or a corrupted image."
-msgstr"Загрузите корректное изображение. Загруженный файл не является изображением, либо является испорченным."
+msgstr "Загрузите корректное изображение. Загруженный файл не является изображением, либо является испорченным."
 
 msgid "This list may not be empty."
 msgstr "Этот список не может быть пустым."
@@ -874,11 +866,10 @@ msgid "Invalid pk \"{pk_value}\" - object does not exist."
 msgstr "Недопустимый первичный ключ \"{pk_value}\" - объект не существует."
 
 msgid "Incorrect type. Expected pk value, received {data_type}."
-msgstr ""
-"Некорректный тип. Ожидалось значение первичного ключа, получен "
-"{data_type}."
+msgstr "Некорректный тип. Ожидалось значение первичного ключа, получен {data_type}."
 
-msgid "Invalid hyperlink - No URL match."msgstr "Недопустимая ссылка - нет совпадения по URL."
+msgid "Invalid hyperlink - No URL match."
+msgstr "Недопустимая ссылка - нет совпадения по URL."
 
 msgid "Invalid hyperlink - Incorrect URL match."
 msgstr "Недопустимая ссылка - некорректное совпадение по URL,"
@@ -896,7 +887,6 @@ msgid "Invalid value."
 msgstr "Недопустимое значение."
 
 msgid "Invalid data. Expected a dictionary, but got {datatype}."
-
 msgstr "Недопустимые данные. Ожидался dictionary, но был получен {datatype}."
 
 msgid "Filters"
@@ -962,8 +952,7 @@ msgstr "Токен недействителен или просрочен"
 msgid "No active account found with the given credentials"
 msgstr "Не найдено активной учетной записи с указанными данными"
 
-msgid ""
-"The '{}' setting has been removed. Please refer to '{}' for available settings."
+msgid "The '{}' setting has been removed. Please refer to '{}' for available settings."
 msgstr "Параметр '{}' был удален. Пожалуйста, обратитесь к '{}' для просмотра доступных настроек."
 
 msgid "jti"

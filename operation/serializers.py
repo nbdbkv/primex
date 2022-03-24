@@ -82,7 +82,7 @@ class PaymentDimensionSerializer(serializers.ModelSerializer):
 
 
 class EnvelopSerializer(serializers.ModelSerializer):
-    dimension = PaymentDimensionSerializer()
+    dimension = PaymentDimensionSerializer(many=True)
 
     class Meta:
         model = Envelop
@@ -284,8 +284,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
-        if envelop:
-            envelop = Envelop.objects.get(title=envelop)
-        parcel.payment.price = CalculateParcelPrice(parcel).price
+
+        parcel.payment.price = CalculateParcelPrice(parcel, envelop).price
         parcel.payment.save()
         return parcel
