@@ -93,7 +93,7 @@ class Village(models.Model):
     region = models.ForeignKey(
         Region, on_delete=models.CASCADE, verbose_name=_("region"), null=True
     )
-    name = map_fields.AddressField(_("name"), max_length=100)
+    name = map_fields.AddressField(_("name"), max_length=100, blank=True)
     geolocation = map_fields.GeoLocationField(_("geolocation"), blank=True)
     code = models.CharField(_("code"), max_length=4, validators=[RegionCodeValidator])
 
