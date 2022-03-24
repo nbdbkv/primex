@@ -82,7 +82,7 @@ class PaymentDimensionSerializer(serializers.ModelSerializer):
 
 
 class EnvelopSerializer(serializers.ModelSerializer):
-    dimension = PaymentDimensionSerializer()
+    dimension = PaymentDimensionSerializer(many=True)
 
     class Meta:
         model = Envelop

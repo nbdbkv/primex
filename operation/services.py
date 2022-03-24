@@ -66,7 +66,6 @@ class CalculateParcelPrice:
         dimension = self.envelop.dimension.filter().first()
         test = 0
         price = 0
-        print(self.to_district.name)
         if dimension.length >= parcel_dimension.length and \
                 dimension.width >= parcel_dimension.width and \
                 dimension.height >= parcel_dimension.height:
