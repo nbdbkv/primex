@@ -61,7 +61,7 @@ class Parcel(models.Model):
 
 class Distance(models.Model):
     from_region = models.ForeignKey(
-        Region, on_delete=models.SET_NULL, verbose_name=_("from region"), null=True
+        District, on_delete=models.SET_NULL, related_name=_('from_district'), verbose_name=_("from region"), null=True
     )
     to_district = models.ForeignKey(
         District, on_delete=models.SET_NULL, verbose_name=_("to district"), null=True
