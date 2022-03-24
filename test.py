@@ -12,12 +12,11 @@ def get_hash(data: dict) -> str:
 
 
 if __name__ == "__main__":
-    getcontext().prec = 2
     data = {
-        "operation_id": 123,
+        "operation_id": "123",
         "secret": "804c7624029744988d892b163fdd0362",
         "amount": Decimal("1234.00"),
-        "parcel_code": "string",
+        "parcel_code": "0202014ce049999",
     }
     hash1 = get_hash(data)
     print(hash1)
