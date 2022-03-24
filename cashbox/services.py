@@ -30,6 +30,10 @@ class Cashbox:
         )
         return parcel_history
 
+    def create_parcel_payment(self):
+        self.parcel.payment.payment.create(type=self.type, sum=self.sum)
+
     def save(self):
         self.create_pay_history(PaymentHistoryType.DEBIT)
         self.create_pay_history(PaymentHistoryType.CREDIT)
+        self.create_parcel_payment()
