@@ -20,15 +20,20 @@ class Cashbox:
         user = self.parcel.sender
         return user
 
-    def create_pay_history(self):
+    def create_pay_history(self, payment_type):
         parcel_history = PaymentHistory.objects.create(
             user=self.get_user(),
             parcel=self.parcel,
             type=self.type,
             sum=self.sum,
-            payment_type=PaymentHistoryType.CREDIT,
+            payment_type=payment_type,
         )
         return parcel_history
 
+    def create_parcel_payment(self):
+        self.parcel.payment.payment.create(type=self.type, sum=self.sum)
+
     def save(self):
-        self.create_pay_history()
+        self.create_pay_history(PaymentHistoryType.DEBIT)
+        self.create_pay_history(PaymentHistoryType.CREDIT)
+        self.create_parcel_payment()
