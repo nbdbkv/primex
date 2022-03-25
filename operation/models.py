@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields
@@ -49,7 +51,7 @@ class Parcel(models.Model):
     code = models.CharField(_("code"), max_length=15, unique=True)
     create_at = models.DateTimeField(_("date creation"), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_("options"))
-    sending_date = models.DateTimeField(_("sendin date"))
+    sending_date = models.DateTimeField(_("sendin date"), default=datetime.now().strftime(("%d.%m.%Y %H:%M:%S")))
 
     def __str__(self) -> str:
         return self.title
@@ -61,7 +63,7 @@ class Parcel(models.Model):
 
 class Distance(models.Model):
     from_region = models.ForeignKey(
-        District, on_delete=models.SET_NULL, related_name=_('from_district'), verbose_name=_("from region"), null=True
+        Region, on_delete=models.SET_NULL, related_name=_('from_district'), verbose_name=_("from region"), null=True
     )
     to_district = models.ForeignKey(
         District, on_delete=models.SET_NULL, verbose_name=_("to district"), null=True
