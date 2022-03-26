@@ -51,7 +51,9 @@ class Parcel(models.Model):
     code = models.CharField(_("code"), max_length=15, unique=True)
     create_at = models.DateTimeField(_("date creation"), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_("options"))
-    sending_date = models.DateTimeField(_("sendin date"), default=datetime.now().strftime(("%d.%m.%Y %H:%M:%S")))
+    sending_date = models.DateTimeField(
+        _("sendin date"), default=datetime.now().strftime(("%d.%m.%Y %H:%M:%S"))
+    )
 
     def __str__(self) -> str:
         return self.title
