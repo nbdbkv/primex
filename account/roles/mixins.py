@@ -12,9 +12,7 @@ class UserAdminMixin:
                 region=user.region, role__in=[UserRole.CLIENT, UserRole.COURIER]
             )
         elif user.role == UserRole.SUBADMIN:
-            return qs.filter(
-                role__in=[UserRole.CLIENT, UserRole.COURIER, UserRole.OPERATOR]
-            )
+            return qs.filter(region=user.region)
         return qs
 
     def get_form(self, request, obj=None, **kwargs):
@@ -28,11 +26,13 @@ class UserAdminMixin:
     def save_model(self, request, obj, form, change) -> None:
         super().save_model(request, obj, form, change)
         if not change:
+            group = None
+            if obj.role == UserRole.COURIER:
+                group = courier.get_group()
             if obj.role == UserRole.OPERATOR:
-                perm = operator.get_permission()
+                group = operator.get_group()
             elif obj.role == UserRole.SUBADMIN:
-                perm = subadmin.get_permission()
-            for permission in perm:
-                obj.user_permissions.add(permission)
-            print(obj.get_all_permissions())
+                group = subadmin.get_group()
+            if group:
+                obj.groups.add(group)
         return obj

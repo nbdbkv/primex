@@ -3,8 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 from django_2gis_maps.admin import DoubleGisAdmin
 
 from account.roles.mixins import UserAdminMixin
-from account.roles import operator, subadmin
-from account.choices import UserRole
 from account.models import User, Region, District, Village
 
 
