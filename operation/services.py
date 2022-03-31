@@ -13,7 +13,6 @@ from operation.models import (
     PaymentHistory,
     PaymentType,
     PaymentDimension,
-    Town,
 )
 from operation.choices import PaymentHistoryType, PaymentTypeChoices
 
@@ -30,11 +29,10 @@ def get_parcel_code(direction: dict) -> str:
 
 
 class CalculateParcelPrice:
-    def __init__(self, instance: Parcel, envelop):
+    def __init__(self, instance: Parcel):
         self.instance = instance
         self.from_region = self.get_region_from(instance)
         self.to_district = self.get_district_to(instance)
-        self.envelop = envelop
 
     @staticmethod
     def get_region_from(instance: Parcel) -> Region:
@@ -46,65 +44,31 @@ class CalculateParcelPrice:
         district_to = instance.direction.get(type=2).district
         return district_to
 
-    def calculate_dimension_cube(self, parcel_dimension):
-        test = 0
-        towns = Town.objects.all()
-        print(self.to_district.name)
-        for town in towns:
-            if town.name == self.to_district.name:
-                test = 1
-        if test:
-            cube = (
-                parcel_dimension.length
-                * parcel_dimension.width
-                * parcel_dimension.height
-            ) / 1000000
-            price = cube * 1000
-        else:
-            cube = (
-                parcel_dimension.length
-                * parcel_dimension.width
-                * parcel_dimension.height
-            ) / 1000000
-            price = cube * 1500
-        return price
-
     def calculate_dimension_price(self):
         parcel_dimension = self.instance.dimension
-        dimension = self.envelop.dimension.filter().first()
-        test = 0
-        price = 0
-        if (
-            dimension.length >= parcel_dimension.length
-            and dimension.width >= parcel_dimension.width
-            and dimension.height >= parcel_dimension.height
-        ):
-            test = 1
 
-        elif not test:
-            dimension = self.envelop.dimension.filter().last()
-
-        if not test and (
-            dimension.length >= parcel_dimension.length
-            and dimension.width >= parcel_dimension.width
-            and dimension.height >= parcel_dimension.height
+        if dimension_price_obj := Envelop.objects.filter(
+            Q(distance__from_region=self.from_region)
+            & Q(distance__to_district=self.to_district)
+            & Q(dimension__length__lte=parcel_dimension.length)
+            | Q(dimension__width__lte=parcel_dimension.width)
+            | Q(dimension__height__lte=parcel_dimension.height)
         ):
-            dimension = self.envelop.dimension.filter().last()
-        elif not test and (
-            dimension.length <= parcel_dimension.length
-            or dimension.width <= parcel_dimension.width
-            or dimension.height <= parcel_dimension.height
-        ):
-            price = self.calculate_dimension_cube(parcel_dimension)
-        price += float(dimension.price)
-        dimension_weight = dimension.weight
+            dimension_price_obj = dimension_price_obj.first()
+        else:
+            dimension_price_obj = Envelop.objects.filter(
+                Q(distance__from_region=self.from_region)
+                & Q(distance__to_district=self.to_district)
+            ).first()
+        price = float(dimension_price_obj.price)
+        dimension_weight = dimension_price_obj.dimension.weight
 
         if parcel_dimension.weight > dimension_weight:
             dif = parcel_dimension.weight - dimension_weight
-            price += float(self.envelop.kilo) * dif
-
-        self.instance.payment.envelop = self.envelop
+            price += float(dimension_price_obj.kilo) * dif
+        self.instance.payment.envelop = dimension_price_obj
         self.instance.save()
+
         return price
 
     def calculate_envelop_price(self):
@@ -138,8 +102,7 @@ class CalculateParcelPrice:
         dimension_price = self.get_dimension_price()
         packaging_price = self.calculate_packaging_price()
         delivery_price = self.calculate_delivery_price()
-        envelope_price = self.calculate_envelop_price()
-        price = int(dimension_price + packaging_price + delivery_price + envelope_price)
+        price = int(dimension_price + packaging_price + delivery_price)
         bonus = price * 0.05
 
         PaymentHistory.objects.create(

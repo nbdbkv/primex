@@ -123,7 +123,6 @@ class PaymentDimension(models.Model):
     width = models.FloatField(_("parcel width"))
     height = models.FloatField(_("parcel height"))
     weight = models.FloatField(_("parcel weight"))
-    price = models.DecimalField(_("price"), max_digits=9, decimal_places=2)
 
     class Meta:
         verbose_name = _("Payment dimension")
@@ -141,7 +140,12 @@ class Envelop(models.Model):
     price = models.DecimalField(_("price"), max_digits=6, decimal_places=2)
     title = models.CharField(_("title"), max_length=255)
     description = models.TextField(_("description"))
-    dimension = models.ManyToManyField(PaymentDimension, verbose_name=_("dimension"))
+    dimension = models.ForeignKey(
+        PaymentDimension,
+        on_delete=models.CASCADE,
+        verbose_name=_("dimension"),
+        null=True,
+    )
     kilo = models.PositiveIntegerField(_("price per kilo"))
 
     def __str__(self) -> str:
@@ -319,14 +323,3 @@ class PaymentHistory(models.Model):
     class Meta:
         verbose_name = _("Payment history")
         verbose_name_plural = _("Payment histories")
-
-
-class Town(models.Model):
-    name = models.CharField(max_length=200, verbose_name=_("name"))
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _("Town")
-        verbose_name_plural = _("Towns")

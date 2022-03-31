@@ -84,10 +84,6 @@ class EnvelopListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = EnvelopFilter
 
-    def get_queryset(self, *args, **kwargs):
-
-        return Envelop.objects.filter()
-
 
 class PaymentTypeListView(generics.ListAPIView):
     serializer_class = PaymentTypeSerializer
