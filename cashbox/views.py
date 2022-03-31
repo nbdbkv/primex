@@ -1,11 +1,13 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 
 from .serializers import CashReceivingSerializer
 from .services import Cashbox
+from .permissions import IsAuth
 from operation.choices import PaymentTypeChoices
-from operation.models import PaymentHistory
+from operation.models import Parcel, PaymentHistory
 
 
 class PaymentViewSet(viewsets.GenericViewSet):
@@ -41,3 +43,20 @@ class PaymentViewSet(viewsets.GenericViewSet):
         cashbox = Cashbox(**data, type=PaymentTypeChoices.MEGAPAY)
         cashbox.save()
         return Response(status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuth])
+def check_requisite(request, *args, **kwargs):
+    if Parcel.objects.filter(code=kwargs["requisite"]).exists():
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuth])
+def make_payment(request, *args, **kwargs):
+    data = request.data
+    cashbox = Cashbox(data["requisite"], data["amount"], PaymentTypeChoices.O_PAY)
+    cashbox.save()
+    return Response(status=status.HTTP_202_ACCEPTED)

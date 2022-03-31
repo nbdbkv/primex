@@ -31,3 +31,13 @@ class PaymentTypeChoices(models.TextChoices):
 class PaymentHistoryType(models.IntegerChoices):
     CREDIT = 1, _("credit")
     DEBIT = 2, _("debit")
+
+
+class PaymentState(models.TextChoices):
+    ACCEPTED = "ACCEPTED", _("accepted")
+    SUCCESS = "SUCCESS", _("success")
+    FAILED = "FAILED", _("failed")
+    IN_PROGRESS = "IN_PROGRESS", _("in progress")
+    ROLLBACK = "ROLLBACK", _("rollback")
+    ROLLBACK_IN_PROGRESS = "ROLLBACK_IN_PROGRESS", _("rollback in progress")
+    ROLLBACK_ACCEPTED = "ROLLBACK_ACCEPTED", _("rollback accepted")

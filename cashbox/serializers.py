@@ -33,3 +33,17 @@ class CashReceivingSerializer(serializers.Serializer):
             attrs["sha1_hash"] = sha1_hash
             return attrs
         raise ValidationError(message=_("Hash sums do not match"))
+
+
+class OPayPaymentSerializer(serializers.Serializer):
+    requisite = serializers.CharField(required=True)
+    serviceId = serializers.IntegerField()
+    amount = serializers.DecimalField(max_digits=9, decimal_places=2)
+    transactionId = serializers.IntegerField()
+
+    def validate_requisite(self, requisite):
+        try:
+            self.parcel = Parcel.objects.get(code=requisite)
+            return requisite
+        except Parcel.DoesNotExist:
+            raise ValidationError({"message": "Parcel does not exist"})

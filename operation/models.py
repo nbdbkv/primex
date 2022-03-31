@@ -9,6 +9,7 @@ from account.validators import PhoneValidator
 from operation.choices import (
     DirectionChoices,
     PayStatusChoices,
+    PaymentState,
     PaymentTypeChoices,
     UserInfoChoices,
     PaymentHistoryType,
@@ -308,6 +309,8 @@ class PaymentHistory(models.Model):
     payment_type = models.PositiveSmallIntegerField(
         _("payment type"), choices=PaymentHistoryType.choices
     )
+    # state = models.CharField(verbose_name=_('state'), choices=PaymentState.choices)
+    transaction_id = models.PositiveBigIntegerField(_("transaction id"), unique=True)
     create_at = models.DateTimeField(_("created date"), auto_now_add=True)
 
     def __str__(self) -> str:

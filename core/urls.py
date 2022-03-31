@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 
 from core.yasg import urlpatterns as yasg
+from cashbox import views
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,6 +31,8 @@ urlpatterns = [
     path("about/", include("about.urls")),
     path("operation/", include("operation.urls")),
     path("payment/", include("cashbox.urls")),
+    path("getRequisite/<str:requisite>/<int:serviceId>", views.check_requisite),
+    path("makePayment", views.make_payment),
 ] + yasg
 
 
