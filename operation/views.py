@@ -83,6 +83,7 @@ class EnvelopListView(generics.ListAPIView):
     serializer_class = EnvelopSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = EnvelopFilter
+    queryset = Envelop.objects.all()
 
 
 class PaymentTypeListView(generics.ListAPIView):
@@ -95,7 +96,6 @@ class ParcelListView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
         queryset = Parcel.objects.filter(sender=user)
         return queryset
 
