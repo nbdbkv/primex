@@ -68,7 +68,7 @@ class Distance(models.Model):
     from_region = models.ForeignKey(
         Region,
         on_delete=models.SET_NULL,
-        related_name=_("from_district"),
+        related_name=_("from_region"),
         verbose_name=_("from region"),
         null=True,
     )
@@ -314,7 +314,9 @@ class PaymentHistory(models.Model):
         _("payment type"), choices=PaymentHistoryType.choices
     )
     # state = models.CharField(verbose_name=_('state'), choices=PaymentState.choices)
-    transaction_id = models.PositiveBigIntegerField(_("transaction id"), unique=True)
+    transaction_id = models.PositiveBigIntegerField(
+        _("transaction id"), unique=True, blank=True, null=True
+    )
     create_at = models.DateTimeField(_("created date"), auto_now_add=True)
 
     def __str__(self) -> str:

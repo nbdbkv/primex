@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
+from django.db.models import Sum
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 from django.utils.translation import gettext_lazy as _
 
@@ -62,17 +63,29 @@ class ParcelAdmin(NestedModelAdmin):
     list_display = (
         "sender",
         "code",
-        "create_at",
+        "sending_date",
         "from_district",
         "to_district",
+        "parcel_sum",
+        'parcel_payment_types', 
     )
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         return super().change_view(
             request, object_id, form_url="", extra_context={"obj_id": object_id}
         )
+        
+    @admin.display(description=_('payment type'))
+    def parcel_payment_types(self, obj):
+        types = obj.payment.payment.values_list('type__title', flat=True)
+        return ', '.join(types)
+        
+    @admin.display(description=_('price'))
+    def parcel_sum(self, obj):
+        sum = obj.payment.payment.aggregate(Sum("sum"))['sum__sum']
+        return sum
 
-    @admin.display(description=_("from region"))
+    @admin.display(description=_("from district"))
     def from_district(self, obj):
         from_dis = obj.direction.get(type=DirectionChoices.FROM).district.name
         return from_dis

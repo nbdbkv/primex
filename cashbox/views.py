@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-from .serializers import CashReceivingSerializer
+from .serializers import CashReceivingSerializer, BonusPaySerializer
 from .services import Cashbox
 from .permissions import IsAuth
 from operation.choices import PaymentTypeChoices
@@ -22,6 +22,11 @@ class PaymentViewSet(viewsets.GenericViewSet):
             "amount": serializer.data["amount"],
         }
         return data
+
+    def get_serializer_class(self):
+        if self.action == "bonus":
+            return BonusPaySerializer
+        return super().get_serializer_class()
 
     @action(["post"], detail=False)
     def optima(self, request, *args, **kwargs):
@@ -42,6 +47,13 @@ class PaymentViewSet(viewsets.GenericViewSet):
         data = self.get_valid_data(request.data)
         cashbox = Cashbox(**data, type=PaymentTypeChoices.MEGAPAY)
         cashbox.save()
+        return Response(status=status.HTTP_200_OK)
+
+    @action(["post"], detail=False)
+    def bonus(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.make_payment()
         return Response(status=status.HTTP_200_OK)
 
 

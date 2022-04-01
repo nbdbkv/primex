@@ -3,7 +3,8 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from operation.models import Parcel
+from operation.models import Parcel, Payment, PaymentType, PaymentHistory
+from operation.choices import PaymentTypeChoices, PaymentHistoryType
 
 import hashlib
 
@@ -33,6 +34,43 @@ class CashReceivingSerializer(serializers.Serializer):
             attrs["sha1_hash"] = sha1_hash
             return attrs
         raise ValidationError(message=_("Hash sums do not match"))
+
+
+class BonusPaySerializer(serializers.Serializer):
+    parcel_code = serializers.CharField()
+    amount = serializers.DecimalField(max_digits=9, decimal_places=2)
+
+    def validate_parcel_code(self, parcel_code):
+        try:
+            self.parcel = Parcel.objects.get(code=parcel_code)
+            return parcel_code
+        except Parcel.DoesNotExist:
+            raise ValidationError({"message": "Parcel does not exist"})
+
+    def validate_amount(self, amount):
+        self.user = self.context.get("request").user
+        if self.user.points < amount:
+            raise ValidationError({"message": "You do not have enought bonus"})
+        return amount
+
+    def get_payment_type(self):
+        type = PaymentType.objects.get(type=PaymentTypeChoices.BONUS)
+        return type
+
+    def make_payment(self):
+        data = self.validated_data
+        pay = Payment.objects.create(
+            parcel=self.parcel.payment, type=self.get_payment_type(), sum=data["amount"]
+        )
+        self.user.points -= pay.sum
+        self.user.save()
+        PaymentHistory.objects.create(
+            user=self.user,
+            parcel=self.parcel,
+            sum=pay.sum,
+            payment_type=PaymentHistoryType.CREDIT,
+            type=pay.type,
+        )
 
 
 class OPayPaymentSerializer(serializers.Serializer):

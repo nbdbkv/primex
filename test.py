@@ -1,5 +1,6 @@
 import hashlib
 from decimal import Decimal, getcontext
+import inspect
 
 
 def get_hash(data: dict) -> str:
@@ -20,3 +21,8 @@ if __name__ == "__main__":
     }
     hash1 = get_hash(data)
     print(hash1)
+
+
+    def hel(x): return x
+
+    print(inspect.getargspec(hel))

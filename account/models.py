@@ -33,7 +33,7 @@ class User(AbstractUser):
     role = models.PositiveSmallIntegerField(
         _("role"), choices=UserRole.choices, default=UserRole.CLIENT
     )
-    points = models.PositiveIntegerField(_("user bonus points"), default=0)
+    points = models.PositiveIntegerField(_("user bonus points"), default=50)
     avatar = models.ImageField(_("avatar"), upload_to="user/", blank=True)
     is_active = models.BooleanField(
         _("active"),

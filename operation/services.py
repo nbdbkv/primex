@@ -50,11 +50,11 @@ class CalculateParcelPrice:
         if dimension_price_obj := Envelop.objects.filter(
             Q(distance__from_region=self.from_region)
             & Q(distance__to_district=self.to_district)
-            & Q(dimension__length__lte=parcel_dimension.length)
-            | Q(dimension__width__lte=parcel_dimension.width)
-            | Q(dimension__height__lte=parcel_dimension.height)
+            & Q(dimension__length__gte=parcel_dimension.length)
+            & Q(dimension__width__gte=parcel_dimension.width)
+            & Q(dimension__height__gte=parcel_dimension.height)
         ):
-            dimension_price_obj = dimension_price_obj.first()
+            dimension_price_obj = dimension_price_obj.last()
         else:
             dimension_price_obj = Envelop.objects.filter(
                 Q(distance__from_region=self.from_region)
@@ -68,7 +68,6 @@ class CalculateParcelPrice:
             price += float(dimension_price_obj.kilo) * dif
         self.instance.payment.envelop = dimension_price_obj
         self.instance.save()
-
         return price
 
     def calculate_envelop_price(self):
