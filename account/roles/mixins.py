@@ -3,6 +3,15 @@ from account.roles import courier, operator, subadmin
 from account.choices import UserRole
 
 
+class ParcelAdminMixin:
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        user = request.user
+        if user.is_superuser:
+            return qs
+        return qs.filter(direction__district__region=user.region)
+    
+
 class UserAdminMixin:
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -22,17 +31,3 @@ class UserAdminMixin:
         elif request.user.role == UserRole.SUBADMIN:
             kwargs["form"] = subadmin.UserAdminForm
         return super().get_form(request, obj, **kwargs)
-
-    def save_model(self, request, obj, form, change) -> None:
-        super().save_model(request, obj, form, change)
-        if not change:
-            group = None
-            if obj.role == UserRole.COURIER:
-                group = courier.get_group()
-            if obj.role == UserRole.OPERATOR:
-                group = operator.get_group()
-            elif obj.role == UserRole.SUBADMIN:
-                group = subadmin.get_group()
-            if group:
-                obj.groups.add(group)
-        return obj
