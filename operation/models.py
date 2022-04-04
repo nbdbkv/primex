@@ -130,13 +130,7 @@ class PaymentDimension(models.Model):
 
 
 class Envelop(models.Model):
-    distance = models.ForeignKey(
-        Distance,
-        on_delete=models.SET_NULL,
-        verbose_name=_("distance"),
-        null=True,
-        blank=True,
-    )
+    distance = models.ManyToManyField(Distance, verbose_name=_("distance"))
     price = models.DecimalField(_("price"), max_digits=6, decimal_places=2)
     title = models.CharField(_("title"), max_length=255)
     description = models.TextField(_("description"))
@@ -147,6 +141,7 @@ class Envelop(models.Model):
         null=True,
     )
     kilo = models.PositiveIntegerField(_("price per kilo"))
+    cube_price = models.PositiveIntegerField(_("cube price"))
 
     def __str__(self) -> str:
         return self.title
@@ -154,6 +149,7 @@ class Envelop(models.Model):
     class Meta:
         verbose_name = _("Envelop")
         verbose_name_plural = _("Envelops")
+        ordering = ["dimension__length", "dimension__width", "dimension__height"]
 
 
 class ParcelPayment(models.Model):
