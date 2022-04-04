@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from rangefilter.filters import DateTimeRangeFilter
 
 from .choices import DirectionChoices
+from account.roles.mixins import ParcelAdminMixin
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -50,7 +51,7 @@ class ParcelDimensionInline(NestedStackedInline):
     extra = 1
 
 
-class ParcelAdmin(NestedModelAdmin):
+class ParcelAdmin(ParcelAdminMixin, NestedModelAdmin):
     # resource_class = ParcelResource
     save_on_top = True
     inlines = [
