@@ -33,6 +33,7 @@ class CalculateParcelPrice:
         self.instance = instance
         self.from_region = self.get_region_from(instance)
         self.to_district = self.get_district_to(instance)
+        self.validate()
 
     @staticmethod
     def get_region_from(instance: Parcel) -> Region:
@@ -44,6 +45,14 @@ class CalculateParcelPrice:
         district_to = instance.direction.get(type=2).district
         return district_to
 
+    def validate(self):
+        if Envelop.objects.filter(
+            Q(distance__from_region=self.from_region)
+            & Q(distance__to_district=self.to_district)
+        ):
+            return None
+        raise ValidationError({"message": "There is no price for this area"})
+
     def calculate_dimension_price(self):
         parcel_dimension = self.instance.dimension
 
@@ -54,15 +63,24 @@ class CalculateParcelPrice:
             & Q(dimension__width__gte=parcel_dimension.width)
             & Q(dimension__height__gte=parcel_dimension.height)
         ):
-            dimension_price_obj = dimension_price_obj.last()
+            dimension_price_obj = dimension_price_obj.first()
+            price = float(dimension_price_obj.price)
         else:
             dimension_price_obj = Envelop.objects.filter(
                 Q(distance__from_region=self.from_region)
                 & Q(distance__to_district=self.to_district)
-            ).first()
-        price = float(dimension_price_obj.price)
+            ).last()
+            price = (
+                float(dimension_price_obj.price)
+                + (
+                    parcel_dimension.length
+                    * parcel_dimension.width
+                    * parcel_dimension.height
+                    / 1000000
+                )
+                * dimension_price_obj.cube_price
+            )
         dimension_weight = dimension_price_obj.dimension.weight
-
         if parcel_dimension.weight > dimension_weight:
             dif = parcel_dimension.weight - dimension_weight
             price += float(dimension_price_obj.kilo) * dif
@@ -77,12 +95,8 @@ class CalculateParcelPrice:
 
     def get_dimension_price(self):
         if self.instance.dimension:
-            try:
-                return self.calculate_dimension_price()
-            except KeyError:
-                raise ValidationError({"message": "There is no price for this area"})
-        else:
-            return self.calculate_envelop_price()
+            return self.calculate_dimension_price()
+        return self.calculate_envelop_price()
 
     def calculate_packaging_price(self):
         packaging = self.instance.payment.packaging.all()
