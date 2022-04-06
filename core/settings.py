@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django_filters",
     "ckeditor_uploader",
     "nested_admin",
+    "import_export",
     ####### apps #######
     "about",
     "account",
@@ -108,7 +109,6 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {

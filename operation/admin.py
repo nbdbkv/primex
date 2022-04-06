@@ -2,7 +2,9 @@ from django.contrib import admin
 from django.db.models import Sum
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 from django.utils.translation import gettext_lazy as _
+from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateTimeRangeFilter
+
 
 from .choices import DirectionChoices
 from account.roles.mixins import ParcelAdminMixin
@@ -23,6 +25,7 @@ from operation.models import (
     ParcelDimension,
     PaymentHistory,
 )
+from .resource import ParcelResource
 
 
 class PaymentInline(NestedStackedInline):
@@ -51,8 +54,8 @@ class ParcelDimensionInline(NestedStackedInline):
     extra = 1
 
 
-class ParcelAdmin(ParcelAdminMixin, NestedModelAdmin):
-    # resource_class = ParcelResource
+class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
+    resource_class = ParcelResource
     save_on_top = True
     inlines = [
         ParcelPaymentInline,
@@ -114,3 +117,4 @@ admin.site.register(PaymentDimension)
 admin.site.register(Envelop)
 admin.site.register(PaymentType)
 admin.site.register(PaymentHistory)
+
