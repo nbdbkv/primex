@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -58,11 +59,9 @@ class PaymentViewSet(viewsets.GenericViewSet):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuth])
 def check_requisite(request, *args, **kwargs):
-    if Parcel.objects.filter(code=kwargs["requisite"]).exists():
-        return Response(status=status.HTTP_200_OK)
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    get_object_or_404(Parcel.objects, code=kwargs['requisite'])
+    return Response(status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
