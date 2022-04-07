@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
 )
 from rest_framework.routers import DefaultRouter
 
+from account.telegram import tg_message_handler
 from account.views import (
     VillagesView,
     GetUserView,
@@ -37,4 +38,5 @@ urlpatterns = [
     path("regions/", RegionsView.as_view()),
     path("districts/", DistrictsView.as_view()),
     path("villages/", VillagesView.as_view()),
+    path("telegram/", tg_message_handler)
 ]
