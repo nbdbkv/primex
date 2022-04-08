@@ -2,7 +2,7 @@ from import_export import resources
 from import_export.fields import Field
 from django.utils.translation import gettext_lazy as _
 
-from .models import (Parcel, Direction, UserInfo)
+from .models import (Parcel, Direction, UserInfo, ParcelOption)
 
 
 class ParcelResource(resources.ModelResource):
@@ -13,7 +13,7 @@ class ParcelResource(resources.ModelResource):
     status = Field(attribute='status__title', column_name=_('status'))
     code = Field(attribute='code', column_name=_('code'))
     create_at = Field(attribute='create_at', column_name=_('create at'))
-    option = Field(attribute='option', column_name=_('option'))
+    option = Field(attribute='option__type', column_name=_('option'))
     sending_date = Field(attribute='sending_date', column_name=_('sending date'))
     payment_price = Field(attribute='payment__price', column_name=_('price'))
     delivery_type = Field(attribute='payment__delivery_type', column_name=_('delivery type'))
@@ -42,3 +42,13 @@ class ParcelResource(resources.ModelResource):
     def dehydrate_recipient(self, parcel):
         recipient = UserInfo.objects.get(parcel=parcel, type=2)
         return '%s' % recipient.info
+
+    def dehydrate_option(self, parcel):
+        options = parcel.option.values()
+        ran = parcel.option.values().count()
+        ans=''
+        for option in range(ran):
+            ans += str(options[option]['title'])
+            if ran > 1:
+                ans += ', '
+        return '%s' % ans
