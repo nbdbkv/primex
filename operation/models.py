@@ -1,6 +1,5 @@
-from datetime import datetime
-
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields
 from django_2gis_maps.mixins import DoubleGisMixin
@@ -53,7 +52,7 @@ class Parcel(models.Model):
     create_at = models.DateTimeField(_("date creation"), auto_now_add=True)
     option = models.ManyToManyField(ParcelOption, verbose_name=_("options"))
     sending_date = models.DateTimeField(
-        _("sendin date"), default=datetime.now().strftime(("%d.%m.%Y %H:%M:%S"))
+        _("sendin date"), default=timezone.now().strftime("%d.%m.%Y %H:%M:%S")
     )
 
     def __str__(self) -> str:
@@ -305,7 +304,7 @@ class PaymentHistory(models.Model):
     type = models.ForeignKey(
         PaymentType, on_delete=models.SET_NULL, verbose_name=_("type"), null=True
     )
-    sum = models.PositiveIntegerField(_("sum"))
+    sum = models.PositiveIntegerField(_("sum"), blank=True)
     payment_type = models.PositiveSmallIntegerField(
         _("payment type"), choices=PaymentHistoryType.choices
     )
