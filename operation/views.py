@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_list_or_404, get_object_or_404, render
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
@@ -74,8 +74,10 @@ class DeliveryTypeListView(generics.ListAPIView):
         from_dis = self.kwargs.get("from_district")
         to_dis = self.kwargs.get("to_district")
         if from_dis and to_dis:
-            distance = Distance.objects.get(from_district=from_dis, to_district=to_dis)
-            queryset = DeliveryType.objects.filter(distance__distance__in=distance)
+            distance = get_object_or_404(
+                Distance.objects, from_district=from_dis, to_district=to_dis
+            )
+            queryset = get_list_or_404(Envelop, distance=distance)
         else:
             queryset = DeliveryType.objects.all()
         return queryset
@@ -90,11 +92,13 @@ class EnvelopListView(generics.ListAPIView):
     serializer_class = EnvelopSerializer
 
     def get_queryset(self):
-        from_dis = self.kwargs.get("from_district")
-        to_dis = self.kwargs.get("to_district")
+        from_dis = self.request.GET.get("from_district")
+        to_dis = self.request.GET.get("to_district")
         if from_dis and to_dis:
-            distance = Distance.objects.get(from_district=from_dis, to_district=to_dis)
-            queryset = Envelop.objects.filter(distance__distance__in=distance)
+            distance = get_object_or_404(
+                Distance.objects, from_district=from_dis, to_district=to_dis
+            )
+            queryset = get_list_or_404(Envelop, distance=distance)
         else:
             queryset = Envelop.objects.all()
         return queryset
