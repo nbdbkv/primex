@@ -27,8 +27,6 @@ from operation.models import (
     Envelop,
     PaymentHistory,
     PaymentType,
-    EnvelopDistance,
-    DeliveryTypeDistance,
 )
 
 
