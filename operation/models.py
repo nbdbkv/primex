@@ -67,11 +67,11 @@ class Parcel(models.Model):
 
 
 class Distance(models.Model):
-    from_region = models.ForeignKey(
-        Region,
+    from_district = models.ForeignKey(
+        District,
         on_delete=models.SET_NULL,
-        related_name=_("from_region"),
-        verbose_name=_("from region"),
+        related_name=_("from_district"),
+        verbose_name=_("from district"),
         null=True,
     )
     to_district = models.ForeignKey(
@@ -79,7 +79,7 @@ class Distance(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.from_region} - {self.to_district}"
+        return f"{self.from_district} - {self.to_district}"
 
     class Meta:
         verbose_name = _("Distance")
@@ -87,8 +87,8 @@ class Distance(models.Model):
 
 
 class DeliveryType(models.Model):
-    distance = models.ForeignKey(
-        Distance, on_delete=models.SET_NULL, verbose_name=_("distance"), null=True
+    distance = models.ManyToManyField(
+        Distance, verbose_name=_("distance"), through="DeliveryTypeDistance"
     )
     title = models.CharField(_("title"), max_length=255)
     description = models.TextField(_("description"), blank=True)
@@ -103,6 +103,17 @@ class DeliveryType(models.Model):
     class Meta:
         verbose_name = _("Delivery type")
         verbose_name_plural = _("Delivery types")
+
+
+class DeliveryTypeDistance(models.Model):
+    delivery_type = models.ForeignKey(DeliveryType, on_delete=models.CASCADE)
+    distance = models.ForeignKey(Distance, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (
+            "delivery_type",
+            "distance",
+        )
 
 
 class Packaging(models.Model):
@@ -132,7 +143,9 @@ class PaymentDimension(models.Model):
 
 
 class Envelop(models.Model):
-    distance = models.ManyToManyField(Distance, verbose_name=_("distance"))
+    distance = models.ManyToManyField(
+        Distance, verbose_name=_("distance"), through="EnvelopDistance"
+    )
     price = models.DecimalField(_("price"), max_digits=6, decimal_places=2)
     title = models.CharField(_("title"), max_length=255)
     description = models.TextField(_("description"))
@@ -152,6 +165,17 @@ class Envelop(models.Model):
         verbose_name = _("Envelop")
         verbose_name_plural = _("Envelops")
         ordering = ["dimension__length", "dimension__width", "dimension__height"]
+
+
+class EnvelopDistance(models.Model):
+    envelop = models.ForeignKey(Envelop, on_delete=models.CASCADE)
+    distance = models.ForeignKey(Distance, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (
+            "envelop",
+            "distance",
+        )
 
 
 class ParcelPayment(models.Model):

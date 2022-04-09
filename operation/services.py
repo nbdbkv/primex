@@ -31,14 +31,14 @@ def get_parcel_code(direction: dict) -> str:
 class CalculateParcelPrice:
     def __init__(self, instance: Parcel):
         self.instance = instance
-        self.from_region = self.get_region_from(instance)
+        self.from_district = self.get_district_from(instance)
         self.to_district = self.get_district_to(instance)
         self.validate()
 
     @staticmethod
-    def get_region_from(instance: Parcel) -> Region:
-        region_from = instance.direction.get(type=1).district.region
-        return region_from
+    def get_district_from(instance: Parcel) -> Region:
+        district_from = instance.direction.get(type=1).district
+        return district_from
 
     @staticmethod
     def get_district_to(instance: Parcel) -> District:
@@ -47,7 +47,7 @@ class CalculateParcelPrice:
 
     def validate(self):
         if Envelop.objects.filter(
-            Q(distance__from_region=self.from_region)
+            Q(distance__from_district=self.from_district)
             & Q(distance__to_district=self.to_district)
         ):
             return None
@@ -57,7 +57,7 @@ class CalculateParcelPrice:
         parcel_dimension = self.instance.dimension
 
         if dimension_price_obj := Envelop.objects.filter(
-            Q(distance__from_region=self.from_region)
+            Q(distance__from_district=self.from_district)
             & Q(distance__to_district=self.to_district)
             & Q(dimension__length__gte=parcel_dimension.length)
             & Q(dimension__width__gte=parcel_dimension.width)
@@ -67,7 +67,7 @@ class CalculateParcelPrice:
             price = float(dimension_price_obj.price)
         else:
             dimension_price_obj = Envelop.objects.filter(
-                Q(distance__from_region=self.from_region)
+                Q(distance__from_district=self.from_district)
                 & Q(distance__to_district=self.to_district)
             ).last()
             price = (

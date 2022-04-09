@@ -19,6 +19,7 @@ from operation.serializers import (
 )
 from operation.models import (
     DeliveryStatus,
+    Distance,
     ParcelOption,
     Parcel,
     DeliveryType,
@@ -26,8 +27,9 @@ from operation.models import (
     Envelop,
     PaymentHistory,
     PaymentType,
+    EnvelopDistance,
+    DeliveryTypeDistance,
 )
-from operation.filters import EnvelopFilter
 
 
 class PaymentHistoryView(generics.ListAPIView):
@@ -69,9 +71,16 @@ class ParcelOptionsListView(generics.ListAPIView):
 
 class DeliveryTypeListView(generics.ListAPIView):
     serializer_class = DeliveryTypeSerializer
-    queryset = DeliveryType.objects.all()
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["distance__from_region", "distance__to_district"]
+
+    def get_queryset(self):
+        from_dis = self.kwargs.get("from_district")
+        to_dis = self.kwargs.get("to_district")
+        if from_dis and to_dis:
+            distance = Distance.objects.get(from_district=from_dis, to_district=to_dis)
+            queryset = DeliveryType.objects.filter(distance__distance__in=distance)
+        else:
+            queryset = DeliveryType.objects.all()
+        return queryset
 
 
 class PackagingListView(generics.ListAPIView):
@@ -81,9 +90,16 @@ class PackagingListView(generics.ListAPIView):
 
 class EnvelopListView(generics.ListAPIView):
     serializer_class = EnvelopSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = EnvelopFilter
-    queryset = Envelop.objects.all()
+
+    def get_queryset(self):
+        from_dis = self.kwargs.get("from_district")
+        to_dis = self.kwargs.get("to_district")
+        if from_dis and to_dis:
+            distance = Distance.objects.get(from_district=from_dis, to_district=to_dis)
+            queryset = Envelop.objects.filter(distance__distance__in=distance)
+        else:
+            queryset = Envelop.objects.all()
+        return queryset
 
 
 class PaymentTypeListView(generics.ListAPIView):

@@ -53,7 +53,7 @@ class ParcelOptionSerializer(serializers.ModelSerializer):
 
 
 class DistanceSerializer(serializers.ModelSerializer):
-    from_region = serializers.SlugRelatedField("name", read_only=True)
+    from_district = serializers.SlugRelatedField("name", read_only=True)
     to_district = serializers.SlugRelatedField("name", read_only=True)
 
     class Meta:
