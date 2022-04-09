@@ -62,6 +62,12 @@ class DistanceSerializer(serializers.ModelSerializer):
 
 
 class DeliveryTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryType
+        exclude = ("distance",)
+
+
+class ReDeliveryTypeSerializer(serializers.ModelSerializer):
     distance = DistanceSerializer()
 
     class Meta:
@@ -86,7 +92,7 @@ class EnvelopSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Envelop
-        fields = "__all__"
+        exclude = ("distance",)
 
 
 class PaymentTypeSerializer(serializers.ModelSerializer):
@@ -124,7 +130,7 @@ class ParcelPaymentSerializer(serializers.ModelSerializer):
 
 class ParcelPaymentRetrieveSerializer(serializers.ModelSerializer):
     payment = PaymentSerializer(many=True)
-    delivery_type = DeliveryTypeSerializer()
+    delivery_type = ReDeliveryTypeSerializer()
     packaging = PackagingSerializer(many=True)
     envelop = EnvelopSerializer()
 
