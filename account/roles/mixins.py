@@ -10,7 +10,7 @@ class ParcelAdminMixin:
         if user.is_superuser:
             return qs
         return qs.filter(direction__district__region=user.region)
-    
+
 
 class UserAdminMixin:
     def get_queryset(self, request):

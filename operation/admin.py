@@ -117,4 +117,3 @@ admin.site.register(PaymentDimension)
 admin.site.register(Envelop)
 admin.site.register(PaymentType)
 admin.site.register(PaymentHistory)
-

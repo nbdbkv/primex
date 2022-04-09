@@ -35,8 +35,12 @@ class User(AbstractUser):
     )
     points = models.PositiveIntegerField(_("user bonus points"), default=50)
     avatar = models.ImageField(_("avatar"), upload_to="user/", blank=True)
-    tg_chat_id = models.CharField(_('telegram chat id'), max_length=20, blank=True, null=True)
-    tg_user_id = models.CharField(_('telegram user id'), max_length=20, blank=True, null=True)
+    tg_chat_id = models.CharField(
+        _("telegram chat id"), max_length=20, blank=True, null=True
+    )
+    tg_user_id = models.CharField(
+        _("telegram user id"), max_length=20, blank=True, null=True
+    )
     is_active = models.BooleanField(
         _("active"),
         default=False,

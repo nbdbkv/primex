@@ -12,11 +12,14 @@ from operation.choices import (
     PaymentTypeChoices,
     UserInfoChoices,
     PaymentHistoryType,
+    DeliveryStatusChoices,
 )
 
 
 class DeliveryStatus(models.Model):
-    title = models.CharField(_("title"), max_length=100)
+    title = models.CharField(
+        _("title"), max_length=100, unique=True, choices=DeliveryStatusChoices.choices
+    )
 
     def __str__(self) -> str:
         return self.title

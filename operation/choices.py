@@ -41,3 +41,11 @@ class PaymentState(models.TextChoices):
     ROLLBACK = "ROLLBACK", _("rollback")
     ROLLBACK_IN_PROGRESS = "ROLLBACK_IN_PROGRESS", _("rollback in progress")
     ROLLBACK_ACCEPTED = "ROLLBACK_ACCEPTED", _("rollback accepted")
+
+
+class DeliveryStatusChoices(models.TextChoices):
+    DELIVERED = "Посылка доставлена", _("Посылка доставлена")
+    ARRIVED_IN_TOWN = "Посылка прибыл в Ваш город", _("Посылка прибыл в Ваш город")
+    ON_THE_WAY = "Посылка в пути", _("Посылка в пути")
+    RETRIEVED = "Курьер забрал", _("Курьер забрал")
+    IN_ANTICIPATION = "В ожидании", _("В ожидании")

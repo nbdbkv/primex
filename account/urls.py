@@ -38,5 +38,5 @@ urlpatterns = [
     path("regions/", RegionsView.as_view()),
     path("districts/", DistrictsView.as_view()),
     path("villages/", VillagesView.as_view()),
-    path("telegram/", tg_message_handler)
+    path("telegram/", tg_message_handler),
 ]

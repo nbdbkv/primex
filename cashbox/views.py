@@ -60,7 +60,7 @@ class PaymentViewSet(viewsets.GenericViewSet):
 
 @api_view(["GET"])
 def check_requisite(request, *args, **kwargs):
-    get_object_or_404(Parcel.objects, code=kwargs['requisite'])
+    get_object_or_404(Parcel.objects, code=kwargs["requisite"])
     return Response(status=status.HTTP_200_OK)
 
 
