@@ -41,7 +41,7 @@ class ParcelOption(models.Model):
 
 
 def get_delivery_status():
-    return DeliveryStatus.objects.get(title=DeliveryStatusChoices.IN_ANTICIPATION)
+    return DeliveryStatus.objects.get(title=DeliveryStatusChoices.IN_ANTICIPATION).id
 
 
 class Parcel(models.Model):
