@@ -55,7 +55,7 @@ class Parcel(models.Model):
         verbose_name=_("delivery status"),
         null=True,
         blank=True,
-        default=get_delivery_status()
+        default=get_delivery_status(),
     )
     code = models.CharField(_("code"), max_length=15, unique=True)
     create_at = models.DateTimeField(_("date creation"), auto_now_add=True)
@@ -245,7 +245,11 @@ class Direction(DoubleGisMixin, models.Model):
         District, on_delete=models.DO_NOTHING, verbose_name=_("district"), blank=True
     )
     village = models.ForeignKey(
-        Village, on_delete=models.DO_NOTHING, verbose_name=_("village"), blank=True
+        Village,
+        on_delete=models.DO_NOTHING,
+        verbose_name=_("village"),
+        blank=True,
+        null=True,
     )
     destination = models.CharField(_("destination"), max_length=255, blank=True)
     geolocation = fields.GeoLocationField(_("geolocation"), blank=True)
