@@ -40,6 +40,10 @@ class ParcelOption(models.Model):
         verbose_name_plural = _("Parcel options")
 
 
+def get_delivery_status():
+    return DeliveryStatus.objects.get(title=DeliveryStatusChoices.IN_ANTICIPATION)
+
+
 class Parcel(models.Model):
     title = models.CharField(_("title"), max_length=255, blank=True)
     sender = models.ForeignKey(
@@ -50,6 +54,8 @@ class Parcel(models.Model):
         on_delete=models.SET_NULL,
         verbose_name=_("delivery status"),
         null=True,
+        blank=True,
+        default=get_delivery_status()
     )
     code = models.CharField(_("code"), max_length=15, unique=True)
     create_at = models.DateTimeField(_("date creation"), auto_now_add=True)
