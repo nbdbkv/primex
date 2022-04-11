@@ -4,9 +4,10 @@ from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 from django.utils.translation import gettext_lazy as _
 from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateTimeRangeFilter
+from decimal import Decimal
 
 
-from .choices import DirectionChoices
+from .choices import DirectionChoices, PaymentHistoryType, PaymentTypeChoices
 from account.roles.mixins import ParcelAdminMixin
 from operation.models import (
     DeliveryStatus,
@@ -80,6 +81,29 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         "payment__payment__type__title",
         ("create_at", DateTimeRangeFilter),
     ]
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            parcel_payment = ParcelPayment.objects.get(id=obj.payment.id)
+            if (
+                parcel_payment.pay_status != obj.payment.pay_status
+                and not PaymentHistory.objects.filter(
+                    parcel=obj,
+                    payment_type=PaymentHistoryType.DEBIT,
+                    type__type=PaymentTypeChoices.BONUS,
+                ).exists()
+            ):
+                bonus = float(obj.payment.price) * 0.05
+                PaymentHistory.objects.create(
+                    user=obj.sender,
+                    parcel=obj,
+                    type=PaymentType.objects.get(type=PaymentTypeChoices.BONUS),
+                    sum=bonus,
+                    payment_type=PaymentHistoryType.DEBIT,
+                )
+                obj.sender.points += Decimal(bonus)
+                obj.sender.save()
+        obj.save()
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         return super().change_view(

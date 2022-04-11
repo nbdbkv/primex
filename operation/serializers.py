@@ -269,17 +269,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         payment.packaging.set(packaging)
 
         for parcel_pay in parcel_payments:
-            pay = Payment.objects.create(parcel=payment, **parcel_pay)
-            if pay.type.type == PaymentTypeChoices.BONUS:
-                parcel.sender.points -= pay.sum
-                parcel.sender.save()
-                PaymentHistory.objects.create(
-                    user=parcel.sender,
-                    parcel=parcel,
-                    sum=pay.sum,
-                    payment_type=PaymentHistoryType.CREDIT,
-                    type=pay.type,
-                )
+            Payment.objects.create(parcel=payment, **parcel_pay)
 
         for dir in direction:
             Direction.objects.create(parcel=parcel, **dir)

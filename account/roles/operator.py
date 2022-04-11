@@ -20,6 +20,7 @@ class UserAdminForm(forms.ModelForm):
             "role",
             "is_active",
             "is_staff",
+            "groups",
         )
 
 

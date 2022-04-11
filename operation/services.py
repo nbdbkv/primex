@@ -116,15 +116,4 @@ class CalculateParcelPrice:
         packaging_price = self.calculate_packaging_price()
         delivery_price = self.calculate_delivery_price()
         price = int(dimension_price + packaging_price + delivery_price)
-        bonus = price * 0.05
-
-        PaymentHistory.objects.create(
-            user=self.instance.sender,
-            parcel=self.instance,
-            type=PaymentType.objects.get(type=PaymentTypeChoices.BONUS),
-            sum=bonus,
-            payment_type=PaymentHistoryType.DEBIT,
-        )
-        self.instance.sender.points += Decimal(bonus)
-        self.instance.sender.save()
         return price

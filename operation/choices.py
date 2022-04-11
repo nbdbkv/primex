@@ -49,3 +49,4 @@ class DeliveryStatusChoices(models.TextChoices):
     ON_THE_WAY = "Посылка в пути", _("Посылка в пути")
     RETRIEVED = "Курьер забрал", _("Курьер забрал")
     IN_ANTICIPATION = "В ожидании", _("В ожидании")
+    IN_PROCESSING = "В обработке", _("В обработке")

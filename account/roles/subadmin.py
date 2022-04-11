@@ -16,7 +16,7 @@ class UserAdminForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("phone", "password", "info", "region", "district", "role")
+        fields = "__all__"
 
 
 def get_group():
