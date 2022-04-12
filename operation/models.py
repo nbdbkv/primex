@@ -47,7 +47,7 @@ def get_delivery_status():
 class Parcel(models.Model):
     title = models.CharField(_("title"), max_length=255, blank=True)
     sender = models.ForeignKey(
-        User, on_delete=models.DO_NOTHING, verbose_name=_("sender")
+        User, on_delete=models.SET_NULL, verbose_name=_("sender"), null=True
     )
     status = models.ForeignKey(
         DeliveryStatus,
@@ -83,13 +83,13 @@ class Parcel(models.Model):
 class Distance(models.Model):
     from_district = models.ForeignKey(
         District,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name=_("from_district"),
         verbose_name=_("from district"),
         null=True,
     )
     to_district = models.ForeignKey(
-        District, on_delete=models.SET_NULL, verbose_name=_("to district"), null=True
+        District, on_delete=models.CASCADE, verbose_name=_("to district"), null=True
     )
 
     def __str__(self) -> str:
@@ -250,11 +250,15 @@ class Direction(DoubleGisMixin, models.Model):
         related_name="direction",
     )
     district = models.ForeignKey(
-        District, on_delete=models.DO_NOTHING, verbose_name=_("district"), blank=True
+        District,
+        on_delete=models.SET_NULL,
+        verbose_name=_("district"),
+        blank=True,
+        null=True,
     )
     village = models.ForeignKey(
         Village,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
         verbose_name=_("village"),
         blank=True,
         null=True,
@@ -318,7 +322,7 @@ class ParcelDimension(models.Model):
 class PaymentHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("user"))
     parcel = models.ForeignKey(
-        Parcel, on_delete=models.DO_NOTHING, verbose_name=_("parcel")
+        Parcel, on_delete=models.SET_NULL, verbose_name=_("parcel"), null=True
     )
     type = models.ForeignKey(
         PaymentType, on_delete=models.SET_NULL, verbose_name=_("type"), null=True

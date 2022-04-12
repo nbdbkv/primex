@@ -25,10 +25,10 @@ class User(AbstractUser):
     )
     info = models.CharField(_("user info"), max_length=255)
     region = models.ForeignKey(
-        "Region", on_delete=models.DO_NOTHING, verbose_name=_("region"), null=True
+        "Region", on_delete=models.SET_NULL, verbose_name=_("region"), null=True
     )
     district = models.ForeignKey(
-        "District", on_delete=models.DO_NOTHING, verbose_name=_("district"), null=True
+        "District", on_delete=models.SET_NULL, verbose_name=_("district"), null=True
     )
     role = models.PositiveSmallIntegerField(
         _("role"), choices=UserRole.choices, default=UserRole.CLIENT

@@ -48,7 +48,10 @@ class New(models.Model):
     description = RichTextUploadingField()
     border_photo = models.ImageField(_("border image"), upload_to="about/news/")
     category = models.ForeignKey(
-        ArticleCategory, on_delete=models.DO_NOTHING, verbose_name=_("article category")
+        ArticleCategory,
+        on_delete=models.SET_NULL,
+        verbose_name=_("article category"),
+        null=True,
     )
     watched_count = models.PositiveIntegerField(_("watched count"))
     create_at = models.DateTimeField(_("created date"), auto_now_add=True)
