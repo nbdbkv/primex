@@ -59,18 +59,37 @@ class BonusPaySerializer(serializers.Serializer):
 
     def make_payment(self):
         data = self.validated_data
-        pay = Payment.objects.create(
-            parcel=self.parcel.payment, type=self.get_payment_type(), sum=data["amount"]
-        )
-        self.user.points -= pay.sum
+        if pay := Payment.objects.filter(
+            parcel=self.parcel.payment, type=self.get_payment_type()
+        ):
+            pay = pay.first()
+            pay.sum += data["amount"]
+            pay.save()
+
+            history = PaymentHistory.objects.get(parcel=self.parcel)
+            history.sum += data["amount"]
+            history.save()
+        else:
+            pay = Payment.objects.create(
+                parcel=self.parcel.payment,
+                type=self.get_payment_type(),
+                sum=data["amount"],
+            )
+
+            PaymentHistory.objects.create(
+                user=self.user,
+                parcel=self.parcel,
+                sum=pay.sum,
+                payment_type=PaymentHistoryType.CREDIT,
+                type=pay.type,
+            )
+        self.user.points -= data["amount"]
         self.user.save()
-        PaymentHistory.objects.create(
-            user=self.user,
-            parcel=self.parcel,
-            sum=pay.sum,
-            payment_type=PaymentHistoryType.CREDIT,
-            type=pay.type,
+        cash_payment = self.parcel.payment.payment.get(
+            type__type=PaymentTypeChoices.CASH
         )
+        cash_payment.sum -= data["amount"]
+        cash_payment.save()
 
 
 class OPayPaymentSerializer(serializers.Serializer):

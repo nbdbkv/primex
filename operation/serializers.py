@@ -110,7 +110,6 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 class ParcelPaymentSerializer(serializers.ModelSerializer):
-    payment = PaymentSerializer(many=True)
     parcel = serializers.PrimaryKeyRelatedField(read_only=True)
     price = serializers.DecimalField(9, 2, read_only=True)
     pay_status = serializers.SerializerMethodField(read_only=True)
@@ -223,15 +222,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         model = Parcel
         exclude = ("sender", "create_at")
 
-    def validate_payment(self, payment):
-        pay_list = payment["payment"]
-        for pay in pay_list:
-            if pay["type"].type == PaymentTypeChoices.BONUS:
-                user = self.context.get("request").user
-                if user.points < pay["sum"]:
-                    raise ValidationError({"message": "You do not have enought bonus"})
-            return payment
-
     def validate_direction(self, direction):
         if len(direction) != 2:
             raise ValidationError({"message": _("direction must be 2")})
@@ -263,13 +253,9 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         parcel = Parcel.objects.create(**validated_data)
         parcel.option.set(options)
 
-        parcel_payments = payment.pop("payment")
         packaging = payment.pop("packaging")
         payment = ParcelPayment.objects.create(parcel=parcel, **payment)
         payment.packaging.set(packaging)
-
-        for parcel_pay in parcel_payments:
-            Payment.objects.create(parcel=payment, **parcel_pay)
 
         for dir in direction:
             Direction.objects.create(parcel=parcel, **dir)
@@ -280,6 +266,13 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
 
-        parcel.payment.price = CalculateParcelPrice(parcel).price
-        parcel.payment.save()
+        payment.price = CalculateParcelPrice(parcel).price
+        payment.save()
+
+        Payment.objects.create(
+            parcel=payment,
+            type=PaymentType.objects.get(type=PaymentTypeChoices.CASH),
+            sum=payment.price,
+        )
+
         return parcel

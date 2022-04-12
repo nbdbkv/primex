@@ -7,8 +7,14 @@ from rangefilter.filters import DateTimeRangeFilter
 from decimal import Decimal
 
 
-from .choices import DirectionChoices, PaymentHistoryType, PaymentTypeChoices
+from .choices import (
+    DeliveryStatusChoices,
+    DirectionChoices,
+    PaymentHistoryType,
+    PaymentTypeChoices,
+)
 from account.roles.mixins import ParcelAdminMixin
+from account.utils import SendSMS
 from operation.models import (
     DeliveryStatus,
     ParcelOption,
@@ -103,6 +109,14 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
                 )
                 obj.sender.points += Decimal(bonus)
                 obj.sender.save()
+            elif (
+                Parcel.objects.get(id=obj.id).status != obj.status
+                and obj.status.title == DeliveryStatusChoices.DELIVERED
+            ):
+                SendSMS(
+                    obj.sender.phone,
+                    f"Ваша посылка под кодом {obj.code} успешно доставлена",
+                ).send
         obj.save()
 
     def change_view(self, request, object_id, form_url="", extra_context=None):

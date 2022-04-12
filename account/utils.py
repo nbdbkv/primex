@@ -52,7 +52,9 @@ class SendSMS:
     @property
     def send(self):
         response = requests.post(
-            url=self.__url, data=self.__get_xml(), headers=self.__headers
+            url=self.__url,
+            data=self.__get_xml().encode("utf-8"),
+            headers=self.__headers,
         )
 
 

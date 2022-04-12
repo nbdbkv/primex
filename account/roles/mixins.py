@@ -22,6 +22,8 @@ class UserAdminMixin:
             )
         elif user.role == UserRole.SUBADMIN:
             return qs.filter(region=user.region)
+        elif user.role == UserRole.COURIER:
+            return qs.filter(id__in=user.parcels.values_list("id", flat=True))
         return qs
 
     def get_form(self, request, obj=None, **kwargs):

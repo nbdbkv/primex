@@ -63,6 +63,14 @@ class Parcel(models.Model):
     sending_date = models.DateTimeField(
         _("sendin date"), default=timezone.now().strftime("%d.%m.%Y %H:%M:%S")
     )
+    courier = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_("courier"),
+        related_name="parcels",
+    )
 
     def __str__(self) -> str:
         return self.title
