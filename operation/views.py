@@ -79,7 +79,7 @@ class DeliveryTypeListView(generics.ListAPIView):
             )
             queryset = get_list_or_404(Envelop, distance=distance)
         else:
-            queryset = DeliveryType.objects.all().order_by('-id')
+            queryset = DeliveryType.objects.all()
         return queryset
 
 
