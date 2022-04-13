@@ -79,13 +79,13 @@ class DeliveryTypeListView(generics.ListAPIView):
             )
             queryset = get_list_or_404(Envelop, distance=distance)
         else:
-            queryset = DeliveryType.objects.all()
+            queryset = DeliveryType.objects.all().order_by('-id')
         return queryset
 
 
 class PackagingListView(generics.ListAPIView):
     serializer_class = PackagingSerializer
-    queryset = Packaging.objects.all()
+    queryset = Packaging.objects.all().order_by('-id')
 
 
 class EnvelopListView(generics.ListAPIView):
