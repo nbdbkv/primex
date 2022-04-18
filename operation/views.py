@@ -151,7 +151,7 @@ class PrintView(TemplateView):
             "from": fro_m,
             "to": to,
             "dimension": dimension,
-            "pay_status": pay_status,
-            "payment_type": payment_type,
+            # "pay_status": pay_status,
+            # "payment_type": payment_type,
         }
         return render(request, self.template_name, context)
