@@ -19,13 +19,20 @@
 </style>
 <body>
     <div>
-        <h4> Код: {{ data.code }}<br>
+        <h4> Код: {{ code }}<br>
             Отправитель: {{ sender.info }}<br>
             Тел: {{ sender.phone }}<br>
+            Адрес: {{ sender_place }}<br>
             Получатель: {{ recipient.info }}<br>
             Тел: {{ recipient.phone }}<br>
+            Адрес: {{ recipient.phone }}<br>
             От куда: {{ from }}<br>
             Куда: {{ to }}
+            Габариты груза: {{ dimension }}<br>
+            длина: {{ dimension.length }} ширина: {{ dimension.width }}<br>
+            высота: {{ dimension.height }} вес: {{ dimension.weight }}<br>
+            Способ оплаты: {{ payment_type }}
+            Статус платежа: {{ pay_status }}<br>
         </h4>
     </div>
     <script>

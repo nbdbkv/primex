@@ -26,7 +26,7 @@ from operation.models import (
     Packaging,
     Envelop,
     PaymentHistory,
-    PaymentType,
+    PaymentType, ParcelDimension, ParcelPayment,
 )
 
 
@@ -130,17 +130,30 @@ class PrintView(TemplateView):
 
     def get(self, request, pk, *args, **kwargs):
         parcel = Parcel.objects.get(pk=pk)
+        code = parcel.code
         sender = parcel.user_info.get(type=1)
+        sender_place = parcel.sender.district.name
         recipient = parcel.user_info.get(type=2)
+        recipient_place = Distance.objects.get(parcel=parcel).to_district.name
 
         fro_m = parcel.direction.get(type=DirectionChoices.FROM).district.name
         to = parcel.direction.get(type=DirectionChoices.TO).district.name
 
+        dimension = ParcelDimension.objects.get(parcel=parcel)
+
+        pay_status = ParcelPayment.objects.get(parcel=parcel).pay_status
+        payment_type = PaymentType.objects.get(parcel=parcel).type
+
         context = {
-            "data": parcel,
+            "code": code,
             "sender": sender,
+            "sender_place": sender_place,
             "recipient": recipient,
+            "recipient_place": recipient_place,
             "from": fro_m,
             "to": to,
+            "dimension": dimension,
+            "pay_status": pay_status,
+            "payment_type": payment_type,
         }
         return render(request, self.template_name, context)
