@@ -137,7 +137,8 @@ class PrintView(TemplateView):
         fro_m = parcel.direction.get(type=DirectionChoices.FROM).district.name
         to = parcel.direction.get(type=DirectionChoices.TO).district.name
 
-        payment = Payment.objects.get(parcel=parcel)
+        parcel_payment = ParcelPayment.objects.get(parcel=parcel)
+        payment = Payment.objects.get(parcel=parcel_payment)
         payment_type = payment.type
         pay_status = payment.parcel.pay_status
 
