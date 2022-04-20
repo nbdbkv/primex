@@ -30,6 +30,7 @@ from operation.models import (
     ParcelDimension,
     ParcelPayment,
     Direction,
+    Payment,
 )
 
 
@@ -141,11 +142,10 @@ class PrintView(TemplateView):
         fro_m = parcel.direction.get(type=DirectionChoices.FROM).district.name
         to = parcel.direction.get(type=DirectionChoices.TO).district.name
 
-        dimension = ParcelDimension.objects.get(parcel=parcel)
-
-        envelop = Envelop.objects.get(dimension=dimension)
-        parcel_payment = ParcelPayment.objects.get(envelop=envelop)
-        # pay_status = parcel_payment.pay_status
+        parcel_payment = ParcelPayment.objects.get(parcel=parcel)
+        payment = Payment.objects.get(parcel=parcel_payment)
+        payment_type = payment.type
+        pay_status = payment.parcel.pay_status
 
         context = {
             "code": code,
@@ -155,7 +155,7 @@ class PrintView(TemplateView):
             "recipient_place": to,
             "from": fro_m,
             "to": to,
-            "dimension": dimension,
-            # "pay_status": pay_status,
+            "payment_type": payment_type,
+            "pay_status": pay_status,
         }
         return render(request, self.template_name, context)
