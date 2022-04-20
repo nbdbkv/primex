@@ -26,7 +26,10 @@ from operation.models import (
     Packaging,
     Envelop,
     PaymentHistory,
-    PaymentType, ParcelDimension, ParcelPayment, Direction,
+    PaymentType,
+    ParcelDimension,
+    ParcelPayment,
+    Direction,
 )
 
 
@@ -46,8 +49,9 @@ class BonusHistoryView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = PaymentHistory.objects.filter(
-            user=user, type__type=PaymentTypeChoices.BONUS
+        queryset = get_list_or_404(
+            PaymentHistory.objects.filter(type__type=PaymentTypeChoices.BONUS),
+            user=user,
         )
         return queryset
 
@@ -85,7 +89,7 @@ class DeliveryTypeListView(generics.ListAPIView):
 
 class PackagingListView(generics.ListAPIView):
     serializer_class = PackagingSerializer
-    queryset = Packaging.objects.all().order_by('-id')
+    queryset = Packaging.objects.all().order_by("-id")
 
 
 class EnvelopListView(generics.ListAPIView):
@@ -141,7 +145,7 @@ class PrintView(TemplateView):
 
         envelop = Envelop.objects.get(dimension=dimension)
         parcel_payment = ParcelPayment.objects.get(envelop=envelop)
-        #pay_status = parcel_payment.pay_status
+        # pay_status = parcel_payment.pay_status
 
         context = {
             "code": code,
@@ -152,6 +156,6 @@ class PrintView(TemplateView):
             "from": fro_m,
             "to": to,
             "dimension": dimension,
-            #"pay_status": pay_status,
+            # "pay_status": pay_status,
         }
         return render(request, self.template_name, context)
