@@ -141,7 +141,7 @@ class PrintView(TemplateView):
 
         envelop = Envelop.objects.get(dimension=dimension)
         parcel_payment = ParcelPayment.objects.get(envelop=envelop)
-        pay_status = parcel_payment.pay_status
+        #pay_status = parcel_payment.pay_status
 
         context = {
             "code": code,
@@ -152,6 +152,6 @@ class PrintView(TemplateView):
             "from": fro_m,
             "to": to,
             "dimension": dimension,
-            "pay_status": pay_status,
+            #"pay_status": pay_status,
         }
         return render(request, self.template_name, context)
