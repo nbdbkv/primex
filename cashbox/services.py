@@ -1,5 +1,6 @@
-from operation.models import Parcel, PaymentHistory, PaymentType
-from operation.choices import PaymentHistoryType
+from operation.models import Parcel, Payment, PaymentHistory, PaymentType
+from operation.choices import PaymentHistoryType, PaymentTypeChoices
+from decimal import Decimal
 
 
 class Cashbox:
@@ -31,6 +32,11 @@ class Cashbox:
         return parcel_history
 
     def create_parcel_payment(self):
+        cash = Payment.objects.get(
+            type__type=PaymentTypeChoices.CASH, parcel=self.parcel.payment
+        )
+        cash.sum -= Decimal(self.sum)
+        cash.save()
         self.parcel.payment.payment.create(type=self.type, sum=self.sum)
 
     def save(self):

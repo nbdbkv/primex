@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -9,6 +10,8 @@ from .services import Cashbox
 from .permissions import IsAuth
 from operation.choices import PaymentTypeChoices
 from operation.models import Parcel, PaymentHistory
+
+import hashlib
 
 
 class PaymentViewSet(viewsets.GenericViewSet):
@@ -31,10 +34,29 @@ class PaymentViewSet(viewsets.GenericViewSet):
 
     @action(["post"], detail=False)
     def optima(self, request, *args, **kwargs):
-        data = self.get_valid_data(request.data)
-        cashbox = Cashbox(**data, type=PaymentTypeChoices.OPTIMA)
-        cashbox.save()
-        return Response(status=status.HTTP_200_OK)
+        data = request.data.copy()
+        try:
+            Parcel.objects.get(code=data["parcel_code"])
+            sha1_hash = data.pop("sha1_hash")
+            data["secret"] = settings.CASHBOX_SECRET
+            data["amount"] = "%.2f" % float(data["amount"])
+            sorted_data = [i[1] for i in sorted(data.items())]
+            obj_str = "&".join(map(str, sorted_data))
+            hash1 = hashlib.sha1(bytes(obj_str, "utf-8"))
+            pbhash = hash1.hexdigest()
+            if sha1_hash != pbhash:
+                return Response({"status": 400}, status=status.HTTP_400_BAD_REQUEST)
+            data_for_cash = {
+                "code": data["parcel_code"],
+                "amount": data["amount"],
+            }
+            cashbox = Cashbox(**data_for_cash, type=PaymentTypeChoices.OPTIMA)
+            cashbox.save()
+            return Response({"status": 200}, status=status.HTTP_200_OK)
+        except Parcel.DoesNotExist:
+            return Response({"status": 400}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({"status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(["post"], detail=False)
     def m_bank(self, request, *args, **kwargs):
