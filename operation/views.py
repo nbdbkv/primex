@@ -137,8 +137,9 @@ class PrintView(TemplateView):
         parcel = Parcel.objects.get(pk=pk)
         code = parcel.code
         sender = parcel.user_info.get(type=1)
-        sender_place = parcel.sender.district.name
+        sender_place = parcel.direction.get(type=DirectionChoices.FROM).destination
         recipient = parcel.user_info.get(type=2)
+        recipient_place = parcel.direction.get(type=DirectionChoices.TO).destination
         fro_m = parcel.direction.get(type=DirectionChoices.FROM).district.name
         to = parcel.direction.get(type=DirectionChoices.TO).district.name
 
@@ -152,7 +153,7 @@ class PrintView(TemplateView):
             "sender": sender,
             "sender_place": sender_place,
             "recipient": recipient,
-            "recipient_place": to,
+            "recipient_place": recipient_place,
             "from": fro_m,
             "to": to,
             "payment_type": payment_type,
