@@ -157,7 +157,7 @@ class PrintView(TemplateView):
             "recipient_place": recipient_place,
             "from": fro_m,
             "to": to,
-            "payment_type": _(payment_type),
-            "pay_status": _(pay_status),
+            "payment_type": payment_type,
+            "pay_status": pay_status,
         }
         return render(request, self.template_name, context)
