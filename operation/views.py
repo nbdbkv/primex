@@ -2,6 +2,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
+from django.utils.translation import gettext_lazy as _
 
 from operation.choices import PaymentHistoryType, PaymentTypeChoices, DirectionChoices
 
@@ -156,7 +157,7 @@ class PrintView(TemplateView):
             "recipient_place": recipient_place,
             "from": fro_m,
             "to": to,
-            "payment_type": payment_type,
-            "pay_status": pay_status,
+            "payment_type": _(payment_type),
+            "pay_status": _(pay_status),
         }
         return render(request, self.template_name, context)

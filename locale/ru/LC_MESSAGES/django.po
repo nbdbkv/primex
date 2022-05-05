@@ -270,9 +270,7 @@ msgid "active"
 msgstr "активирован"
 
 #: account/models.py:42
-msgid ""
-"Designates whether this user should be treated as active. Unselect this "
-"instead of deleting accounts."
+msgid "Designates whether this user should be treated as active. Unselect this instead of deleting accounts."
 msgstr ""
 
 #: account/models.py:66 account/models.py:82 account/models.py:98
@@ -305,12 +303,8 @@ msgid "Villages"
 msgstr "Селы"
 
 #: account/validators.py:9
-msgid ""
-"Phone number must be entered in the format: +996*********** Up to 9 digits "
-"allowed."
-msgstr ""
-"Номер телефона должен быть введен в формате: +996*********** Допускается до "
-"9 цифр"
+msgid "Phone number must be entered in the format: +996*********** Up to 9 digits allowed."
+msgstr "Номер телефона должен быть введен в формате: +996*********** Допускается до 9 цифр"
 
 #: account/validators.py:15
 msgid "Code must be 2 digit"
