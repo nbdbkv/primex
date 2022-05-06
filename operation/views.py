@@ -4,8 +4,13 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
 from django.utils.translation import gettext_lazy as _
 
-from operation.choices import PaymentHistoryType, PaymentTypeChoices, DirectionChoices
-
+from operation.choices import (
+    PaymentHistoryType,
+    PaymentTypeChoices,
+    DirectionChoices,
+    PayStatusChoices,
+    PayStatusChoicesRu
+)
 from operation.serializers import (
     BonusHistorySerializer,
     DeliveryStatusSerializer,
@@ -146,8 +151,13 @@ class PrintView(TemplateView):
 
         parcel_payment = ParcelPayment.objects.get(parcel=parcel)
         payment = Payment.objects.get(parcel=parcel_payment)
-        payment_type = payment.type
+        payment_type = payment.type.type
         pay_status = payment.parcel.pay_status
+
+        if pay_status == PayStatusChoices.IN_ANTICIPATION:
+            pay_status = PayStatusChoicesRu.IN_ANTICIPATION
+        else:
+            pay_status = PayStatusChoicesRu.PAID
 
         context = {
             "code": code,
