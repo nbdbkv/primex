@@ -31,5 +31,7 @@ class UserAdminMixin:
             kwargs["form"] = operator.UserAdminForm
             kwargs["form"].base_fields["region"].initial = request.user.region.id
         elif request.user.role == UserRole.SUBADMIN:
-            kwargs["form"] = subadmin.UserAdminForm
-        return super().get_form(request, obj, **kwargs)
+            # kwargs["form"] = subadmin.UserAdminForm
+            pass
+        return super().get_form(request, obj,  **kwargs)
+

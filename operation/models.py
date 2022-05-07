@@ -46,6 +46,7 @@ def get_delivery_status():
 
 class Parcel(models.Model):
     title = models.CharField(_("title"), max_length=255, blank=True)
+    img = models.ImageField(_("image"), upload_to="operation/parcel/")
     sender = models.ForeignKey(
         User, on_delete=models.SET_NULL, verbose_name=_("sender"), null=True
     )
