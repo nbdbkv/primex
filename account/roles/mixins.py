@@ -1,6 +1,7 @@
 from account.models import User
 from account.roles import courier, operator, subadmin
 from account.choices import UserRole
+from account.roles.subadmin import UserAdminForm
 
 
 class ParcelAdminMixin:
@@ -13,6 +14,7 @@ class ParcelAdminMixin:
 
 
 class UserAdminMixin:
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         user = request.user
@@ -31,6 +33,7 @@ class UserAdminMixin:
             kwargs["form"] = operator.UserAdminForm
             kwargs["form"].base_fields["region"].initial = request.user.region.id
         elif request.user.role == UserRole.SUBADMIN:
+            self.exclude = ("is_superuser",)
             # kwargs["form"] = subadmin.UserAdminForm
             pass
         return super().get_form(request, obj,  **kwargs)
