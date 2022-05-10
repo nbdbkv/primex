@@ -81,7 +81,7 @@
         }
         .row {
           position: relative;
-          font-size: 12px;
+          font-size: 10px;
           padding: 0;
         }
         .row::before {
@@ -108,7 +108,7 @@
           margin: auto;
           text-align: center;
           border: none;
-          font-size: 12px;
+          font-size: 10px;
           padding: 0;
         }
       }
@@ -118,21 +118,19 @@
     <div class="logo-wrap">
       <img src="{% static 'print/logo.png' %}" class="logo" />
       <div class="address">
-        <div class="d50">Тел. номер: <b>+996(502/779/553)150-150</b></div>
-        <div class="d50">г. Бишкек ул. Токтогула 198</div>
+        <small><div class="d50">Тел. номер: <b>+996(502/779/553)150-150</b></div></small>
+        <small><div class="d50">г. Бишкек ул. Токтогула 198</div></small>
       </div>
+
     </div>
-    <div class="row"><span>Код:</span> <b>{{ code }}</b></div>
-    <div class="row"><span>Отправитель:</span> <b>{{ sender.info }}</b></div>
-    <div class="row"><span>Телефон:</span> <b>{{ sender.phone }}</b></div>
-    <div class="row"><span>Адрес:</span> <b>{{ sender_place }}</b></div>
-    <div class="row"><span>Получатель:</span> <b>{{ recipient.info }}</b></div>
-    <div class="row"><span>Телефон:</span> <b>{{ recipient.phone }}</b></div>
-    <div class="row"><span>Адрес:</span> <b>{{ recipient_place }}</b></div>
-    <div class="row"><span>Откуда:</span> <b>{{ from }}</b></div>
-    <div class="row"><span>Куда:</span> <b>{{ to }}</b></div>
-    <div class="row"><span>Статус платежа:</span> <b>{{ pay_status }}</b></div>
-    <div class="row"><span>Через:</span> <b>{{ payment_type }}</b></div>
+    <div class="row"><small><span>Код посылки:</span> <b>{{ code }}</b></small></div>
+    <div class="row"><small><span>ФИО отправителя:</span> <b>{{ sender.info }}</b></small></div>
+    <div class="row"><small><span>Телефон отправителя:</span> <b>{{ sender.phone }}</b></small></div>
+    <div class="row"><small><span>ФИО получателя:</span> <b>{{ recipient.info }}</b></small></div>
+    <div class="row"><small><span>Телефон получателя:</span> <b>{{ recipient.phone }}</b></small></div>
+    <div class="row"><small><span>Адрес получателя:</span> <b>{{ recipient_place }}</b></small></div>
+    <div class="row"><small><span>Статус платежа и через :</span><b>{{ pay_status }}  {{ payment_type }}</b></small></div>
+
       <script>
         window.print()
     </script>

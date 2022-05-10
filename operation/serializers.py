@@ -267,9 +267,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer(required=False)
     code = serializers.CharField(read_only=True)
-    img = Base64ImageField(
-        max_length=None, use_url=True,
-    )
 
     class Meta:
         model = Parcel
@@ -295,6 +292,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
+        print(validated_data)
         payment = validated_data.pop("payment")
         direction = validated_data.pop("direction")
         user_info = validated_data.pop("user_info")
