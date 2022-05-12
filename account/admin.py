@@ -13,6 +13,7 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
         return super().save_model(request, obj, form, change)
 
 
+
 class RegionAdmin(DoubleGisAdmin):
     multiple_markers = False
 

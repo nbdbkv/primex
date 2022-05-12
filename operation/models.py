@@ -344,3 +344,13 @@ class PaymentHistory(models.Model):
     class Meta:
         verbose_name = _("Payment history")
         verbose_name_plural = _("Payment histories")
+
+
+class Images(models.Model):
+    parcel = models.ForeignKey(
+        Parcel,
+        on_delete=models.CASCADE,
+        verbose_name=_("parcel"),
+        related_name="image",
+    )
+    img = models.ImageField(upload_to="operation/parcel", blank=True)

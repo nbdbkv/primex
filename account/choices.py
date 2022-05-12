@@ -13,3 +13,8 @@ class UserRole(models.IntegerChoices):
     COURIER = 2, _("courier")
     OPERATOR = 3, _("operator")
     SUBADMIN = 4, _("subadmin")
+
+
+class SubAdminRole(models.IntegerChoices):
+    COURIER = 2, _("courier")
+    OPERATOR = 3, _("operator")

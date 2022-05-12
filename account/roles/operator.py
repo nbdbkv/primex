@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from django import forms
 
-from account.models import Region, User
+from account.models import Region, User, District
 from account.choices import UserRole
 
 
