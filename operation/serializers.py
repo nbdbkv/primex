@@ -276,7 +276,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer(required=False)
     code = serializers.CharField(read_only=True)
-    img = ImgSerializer(many=True)
+    # img = ImgSerializer(many=True)
 
     class Meta:
         model = Parcel
@@ -307,7 +307,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         direction = validated_data.pop("direction")
         user_info = validated_data.pop("user_info")
         dimension = validated_data.pop("dimension")
-        images = validated_data.pop("img")
+        # images = validated_data.pop("img")
 
         validated_data["code"] = get_parcel_code(direction[1])
         validated_data["sender"] = self.context.get("request").user
@@ -328,8 +328,8 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
 
-        for image in images:
-            Images.objects.create(parcel=parcel, **image)
+        # for image in images:
+        #     Images.objects.create(parcel=parcel, **image)
 
         payment.price = CalculateParcelPrice(parcel).price
         payment.save()
