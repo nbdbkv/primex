@@ -1,7 +1,8 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render
-from rest_framework import generics
+from rest_framework import generics, status
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.generic import TemplateView
+from rest_framework.response import Response
 from django.utils.translation import gettext_lazy as _
 
 from operation.choices import (
@@ -66,6 +67,15 @@ class BonusHistoryView(generics.ListAPIView):
 class ParcelCreateView(generics.CreateAPIView):
     serializer_class = CreateParcelSerializer
     queryset = Parcel
+
+    def create(self, request, *args, **kwargs):
+        images = request.FILES.getlist('img', None)
+        _serializer = self.serializer_class(data=request.data, context={'images': images})
+        if _serializer.is_valid():
+            _serializer.save()
+            return Response(data=_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeliveryStatusListView(generics.ListAPIView):

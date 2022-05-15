@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db.models import Sum
+from django.utils.safestring import mark_safe
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline
 from django.utils.translation import gettext_lazy as _
 from import_export.admin import ImportExportModelAdmin
@@ -31,8 +32,16 @@ from operation.models import (
     UserInfo,
     ParcelDimension,
     PaymentHistory,
+    Images,
 )
 from .resource import ParcelResource
+
+
+class ImageInlines(NestedStackedInline):
+    model = Images
+    extra = 0
+    fields = ('image_preview',)
+    readonly_fields = ('image_preview',)
 
 
 class PaymentInline(NestedStackedInline):
@@ -69,6 +78,7 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         DirectionInline,
         UserInfoInline,
         ParcelDimensionInline,
+        ImageInlines,
     ]
     change_form_template = "admin/print_receipt.html"
     list_display = (
@@ -80,6 +90,7 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         "parcel_sum",
         "parcel_payment_types",
         "status",
+        "get_images",
     )
     search_fields = ["code", "sender__phone"]
     list_filter = [
@@ -144,6 +155,13 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         to_dis = obj.direction.get(type=DirectionChoices.TO).district.name
         return to_dis
 
+    def get_images(self, object):
+        try:
+            image_id = Images.objects.filter(parcel=object).first().id
+        except:
+            return None
+        image = Images.objects.get(pk=image_id)
+        return mark_safe('<img src="{0}" width="50" height="50" />'.format(image.img.url))
 
 admin.site.register(DeliveryStatus)
 admin.site.register(ParcelOption)

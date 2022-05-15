@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields
 from django_2gis_maps.mixins import DoubleGisMixin
@@ -353,4 +354,10 @@ class Images(models.Model):
         verbose_name=_("parcel"),
         related_name="image",
     )
-    img = models.ImageField(upload_to="operation/parcel", blank=True)
+    img = models.FileField(upload_to="operation/parcel", null=True, blank=True)
+
+    def image_preview(self):
+        if self.img:
+            return mark_safe('<img src="{0}" width="150" height="150" />'.format(self.img.url))
+        else:
+            return '(No image)'
