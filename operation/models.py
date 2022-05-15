@@ -357,7 +357,7 @@ class Images(models.Model):
     img = models.FileField(upload_to="operation/parcel", null=True, blank=True)
 
     def image_preview(self):
-        if self.img:
+        if self.img.url:
             return mark_safe('<img src="{0}" width="150" height="150" />'.format(self.img.url))
         else:
             return '(No image)'
