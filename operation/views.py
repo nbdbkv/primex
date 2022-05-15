@@ -69,8 +69,9 @@ class ParcelCreateView(generics.CreateAPIView):
     queryset = Parcel
 
     def create(self, request, *args, **kwargs):
+        print(request.user)
         images = request.FILES.getlist('img', None)
-        _serializer = self.serializer_class(data=request.data, context={'images': images})
+        _serializer = self.serializer_class(data=request.data, context={'images': images, 'user': self.request.user})
         if _serializer.is_valid():
             _serializer.save()
             return Response(data=_serializer.data, status=status.HTTP_201_CREATED)

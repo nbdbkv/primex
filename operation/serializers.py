@@ -266,7 +266,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        print(validated_data)
         payment = validated_data.pop("payment")
         direction = validated_data.pop("direction")
         user_info = validated_data.pop("user_info")
@@ -274,7 +273,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         images = self.context['images']
 
         validated_data["code"] = get_parcel_code(direction[1])
-        validated_data["sender"] = self.context.get("request").user
+        validated_data["sender"] = self.context['user']
         options = validated_data.pop("option")
         parcel = Parcel.objects.create(**validated_data)
         parcel.option.set(options)
