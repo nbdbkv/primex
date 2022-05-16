@@ -13,6 +13,7 @@ from operation.views import (
     ParcelRetrieveView,
     BonusHistoryView,
     PrintView,
+    ParcelImageCreateView
 )
 
 
@@ -29,4 +30,5 @@ urlpatterns = [
     path("payment_history/", PaymentHistoryView.as_view()),
     path("bonus/", BonusHistoryView.as_view()),
     path("print/<int:pk>/", PrintView.as_view(), name="print"),
+    path("image/", ParcelImageCreateView.as_view())
 ]

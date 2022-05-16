@@ -227,8 +227,7 @@ class BonusHistorySerializer(serializers.ModelSerializer):
         return instance.parcel.sending_date
 
 
-class ImgSerializer(serializers.ModelSerializer):
-    parcel = serializers.PrimaryKeyRelatedField(read_only=True)
+class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Images
@@ -270,10 +269,9 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         direction = validated_data.pop("direction")
         user_info = validated_data.pop("user_info")
         dimension = validated_data.pop("dimension")
-        images = self.context['images']
 
         validated_data["code"] = get_parcel_code(direction[1])
-        validated_data["sender"] = self.context['user']
+        validated_data["sender"] = self.context.get("request").user
         options = validated_data.pop("option")
         parcel = Parcel.objects.create(**validated_data)
         parcel.option.set(options)
@@ -290,9 +288,6 @@ class CreateParcelSerializer(serializers.ModelSerializer):
 
         if dimension:
             dimension = ParcelDimension.objects.create(parcel=parcel, **dimension)
-
-        for image in images:
-            Images.objects.create(parcel=parcel, img=image)
 
         payment.price = CalculateParcelPrice(parcel).price
         payment.save()

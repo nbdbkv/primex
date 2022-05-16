@@ -360,4 +360,4 @@ class Images(models.Model):
         if self.img.url:
             return mark_safe('<img src="{0}" width="150" height="150" />'.format(self.img.url))
         else:
-            return '(No image)'
+            return ('Not images')
