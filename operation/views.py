@@ -70,19 +70,19 @@ class ParcelCreateView(generics.CreateAPIView):
     serializer_class = CreateParcelSerializer
     queryset = Parcel
 
-    # def create(self, request, *args, **kwargs):
-    #     print(request.user)
-    #     images = request.FILES.getlist('img', None)
-    #     _serializer = self.serializer_class(data=request.data, context={'images': images, 'user': self.request.user})
-    #     if _serializer.is_valid():
-    #         _serializer.save()
-    #         return Response(data=_serializer.data, status=status.HTTP_201_CREATED)
-    #     else:
-    #         return Response(data=_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ParcelImageCreateView(generics.CreateAPIView):
     serializer_class = ImageSerializer
     queryset = Images
+
+    def create(self, request, *args, **kwargs):
+        images = request.FILES.getlist('img', None)
+        _serializer = self.serializer_class(data=request.data, context={'images': images})
+        if _serializer.is_valid():
+            _serializer.save()
+            return Response(data=_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeliveryStatusListView(generics.ListAPIView):

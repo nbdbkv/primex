@@ -358,6 +358,6 @@ class Images(models.Model):
 
     def image_preview(self):
         if self.img.url:
-            return mark_safe('<img src="{0}" width="150" height="150" />'.format(self.img.url))
+            return mark_safe('<img src="{0}" width="1000" height="500" />'.format(self.img.url))
         else:
-            return ('Not images')
+            return None

@@ -233,6 +233,14 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Images
         fields = "__all__"
 
+    @transaction.atomic
+    def create(self, validated_data):
+        images = self.context['images']
+        parcel = validated_data.pop("parcel")
+        for image in images:
+            img = Images.objects.create(parcel=parcel, img=image)
+        return img
+
 
 class CreateParcelSerializer(serializers.ModelSerializer):
     payment = ParcelPaymentSerializer()
