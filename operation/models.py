@@ -361,3 +361,12 @@ class Images(models.Model):
             return mark_safe('<img src="{0}" width="1000" height="500" />'.format(self.img.url))
         else:
             return None
+
+    def image_preview_admin(self):
+        if self.img.url:
+            return mark_safe('<img src="{0}" width="100" height="50" />'.format(self.img.url))
+        else:
+            return None
+
+    def __str__(self):
+        return self.image_preview_admin()

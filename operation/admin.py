@@ -90,7 +90,6 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         "parcel_sum",
         "parcel_payment_types",
         "status",
-        "get_images"
     )
     search_fields = ["code", "sender__phone"]
     list_filter = [
@@ -155,14 +154,14 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         to_dis = obj.direction.get(type=DirectionChoices.TO).district.name
         return to_dis
 
-    @admin.display(description=_("Image"))
-    def get_images(self, object):
-        try:
-            image_id = Images.objects.filter(parcel=object).first().id
-        except:
-            return None
-        image = Images.objects.get(pk=image_id)
-        return mark_safe('<img src="{0}" width="50" height="50" />'.format(image.img.url))
+    # @admin.display(description=_("Image"))
+    # def get_images(self, object):
+    #     try:
+    #         image_id = Images.objects.filter(parcel=object).first().id
+    #     except:
+    #         return None
+    #     image = Images.objects.get(pk=image_id)
+    #     return mark_safe('<img src="{0}" width="50" height="50" />'.format(image.img.url))
 
 admin.site.register(DeliveryStatus)
 admin.site.register(ParcelOption)
@@ -174,3 +173,4 @@ admin.site.register(PaymentDimension)
 admin.site.register(Envelop)
 admin.site.register(PaymentType)
 admin.site.register(PaymentHistory)
+admin.site.register(Images)
