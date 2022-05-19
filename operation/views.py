@@ -167,15 +167,16 @@ class PrintView(TemplateView):
         to = parcel.direction.get(type=DirectionChoices.TO).district.name
 
         parcel_payment = ParcelPayment.objects.get(parcel=parcel)
-        payment = Payment.objects.get(parcel=parcel_payment)
-        payment_type = payment.type.type
+        payments = Payment.objects.filter(parcel=parcel_payment)
+        payment_types = [payment.type for payment in payments]
+        payment_id = Payment.objects.filter(parcel=parcel_payment).first().id
+        payment = Payment.objects.get(pk=payment_id)
         pay_status = payment.parcel.pay_status
 
         if pay_status == PayStatusChoices.IN_ANTICIPATION:
             pay_status = PayStatusChoicesRu.IN_ANTICIPATION
         else:
             pay_status = PayStatusChoicesRu.PAID
-
         context = {
             "code": code,
             "sender": sender,
@@ -184,7 +185,7 @@ class PrintView(TemplateView):
             "recipient_place": recipient_place,
             "from": fro_m,
             "to": to,
-            "payment_type": payment_type,
+            "payment_types": payment_types,
             "pay_status": pay_status,
         }
         return render(request, self.template_name, context)

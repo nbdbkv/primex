@@ -129,7 +129,7 @@
     <div class="row"><small><span>ФИО получателя:</span> <b>{{ recipient.info }}</b></small></div>
     <div class="row"><small><span>Телефон получателя:</span> <b>{{ recipient.phone }}</b></small></div>
     <div class="row"><small><span>Адрес получателя:</span> <b>{{ recipient_place }}</b></small></div>
-    <div class="row"><small><span>Статус платежа и через :</span><b>{{ pay_status }}  {{ payment_type }}</b></small></div>
+    <div class="row"><small><span>Статус платежа и через :</span><b>{{ pay_status }}, {% for p in payment_types %} {{ p }}{% endfor %} </b></small></div>
 
       <script>
         window.print()
