@@ -17,6 +17,16 @@ from operation.models import (
 from operation.choices import PaymentHistoryType, PaymentTypeChoices
 
 from uuid import uuid4
+from operation.models import Parcel
+
+def get_parcel_code_from_db():
+    code = Parcel.objects.filter().last().code
+    code = code[4:8]
+    if code == '9999':
+        code = 0
+    value = int(code)+1
+    value = (str(value).zfill(4))
+    return value
 
 
 def get_parcel_code(direction: dict) -> str:
@@ -24,7 +34,7 @@ def get_parcel_code(direction: dict) -> str:
     code = district.region.code + district.code
     if village := direction.get("village"):
         code += village.code
-    code = str(code + str(uuid4()).replace("-", ""))[:15]
+    code = str(code + get_parcel_code_from_db())
     return code
 
 
