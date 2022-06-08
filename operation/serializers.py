@@ -36,6 +36,7 @@ from operation.models import (
     UserInfo,
     ParcelDimension,
     Images,
+    Bounus,
 )
 
 
@@ -203,12 +204,9 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
         fields = ('payment', 'direction','user_info','dimension','option','bonus')
 
     def get_bonus(self, obj):
-        payment = PaymentHistory.objects.filter(
-            Q(type=PaymentTypeChoices.BONUS) and
-            Q(parcel=obj)
-        ).first()
-        if payment:
-            return payment.sum
+        bonus = Bounus.objects.filter(parcel=obj).first()
+        if bonus:
+            return bonus.bonus
         else:
             return None
 
@@ -316,6 +314,11 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             parcel=payment,
             type=PaymentType.objects.get(type=PaymentTypeChoices.CASH),
             sum=payment.price,
+        )
+
+        Bounus.objects.create(
+            parcel=parcel,
+            bonus=(float(payment.price)*0.05)
         )
 
         return parcel
