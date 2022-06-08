@@ -1,4 +1,5 @@
 from django.core.files.base import ContentFile
+from django.db.models import Q
 from django.forms import ValidationError
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
@@ -195,10 +196,21 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
     user_info = UserInfoSerializer(many=True)
     dimension = ParcelDimensionSerializer()
     option = serializers.SlugRelatedField("title", read_only=True, many=True)
+    bonus = serializers.SerializerMethodField()
 
     class Meta:
         model = Parcel
-        fields = "__all__"
+        fields = ('payment', 'direction','user_info','dimension','option','bonus')
+
+    def get_bonus(self, obj):
+        payment = PaymentHistory.objects.filter(
+            Q(type=PaymentTypeChoices.BONUS) and
+            Q(parcel=obj)
+        ).first()
+        if payment:
+            return payment.sum
+        else:
+            return None
 
 
 class BonusHistorySerializer(serializers.ModelSerializer):
