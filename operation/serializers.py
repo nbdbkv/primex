@@ -201,10 +201,11 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Parcel
-        fields = ('payment', 'direction','user_info','dimension','option','bonus')
+        fields = ('id','payment', 'direction','user_info','dimension','option','bonus', 'title', 'code', 'create_at','sending_date','status','courier')
 
     def get_bonus(self, obj):
         bonus = Bounus.objects.filter(parcel=obj).first()
+        print(bonus)
         if bonus:
             return bonus.bonus
         else:
