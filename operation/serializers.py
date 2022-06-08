@@ -316,7 +316,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             sum=payment.price,
         )
 
-        Bonus.objects.create(
+        ParcelBonus.objects.create(
             parcel=parcel,
             bonus=(float(payment.price)*0.05)
         )
