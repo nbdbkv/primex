@@ -36,7 +36,7 @@ from operation.models import (
     UserInfo,
     ParcelDimension,
     Images,
-    Bonus,
+    ParcelBonus,
 )
 
 
@@ -204,7 +204,7 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
         fields = ('id','payment', 'direction','user_info','dimension','option','bonus', 'title', 'code', 'create_at','sending_date','status','courier')
 
     def get_bonus(self, obj):
-        bonus = Bonus.objects.filter(parcel=obj).first()
+        bonus = ParcelBonus.objects.filter(parcel=obj).first()
         if bonus:
             return bonus.bonus
         else:

@@ -371,6 +371,7 @@ class Images(models.Model):
     def __str__(self):
         return self.image_preview_admin()
 
-class Bonus(models.Model):
+
+class ParcelBonus(models.Model):
     parcel = models.ForeignKey(Parcel, on_delete=models.CASCADE)
     bonus = models.DecimalField(_("bonus"), max_digits=9, decimal_places=2, blank=True)
