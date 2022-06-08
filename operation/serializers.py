@@ -36,7 +36,7 @@ from operation.models import (
     UserInfo,
     ParcelDimension,
     Images,
-    Bounus,
+    Bonus,
 )
 
 
@@ -204,8 +204,7 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
         fields = ('id','payment', 'direction','user_info','dimension','option','bonus', 'title', 'code', 'create_at','sending_date','status','courier')
 
     def get_bonus(self, obj):
-        bonus = Bounus.objects.filter(parcel=obj).first()
-        print(bonus)
+        bonus = Bonus.objects.filter(parcel=obj).first()
         if bonus:
             return bonus.bonus
         else:
@@ -317,7 +316,7 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             sum=payment.price,
         )
 
-        Bounus.objects.create(
+        Bonus.objects.create(
             parcel=parcel,
             bonus=(float(payment.price)*0.05)
         )
