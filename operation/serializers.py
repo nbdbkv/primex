@@ -212,29 +212,41 @@ class ReatriveParcelSerializer(serializers.ModelSerializer):
 
 
 class BonusHistorySerializer(serializers.ModelSerializer):
-    # sending_date = serializers.SerializerMethodField()
-    # code = serializers.SerializerMethodField()
-    # icon = serializers.SerializerMethodField()
-    # parcel_sum = serializers.SerializerMethodField()
+    sending_date = serializers.SerializerMethodField()
+    code = serializers.SerializerMethodField()
+    icon = serializers.SerializerMethodField()
+    parcel_sum = serializers.SerializerMethodField()
 
     class Meta:
         model = PaymentHistory
         fields = "__all__"
 
-    # def get_code(self, instance):
-    #     return instance.parcel.code
-    #
-    # def get_icon(self, instance):
-    #     request = self.context.get("request")
-    #     image = instance.parcel.payment.delivery_type.icon.url
-    #     url = request.build_absolute_uri(image)
-    #     return url
-    #
-    # def get_parcel_sum(self, instance):
-    #     return instance.parcel.payment.price
-    #
-    # def get_sending_date(self, instance):
-    #     return instance.parcel.sending_date
+    def get_code(self, instance):
+        try:
+            return instance.parcel.code
+        except:
+            return None
+
+    def get_icon(self, instance):
+        try:
+            request = self.context.get("request")
+            image = instance.parcel.payment.delivery_type.icon.url
+            url = request.build_absolute_uri(image)
+            return url
+        except:
+            return None
+
+    def get_parcel_sum(self, instance):
+        try:
+            return instance.parcel.payment.price
+        except:
+            return None
+
+    def get_sending_date(self, instance):
+        try:
+            return instance.parcel.sending_date
+        except:
+            return None
 
 
 class ImageSerializer(serializers.ModelSerializer):
