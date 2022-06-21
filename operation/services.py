@@ -79,7 +79,8 @@ class CalculateParcelPrice:
             dimension_price_obj = Envelop.objects.filter(
                 Q(distance__from_district=self.from_district)
                 & Q(distance__to_district=self.to_district)
-            ).last()
+            )
+            dimension_price_obj = dimension_price_obj[2]
             price = (
                 float(dimension_price_obj.price)
                 + (
