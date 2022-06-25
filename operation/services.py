@@ -105,7 +105,9 @@ class CalculateParcelPrice:
         return price
 
     def get_dimension_price(self):
-        if self.instance.dimension:
+        if self.instance.dimension.weight > 0 or \
+                self.instance.dimension.length > 0 \
+                or self.instance.dimension.height > 0:
             return self.calculate_dimension_price()
         return self.calculate_envelop_price()
 

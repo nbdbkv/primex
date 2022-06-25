@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateTimeRangeFilter
 from decimal import Decimal
+from account.choices import UserRole
 
 
 from .choices import (
@@ -118,8 +119,10 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
                     sum=bonus,
                     payment_type=PaymentHistoryType.DEBIT,
                 )
-                obj.sender.points += Decimal(bonus)
-                obj.sender.save()
+                print(bonus)
+                if obj.sender.role != UserRole.CLIENT or obj.sender.role != UserRole.OPERATOR:
+                    obj.sender.points += Decimal(bonus)
+                    obj.sender.save()
             elif (
                 Parcel.objects.get(id=obj.id).status != obj.status
                 and obj.status.title == DeliveryStatusChoices.DELIVERED
