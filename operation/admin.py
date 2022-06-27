@@ -119,9 +119,7 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
                     sum=bonus,
                     payment_type=PaymentHistoryType.DEBIT,
                 )
-                print(bonus)
                 if obj.sender.role != UserRole.COURIER and obj.sender.role != UserRole.OPERATOR:
-                    print("HELLO")
                     obj.sender.points += Decimal(bonus)
                     obj.sender.save()
             elif (
@@ -159,14 +157,6 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         to_dis = obj.direction.get(type=DirectionChoices.TO).district.name
         return to_dis
 
-    # @admin.display(description=_("Image"))
-    # def get_images(self, object):
-    #     try:
-    #         image_id = Images.objects.filter(parcel=object).first().id
-    #     except:
-    #         return None
-    #     image = Images.objects.get(pk=image_id)
-    #     return mark_safe('<img src="{0}" width="50" height="50" />'.format(image.img.url))
 
 admin.site.register(DeliveryStatus)
 admin.site.register(ParcelOption)
