@@ -120,7 +120,8 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
                     payment_type=PaymentHistoryType.DEBIT,
                 )
                 print(bonus)
-                if obj.sender.role != UserRole.CLIENT or obj.sender.role != UserRole.OPERATOR:
+                if obj.sender.role != UserRole.COURIER and obj.sender.role != UserRole.OPERATOR:
+                    print("HELLO")
                     obj.sender.points += Decimal(bonus)
                     obj.sender.save()
             elif (
