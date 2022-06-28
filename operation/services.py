@@ -21,7 +21,7 @@ from operation.models import Parcel
 
 def get_parcel_code_from_db():
     code = Parcel.objects.order_by('id').last().code
-    code = code[4:8]
+    code = code[-4:]
     if code == '9999':
         code = 0
     value = int(code)+1
