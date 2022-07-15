@@ -82,6 +82,7 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         ImageInlines,
     ]
     change_form_template = "admin/print_receipt.html"
+    change_list_template = "admin/parcel_change_list.html"
     list_display = (
         "sender",
         "code",

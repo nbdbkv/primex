@@ -1,0 +1,9 @@
+{% extends 'admin/change_list.html' %}
+{% load webpush_notifications %}
+
+
+{% block object-tools %}
+    <head>{% webpush_header %}</head>
+    {% webpush_button %}
+    {{ block.super }}
+{% endblock %}

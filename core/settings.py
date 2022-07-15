@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",
     "nested_admin",
     "import_export",
+    "webpush",
     ####### apps #######
     "about",
     "account",
@@ -185,6 +186,11 @@ FCM_DJANGO_SETTINGS = {
     "UPDATE_ON_DUPLICATE_REG_ID": True,
 }
 
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "BAT4qHVM9CdNJL9D-PbMxMNzHrcdRSxFIN92-l4wmA822fTpQC83JlUoAjqKnacarqOjEx_kQ2K3-9GPo2y2dGo",
+    "VAPID_PRIVATE_KEY": "snqexBeFa82Wgx3CMdC_DOMW5VEr3R5MschBDsIshFY",
+    "VAPID_ADMIN_EMAIL": "some.email634@gmail.com"
+}
 
 ACCOUNT_AUTHENTICATION_METHOD = "phone"
 AUTH_USER_MODEL = "account.User"

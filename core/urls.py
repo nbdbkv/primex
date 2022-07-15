@@ -33,6 +33,7 @@ urlpatterns = [
     path("payment/", include("cashbox.urls")),
     path("getRequisite/<str:requisite>/", views.check_requisite),
     path("makePayment", views.make_payment),
+    path("webpush/", include("webpush.urls"))
 ] + yasg
 
 
