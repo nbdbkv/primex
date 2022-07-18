@@ -1,11 +1,9 @@
-from django.urls import reverse
-from webpush import send_user_notification
-
 from core.celery import app
 from operation.models import Parcel
 from operation.choices import DeliveryStatusChoices, DirectionChoices
 from account.models import User, UserRole
 from account.telegram import bot
+from operation.services import notification_order_in_browser
 
 
 @app.task()
@@ -19,13 +17,7 @@ def tg_parcel_operator(code: str):
     for user in users:
         bot.send_message(user.tg_chat_id, f"Новая посылка с кодом {code}")
         try:
-            send_user_notification(
-                user=user,
-                payload={"head": "Заказ",
-                         "body": f"Новая посылка с кодом {code}",
-                         "url": reverse("admin:index")},
-                ttl=1000
-            )
+            notification_order_in_browser(code, user)
         except Exception:
             pass
 

@@ -4,6 +4,9 @@ from django.db.models import Q
 from django.forms import ValidationError
 from decimal import Decimal
 
+from django.urls import reverse
+from webpush import send_user_notification
+
 from account.models import Region, District
 from operation.models import (
     Parcel,
@@ -130,3 +133,13 @@ class CalculateParcelPrice:
         delivery_price = self.calculate_delivery_price()
         price = int(dimension_price + packaging_price + delivery_price)
         return price
+
+
+def notification_order_in_browser(code: str, user) -> None:
+    send_user_notification(
+        user=user,
+        payload={"head": "Заказ",
+                 "body": f"Новая посылка с кодом {code}",
+                 "url": reverse("admin:index")},
+        ttl=1000
+    )

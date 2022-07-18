@@ -2,6 +2,7 @@ from account.models import User
 from account.roles import courier, operator, subadmin
 from account.choices import UserRole
 from account.roles.subadmin import UserAdminForm
+from operation.choices import DirectionChoices
 
 
 class ParcelAdminMixin:
@@ -10,7 +11,10 @@ class ParcelAdminMixin:
         user = request.user
         if user.is_superuser:
             return qs
-        return qs.filter(direction__district__region=user.region)
+        elif user.role == UserRole.OPERATOR:
+            return qs.filter(direction__type=DirectionChoices.FROM, direction__district=user.district)
+        elif user.role == UserRole.COURIER:
+            return qs.filter(courier=user)
 
 
 class UserAdminMixin:
