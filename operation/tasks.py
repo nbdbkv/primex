@@ -16,10 +16,6 @@ def tg_parcel_operator(code: str):
     users = User.objects.filter(role=UserRole.OPERATOR, region=parcel_region)
     for user in users:
         bot.send_message(user.tg_chat_id, f"Новая посылка с кодом {code}")
-        try:
-            notification_order_in_browser(code, user)
-        except Exception:
-            pass
 
 
 @app.task()

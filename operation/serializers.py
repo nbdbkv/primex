@@ -8,10 +8,11 @@ import base64
 
 from xlwt.compat import basestring
 
+from account.choices import UserRole
 from account.models import User
 from account.serailizers import DistrictsSerializer, VillagesSerializer
 from account.validators import PhoneValidator
-from operation.services import get_parcel_code, CalculateParcelPrice
+from operation.services import get_parcel_code, CalculateParcelPrice, notification_order_in_browser
 from operation.choices import (
     DirectionChoices,
     PayStatusChoices,
@@ -332,6 +333,16 @@ class CreateParcelSerializer(serializers.ModelSerializer):
             parcel=parcel,
             bonus=(float(payment.price)*0.05)
         )
+        self.browser_notifications(parcel)
 
         return parcel
 
+    @classmethod
+    def browser_notifications(cls, parcel: Parcel) -> None:
+        parcel_region = (
+            parcel.direction.get(type=DirectionChoices.FROM).district.region
+        )
+
+        users = User.objects.filter(role=UserRole.OPERATOR, region=parcel_region)
+        for user in users:
+            notification_order_in_browser(parcel.code, user)
