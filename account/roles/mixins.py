@@ -1,7 +1,5 @@
-from account.models import User
-from account.roles import courier, operator, subadmin
+from account.roles import operator, subadmin
 from account.choices import UserRole
-from account.roles.subadmin import UserAdminForm
 from operation.choices import DirectionChoices
 
 
@@ -39,4 +37,3 @@ class UserAdminMixin:
         elif request.user.role == UserRole.SUBADMIN:
             kwargs["form"] = subadmin.UserAdminForm
         return super().get_form(request, obj,  **kwargs)
-
