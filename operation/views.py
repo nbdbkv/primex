@@ -24,6 +24,7 @@ from operation.serializers import (
     ReatriveParcelSerializer,
     PaymentHistorySerializer,
     ImageSerializer,
+    CalculatorSerializer,
 )
 from operation.models import (
     DeliveryStatus,
@@ -41,6 +42,7 @@ from operation.models import (
     Payment,
     Images
 )
+from operation.services import FrontCalculateParcelPrice
 
 
 class PaymentHistoryView(generics.ListAPIView):
@@ -189,3 +191,21 @@ class PrintView(TemplateView):
             "pay_status": pay_status,
         }
         return render(request, self.template_name, context)
+
+
+class CalculatorView(generics.GenericAPIView):
+    serializer_class = CalculatorSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        d = serializer.initial_data
+        calculator = FrontCalculateParcelPrice(
+            from_district=d['from_district_id'],
+            to_district=d['to_district'],
+            delivery_type=d['delivery_type'],
+            packaging_ids=d['packaging_ids'],
+            envelop=d.get('envelop_id'),
+            dimension=d.get('dimension')
+        )
+        return Response({"price": calculator.price}, status=status.HTTP_201_CREATED)

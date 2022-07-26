@@ -1,3 +1,5 @@
+from abc import ABC
+
 from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.forms import ValidationError
@@ -346,3 +348,20 @@ class CreateParcelSerializer(serializers.ModelSerializer):
         users = User.objects.filter(role=UserRole.OPERATOR, region=parcel_region)
         for user in users:
             notification_order_in_browser(parcel.code, user)
+
+
+class DimensionSerializer(serializers.Serializer):
+    length = serializers.FloatField()
+    width = serializers.FloatField()
+    height = serializers.FloatField()
+    weight = serializers.FloatField()
+
+
+class CalculatorSerializer(serializers.Serializer):
+    from_district_id = serializers.IntegerField(min_value=1, write_only=True)
+    to_district = serializers.IntegerField(min_value=1, write_only=True)
+    delivery_type = serializers.IntegerField(min_value=1, write_only=True)
+    envelop_id = serializers.IntegerField(min_value=1, write_only=True, required=False)
+    dimension = DimensionSerializer(many=False, required=False)
+    packaging_ids = serializers.ListSerializer(child=serializers.IntegerField(), required=False)
+    price = serializers.IntegerField(read_only=True, default=1)
