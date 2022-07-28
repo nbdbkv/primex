@@ -84,8 +84,8 @@ class CalculateParcelPrice:
             dimension_price_obj = Envelop.objects.filter(
                 Q(distance__from_district=self.from_district)
                 & Q(distance__to_district=self.to_district)
-            )
-            dimension_price_obj = dimension_price_obj[2]
+            ).order_by('title')
+            dimension_price_obj = dimension_price_obj.first()
             price = (
                 float(dimension_price_obj.price)
                 + (
@@ -187,7 +187,7 @@ class FrontCalculateParcelPrice:
             dimension_price_obj = Envelop.objects.filter(
                 Q(distance__from_district=self.from_district)
                 & Q(distance__to_district=self.to_district)
-            )
+            ).order_by('title')
             dimension_price_obj = dimension_price_obj.first()
             price = (
                     float(dimension_price_obj.price)
