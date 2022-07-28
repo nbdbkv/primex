@@ -36,9 +36,7 @@ from operation.models import (
     Envelop,
     PaymentHistory,
     PaymentType,
-    ParcelDimension,
     ParcelPayment,
-    Direction,
     Payment,
     Images
 )
