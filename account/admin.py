@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
+from django.utils.translation import gettext_lazy as _
+
 from account.roles.mixins import UserAdminMixin
 from account.models import User, Region, District, Village
 
@@ -22,7 +24,13 @@ class RegionAdmin(DoubleGisAdmin):
 
 
 class DistrictAdmin(DoubleGisAdmin):
+    list_display = ('name', 'code', 'region_code')
+    list_filter = ('region',)
     multiple_markers = False
+
+    @admin.display(description=_("region"))
+    def region_code(self, obj):
+        return obj.region.code
 
 
 class VillageAdmin(DoubleGisAdmin):
