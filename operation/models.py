@@ -100,6 +100,7 @@ class Distance(models.Model):
     class Meta:
         verbose_name = _("Distance")
         verbose_name_plural = _("Distances")
+        unique_together = ['from_district', 'to_district']
 
 
 class DeliveryType(models.Model):
