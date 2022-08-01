@@ -159,6 +159,11 @@ class ParcelAdmin(ImportExportModelAdmin, ParcelAdminMixin, NestedModelAdmin):
         return to_dis
 
 
+@admin.register(Envelop)
+class EnvelopAdmin(admin.ModelAdmin):
+    list_display = ('title', 'price')
+
+
 admin.site.register(DeliveryStatus)
 admin.site.register(ParcelOption)
 admin.site.register(Parcel, ParcelAdmin)
@@ -166,7 +171,6 @@ admin.site.register(Distance)
 admin.site.register(DeliveryType)
 admin.site.register(Packaging)
 admin.site.register(PaymentDimension)
-admin.site.register(Envelop)
 admin.site.register(PaymentType)
 admin.site.register(PaymentHistory)
 admin.site.register(Images)

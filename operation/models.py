@@ -161,7 +161,7 @@ class Envelop(models.Model):
     cube_price = models.PositiveIntegerField(_("cube price"))
 
     def __str__(self) -> str:
-        return self.title
+        return f"{self.title} - {self.price}"
 
     class Meta:
         verbose_name = _("Envelop")
