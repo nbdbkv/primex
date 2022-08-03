@@ -75,7 +75,7 @@ class Parcel(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.title
+        return str(self.title)
 
     class Meta:
         verbose_name = _("Parcel")
@@ -113,7 +113,7 @@ class DeliveryType(models.Model):
     image = models.ImageField(_("image"), upload_to="project/")
 
     def __str__(self) -> str:
-        return self.title
+        return str(self.title)
 
     class Meta:
         verbose_name = _("Delivery type")
@@ -128,7 +128,7 @@ class Packaging(models.Model):
     unit = models.CharField(_("measuring unit"), max_length=20)
 
     def __str__(self) -> str:
-        return self.title
+        return str(self.title)
 
     class Meta:
         verbose_name = _("Packaging")
@@ -201,7 +201,7 @@ class ParcelPayment(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.parcel.title
+        return str(self.parcel.title)
 
     class Meta:
         verbose_name = _("Parcel payment")
@@ -216,7 +216,7 @@ class PaymentType(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.type
+        return str(self.type)
 
     class Meta:
         verbose_name = _("Payment type")
@@ -236,7 +236,7 @@ class Payment(models.Model):
     sum = models.DecimalField(_("sum"), max_digits=9, decimal_places=2, blank=True)
 
     def __str__(self) -> str:
-        return self.parcel.parcel.title
+        return str(self.parcel.parcel.title)
 
     class Meta:
         verbose_name = _("Payment")
@@ -315,7 +315,7 @@ class ParcelDimension(models.Model):
     weight = models.FloatField(_("parcel weight"))
 
     def __str__(self) -> str:
-        return self.parcel.title
+        return str(self.parcel.title)
 
     class Meta:
         verbose_name = _("Parcel dimension")
@@ -370,7 +370,7 @@ class Images(models.Model):
             return None
 
     def __str__(self):
-        return self.image_preview_admin()
+        return str(self.image_preview_admin())
 
 
 class ParcelBonus(models.Model):
