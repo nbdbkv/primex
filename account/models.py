@@ -70,6 +70,7 @@ class Region(DoubleGisMixin, models.Model):
     name = map_fields.AddressField(_("name"), max_length=100)
     geolocation = map_fields.GeoLocationField(_("geolocation"), blank=True)
     code = models.CharField(_("code"), max_length=4, validators=[RegionCodeValidator])
+    position = models.PositiveSmallIntegerField(_('position'), blank=True, null=True)
 
     def __str__(self):
         return self.name

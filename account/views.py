@@ -88,7 +88,7 @@ class GetUserView(generics.RetrieveAPIView):
 
 class RegionsView(generics.ListAPIView):
     serializer_class = RegionsSerializer
-    queryset = Region.objects.all()
+    queryset = Region.objects.order_by('position')
 
 
 class DistrictsView(generics.ListAPIView):

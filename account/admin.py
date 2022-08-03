@@ -21,6 +21,8 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
 
 class RegionAdmin(DoubleGisAdmin):
     multiple_markers = False
+    list_display = ('name', 'position')
+    list_editable = ('position',)
 
 
 class DistrictAdmin(DoubleGisAdmin):
