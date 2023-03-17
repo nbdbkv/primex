@@ -16,6 +16,7 @@ import os
 from dotenv import load_dotenv
 from firebase_admin import initialize_app
 from datetime import timedelta
+from django.utils.translation import gettext_lazy as _
 
 load_dotenv()
 
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
     "account",
     "operation",
     "cashbox",
+    "flight",
 ]
 
 MIDDLEWARE = [
@@ -129,8 +131,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
-LANGUAGE_CODE = "ru"
-
+LANGUAGE_CODE = "ru-ru"
+LANGUAGES = (            # supported languages
+    ('ru', 'Russian'),
+    ('zh-hans', _('Simplified Chinese')),
+)
 TIME_ZONE = "Asia/Bishkek"
 
 USE_I18N = True
