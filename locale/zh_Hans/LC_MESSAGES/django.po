@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-20 15:08+0600\n"
+"POT-Creation-Date: 2023-03-20 16:53+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -345,46 +345,143 @@ msgstr "简体中文"
 msgid "Flights"
 msgstr "航班"
 
-#: flight/models.py:6
+#: flight/models.py:8
+msgid "Формируется"
+msgstr ""
+
+#: flight/models.py:9
+msgid "В пути"
+msgstr ""
+
+#: flight/models.py:10
+msgid "Прибыл"
+msgstr ""
+
+#: flight/models.py:15
 msgid "Дата создания"
 msgstr "创建日期"
 
-#: flight/models.py:7
+#: flight/models.py:16
 msgid "Дата изменения"
 msgstr "变更日期"
 
-#: flight/models.py:15
+#: flight/models.py:24
 msgid "Нумерация рейсов"
 msgstr "计数"
 
-#: flight/models.py:16
+#: flight/models.py:25 flight/models.py:46 flight/models.py:61
 msgid "Код"
 msgstr "代码"
 
-#: flight/models.py:17
+#: flight/models.py:26
 msgid "Количество мест (коробка)"
 msgstr "座位数（箱）"
 
-#: flight/models.py:23
+#: flight/models.py:27 flight/models.py:48 flight/models.py:63
+#, fuzzy
+#| msgid "Flights"
+msgid "weight"
+msgstr "航班"
+
+#: flight/models.py:28
+msgid "cube"
+msgstr ""
+
+#: flight/models.py:29
+#, fuzzy
+#| msgid "dimension"
+msgid "density"
+msgstr "方面"
+
+#: flight/models.py:30 flight/models.py:49
+#, fuzzy
+#| msgid "option"
+msgid "consumption"
+msgstr "选项"
+
+#: flight/models.py:32 operation/admin.py:146 operation/models.py:110
+#: operation/models.py:126 operation/models.py:151 operation/models.py:180
+#: operation/resource.py:18
+msgid "price"
+msgstr "价格"
+
+#: flight/models.py:33 operation/models.py:236 operation/models.py:333
+msgid "sum"
+msgstr "和"
+
+#: flight/models.py:34 operation/models.py:190 operation/resource.py:13
+msgid "status"
+msgstr "地位"
+
+#: flight/models.py:38
 #, fuzzy
 #| msgid "Flights"
 msgid "flight"
 msgstr "航班"
 
-#: flight/models.py:24
+#: flight/models.py:39
 #, fuzzy
 #| msgid "Flights"
 msgid "flights"
 msgstr "航班"
 
+#: flight/models.py:44
+#, fuzzy
+#| msgid "Flights"
+msgid "flightfk"
+msgstr "航班"
+
+#: flight/models.py:47 flight/models.py:62
+msgid "Трек-Код"
+msgstr ""
+
+#: flight/models.py:53
+msgid "box"
+msgstr ""
+
+#: flight/models.py:54
+msgid "boxes"
+msgstr ""
+
+#: flight/models.py:59
+msgid "boxfk"
+msgstr ""
+
+#: flight/models.py:66
+msgid "width"
+msgstr ""
+
+#: flight/models.py:67
+#, fuzzy
+#| msgid "parcel length"
+msgid "length"
+msgstr "包裹长度"
+
+#: flight/models.py:68
+#, fuzzy
+#| msgid "Flights"
+msgid "height"
+msgstr "航班"
+
+#: flight/models.py:70
+msgid "comment"
+msgstr ""
+
+#: flight/models.py:73
+#, fuzzy
+#| msgid "parcel"
+msgid "base_parcel"
+msgstr "包裹"
+
+#: flight/models.py:74
+#, fuzzy
+#| msgid "parcel"
+msgid "base_parcels"
+msgstr "包裹"
+
 #: operation/admin.py:141 operation/models.py:335
 msgid "payment type"
 msgstr "付款方式"
-
-#: operation/admin.py:146 operation/models.py:110 operation/models.py:126
-#: operation/models.py:151 operation/models.py:180 operation/resource.py:18
-msgid "price"
-msgstr "价格"
 
 #: operation/admin.py:151 operation/models.py:90
 msgid "from district"
@@ -663,10 +760,6 @@ msgstr "交货类型"
 msgid "parcel packaging"
 msgstr "包裹包装"
 
-#: operation/models.py:190 operation/resource.py:13
-msgid "status"
-msgstr "地位"
-
 #: operation/models.py:198 operation/resource.py:23
 msgid "envelop"
 msgstr "信封"
@@ -695,10 +788,6 @@ msgstr "付款方式"
 #: operation/models.py:230
 msgid "parcel payment"
 msgstr "包裹付款"
-
-#: operation/models.py:236 operation/models.py:333
-msgid "sum"
-msgstr "和"
 
 #: operation/models.py:242
 msgid "Payment"
@@ -796,14 +885,14 @@ msgstr "方向必须是 2"
 msgid "user_info must be 2"
 msgstr "用户信息必须为 2"
 
-#: template/admin/base_site.html:24
+#: template/admin/base_site.html:25
 msgid "Documentation"
 msgstr "文档"
 
-#: template/admin/base_site.html:28
+#: template/admin/base_site.html:29
 msgid "Change password"
 msgstr "更改密码"
 
-#: template/admin/base_site.html:30
+#: template/admin/base_site.html:31
 msgid "Log out"
 msgstr "登出"

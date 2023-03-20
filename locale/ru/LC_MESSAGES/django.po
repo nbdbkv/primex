@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-20 15:08+0600\n"
+"POT-Creation-Date: 2023-03-20 16:53+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -345,44 +345,136 @@ msgstr "Упрощенный китайский"
 
 #: flight/apps.py:8
 msgid "Flights"
-msgstr "Авиабилеты"
+msgstr "Рейс"
 
-#: flight/models.py:6
+#: flight/models.py:8
+msgid "Формируется"
+msgstr "Формируется"
+
+#: flight/models.py:9
+msgid "В пути"
+msgstr "В пути"
+
+#: flight/models.py:10
+msgid "Прибыл"
+msgstr "Прибыл"
+
+#: flight/models.py:15
 msgid "Дата создания"
 msgstr "Дата создания"
 
-#: flight/models.py:7
+#: flight/models.py:16
 msgid "Дата изменения"
 msgstr "Дата изменения"
 
-#: flight/models.py:15
+#: flight/models.py:24
 msgid "Нумерация рейсов"
 msgstr "Нумерация рейсов"
 
-#: flight/models.py:16
+#: flight/models.py:25 flight/models.py:46 flight/models.py:61
 msgid "Код"
 msgstr "код"
 
-#: flight/models.py:17
+#: flight/models.py:26
 msgid "Количество мест (коробка)"
 msgstr "Количество мест (коробка)"
 
-#: flight/models.py:23
-msgid "flight"
-msgstr "Авиабилет"
+#: flight/models.py:27 flight/models.py:48 flight/models.py:63
+#, fuzzy
+#| msgid "flight"
+msgid "weight"
+msgstr "вес"
 
-#: flight/models.py:24
+#: flight/models.py:28
+msgid "cube"
+msgstr "куб"
+
+#: flight/models.py:29
+#, fuzzy
+#| msgid "dimension"
+msgid "density"
+msgstr "плотность"
+
+#: flight/models.py:30 flight/models.py:49
+#, fuzzy
+#| msgid "option"
+msgid "consumption"
+msgstr "расход"
+
+#: flight/models.py:32 operation/admin.py:146 operation/models.py:110
+#: operation/models.py:126 operation/models.py:151 operation/models.py:180
+#: operation/resource.py:18
+msgid "price"
+msgstr "цена"
+
+#: flight/models.py:33 operation/models.py:236 operation/models.py:333
+msgid "sum"
+msgstr "сумма"
+
+#: flight/models.py:34 operation/models.py:190 operation/resource.py:13
+msgid "status"
+msgstr "статус"
+
+#: flight/models.py:38
+msgid "flight"
+msgstr "Рейс"
+
+#: flight/models.py:39
 msgid "flights"
-msgstr "Авиабилеты"
+msgstr "Рейсы"
+
+#: flight/models.py:44
+#, fuzzy
+msgid "flightfk"
+msgstr "Рейс"
+
+#: flight/models.py:47 flight/models.py:62
+msgid "Трек-Код"
+msgstr "Трек-Код"
+
+#: flight/models.py:53
+msgid "box"
+msgstr "Коробка"
+
+#: flight/models.py:54
+msgid "boxes"
+msgstr "Коробки"
+
+#: flight/models.py:59
+msgid "boxfk"
+msgstr "Коробка"
+
+#: flight/models.py:66
+msgid "width"
+msgstr "ширина"
+
+#: flight/models.py:67
+#, fuzzy
+#| msgid "parcel length"
+msgid "length"
+msgstr "длина"
+
+#: flight/models.py:68
+#, fuzzy
+#| msgid "flight"
+msgid "height"
+msgstr "высота"
+
+#: flight/models.py:70
+msgid "comment"
+msgstr "коментарий"
+
+#: flight/models.py:73
+msgid "base_parcel"
+msgstr "Посылка"
+
+#: flight/models.py:74
+msgid "base_parcels"
+msgstr "Посылки"
 
 #: operation/admin.py:141 operation/models.py:335
 msgid "payment type"
 msgstr "способ оплаты"
-
-#: operation/admin.py:146 operation/models.py:110 operation/models.py:126
-#: operation/models.py:151 operation/models.py:180 operation/resource.py:18
-msgid "price"
-msgstr "цена"
 
 #: operation/admin.py:151 operation/models.py:90
 msgid "from district"
@@ -661,10 +753,6 @@ msgstr "тип доставки"
 msgid "parcel packaging"
 msgstr "упаковка посылки"
 
-#: operation/models.py:190 operation/resource.py:13
-msgid "status"
-msgstr "статус"
-
 #: operation/models.py:198 operation/resource.py:23
 msgid "envelop"
 msgstr "окутывать"
@@ -693,10 +781,6 @@ msgstr "Типы платежей"
 #: operation/models.py:230
 msgid "parcel payment"
 msgstr "оплата посылки"
-
-#: operation/models.py:236 operation/models.py:333
-msgid "sum"
-msgstr "сумма"
 
 #: operation/models.py:242
 msgid "Payment"
@@ -794,14 +878,14 @@ msgstr "направление должно быть 2"
 msgid "user_info must be 2"
 msgstr "информация о пользователе должна быть 2"
 
-#: template/admin/base_site.html:24
+#: template/admin/base_site.html:25
 msgid "Documentation"
 msgstr "Документация"
 
-#: template/admin/base_site.html:28
+#: template/admin/base_site.html:29
 msgid "Change password"
 msgstr "Изменить пароль"
 
-#: template/admin/base_site.html:30
+#: template/admin/base_site.html:31
 msgid "Log out"
 msgstr "Выйти"

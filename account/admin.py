@@ -10,6 +10,7 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
     list_display = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
     list_display_links = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
     list_filter = ('role', 'region')
+    search_fields = ['code_logistic', 'first_name', 'last_name', 'phone']
 
     def save_model(self, request, obj, form, change) -> None:
         new_password = form.data["password"]
