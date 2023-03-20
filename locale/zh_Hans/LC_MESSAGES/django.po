@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-16 18:10+0600\n"
+"POT-Creation-Date: 2023-03-20 15:08+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,128 +20,128 @@ msgstr ""
 
 #: about/models.py:12
 msgid "company name"
-msgstr ""
+msgstr "公司名称"
 
 #: about/models.py:13
 msgid "logo"
-msgstr ""
+msgstr "标识"
 
 #: about/models.py:19
 msgid "Partner"
-msgstr ""
+msgstr "伙伴"
 
 #: about/models.py:20
 msgid "Partners"
-msgstr ""
+msgstr "伙伴"
 
 #: about/models.py:24
 msgid "social"
-msgstr ""
+msgstr "社会的"
 
 #: about/models.py:25
 msgid "social icon"
-msgstr ""
+msgstr "社交图标"
 
 #: about/models.py:31
 msgid "Contact"
-msgstr ""
+msgstr "联系人"
 
 #: about/models.py:32
 msgid "Contacts"
-msgstr ""
+msgstr "联系人"
 
-#: about/models.py:36 account/models.py:70 account/models.py:87
-#: account/models.py:103
+#: about/models.py:36 account/models.py:71 account/models.py:88
+#: account/models.py:104
 msgid "name"
-msgstr ""
+msgstr "姓名"
 
 #: about/models.py:42
 msgid "Article category"
-msgstr ""
+msgstr "文章类别"
 
 #: about/models.py:43
 msgid "Article categories"
-msgstr ""
+msgstr "文章分类"
 
 #: about/models.py:47 about/models.py:105 operation/models.py:22
 #: operation/models.py:49 operation/models.py:108 operation/models.py:124
 #: operation/models.py:152 operation/models.py:213 operation/resource.py:10
 msgid "title"
-msgstr ""
+msgstr "标题"
 
 #: about/models.py:49
 msgid "border image"
-msgstr ""
+msgstr "边框图像"
 
 #: about/models.py:53
 msgid "article category"
-msgstr ""
+msgstr "文章类别"
 
 #: about/models.py:56
 msgid "watched count"
-msgstr ""
+msgstr "观看次数"
 
 #: about/models.py:57 operation/models.py:341
 msgid "created date"
-msgstr ""
+msgstr "创建日期"
 
 #: about/models.py:63
 msgid "New"
-msgstr ""
+msgstr "消息"
 
 #: about/models.py:64
 msgid "News"
-msgstr ""
+msgstr "消息"
 
 #: about/models.py:68 operation/models.py:113
 msgid "image"
-msgstr ""
+msgstr "图像"
 
 #: about/models.py:72
 msgid "New gallery"
-msgstr ""
+msgstr "新画廊"
 
 #: about/models.py:73
 msgid "New galleries"
-msgstr ""
+msgstr "新画廊"
 
-#: about/models.py:79 account/models.py:71 account/models.py:88
-#: account/models.py:104 operation/models.py:270
+#: about/models.py:79 account/models.py:72 account/models.py:89
+#: account/models.py:105 operation/models.py:270
 msgid "geolocation"
-msgstr ""
+msgstr "地理定位"
 
 #: about/models.py:80
 msgid "contact phone"
-msgstr ""
+msgstr "联系电话"
 
 #: about/models.py:81 operation/models.py:291
 msgid "email"
-msgstr ""
+msgstr "电子邮件"
 
 #: about/models.py:87
 msgid "Fillial"
-msgstr ""
+msgstr "孝"
 
 #: about/models.py:88
 msgid "Fillials"
-msgstr ""
+msgstr "子孙"
 
 #: about/models.py:92
 msgid "alias"
-msgstr ""
+msgstr "别名"
 
 #: about/models.py:93
 msgid "value"
-msgstr ""
+msgstr "价值"
 
 #: about/models.py:94 operation/models.py:109 operation/models.py:125
 #: operation/models.py:153 operation/models.py:248
 msgid "description"
-msgstr ""
+msgstr "描述"
 
 #: about/models.py:100
 msgid "Option"
-msgstr ""
+msgstr "选项"
 
 #: about/models.py:101
 msgid "Options"
@@ -149,171 +149,175 @@ msgstr ""
 
 #: about/models.py:106 about/models.py:120
 msgid "text"
-msgstr ""
+msgstr "文本"
 
 #: about/models.py:112
 msgid "Question"
-msgstr ""
+msgstr "问题"
 
 #: about/models.py:113
 msgid "Questions"
-msgstr ""
+msgstr "问题"
 
 #: about/models.py:118
 msgid "question"
-msgstr ""
+msgstr "问题"
 
 #: about/models.py:123
 msgid "Answer"
-msgstr ""
+msgstr "回答"
 
 #: about/models.py:124
 msgid "Answers"
-msgstr ""
+msgstr "答案"
 
-#: account/admin.py:33 account/models.py:28 account/models.py:85
-#: account/models.py:101
+#: account/admin.py:32 account/models.py:29 account/models.py:86
+#: account/models.py:102
 msgid "region"
-msgstr ""
+msgstr "地区"
 
 #: account/choices.py:6
 msgid "register"
-msgstr ""
+msgstr "登记"
 
 #: account/choices.py:7
 msgid "reset password"
-msgstr ""
+msgstr "重设密码"
 
 #: account/choices.py:8
 msgid "reset phone"
-msgstr ""
+msgstr "重置手机"
 
 #: account/choices.py:12
 msgid "client"
-msgstr ""
+msgstr "客户"
 
 #: account/choices.py:13 account/choices.py:19 operation/models.py:73
 msgid "courier"
-msgstr ""
+msgstr "导游"
 
 #: account/choices.py:14 account/choices.py:20
 msgid "operator"
-msgstr ""
+msgstr "操作员"
 
 #: account/choices.py:15
 msgid "subadmin"
-msgstr ""
+msgstr "子管理员"
 
 #: account/messages.py:6
 msgid "User is activated"
-msgstr ""
+msgstr "用户已激活"
 
 #: account/messages.py:7
 msgid "Password successfully changed"
-msgstr ""
+msgstr "密码修改成功"
 
 #: account/messages.py:8
 msgid "Phone successfully changed"
-msgstr ""
+msgstr "电话更改成功"
 
 #: account/messages.py:9
 msgid "The code was successfully sent"
-msgstr ""
+msgstr "验证码发送成功"
 
 #: account/messages.py:13
 msgid "A user with that phone number does not exists."
-msgstr ""
+msgstr "使用该电话号码的用户不存在。"
 
 #: account/messages.py:14
 msgid "Wrong otp code"
-msgstr ""
+msgstr "错误的otp代码"
 
 #: account/messages.py:15
 msgid "provide a strong password!"
-msgstr ""
+msgstr "提供强密码！"
 
 #: account/models.py:17
 msgid "user phone number"
-msgstr ""
+msgstr "用户电话号码"
 
 #: account/models.py:20
 msgid "Required. 9 digits in format: 996*********** without \"+\"."
-msgstr ""
+msgstr "必需的。 9 位数字格式：996*********** 不带“+”。"
 
 #: account/models.py:23
 msgid "A user with that phone number already exists."
-msgstr ""
+msgstr "使用该电话号码的用户已存在。"
 
-#: account/models.py:26 operation/models.py:289
+#: account/models.py:26
+msgid "Код логистики"
+msgstr "物流编码"
+
+#: account/models.py:27 operation/models.py:289
 msgid "user info"
-msgstr ""
+msgstr "用户信息"
 
-#: account/models.py:31 operation/models.py:258
+#: account/models.py:32 operation/models.py:258
 msgid "district"
-msgstr ""
+msgstr "区"
 
-#: account/models.py:34
+#: account/models.py:35
 msgid "role"
-msgstr ""
-
-#: account/models.py:36
-msgid "user bonus points"
-msgstr ""
+msgstr "角色"
 
 #: account/models.py:37
+msgid "user bonus points"
+msgstr "用户奖励积分"
+
+#: account/models.py:38
 msgid "avatar"
-msgstr ""
+msgstr "化身"
 
-#: account/models.py:39
+#: account/models.py:40
 msgid "telegram chat id"
-msgstr ""
+msgstr "电报聊天 ID"
 
-#: account/models.py:42
+#: account/models.py:43
 msgid "telegram user id"
-msgstr ""
+msgstr "积极的"
 
-#: account/models.py:45
+#: account/models.py:46
 msgid "active"
 msgstr ""
 
-#: account/models.py:48
+#: account/models.py:49
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: account/models.py:72 account/models.py:89 account/models.py:105
+#: account/models.py:73 account/models.py:90 account/models.py:106
 #: operation/models.py:62 operation/resource.py:14
 msgid "code"
-msgstr ""
+msgstr "代码"
 
-#: account/models.py:73
+#: account/models.py:74
 msgid "position"
-msgstr ""
-
-#: account/models.py:79
-msgid "Region"
-msgstr ""
+msgstr "位置"
 
 #: account/models.py:80
-msgid "Regions"
-msgstr ""
+msgid "Region"
+msgstr "地区"
 
-#: account/models.py:95
-msgid "District"
-msgstr ""
+#: account/models.py:81
+msgid "Regions"
+msgstr "地区"
 
 #: account/models.py:96
-msgid "Districts"
-msgstr ""
+msgid "District"
+msgstr "区"
 
-#: account/models.py:111
-msgid "Village"
-msgstr ""
+#: account/models.py:97
+msgid "Districts"
+msgstr "地区"
 
 #: account/models.py:112
+msgid "Village"
+msgstr "村庄"
+
+#: account/models.py:113
 msgid "Villages"
-msgstr ""
+msgstr "村庄"
 
 #: account/validators.py:9
 msgid ""
@@ -323,220 +327,232 @@ msgstr ""
 
 #: account/validators.py:15
 msgid "Code must be 2 digit"
-msgstr ""
+msgstr "代码必须是 2 位数字"
 
 #: cashbox/serializers.py:23
 msgid "Parcel does not exist"
-msgstr ""
+msgstr "包裹不存在"
 
 #: cashbox/serializers.py:36
 msgid "Hash sums do not match"
-msgstr ""
+msgstr "哈希和不匹配"
 
-#: core/settings.py:138
+#: core/settings.py:137
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "简体中文"
 
 #: flight/apps.py:8
 msgid "Flights"
 msgstr "航班"
 
-#: flight/models.py:7
+#: flight/models.py:6
 msgid "Дата создания"
 msgstr "创建日期"
 
-#: flight/models.py:9
+#: flight/models.py:7
 msgid "Дата изменения"
-msgstr ""
+msgstr "变更日期"
 
-#: flight/models.py:17
+#: flight/models.py:15
 msgid "Нумерация рейсов"
 msgstr "计数"
 
-#: flight/models.py:18
+#: flight/models.py:16
 msgid "Код"
-msgstr ""
+msgstr "代码"
 
-#: flight/models.py:19
+#: flight/models.py:17
 msgid "Количество мест (коробка)"
-msgstr ""
+msgstr "座位数（箱）"
+
+#: flight/models.py:23
+#, fuzzy
+#| msgid "Flights"
+msgid "flight"
+msgstr "航班"
+
+#: flight/models.py:24
+#, fuzzy
+#| msgid "Flights"
+msgid "flights"
+msgstr "航班"
 
 #: operation/admin.py:141 operation/models.py:335
 msgid "payment type"
-msgstr ""
+msgstr "付款方式"
 
 #: operation/admin.py:146 operation/models.py:110 operation/models.py:126
 #: operation/models.py:151 operation/models.py:180 operation/resource.py:18
 msgid "price"
-msgstr ""
+msgstr "价格"
 
 #: operation/admin.py:151 operation/models.py:90
 msgid "from district"
-msgstr ""
+msgstr "来自区"
 
 #: operation/admin.py:156 operation/models.py:94
 msgid "to district"
-msgstr ""
+msgstr "去区"
 
 #: operation/choices.py:6
 msgid "from"
-msgstr ""
+msgstr "从"
 
 #: operation/choices.py:7
 msgid "to"
-msgstr ""
+msgstr "那"
 
 #: operation/choices.py:11 operation/models.py:52 operation/resource.py:11
 msgid "sender"
-msgstr ""
+msgstr "发件人"
 
 #: operation/choices.py:12 operation/resource.py:12
 msgid "recipient"
-msgstr ""
+msgstr "接受者"
 
 #: operation/choices.py:16
 msgid "in anticipation"
-msgstr ""
+msgstr "在期待中"
 
 #: operation/choices.py:17
 msgid "paid"
-msgstr ""
+msgstr "有薪酬的"
 
 #: operation/choices.py:21
 msgid "cash"
-msgstr ""
+msgstr "现金"
 
 #: operation/choices.py:22 operation/models.py:378
 msgid "bonus"
-msgstr ""
+msgstr "奖金"
 
 #: operation/choices.py:23
 msgid "Mbank"
-msgstr ""
+msgstr "Mbank"
 
 #: operation/choices.py:24
 msgid "Megapay"
-msgstr ""
+msgstr "Megapay"
 
 #: operation/choices.py:25
 msgid "balance"
-msgstr ""
+msgstr "balance"
 
 #: operation/choices.py:26
 msgid "O_pay"
-msgstr ""
+msgstr "O_pay"
 
 #: operation/choices.py:27
 msgid "Elsom"
-msgstr ""
+msgstr "Elsom"
 
 #: operation/choices.py:28
 msgid "Optima"
-msgstr ""
+msgstr "Optima"
 
 #: operation/choices.py:29
 msgid "recipient cash"
-msgstr ""
+msgstr "收款人现金"
 
 #: operation/choices.py:33
 msgid "credit"
-msgstr ""
+msgstr "信用"
 
 #: operation/choices.py:34
 msgid "debit"
-msgstr ""
+msgstr "借方"
 
 #: operation/choices.py:38
 msgid "accepted"
-msgstr ""
+msgstr "公认"
 
 #: operation/choices.py:39
 msgid "success"
-msgstr ""
+msgstr "成功"
 
 #: operation/choices.py:40
 msgid "failed"
-msgstr ""
+msgstr "失败的"
 
 #: operation/choices.py:41
 msgid "in progress"
-msgstr ""
+msgstr "进行中"
 
 #: operation/choices.py:42
 msgid "rollback"
-msgstr ""
+msgstr "回滚"
 
 #: operation/choices.py:43
 msgid "rollback in progress"
-msgstr ""
+msgstr "回滚正在进行中"
 
 #: operation/choices.py:44
 msgid "rollback accepted"
-msgstr ""
+msgstr "接受回滚"
 
 #: operation/choices.py:48
 msgid "Посылка доставлена"
-msgstr ""
+msgstr "包裹交付"
 
 #: operation/choices.py:49
 msgid "Посылка прибыл в Ваш город"
-msgstr ""
+msgstr "包裹已到达您的城市"
 
 #: operation/choices.py:50
 msgid "Посылка в пути"
-msgstr ""
+msgstr "包裹在路上"
 
 #: operation/choices.py:51
 msgid "Курьер забрал"
-msgstr ""
+msgstr "快递到手"
 
 #: operation/choices.py:52
 msgid "В ожидании"
-msgstr ""
+msgstr "待办的"
 
 #: operation/choices.py:53
 msgid "В обработке"
-msgstr ""
+msgstr "进行中"
 
 #: operation/models.py:29
 msgid "Delivery status"
-msgstr ""
+msgstr "邮寄状态"
 
 #: operation/models.py:30
 msgid "Delivery statuses"
-msgstr ""
+msgstr "交货状态"
 
 #: operation/models.py:34
 msgid "option title"
-msgstr ""
+msgstr "选项标题"
 
 #: operation/models.py:40
 msgid "Parcel option"
-msgstr ""
+msgstr "包裹选项"
 
 #: operation/models.py:41
 msgid "Parcel options"
-msgstr ""
+msgstr "包裹选项"
 
 #: operation/models.py:57
 msgid "delivery status"
-msgstr ""
+msgstr "邮寄状态"
 
 #: operation/models.py:63
 msgid "date creation"
-msgstr ""
+msgstr "日期创建"
 
 #: operation/models.py:64
 msgid "options"
-msgstr ""
+msgstr "选项"
 
 #: operation/models.py:66
 msgid "sendin date"
-msgstr ""
+msgstr "发送日期"
 
 #: operation/models.py:81
 msgid "Parcel"
-msgstr ""
+msgstr "包裹"
 
 #: operation/models.py:82
 msgid "Parcels"
@@ -548,234 +564,246 @@ msgstr ""
 
 #: operation/models.py:101
 msgid "Distance"
-msgstr ""
+msgstr "距离"
 
 #: operation/models.py:102
 msgid "Distances"
-msgstr ""
+msgstr "距离"
 
 #: operation/models.py:107 operation/models.py:150
 msgid "distance"
-msgstr ""
+msgstr "距离"
 
 #: operation/models.py:111
 msgid "time in hour"
-msgstr ""
+msgstr "时间以小时为单位"
 
 #: operation/models.py:112 operation/models.py:212
 msgid "icon"
-msgstr ""
+msgstr "图标"
 
 #: operation/models.py:119
 msgid "Delivery type"
-msgstr ""
+msgstr "交货类型"
 
 #: operation/models.py:120
 msgid "Delivery types"
-msgstr ""
+msgstr "交货类型"
 
 #: operation/models.py:127
 msgid "quantity"
-msgstr ""
+msgstr "数量"
 
 #: operation/models.py:128
 msgid "measuring unit"
-msgstr ""
+msgstr "计量单位"
 
 #: operation/models.py:134
 msgid "Packaging"
-msgstr ""
+msgstr "包装"
 
 #: operation/models.py:135
 msgid "Packagings"
-msgstr ""
+msgstr "包装"
 
 #: operation/models.py:139 operation/models.py:312
 msgid "parcel length"
-msgstr ""
+msgstr "包裹长度"
 
 #: operation/models.py:140 operation/models.py:313
 msgid "parcel width"
-msgstr ""
+msgstr "包裹宽度"
 
 #: operation/models.py:141 operation/models.py:314
 msgid "parcel height"
-msgstr ""
+msgstr "包裹高度"
 
 #: operation/models.py:142 operation/models.py:315
 msgid "parcel weight"
-msgstr ""
+msgstr "包裹重量"
 
 #: operation/models.py:145
 msgid "Payment dimension"
-msgstr ""
+msgstr "支付维度"
 
 #: operation/models.py:146
 msgid "Payment dimensions"
-msgstr ""
+msgstr "支付维度"
 
 #: operation/models.py:157
 msgid "dimension"
-msgstr ""
+msgstr "方面"
 
 #: operation/models.py:160
 msgid "price per kilo"
-msgstr ""
+msgstr "每公斤价格"
 
 #: operation/models.py:161
 msgid "cube price"
-msgstr ""
+msgstr "立方价格"
 
 #: operation/models.py:167
 msgid "Envelop"
-msgstr ""
+msgstr "信封"
 
 #: operation/models.py:168
 msgid "Envelops"
-msgstr ""
+msgstr "信封"
 
 #: operation/models.py:176 operation/models.py:252 operation/models.py:285
 #: operation/models.py:309 operation/models.py:328 operation/models.py:355
 msgid "parcel"
-msgstr ""
+msgstr "包裹"
 
 #: operation/models.py:186 operation/resource.py:20
 msgid "delivery type"
-msgstr ""
+msgstr "交货类型"
 
 #: operation/models.py:188
 msgid "parcel packaging"
-msgstr ""
+msgstr "包裹包装"
 
 #: operation/models.py:190 operation/resource.py:13
 msgid "status"
-msgstr ""
+msgstr "地位"
 
 #: operation/models.py:198 operation/resource.py:23
 msgid "envelop"
-msgstr ""
+msgstr "信封"
 
 #: operation/models.py:207
 msgid "Parcel payment"
-msgstr ""
+msgstr "包裹付款"
 
 #: operation/models.py:208
 msgid "Parcel payments"
-msgstr ""
+msgstr "包裹付款"
 
 #: operation/models.py:215 operation/models.py:234 operation/models.py:247
 #: operation/models.py:331
 msgid "type"
-msgstr ""
+msgstr "类型"
 
 #: operation/models.py:222
 msgid "Payment type"
-msgstr ""
+msgstr "付款方式"
 
 #: operation/models.py:223
 msgid "Payment types"
-msgstr ""
+msgstr "付款方式"
 
 #: operation/models.py:230
 msgid "parcel payment"
-msgstr ""
+msgstr "包裹付款"
 
 #: operation/models.py:236 operation/models.py:333
 msgid "sum"
-msgstr ""
+msgstr "和"
 
 #: operation/models.py:242
 msgid "Payment"
-msgstr ""
+msgstr "支付"
 
 #: operation/models.py:243
 msgid "Payments"
-msgstr ""
+msgstr "付款"
 
 #: operation/models.py:265
 msgid "village"
-msgstr ""
+msgstr "村庄"
 
 #: operation/models.py:269
 msgid "destination"
-msgstr ""
+msgstr "目的地"
 
 #: operation/models.py:277
 msgid "Direction"
-msgstr ""
+msgstr "方向"
 
 #: operation/models.py:278
 msgid "Directions"
-msgstr ""
+msgstr "方向"
 
 #: operation/models.py:288
 msgid "phone"
-msgstr ""
+msgstr "电话"
 
 #: operation/models.py:290
 msgid "company"
-msgstr ""
+msgstr "公司"
 
 #: operation/models.py:293
 msgid "user info type"
-msgstr ""
+msgstr "用户信息类型"
 
 #: operation/models.py:301 operation/models.py:302
 msgid "User info"
-msgstr ""
+msgstr "用户信息"
 
 #: operation/models.py:321
 msgid "Parcel dimension"
-msgstr ""
+msgstr "包裹尺寸"
 
 #: operation/models.py:322
 msgid "Parcel dimensions"
-msgstr ""
+msgstr "包裹尺寸"
 
 #: operation/models.py:326
 msgid "user"
-msgstr ""
+msgstr "用户"
 
 #: operation/models.py:339
 msgid "transaction id"
-msgstr ""
+msgstr "交易编号"
 
 #: operation/models.py:347
 msgid "Payment history"
-msgstr ""
+msgstr "支付历史"
 
 #: operation/models.py:348
 msgid "Payment histories"
-msgstr ""
+msgstr "付款记录"
 
 #: operation/resource.py:15
 msgid "create at"
-msgstr ""
+msgstr "创建于"
 
 #: operation/resource.py:16
 msgid "option"
-msgstr ""
+msgstr "选项"
 
 #: operation/resource.py:17
 msgid "sending date"
-msgstr ""
+msgstr "发送日期"
 
 #: operation/resource.py:22
 msgid "pay status"
-msgstr ""
+msgstr "支付状态"
 
 #: operation/resource.py:26
 msgid "from region"
-msgstr ""
+msgstr "来自地区"
 
 #: operation/resource.py:27
 msgid "to region"
-msgstr ""
+msgstr "到地区"
 
 #: operation/serializers.py:284
 msgid "direction must be 2"
-msgstr ""
+msgstr "方向必须是 2"
 
 #: operation/serializers.py:293
 msgid "user_info must be 2"
-msgstr ""
+msgstr "用户信息必须为 2"
+
+#: template/admin/base_site.html:24
+msgid "Documentation"
+msgstr "文档"
+
+#: template/admin/base_site.html:28
+msgid "Change password"
+msgstr "更改密码"
+
+#: template/admin/base_site.html:30
+msgid "Log out"
+msgstr "登出"

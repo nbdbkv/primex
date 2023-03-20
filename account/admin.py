@@ -1,15 +1,14 @@
 from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
 from django.utils.translation import gettext_lazy as _
-
 from account.roles.mixins import UserAdminMixin
 from account.models import User, Region, District, Village
 
 
 @admin.register(User)
 class UserAdmin(UserAdminMixin, admin.ModelAdmin):
-    list_display = ('phone',)
-    list_display_links = ('phone',)
+    list_display = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
+    list_display_links = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
     list_filter = ('role', 'region')
 
     def save_model(self, request, obj, form, change) -> None:

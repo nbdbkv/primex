@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-16 18:32+0600\n"
+"POT-Creation-Date: 2023-03-20 15:08+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,142 +16,142 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: about/models.py:12
 msgid "company name"
-msgstr ""
+msgstr "Название компании"
 
 #: about/models.py:13
 msgid "logo"
-msgstr ""
+msgstr "логотип"
 
 #: about/models.py:19
 msgid "Partner"
-msgstr ""
+msgstr "Партнер"
 
 #: about/models.py:20
 msgid "Partners"
-msgstr ""
+msgstr "Партнеры"
 
 #: about/models.py:24
 msgid "social"
-msgstr ""
+msgstr "Социальное"
 
 #: about/models.py:25
 msgid "social icon"
-msgstr ""
+msgstr "социальная икона"
 
 #: about/models.py:31
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #: about/models.py:32
 msgid "Contacts"
-msgstr ""
+msgstr "Контакты"
 
-#: about/models.py:36 account/models.py:70 account/models.py:87
-#: account/models.py:103
+#: about/models.py:36 account/models.py:71 account/models.py:88
+#: account/models.py:104
 msgid "name"
-msgstr ""
+msgstr "имя"
 
 #: about/models.py:42
 msgid "Article category"
-msgstr ""
+msgstr "Категория статьи"
 
 #: about/models.py:43
 msgid "Article categories"
-msgstr ""
+msgstr "Категории статей"
 
 #: about/models.py:47 about/models.py:105 operation/models.py:22
 #: operation/models.py:49 operation/models.py:108 operation/models.py:124
 #: operation/models.py:152 operation/models.py:213 operation/resource.py:10
 msgid "title"
-msgstr ""
+msgstr "заголовок"
 
 #: about/models.py:49
 msgid "border image"
-msgstr ""
+msgstr "граница изображения"
 
 #: about/models.py:53
 msgid "article category"
-msgstr ""
+msgstr "Категория статьи"
 
 #: about/models.py:56
 msgid "watched count"
-msgstr ""
+msgstr "количество просмотров"
 
 #: about/models.py:57 operation/models.py:341
 msgid "created date"
-msgstr ""
+msgstr "Дата создания"
 
 #: about/models.py:63
 msgid "New"
-msgstr ""
+msgstr "Новый"
 
 #: about/models.py:64
 msgid "News"
-msgstr ""
+msgstr "Новости"
 
 #: about/models.py:68 operation/models.py:113
 msgid "image"
-msgstr ""
+msgstr "изображение"
 
 #: about/models.py:72
 msgid "New gallery"
-msgstr ""
+msgstr "Новая галерея"
 
 #: about/models.py:73
 msgid "New galleries"
-msgstr ""
+msgstr "Новые галереи"
 
-#: about/models.py:79 account/models.py:71 account/models.py:88
-#: account/models.py:104 operation/models.py:270
+#: about/models.py:79 account/models.py:72 account/models.py:89
+#: account/models.py:105 operation/models.py:270
 msgid "geolocation"
-msgstr ""
+msgstr "геолокация"
 
 #: about/models.py:80
 msgid "contact phone"
-msgstr ""
+msgstr "Контактный телефон"
 
 #: about/models.py:81 operation/models.py:291
 msgid "email"
-msgstr ""
+msgstr "электронная почта"
 
 #: about/models.py:87
 msgid "Fillial"
-msgstr ""
+msgstr "Филлиал"
 
 #: about/models.py:88
 msgid "Fillials"
-msgstr ""
+msgstr "Филлиалы"
 
 #: about/models.py:92
 msgid "alias"
-msgstr ""
+msgstr "псевдоним"
 
 #: about/models.py:93
 msgid "value"
-msgstr ""
+msgstr "значение"
 
 #: about/models.py:94 operation/models.py:109 operation/models.py:125
 #: operation/models.py:153 operation/models.py:248
 msgid "description"
-msgstr ""
+msgstr "описание"
 
 #: about/models.py:100
 msgid "Option"
-msgstr ""
+msgstr "Параметр"
 
 #: about/models.py:101
 msgid "Options"
-msgstr ""
+msgstr "Параметры"
 
 #: about/models.py:106 about/models.py:120
 msgid "text"
-msgstr ""
+msgstr "текст"
 
 #: about/models.py:112
 msgid "Question"
@@ -159,163 +159,167 @@ msgstr ""
 
 #: about/models.py:113
 msgid "Questions"
-msgstr ""
+msgstr "Вопросы"
 
 #: about/models.py:118
 msgid "question"
-msgstr ""
+msgstr "Вопрос"
 
 #: about/models.py:123
 msgid "Answer"
-msgstr ""
+msgstr "Ответ"
 
 #: about/models.py:124
 msgid "Answers"
-msgstr ""
+msgstr "Ответы"
 
-#: account/admin.py:33 account/models.py:28 account/models.py:85
-#: account/models.py:101
+#: account/admin.py:32 account/models.py:29 account/models.py:86
+#: account/models.py:102
 msgid "region"
-msgstr ""
+msgstr "область"
 
 #: account/choices.py:6
 msgid "register"
-msgstr ""
+msgstr "регистр"
 
 #: account/choices.py:7
 msgid "reset password"
-msgstr ""
+msgstr "Сброс пароля"
 
 #: account/choices.py:8
 msgid "reset phone"
-msgstr ""
+msgstr "сбросить телефон"
 
 #: account/choices.py:12
 msgid "client"
-msgstr ""
+msgstr "клиент"
 
 #: account/choices.py:13 account/choices.py:19 operation/models.py:73
 msgid "courier"
-msgstr ""
+msgstr "курьер"
 
 #: account/choices.py:14 account/choices.py:20
 msgid "operator"
-msgstr ""
+msgstr "оператор"
 
 #: account/choices.py:15
 msgid "subadmin"
-msgstr ""
+msgstr "субадмин"
 
 #: account/messages.py:6
 msgid "User is activated"
-msgstr ""
+msgstr "Пользователь активирован"
 
 #: account/messages.py:7
 msgid "Password successfully changed"
-msgstr ""
+msgstr "Пароль успешно изменен"
 
 #: account/messages.py:8
 msgid "Phone successfully changed"
-msgstr ""
+msgstr "Телефон успешно изменен"
 
 #: account/messages.py:9
 msgid "The code was successfully sent"
-msgstr ""
+msgstr "Код успешно отправлен"
 
 #: account/messages.py:13
 msgid "A user with that phone number does not exists."
-msgstr ""
+msgstr "Пользователь с таким номером телефона не существует"
 
 #: account/messages.py:14
 msgid "Wrong otp code"
-msgstr ""
+msgstr "Неверный код отп"
 
 #: account/messages.py:15
 msgid "provide a strong password!"
-msgstr ""
+msgstr "дайте надежный пароль!"
 
 #: account/models.py:17
 msgid "user phone number"
-msgstr ""
+msgstr "номер телефона пользователя"
 
 #: account/models.py:20
 msgid "Required. 9 digits in format: 996*********** without \"+\"."
-msgstr ""
+msgstr "Необходимый. 9 цифр в формате: 996*********** без \"+\"."
 
 #: account/models.py:23
 msgid "A user with that phone number already exists."
-msgstr ""
+msgstr "Пользователь с таким номером телефона уже существует."
 
-#: account/models.py:26 operation/models.py:289
+#: account/models.py:26
+msgid "Код логистики"
+msgstr "Код логистики"
+
+#: account/models.py:27 operation/models.py:289
 msgid "user info"
-msgstr ""
+msgstr "информация о пользователе"
 
-#: account/models.py:31 operation/models.py:258
+#: account/models.py:32 operation/models.py:258
 msgid "district"
-msgstr ""
+msgstr "район"
 
-#: account/models.py:34
+#: account/models.py:35
 msgid "role"
-msgstr ""
-
-#: account/models.py:36
-msgid "user bonus points"
-msgstr ""
+msgstr "роль"
 
 #: account/models.py:37
+msgid "user bonus points"
+msgstr "бонусные баллы пользователя"
+
+#: account/models.py:38
 msgid "avatar"
-msgstr ""
+msgstr "аватар"
 
-#: account/models.py:39
+#: account/models.py:40
 msgid "telegram chat id"
-msgstr ""
+msgstr "идентификатор телеграмм чата"
 
-#: account/models.py:42
+#: account/models.py:43
 msgid "telegram user id"
-msgstr ""
+msgstr "идентификатор пользователя телеграммы"
 
-#: account/models.py:45
+#: account/models.py:46
 msgid "active"
-msgstr ""
+msgstr "актив"
 
-#: account/models.py:48
+#: account/models.py:49
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
 
-#: account/models.py:72 account/models.py:89 account/models.py:105
+#: account/models.py:73 account/models.py:90 account/models.py:106
 #: operation/models.py:62 operation/resource.py:14
 msgid "code"
-msgstr ""
+msgstr "код"
 
-#: account/models.py:73
+#: account/models.py:74
 msgid "position"
-msgstr ""
-
-#: account/models.py:79
-msgid "Region"
-msgstr ""
+msgstr "позиция"
 
 #: account/models.py:80
-msgid "Regions"
-msgstr ""
+msgid "Region"
+msgstr "Регион"
 
-#: account/models.py:95
-msgid "District"
-msgstr ""
+#: account/models.py:81
+msgid "Regions"
+msgstr "Регионы"
 
 #: account/models.py:96
-msgid "Districts"
-msgstr ""
+msgid "District"
+msgstr "Район"
 
-#: account/models.py:111
-msgid "Village"
-msgstr ""
+#: account/models.py:97
+msgid "Districts"
+msgstr "Районы"
 
 #: account/models.py:112
+msgid "Village"
+msgstr "Деревня"
+
+#: account/models.py:113
 msgid "Villages"
-msgstr ""
+msgstr "Деревни"
 
 #: account/validators.py:9
 msgid ""
@@ -325,232 +329,232 @@ msgstr ""
 
 #: account/validators.py:15
 msgid "Code must be 2 digit"
-msgstr ""
+msgstr "Код должен быть двухзначным"
 
 #: cashbox/serializers.py:23
 msgid "Parcel does not exist"
-msgstr ""
+msgstr "Посылка не существует"
 
 #: cashbox/serializers.py:36
 msgid "Hash sums do not match"
-msgstr ""
+msgstr "Хеш-суммы не совпадают"
 
-#: core/settings.py:138
+#: core/settings.py:137
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "Упрощенный китайский"
 
 #: flight/apps.py:8
 msgid "Flights"
-msgstr ""
+msgstr "Авиабилеты"
+
+#: flight/models.py:6
+msgid "Дата создания"
+msgstr "Дата создания"
 
 #: flight/models.py:7
-msgid "Дата создания"
-msgstr ""
-
-#: flight/models.py:9
 msgid "Дата изменения"
-msgstr ""
+msgstr "Дата изменения"
+
+#: flight/models.py:15
+msgid "Нумерация рейсов"
+msgstr "Нумерация рейсов"
+
+#: flight/models.py:16
+msgid "Код"
+msgstr "код"
 
 #: flight/models.py:17
-msgid "Нумерация рейсов"
-msgstr ""
-
-#: flight/models.py:18
-msgid "Код"
-msgstr ""
-
-#: flight/models.py:19
 msgid "Количество мест (коробка)"
-msgstr ""
+msgstr "Количество мест (коробка)"
 
-#: flight/models.py:25
+#: flight/models.py:23
 msgid "flight"
-msgstr ""
+msgstr "Авиабилет"
 
-#: flight/models.py:26
+#: flight/models.py:24
 msgid "flights"
-msgstr ""
+msgstr "Авиабилеты"
 
 #: operation/admin.py:141 operation/models.py:335
 msgid "payment type"
-msgstr ""
+msgstr "способ оплаты"
 
 #: operation/admin.py:146 operation/models.py:110 operation/models.py:126
 #: operation/models.py:151 operation/models.py:180 operation/resource.py:18
 msgid "price"
-msgstr ""
+msgstr "цена"
 
 #: operation/admin.py:151 operation/models.py:90
 msgid "from district"
-msgstr ""
+msgstr "из района"
 
 #: operation/admin.py:156 operation/models.py:94
 msgid "to district"
-msgstr ""
+msgstr "в район"
 
 #: operation/choices.py:6
 msgid "from"
-msgstr ""
+msgstr "от"
 
 #: operation/choices.py:7
 msgid "to"
-msgstr ""
+msgstr "к"
 
 #: operation/choices.py:11 operation/models.py:52 operation/resource.py:11
 msgid "sender"
-msgstr ""
+msgstr "отправитель"
 
 #: operation/choices.py:12 operation/resource.py:12
 msgid "recipient"
-msgstr ""
+msgstr "получатель"
 
 #: operation/choices.py:16
 msgid "in anticipation"
-msgstr ""
+msgstr "в ожидании"
 
 #: operation/choices.py:17
 msgid "paid"
-msgstr ""
+msgstr "оплаченный"
 
 #: operation/choices.py:21
 msgid "cash"
-msgstr ""
+msgstr "наличные"
 
 #: operation/choices.py:22 operation/models.py:378
 msgid "bonus"
-msgstr ""
+msgstr "бонус"
 
 #: operation/choices.py:23
 msgid "Mbank"
-msgstr ""
+msgstr "Mbank"
 
 #: operation/choices.py:24
 msgid "Megapay"
-msgstr ""
+msgstr "Megapay"
 
 #: operation/choices.py:25
 msgid "balance"
-msgstr ""
+msgstr "balance"
 
 #: operation/choices.py:26
 msgid "O_pay"
-msgstr ""
+msgstr "O_pay"
 
 #: operation/choices.py:27
 msgid "Elsom"
-msgstr ""
+msgstr "Elsom"
 
 #: operation/choices.py:28
 msgid "Optima"
-msgstr ""
+msgstr "Optima"
 
 #: operation/choices.py:29
 msgid "recipient cash"
-msgstr ""
+msgstr "деньги получателя"
 
 #: operation/choices.py:33
 msgid "credit"
-msgstr ""
+msgstr "кредит"
 
 #: operation/choices.py:34
 msgid "debit"
-msgstr ""
+msgstr "дебет"
 
 #: operation/choices.py:38
 msgid "accepted"
-msgstr ""
+msgstr "принял"
 
 #: operation/choices.py:39
 msgid "success"
-msgstr ""
+msgstr "успех"
 
 #: operation/choices.py:40
 msgid "failed"
-msgstr ""
+msgstr "неуспешный"
 
 #: operation/choices.py:41
 msgid "in progress"
-msgstr ""
+msgstr "в ходе выполнения"
 
 #: operation/choices.py:42
 msgid "rollback"
-msgstr ""
+msgstr "откат"
 
 #: operation/choices.py:43
 msgid "rollback in progress"
-msgstr ""
+msgstr "выполняется откат"
 
 #: operation/choices.py:44
 msgid "rollback accepted"
-msgstr ""
+msgstr "откат принят"
 
 #: operation/choices.py:48
 msgid "Посылка доставлена"
-msgstr ""
+msgstr "Посылка доставлена"
 
 #: operation/choices.py:49
 msgid "Посылка прибыл в Ваш город"
-msgstr ""
+msgstr "Посылка прибыл в Ваш город"
 
 #: operation/choices.py:50
 msgid "Посылка в пути"
-msgstr ""
+msgstr "Посылка в пути"
 
 #: operation/choices.py:51
 msgid "Курьер забрал"
-msgstr ""
+msgstr "Курьер забрал"
 
 #: operation/choices.py:52
 msgid "В ожидании"
-msgstr ""
+msgstr "В ожидании"
 
 #: operation/choices.py:53
 msgid "В обработке"
-msgstr ""
+msgstr "В обработке"
 
 #: operation/models.py:29
 msgid "Delivery status"
-msgstr ""
+msgstr "О состоянии доставки"
 
 #: operation/models.py:30
 msgid "Delivery statuses"
-msgstr ""
+msgstr "Статусы доставки"
 
 #: operation/models.py:34
 msgid "option title"
-msgstr ""
+msgstr "название опции"
 
 #: operation/models.py:40
 msgid "Parcel option"
-msgstr ""
+msgstr "Вариант посылки"
 
 #: operation/models.py:41
 msgid "Parcel options"
-msgstr ""
+msgstr "Варианты посылок"
 
 #: operation/models.py:57
 msgid "delivery status"
-msgstr ""
+msgstr "Статус доставки"
 
 #: operation/models.py:63
 msgid "date creation"
-msgstr ""
+msgstr "дата создания"
 
 #: operation/models.py:64
 msgid "options"
-msgstr ""
+msgstr "параметры"
 
 #: operation/models.py:66
 msgid "sendin date"
-msgstr ""
+msgstr "дата отправки"
 
 #: operation/models.py:81
 msgid "Parcel"
-msgstr ""
+msgstr "Посылка"
 
 #: operation/models.py:82
 msgid "Parcels"
-msgstr "包裹"
+msgstr "Посылки"
 
 #: operation/models.py:89
 msgid "from_district"
@@ -558,91 +562,91 @@ msgstr ""
 
 #: operation/models.py:101
 msgid "Distance"
-msgstr ""
+msgstr "Расстояние"
 
 #: operation/models.py:102
 msgid "Distances"
-msgstr ""
+msgstr "Расстояния"
 
 #: operation/models.py:107 operation/models.py:150
 msgid "distance"
-msgstr ""
+msgstr "Расстояниe"
 
 #: operation/models.py:111
 msgid "time in hour"
-msgstr ""
+msgstr "время в час"
 
 #: operation/models.py:112 operation/models.py:212
 msgid "icon"
-msgstr ""
+msgstr "икона"
 
 #: operation/models.py:119
 msgid "Delivery type"
-msgstr ""
+msgstr "Тип доставки"
 
 #: operation/models.py:120
 msgid "Delivery types"
-msgstr ""
+msgstr "Типы доставки"
 
 #: operation/models.py:127
 msgid "quantity"
-msgstr ""
+msgstr "количество"
 
 #: operation/models.py:128
 msgid "measuring unit"
-msgstr ""
+msgstr "единица измерения"
 
 #: operation/models.py:134
 msgid "Packaging"
-msgstr ""
+msgstr "Упаковка"
 
 #: operation/models.py:135
 msgid "Packagings"
-msgstr ""
+msgstr "Упаковки"
 
 #: operation/models.py:139 operation/models.py:312
 msgid "parcel length"
-msgstr ""
+msgstr "длина посылки"
 
 #: operation/models.py:140 operation/models.py:313
 msgid "parcel width"
-msgstr ""
+msgstr "ширина посылки"
 
 #: operation/models.py:141 operation/models.py:314
 msgid "parcel height"
-msgstr ""
+msgstr "высота посылки"
 
 #: operation/models.py:142 operation/models.py:315
 msgid "parcel weight"
-msgstr ""
+msgstr "вес посылки"
 
 #: operation/models.py:145
 msgid "Payment dimension"
-msgstr ""
+msgstr "Размер платежа"
 
 #: operation/models.py:146
 msgid "Payment dimensions"
-msgstr ""
+msgstr "Размер платежа"
 
 #: operation/models.py:157
 msgid "dimension"
-msgstr ""
+msgstr "измерение"
 
 #: operation/models.py:160
 msgid "price per kilo"
-msgstr ""
+msgstr "цена за килограмм"
 
 #: operation/models.py:161
 msgid "cube price"
-msgstr ""
+msgstr "цена куба"
 
 #: operation/models.py:167
 msgid "Envelop"
-msgstr ""
+msgstr "Конверт"
 
 #: operation/models.py:168
 msgid "Envelops"
-msgstr ""
+msgstr "посылка"
 
 #: operation/models.py:176 operation/models.py:252 operation/models.py:285
 #: operation/models.py:309 operation/models.py:328 operation/models.py:355
@@ -651,153 +655,153 @@ msgstr ""
 
 #: operation/models.py:186 operation/resource.py:20
 msgid "delivery type"
-msgstr ""
+msgstr "тип доставки"
 
 #: operation/models.py:188
 msgid "parcel packaging"
-msgstr ""
+msgstr "упаковка посылки"
 
 #: operation/models.py:190 operation/resource.py:13
 msgid "status"
-msgstr ""
+msgstr "статус"
 
 #: operation/models.py:198 operation/resource.py:23
 msgid "envelop"
-msgstr ""
+msgstr "окутывать"
 
 #: operation/models.py:207
 msgid "Parcel payment"
-msgstr ""
+msgstr "Оплата посылки"
 
 #: operation/models.py:208
 msgid "Parcel payments"
-msgstr ""
+msgstr "Посылочные платежи"
 
 #: operation/models.py:215 operation/models.py:234 operation/models.py:247
 #: operation/models.py:331
 msgid "type"
-msgstr ""
+msgstr "тип"
 
 #: operation/models.py:222
 msgid "Payment type"
-msgstr ""
+msgstr "Способ оплаты"
 
 #: operation/models.py:223
 msgid "Payment types"
-msgstr ""
+msgstr "Типы платежей"
 
 #: operation/models.py:230
 msgid "parcel payment"
-msgstr ""
+msgstr "оплата посылки"
 
 #: operation/models.py:236 operation/models.py:333
 msgid "sum"
-msgstr ""
+msgstr "сумма"
 
 #: operation/models.py:242
 msgid "Payment"
-msgstr ""
+msgstr "Платеж"
 
 #: operation/models.py:243
 msgid "Payments"
-msgstr ""
+msgstr "Платежи"
 
 #: operation/models.py:265
 msgid "village"
-msgstr ""
+msgstr "деревня"
 
 #: operation/models.py:269
 msgid "destination"
-msgstr ""
+msgstr "место назначения"
 
 #: operation/models.py:277
 msgid "Direction"
-msgstr ""
+msgstr "Направление"
 
 #: operation/models.py:278
 msgid "Directions"
-msgstr ""
+msgstr "Направления"
 
 #: operation/models.py:288
 msgid "phone"
-msgstr ""
+msgstr "телефон"
 
 #: operation/models.py:290
 msgid "company"
-msgstr ""
+msgstr "компания"
 
 #: operation/models.py:293
 msgid "user info type"
-msgstr ""
+msgstr "тип информации о пользователе"
 
 #: operation/models.py:301 operation/models.py:302
 msgid "User info"
-msgstr ""
+msgstr "Информация о пользователе"
 
 #: operation/models.py:321
 msgid "Parcel dimension"
-msgstr ""
+msgstr "Размер участка"
 
 #: operation/models.py:322
 msgid "Parcel dimensions"
-msgstr ""
+msgstr "Размеры посылки"
 
 #: operation/models.py:326
 msgid "user"
-msgstr ""
+msgstr "пользователь"
 
 #: operation/models.py:339
 msgid "transaction id"
-msgstr ""
+msgstr "ID транзакции"
 
 #: operation/models.py:347
 msgid "Payment history"
-msgstr ""
+msgstr "История платежей"
 
 #: operation/models.py:348
 msgid "Payment histories"
-msgstr ""
+msgstr "Истории платежей"
 
 #: operation/resource.py:15
 msgid "create at"
-msgstr ""
+msgstr "дата создания"
 
 #: operation/resource.py:16
 msgid "option"
-msgstr ""
+msgstr "параметр"
 
 #: operation/resource.py:17
 msgid "sending date"
-msgstr ""
+msgstr "дата отправки"
 
 #: operation/resource.py:22
 msgid "pay status"
-msgstr ""
+msgstr "статус оплаты"
 
 #: operation/resource.py:26
 msgid "from region"
-msgstr ""
+msgstr "из региона"
 
 #: operation/resource.py:27
 msgid "to region"
-msgstr ""
+msgstr "в регион"
 
 #: operation/serializers.py:284
 msgid "direction must be 2"
-msgstr ""
+msgstr "направление должно быть 2"
 
 #: operation/serializers.py:293
 msgid "user_info must be 2"
-msgstr ""
+msgstr "информация о пользователе должна быть 2"
 
 #: template/admin/base_site.html:24
 msgid "Documentation"
-msgstr ""
+msgstr "Документация"
 
 #: template/admin/base_site.html:28
 msgid "Change password"
-msgstr ""
+msgstr "Изменить пароль"
 
 #: template/admin/base_site.html:30
 msgid "Log out"
-msgstr ""
+msgstr "Выйти"

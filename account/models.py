@@ -23,6 +23,7 @@ class User(AbstractUser):
             "unique": _("A user with that phone number already exists."),
         },
     )
+    code_logistic = models.CharField(verbose_name=_("Код логистики"), max_length=200, null=True, blank=True)
     info = models.CharField(_("user info"), max_length=255)
     region = models.ForeignKey(
         "Region", on_delete=models.SET_NULL, verbose_name=_("region"), null=True
