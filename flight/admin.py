@@ -1,5 +1,4 @@
 from django.contrib import admin
-from nested_admin.nested import NestedStackedInline
 
 from flight.models import Flight, Box, BaseParcel
 
@@ -12,7 +11,7 @@ class FlightAdmin(admin.ModelAdmin):
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
 
 
-class BaseParcelInline(NestedStackedInline):
+class BaseParcelInline(admin.StackedInline):
     model = BaseParcel
     extra = 1
 
