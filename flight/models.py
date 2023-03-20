@@ -35,8 +35,8 @@ class Flight(TimeStampedModel):
                                          null=True, blank=True)
 
     class Meta:
-        verbose_name = _('flight')
-        verbose_name_plural = _('flights')
+        verbose_name = _('Рейс')
+        verbose_name_plural = _('Рейсы')
 
     def __str__(self):
         if self.numeration:
