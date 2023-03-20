@@ -13,11 +13,12 @@
  
 {% block userlinks %}
     <a href="{{ request|switch_i18n:'ru' }}">
-        <img class="i18n_flag" src="{% static 'images/flag-usa-16.png' %}"/>
+        <img class="i18n_flag" height="10px" width="17px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/200px-Flag_of_Russia.svg.png"/>
     </a> /
     <a href="{{ request|switch_i18n:'zh-hans' }}">
-        <img class="i18n_flag" src="{% static 'images/flag-china-16.png' %}"/>
-    </a> /
+        <img class="i18n_flag" height="10px" width="17px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_China_%28alternate%29.svg/250px-Flag_of_China_%28alternate%29.svg.png"/>
+    </a>
+    /
     {% if user.is_active and user.is_staff %}
         {% url 'django-admindocs-docroot' as docsroot %}
         {% if docsroot %}
