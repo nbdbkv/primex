@@ -26,7 +26,7 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
                 qs = qs.order_by(*ordering)
             return qs
         else:
-            return User.objects.none()
+            return self.model.objects.none()
 
 
 class RegionAdmin(DoubleGisAdmin):
