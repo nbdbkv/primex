@@ -18,6 +18,16 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
             obj.set_password(new_password)
         return super().save_model(request, obj, form, change)
 
+    def get_queryset(self, request):
+        if request.GET.get('q'):
+            qs = self.model._default_manager.get_queryset()
+            ordering = self.get_ordering(request)
+            if ordering:
+                qs = qs.order_by(*ordering)
+            return qs
+        else:
+            return User.objects.none()
+
 
 class RegionAdmin(DoubleGisAdmin):
     multiple_markers = False
