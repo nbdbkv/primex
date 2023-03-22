@@ -4,6 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from account.roles.mixins import UserAdminMixin
 from account.models import User, Region, District, Village
 
+admin.site.site_header = _("Администрация 9999")
+
 
 @admin.register(User)
 class UserAdmin(UserAdminMixin, admin.ModelAdmin):
