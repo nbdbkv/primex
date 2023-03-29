@@ -49,10 +49,9 @@ class Box(TimeStampedModel):
                                null=True, blank=True)
     code = models.CharField(max_length=64, verbose_name=_('Код'), null=True, blank=True)
     track_code = models.CharField(max_length=64, verbose_name=_('Трек-Код'), null=True, blank=True)
-    weight = models.CharField(max_length=64, verbose_name=_('Вес'), null=True, blank=True)
+    weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
     price = models.CharField(max_length=64, verbose_name=_('Цена'), null=True, blank=True)
-    consumption = models.CharField(max_length=64, verbose_name=_('Расход'), null=True,
-                                      blank=True)
+    consumption = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Расход'), null=True, blank=True)
     sum = models.CharField(max_length=64, verbose_name=_('Сумма'), null=True, blank=True)
     comment = models.TextField(max_length=64, verbose_name=_('comment'), null=True, blank=True)
 
