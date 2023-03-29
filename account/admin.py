@@ -4,12 +4,14 @@ from django.utils.translation import gettext_lazy as _
 from account.roles.mixins import UserAdminMixin
 from account.models import User, Region, District, Village
 
+admin.site.site_header = _("Администрация 9999")
+
 
 @admin.register(User)
 class UserAdmin(UserAdminMixin, admin.ModelAdmin):
     list_display = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
     list_display_links = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
-    list_filter = ('role', 'region')
+    # list_filter = ('role', 'region')
     search_fields = ['code_logistic', 'first_name', 'last_name', 'phone']
 
     def save_model(self, request, obj, form, change) -> None:
@@ -26,7 +28,7 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
                 qs = qs.order_by(*ordering)
             return qs
         else:
-            return User.objects.none()
+            return self.model.objects.none()
 
 
 class RegionAdmin(DoubleGisAdmin):
