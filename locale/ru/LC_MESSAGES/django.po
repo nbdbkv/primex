@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-20 19:05+0600\n"
+"POT-Creation-Date: 2023-03-29 15:00+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,7 +173,7 @@ msgstr "Ответ"
 msgid "Answers"
 msgstr "Ответы"
 
-#: account/admin.py:33 account/models.py:29 account/models.py:86
+#: account/admin.py:43 account/models.py:29 account/models.py:86
 #: account/models.py:102
 msgid "region"
 msgstr "область"

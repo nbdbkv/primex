@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-20 19:05+0600\n"
+"POT-Creation-Date: 2023-03-29 15:00+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -171,7 +171,7 @@ msgstr "回答"
 msgid "Answers"
 msgstr "答案"
 
-#: account/admin.py:33 account/models.py:29 account/models.py:86
+#: account/admin.py:43 account/models.py:29 account/models.py:86
 #: account/models.py:102
 msgid "region"
 msgstr "地区"
@@ -278,7 +278,7 @@ msgstr "积极的"
 
 #: account/models.py:46
 msgid "active"
-msgstr ""
+msgstr "积极的"
 
 #: account/models.py:49
 msgid ""
@@ -648,7 +648,7 @@ msgstr "包裹"
 
 #: operation/models.py:89
 msgid "from_district"
-msgstr ""
+msgstr "来自区"
 
 #: operation/models.py:101
 msgid "Distance"
