@@ -1,15 +1,18 @@
 from django.contrib import admin
+from django.contrib.admin import AdminSite
 
 from flight.models import Flight, Box, BaseParcel
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
+
+original_get_app_list = AdminSite.get_app_list
 
 
 @admin.register(Flight)
 class FlightAdmin(admin.ModelAdmin):
     list_display = ('numeration', 'created_at', 'code', 'quantity',
                     'weight', 'cube', 'density', 'consumption',
-                    'price', 'sum', 'status')
+                    'status')
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
 
 
@@ -81,3 +84,14 @@ class BoxAdmin(ImportExportModelAdmin):
         super(BoxAdmin, self).save_model(request, obj, form, change)
 
 
+class AdminSiteExtension(AdminSite):
+    def get_app_list(self, request):
+        app_list = original_get_app_list(self, request)
+        for idx, app in enumerate(app_list):
+            if app['app_label'] == 'flight':
+                flight = app_list.pop(idx)
+                app_list.insert(0, flight)
+                return app_list
+
+
+AdminSite.get_app_list = AdminSiteExtension.get_app_list
