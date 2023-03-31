@@ -70,6 +70,15 @@ class BoxAdmin(ImportExportModelAdmin):
     exclude = ('box',)
     resource_class = BoxAdminResource
     inlines = [BaseParcelInline]
+    change_list_template = "admin/box_change_list.html"
+
+
+    def changelist_view(self, request, extra_context=None):
+        flight = Flight.objects.all()
+        extra_context = extra_context or {}
+        extra_context['flights'] = flight
+        return super(BoxAdmin, self).changelist_view(request, extra_context=extra_context)
+
 
     def save_model(self, request, obj, form, change):
         a = 0
@@ -95,3 +104,4 @@ class AdminSiteExtension(AdminSite):
 
 
 AdminSite.get_app_list = AdminSiteExtension.get_app_list
+
