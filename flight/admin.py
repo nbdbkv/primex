@@ -8,17 +8,23 @@ from import_export import resources, fields, widgets
 original_get_app_list = AdminSite.get_app_list
 
 
+class BoxInline(admin.StackedInline):
+    model = Box
+    extra = 0
+
+
 @admin.register(Flight)
 class FlightAdmin(admin.ModelAdmin):
     list_display = ('numeration', 'created_at', 'code', 'quantity',
                     'weight', 'cube', 'density', 'consumption',
                     'status')
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
+    inlines = [BoxInline]
 
 
 class BaseParcelInline(admin.StackedInline):
     model = BaseParcel
-    extra = 1
+    extra = 0
 
 
 class BoxAdminResource(resources.ModelResource):
@@ -72,13 +78,15 @@ class BoxAdmin(ImportExportModelAdmin):
     inlines = [BaseParcelInline]
     change_list_template = "admin/box_change_list.html"
 
+    def get_queryset(self, request):
+        qs = self.model._default_manager.get_queryset()
+        return qs.filter(flight=None)
 
     def changelist_view(self, request, extra_context=None):
         flight = Flight.objects.all()
         extra_context = extra_context or {}
         extra_context['flights'] = flight
         return super(BoxAdmin, self).changelist_view(request, extra_context=extra_context)
-
 
     def save_model(self, request, obj, form, change):
         a = 0
@@ -104,4 +112,3 @@ class AdminSiteExtension(AdminSite):
 
 
 AdminSite.get_app_list = AdminSiteExtension.get_app_list
-
