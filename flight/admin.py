@@ -1,15 +1,19 @@
 from django.contrib import admin
+from django.contrib.admin import AdminSite
 
 from flight.models import Flight, Box, BaseParcel
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
 
+original_get_app_list = AdminSite.get_app_list
+
 
 @admin.register(Flight)
 class FlightAdmin(admin.ModelAdmin):
     list_display = ('numeration', 'created_at', 'code', 'quantity',
-                    'weight', 'cube', 'density', 'consumption', 'status')
-    exclude = ('weight', 'cube', 'density', 'consumption')
+                    'weight', 'cube', 'density', 'consumption',
+                    'status')
+    exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
 
 
 class BaseParcelInline(admin.StackedInline):
@@ -68,8 +72,36 @@ class BoxAdmin(ImportExportModelAdmin):
     inlines = [BaseParcelInline]
     change_list_template = "admin/box_change_list.html"
 
+
     def changelist_view(self, request, extra_context=None):
         flight = Flight.objects.all()
         extra_context = extra_context or {}
         extra_context['flights'] = flight
         return super(BoxAdmin, self).changelist_view(request, extra_context=extra_context)
+
+
+    def save_model(self, request, obj, form, change):
+        a = 0
+        sum = 0.0
+        for key, value in form.data.items():
+            if key == f'base_parcel-{a}-weight':
+                if value:
+                    sum += float(value)
+                    a += 1
+                    super().save_model(request, obj, form, change)
+        obj.weight = sum
+        super(BoxAdmin, self).save_model(request, obj, form, change)
+
+
+class AdminSiteExtension(AdminSite):
+    def get_app_list(self, request):
+        app_list = original_get_app_list(self, request)
+        for idx, app in enumerate(app_list):
+            if app['app_label'] == 'flight':
+                flight = app_list.pop(idx)
+                app_list.insert(0, flight)
+                return app_list
+
+
+AdminSite.get_app_list = AdminSiteExtension.get_app_list
+
