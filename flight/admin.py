@@ -1,7 +1,10 @@
 from django.contrib import admin
-from django.contrib.admin import AdminSite
+from django.contrib.admin import AdminSite, DateFieldListFilter
 
-from flight.models import Flight, Box, BaseParcel
+import nested_admin
+
+from flight.forms import FlightModelForm, ArrivalModelForm
+from flight.models import Flight, Box, BaseParcel, Arrival
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
 
@@ -15,11 +18,60 @@ class BoxInline(admin.StackedInline):
 
 @admin.register(Flight)
 class FlightAdmin(admin.ModelAdmin):
+    form = FlightModelForm
     list_display = ('numeration', 'created_at', 'code', 'quantity',
                     'weight', 'cube', 'density', 'consumption',
                     'status')
-    exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
     inlines = [BoxInline]
+
+    def get_queryset(self, request):
+        return Flight.objects.filter(status__in=[0, 1, 2])
+
+
+class BaseParcelNestedInline(nested_admin.NestedTabularInline):
+    model = BaseParcel
+    readonly_fields = ('code', 'track_code', 'weight', 'width', 'length', 'height',)
+    fields = (readonly_fields, 'status',)
+
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_delete_permission(self, request, obj):
+        return False
+
+
+class BoxNestedInline(nested_admin.NestedTabularInline):
+    model = Box
+    readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment',)
+    fields = (readonly_fields, 'status',)
+    inlines = [BaseParcelNestedInline]
+
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_delete_permission(self, request, obj):
+        return False
+
+
+@admin.register(Arrival)
+class ArrivalAdmin(nested_admin.NestedModelAdmin):
+    form = ArrivalModelForm
+    list_display = (
+        'numeration', 'created_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',
+    )
+    search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)
+    date_hierarchy = 'created_at'
+    list_filter = (('created_at', DateFieldListFilter),)
+    inlines = [BoxNestedInline]
+
+    def get_queryset(self, request):
+        return Arrival.objects.filter(status__in=[2, 3, 4, 5])
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 class BaseParcelInline(admin.StackedInline):
