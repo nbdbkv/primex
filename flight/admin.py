@@ -4,7 +4,7 @@ from django.contrib.admin import AdminSite, DateFieldListFilter
 import nested_admin
 
 from flight.forms import FlightModelForm, ArrivalModelForm
-from flight.models import Flight, Box, BaseParcel, Arrival
+from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
 
@@ -22,6 +22,8 @@ class FlightAdmin(admin.ModelAdmin):
     list_display = ('numeration', 'created_at', 'code', 'quantity',
                     'weight', 'cube', 'density', 'consumption',
                     'status')
+    exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
+    search_fields = ['box__code', 'box__base_parcel__code', 'code']
     inlines = [BoxInline]
 
     def get_queryset(self, request):
@@ -32,6 +34,17 @@ class BaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
     readonly_fields = ('code', 'track_code', 'weight', 'width', 'length', 'height',)
     fields = (readonly_fields, 'status',)
+
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_delete_permission(self, request, obj):
+        return False
+
+
+class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
+    model = BaseParcel
+    readonly_fields = ('code', 'track_code', 'weight', 'width', 'length', 'height', 'status')
 
     def has_add_permission(self, request, obj):
         return False
@@ -53,6 +66,18 @@ class BoxNestedInline(nested_admin.NestedTabularInline):
         return False
 
 
+class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
+    model = Box
+    readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment', 'status')
+    inlines = [ArchiveBaseParcelNestedInline]
+
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_delete_permission(self, request, obj):
+        return False
+
+
 @admin.register(Arrival)
 class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
@@ -66,6 +91,61 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
 
     def get_queryset(self, request):
         return Arrival.objects.filter(status__in=[2, 3, 4, 5])
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def save_model(self, request, obj, form, change):
+        status = form.data.get('status')
+        if status == '6':
+            obj.is_archive = True
+            obj.save()
+        super(ArrivalAdmin, self).save_model(request, obj, form, change)
+
+
+@admin.register(Archive)
+class ArchiveAdmin(nested_admin.NestedModelAdmin):
+    list_display = (
+        'numeration', 'created_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',
+    )
+    search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)
+    date_hierarchy = 'created_at'
+    list_filter = (('created_at', DateFieldListFilter),)
+    inlines = [ArchiveBoxNestedInline]
+    exclude = ('is_archive',)
+    readonly_fields = (
+        'numeration', 'created_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',)
+
+    def get_queryset(self, request):
+        return Arrival.objects.filter(status=6)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def change_view(self, request, object_id=None, form_url='', extra_context=None):
+        extra_context = dict(show_save=False, show_save_and_continue=False, show_delete=False)
+        template_response = super().change_view(request, object_id, form_url, extra_context)
+        return template_response
+
+
+@admin.register(Unknown)
+class UnknownAdmin(nested_admin.NestedModelAdmin):
+    list_display = ('code', 'track_code', 'weight', 'width', 'length', 'height')
+    search_fields = ('code',)
+    date_hierarchy = 'created_at'
+    list_filter = (('created_at', DateFieldListFilter),)
+
+    def get_queryset(self, request):
+        return Unknown.objects.filter(status=7)
 
     def has_add_permission(self, request):
         return False

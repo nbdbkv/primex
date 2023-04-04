@@ -24,6 +24,7 @@ class Flight(TimeStampedModel):
                                       blank=True)
     status = models.PositiveIntegerField(default=StatusChoices.FORMING, choices=StatusChoices.choices,
                                          verbose_name=_('Статус'), null=True, blank=True,)
+    is_archive = models.BooleanField(default=False, verbose_name=_('Архив'))
 
     class Meta:
         verbose_name = _('Рейс')
@@ -45,6 +46,15 @@ class Arrival(Flight):
         verbose_name_plural = _('Поступления')
 
 
+class Archive(Flight):
+    # Архив Рейсов
+
+    class Meta:
+        proxy = True
+        verbose_name = _('Архив рейс')
+        verbose_name_plural = _('Архив рейсов')
+
+
 class Box(TimeStampedModel):
     # Коробка
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='box', verbose_name=_('Рейс коробки'),
@@ -56,7 +66,7 @@ class Box(TimeStampedModel):
     consumption = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Расход'), null=True, blank=True)
     sum = models.CharField(max_length=64, verbose_name=_('Сумма'), null=True, blank=True)
     comment = models.TextField(max_length=64, verbose_name=_('comment'), null=True, blank=True)
-    status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)
+    status = models.PositiveIntegerField(choices=get_status()[2:7], verbose_name=_('Статус'), null=True, blank=True,)
 
     class Meta:
         verbose_name = _('box')
@@ -93,3 +103,13 @@ class BaseParcel(TimeStampedModel):
             return self.code
         else:
             return ''
+
+
+class Unknown(BaseParcel):
+    # Неизвестные заказы
+
+    class Meta:
+        proxy = True
+        verbose_name = _('Неизвестный заказ')
+        verbose_name_plural = _('Неизвестные заказы')
+
