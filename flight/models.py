@@ -1,14 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-LOW = 0
-NORMAL = 1
-HIGH = 2
-STATUS_CHOICES = (
-    (LOW, _('Формируется')),
-    (NORMAL, _('В пути')),
-    (HIGH, _('Прибыл')),
-)
+from flight.choices import StatusChoices, get_status
 
 
 class TimeStampedModel(models.Model):
@@ -29,8 +22,8 @@ class Flight(TimeStampedModel):
     density = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Плотность'), null=True, blank=True)
     consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход'), null=True,
                                       blank=True)
-    status = models.PositiveIntegerField(default=LOW, choices=STATUS_CHOICES, verbose_name=_('Статус'),
-                                         null=True, blank=True)
+    status = models.PositiveIntegerField(default=StatusChoices.FORMING, choices=StatusChoices.choices,
+                                         verbose_name=_('Статус'), null=True, blank=True,)
 
     class Meta:
         verbose_name = _('Рейс')
@@ -41,6 +34,15 @@ class Flight(TimeStampedModel):
             return self.numeration
         else:
             return ''
+
+
+class Arrival(Flight):
+    # Поступления
+
+    class Meta:
+        proxy = True
+        verbose_name = _('Поступление')
+        verbose_name_plural = _('Поступления')
 
 
 class Box(TimeStampedModel):
@@ -54,6 +56,7 @@ class Box(TimeStampedModel):
     consumption = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Расход'), null=True, blank=True)
     sum = models.CharField(max_length=64, verbose_name=_('Сумма'), null=True, blank=True)
     comment = models.TextField(max_length=64, verbose_name=_('comment'), null=True, blank=True)
+    status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)
 
     class Meta:
         verbose_name = _('box')
@@ -74,6 +77,7 @@ class BaseParcel(TimeStampedModel):
     code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код'))
     track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'))
+    status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)
 
     # Габариты
     width = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Ширина'))
