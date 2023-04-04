@@ -242,7 +242,8 @@ class AdminSiteExtension(AdminSite):
             "Flight": 1,
             "Arrival": 2,
             "Archive": 3,
-            "Unknown": 4,
+            "BaseParcel": 4,
+            "Unknown": 5,
         }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':
