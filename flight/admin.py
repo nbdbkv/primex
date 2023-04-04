@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite, DateFieldListFilter
+from django.db.models import Sum
+from django.utils.translation import gettext_lazy as _
 
 import nested_admin
 
@@ -19,15 +21,30 @@ class BoxInline(admin.StackedInline):
 @admin.register(Flight)
 class FlightAdmin(admin.ModelAdmin):
     form = FlightModelForm
-    list_display = ('numeration', 'created_at', 'code', 'quantity',
-                    'weight', 'cube', 'density', 'consumption',
-                    'status')
+    list_display = ('numeration', 'created_at', 'code', 'quantity', 'cube', 'density', 'consumption',
+                    'status', 'sum_weight')
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
     search_fields = ['box__code', 'box__base_parcel__code', 'code']
     inlines = [BoxInline]
 
     def get_queryset(self, request):
         return Flight.objects.filter(status__in=[0, 1, 2])
+
+    @admin.display(description=_('Вес'))
+    def sum_weight(self, obj):
+        weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
+        return weight['weight__sum']
+
+    def save_model(self, request, obj, form, change):
+        a = 0
+        sum = 0.0
+        for key, value in form.data.items():
+            if key == f'box-{a}-weight':
+                if value:
+                    sum += float(value)
+                    a += 1
+        obj.weight = sum
+        super(FlightAdmin, self).save_model(request, obj, form, change)
 
 
 class BaseParcelNestedInline(nested_admin.NestedTabularInline):
@@ -204,12 +221,16 @@ class BoxAdminResource(resources.ModelResource):
 
 @admin.register(Box)
 class BoxAdmin(ImportExportModelAdmin):
-    list_display = ('created_at', 'code', 'track_code', 'weight', 'consumption')
+    list_display = ('created_at', 'code', 'track_code', 'consumption', 'sum_weight',)
     exclude = ('box',)
     resource_class = BoxAdminResource
     inlines = [BaseParcelInline]
     change_list_template = "admin/box_change_list.html"
 
+    @admin.display(description=_('Вес'))
+    def sum_weight(self, obj):
+        weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
+        return weight['weight__sum']
 
     def save_model(self, request, obj, form, change):
         a = 0
@@ -219,7 +240,6 @@ class BoxAdmin(ImportExportModelAdmin):
                 if value:
                     sum += float(value)
                     a += 1
-                    super().save_model(request, obj, form, change)
         obj.weight = sum
         super(BoxAdmin, self).save_model(request, obj, form, change)
 
@@ -238,11 +258,11 @@ class AdminSiteExtension(AdminSite):
     def get_app_list(self, request):
         app_list = original_get_app_list(self, request)
         ordering = {
-            "Box": 0,
-            "Flight": 1,
-            "Arrival": 2,
-            "Archive": 3,
-            "BaseParcel": 4,
+            "BaseParcel": 0,
+            "Box": 1,
+            "Flight": 2,
+            "Arrival": 3,
+            "Archive": 4,
             "Unknown": 5,
         }
         for idx, app in enumerate(app_list):
