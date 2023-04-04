@@ -248,7 +248,7 @@ class BoxAdmin(ImportExportModelAdmin):
         return qs.filter(flight=None)
 
     def changelist_view(self, request, extra_context=None):
-        flight = Flight.objects.all()
+        flight = Flight.objects.filter(status=0)
         extra_context = extra_context or {}
         extra_context['flights'] = flight
         return super(BoxAdmin, self).changelist_view(request, extra_context=extra_context)
@@ -286,7 +286,7 @@ class BaseParselAdmin(admin.ModelAdmin):
         return qs.filter(box=None)
 
     def changelist_view(self, request, extra_context=None):
-        parcel = Box.objects.all()
+        parcel = Box.objects.filter(status=None)
         extra_context = extra_context or {}
         extra_context['boxes'] = parcel
         return super(BaseParselAdmin, self).changelist_view(request, extra_context=extra_context)
