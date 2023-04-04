@@ -25,7 +25,14 @@
 {% endblock %}
 
 {% block object-tools %}
-    {{ block.super }}
+    <ul class="object-tools">
+        {% block object-tools-items %}
+            <li>
+                <a href="/admin/flight/box/add/" class="addlink">{% translate 'Добавить Коробка' %}</a>
+            </li>
+            {% change_list_object_tools %}
+        {% endblock %}
+    </ul>
     {% load i18n %}
     <form action="/m/add_to_box/" method="post">
         {% csrf_token %}
@@ -35,7 +42,7 @@
             {% endfor %}
         </select>
 
-        <button type="submit" class="button">Добавить в коробку</button>
+        <button type="submit" class="button">{% translate 'Добавить в коробку' %}</button>
         {% result_list cl %}
     </form>
 
