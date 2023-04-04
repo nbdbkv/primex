@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-29 15:00+0600\n"
+"POT-Creation-Date: 2023-03-31 12:49+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -171,7 +171,11 @@ msgstr "回答"
 msgid "Answers"
 msgstr "答案"
 
-#: account/admin.py:43 account/models.py:29 account/models.py:86
+#: account/admin.py:7
+msgid "Администрация 9999"
+msgstr ""
+
+#: account/admin.py:45 account/models.py:29 account/models.py:86
 #: account/models.py:102
 msgid "region"
 msgstr "地区"
@@ -369,7 +373,7 @@ msgstr "变更日期"
 msgid "Нумерация рейсов"
 msgstr "计数"
 
-#: flight/models.py:25 flight/models.py:52 flight/models.py:73
+#: flight/models.py:25 flight/models.py:50 flight/models.py:74
 msgid "Код"
 msgstr "代码"
 
@@ -377,7 +381,7 @@ msgstr "代码"
 msgid "Количество мест (коробка)"
 msgstr "座位数（箱）"
 
-#: flight/models.py:27 flight/models.py:54 flight/models.py:75
+#: flight/models.py:27 flight/models.py:52 flight/models.py:76
 msgid "Вес"
 msgstr "重量"
 
@@ -389,39 +393,43 @@ msgstr "立方体"
 msgid "Плотность"
 msgstr "密度"
 
-#: flight/models.py:30 flight/models.py:55
+#: flight/models.py:30 flight/models.py:54
 msgid "Расход"
 msgstr "消耗"
 
 #: flight/models.py:32
-msgid "Цена"
-msgstr "价格"
-
-#: flight/models.py:33
-msgid "Сумма"
-msgstr "和"
-
-#: flight/models.py:34
 msgid "Статус"
 msgstr "地位"
 
-#: flight/models.py:38
+#: flight/models.py:36
 #, fuzzy
 #| msgid "Рейсы"
 msgid "Рейс"
 msgstr "航班"
 
-#: flight/models.py:39
+#: flight/models.py:37
 msgid "Рейсы"
 msgstr "航班"
 
-#: flight/models.py:50
+#: flight/models.py:48
 msgid "Рейс коробки"
 msgstr "飞行箱"
 
-#: flight/models.py:53 flight/models.py:74
+#: flight/models.py:51 flight/models.py:75
 msgid "Трек-Код"
 msgstr "跟踪代码"
+
+#: flight/models.py:53
+msgid "Цена"
+msgstr "价格"
+
+#: flight/models.py:55
+msgid "Сумма"
+msgstr "和"
+
+#: flight/models.py:56
+msgid "comment"
+msgstr "一条评论"
 
 #: flight/models.py:59
 msgid "box"
@@ -431,35 +439,31 @@ msgstr "盒子"
 msgid "boxes"
 msgstr "盒子"
 
-#: flight/models.py:71
+#: flight/models.py:72
 #, fuzzy
 #| msgid "Посылка доставлена"
 msgid "Коробка посылки"
 msgstr "包裹交付"
 
-#: flight/models.py:78
+#: flight/models.py:79
 msgid "Ширина"
 msgstr "宽度"
 
-#: flight/models.py:79
+#: flight/models.py:80
 msgid "Длина"
 msgstr "长度"
 
-#: flight/models.py:80
+#: flight/models.py:81
 msgid "Высота"
 msgstr "高度"
 
-#: flight/models.py:82
-msgid "comment"
-msgstr "一条评论"
-
-#: flight/models.py:85
+#: flight/models.py:84
 #, fuzzy
 #| msgid "parcel"
 msgid "base_parcel"
 msgstr "包裹"
 
-#: flight/models.py:86
+#: flight/models.py:85
 #, fuzzy
 #| msgid "parcel"
 msgid "base_parcels"
