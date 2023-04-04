@@ -156,8 +156,16 @@ class BoxAdmin(ImportExportModelAdmin):
 class AdminSiteExtension(AdminSite):
     def get_app_list(self, request):
         app_list = original_get_app_list(self, request)
+        ordering = {
+            "Box": 0,
+            "Flight": 1,
+            "Arrival": 2,
+            "Archive": 3,
+            "Unknown": 4,
+        }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':
+                app['models'].sort(key=lambda x: ordering[x['object_name']])
                 flight = app_list.pop(idx)
                 app_list.insert(0, flight)
                 return app_list
