@@ -15,14 +15,15 @@ original_get_app_list = AdminSite.get_app_list
 
 class BoxInline(admin.StackedInline):
     model = Box
+    exclude = ('status',)
     extra = 0
 
 
 @admin.register(Flight)
 class FlightAdmin(admin.ModelAdmin):
     form = FlightModelForm
-    list_display = ('numeration', 'created_at', 'code', 'quantity', 'cube', 'density', 'consumption',
-                    'status', 'sum_weight')
+    list_display = ('numeration', 'code', 'quantity', 'sum_weight', 'cube', 'density', 'consumption',
+                    'status', 'created_at', )
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
     search_fields = ['box__code', 'box__base_parcel__code', 'code']
     inlines = [BoxInline]
@@ -173,6 +174,7 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
 
 class BaseParcelInline(admin.StackedInline):
     model = BaseParcel
+    exclude = ('status',)
     extra = 0
 
 
@@ -221,8 +223,8 @@ class BoxAdminResource(resources.ModelResource):
 
 @admin.register(Box)
 class BoxAdmin(ImportExportModelAdmin):
-    list_display = ('created_at', 'code', 'track_code', 'consumption', 'sum_weight',)
-    exclude = ('box',)
+    list_display = ('code', 'track_code', 'sum_weight', 'consumption', 'created_at',)
+    exclude = ('box', 'status',)
     resource_class = BoxAdminResource
     inlines = [BaseParcelInline]
     change_list_template = "admin/box_change_list.html"
@@ -262,8 +264,8 @@ class AdminSiteExtension(AdminSite):
             "Box": 1,
             "Flight": 2,
             "Arrival": 3,
-            "Archive": 4,
-            "Unknown": 5,
+            "Unknown": 4,
+            "Archive": 5,
         }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':
@@ -278,7 +280,8 @@ AdminSite.get_app_list = AdminSiteExtension.get_app_list
 
 @admin.register(BaseParcel)
 class BaseParselAdmin(admin.ModelAdmin):
-    list_display = ('code', 'track_code', 'weight', 'width', 'length', 'height')
+    list_display = ('code', 'track_code', 'weight', 'width', 'length', 'height', 'created_at',)
+    exclude = ('status',)
     change_list_template = "admin/box_parcel_change_list.html"
 
     def get_queryset(self, request):
