@@ -4,6 +4,7 @@ from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 
 import nested_admin
+from rangefilter.filters import DateTimeRangeFilter
 
 from flight.forms import FlightModelForm, ArrivalModelForm
 from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
@@ -26,6 +27,8 @@ class FlightAdmin(admin.ModelAdmin):
                     'status', 'created_at', )
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
     search_fields = ['box__code', 'box__base_parcel__code', 'code']
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+
     inlines = [BoxInline]
 
     def get_queryset(self, request):
@@ -104,7 +107,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     )
     search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)
     date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter),)
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = [BoxNestedInline]
 
     def get_queryset(self, request):
@@ -131,7 +134,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
     )
     search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)
     date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter),)
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = [ArchiveBoxNestedInline]
     exclude = ('is_archive',)
     readonly_fields = (
@@ -160,7 +163,7 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
     list_display = ('code', 'track_code', 'weight', 'width', 'length', 'height')
     search_fields = ('code',)
     date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter),)
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
 
     def get_queryset(self, request):
         return Unknown.objects.filter(status=7)
@@ -282,6 +285,7 @@ AdminSite.get_app_list = AdminSiteExtension.get_app_list
 class BaseParselAdmin(admin.ModelAdmin):
     list_display = ('code', 'track_code', 'weight', 'width', 'length', 'height', 'created_at',)
     exclude = ('status',)
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter),)
     change_list_template = "admin/box_parcel_change_list.html"
 
     def get_queryset(self, request):
