@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 12:49+0600\n"
+"POT-Creation-Date: 2023-04-06 14:00+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -341,133 +341,186 @@ msgstr "包裹不存在"
 msgid "Hash sums do not match"
 msgstr "哈希和不匹配"
 
-#: core/settings.py:137
+#: core/settings.py:146
 msgid "Simplified Chinese"
 msgstr "简体中文"
+
+#: flight/admin.py:37 flight/admin.py:249 flight/models.py:20
+#: flight/models.py:64 flight/models.py:89
+msgid "Вес"
+msgstr "重量"
+
+#: flight/admin.py:115
+#, fuzzy
+#| msgid "Посылка доставлена"
+msgid "Коробки по прибытии"
+msgstr "包裹交付"
+
+#: flight/admin.py:120
+#, fuzzy
+#| msgid "Дата создания"
+msgid "Вес (роздан)"
+msgstr "创建日期"
 
 #: flight/apps.py:8
 msgid "Flights"
 msgstr "航班"
 
-#: flight/models.py:8
+#: flight/choices.py:7
 msgid "Формируется"
 msgstr "形成"
 
-#: flight/models.py:9
+#: flight/choices.py:8
 msgid "В пути"
 msgstr "我在途中"
 
-#: flight/models.py:10
+#: flight/choices.py:9
 msgid "Прибыл"
 msgstr "到达的"
 
-#: flight/models.py:15
+#: flight/choices.py:10
+#, fuzzy
+#| msgid "Формируется"
+msgid "Сортируется"
+msgstr "形成"
+
+#: flight/choices.py:11
+#, fuzzy
+#| msgid "Формируется"
+msgid "Раздается"
+msgstr "形成"
+
+#: flight/choices.py:12
+msgid "Роздан"
+msgstr "罗兹丹"
+
+#: flight/choices.py:13 flight/models.py:27
+msgid "Архив"
+msgstr "档案"
+
+#: flight/choices.py:14 flight/models.py:114
+msgid "Неизвестные заказы"
+msgstr "未知订单"
+
+#: flight/models.py:8
 msgid "Дата создания"
 msgstr "创建日期"
 
-#: flight/models.py:16
+#: flight/models.py:9
 msgid "Дата изменения"
 msgstr "变更日期"
 
-#: flight/models.py:24
+#: flight/models.py:17
 msgid "Нумерация рейсов"
 msgstr "计数"
 
-#: flight/models.py:25 flight/models.py:50 flight/models.py:74
+#: flight/models.py:18 flight/models.py:62 flight/models.py:87
 msgid "Код"
 msgstr "代码"
 
-#: flight/models.py:26
+#: flight/models.py:19
 msgid "Количество мест (коробка)"
 msgstr "座位数（箱）"
 
-#: flight/models.py:27 flight/models.py:52 flight/models.py:76
-msgid "Вес"
-msgstr "重量"
-
-#: flight/models.py:28
+#: flight/models.py:21
 msgid "Куб"
 msgstr "立方体"
 
-#: flight/models.py:29
+#: flight/models.py:22
 msgid "Плотность"
 msgstr "密度"
 
-#: flight/models.py:30 flight/models.py:54
+#: flight/models.py:23 flight/models.py:66
 msgid "Расход"
 msgstr "消耗"
 
-#: flight/models.py:32
+#: flight/models.py:26 flight/models.py:69 flight/models.py:90
 msgid "Статус"
 msgstr "地位"
 
-#: flight/models.py:36
+#: flight/models.py:30
 #, fuzzy
 #| msgid "Рейсы"
 msgid "Рейс"
 msgstr "航班"
 
-#: flight/models.py:37
+#: flight/models.py:31
 msgid "Рейсы"
 msgstr "航班"
 
-#: flight/models.py:48
+#: flight/models.py:45
+msgid "Поступление"
+msgstr "收入"
+
+#: flight/models.py:46
+msgid "Поступления"
+msgstr "收入"
+
+#: flight/models.py:54
+msgid "Архив рейс"
+msgstr "计数"
+
+#: flight/models.py:55
+msgid "Архив рейсов"
+msgstr "计数"
+
+#: flight/models.py:60
 msgid "Рейс коробки"
 msgstr "飞行箱"
 
-#: flight/models.py:51 flight/models.py:75
+#: flight/models.py:63 flight/models.py:88
 msgid "Трек-Код"
 msgstr "跟踪代码"
 
-#: flight/models.py:53
+#: flight/models.py:65
 msgid "Цена"
 msgstr "价格"
 
-#: flight/models.py:55
+#: flight/models.py:67
 msgid "Сумма"
 msgstr "和"
 
-#: flight/models.py:56
+#: flight/models.py:68
 msgid "comment"
 msgstr "一条评论"
 
-#: flight/models.py:59
+#: flight/models.py:72
 msgid "box"
 msgstr "盒子"
 
-#: flight/models.py:60
+#: flight/models.py:73
 msgid "boxes"
 msgstr "盒子"
 
-#: flight/models.py:72
+#: flight/models.py:85
 #, fuzzy
 #| msgid "Посылка доставлена"
 msgid "Коробка посылки"
 msgstr "包裹交付"
 
-#: flight/models.py:79
+#: flight/models.py:93
 msgid "Ширина"
 msgstr "宽度"
 
-#: flight/models.py:80
+#: flight/models.py:94
 msgid "Длина"
 msgstr "长度"
 
-#: flight/models.py:81
+#: flight/models.py:95
 msgid "Высота"
 msgstr "高度"
 
-#: flight/models.py:84
-#, fuzzy
-#| msgid "parcel"
+#: flight/models.py:98
 msgid "base_parcel"
 msgstr "包裹"
 
-#: flight/models.py:85
-#, fuzzy
-#| msgid "parcel"
+#: flight/models.py:99
 msgid "base_parcels"
 msgstr "包裹"
+
+#: flight/models.py:113
+msgid "Неизвестный заказ"
+msgstr "未知订单"
 
 #: operation/admin.py:141 operation/models.py:335
 msgid "payment type"
@@ -903,6 +956,22 @@ msgstr "更改密码"
 #: template/admin/base_site.html:31
 msgid "Log out"
 msgstr "登出"
+
+#: template/admin/box_change_list.html:31
+msgid "Добавить рейс"
+msgstr "添加航班"
+
+#: template/admin/box_change_list.html:46
+msgid "Добавить в рейс"
+msgstr "添加到航班"
+
+#: template/admin/box_parcel_change_list.html:31
+msgid "Добавить Коробка"
+msgstr "飞行箱"
+
+#: template/admin/box_parcel_change_list.html:46
+msgid "Добавить в коробку"
+msgstr "添加到框"
 
 #, fuzzy
 #~| msgid "Flights"
