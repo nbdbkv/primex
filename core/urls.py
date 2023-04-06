@@ -19,9 +19,7 @@ urlpatterns = [
     path("makePayment", views.make_payment),
     path("webpush/", include("webpush.urls")),
     path('m/', include('flight.urls')),
-    path('__debug__/', include('debug_toolbar.urls')),
-
-              ] + yasg
+    ] + yasg
 
 urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),

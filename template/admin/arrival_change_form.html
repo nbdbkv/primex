@@ -1,31 +1,8 @@
-{% extends "admin/base_site.html" %}
+{% extends "admin/change_form.html" %}
 {% load i18n admin_urls static admin_modify %}
-
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">{% endblock %}
-
-{% block content %}<div id="content-main">
-{% block object-tools %}
-{% if change %}{% if not is_popup %}
-  <ul class="object-tools">
-    {% block object-tools-items %}
-      {% change_form_object_tools %}
-    {% endblock %}
-  </ul>
-{% endif %}{% endif %}
-{% endblock %}
-<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
 
 {% block field_sets %}
 {% for fieldset in adminform %}
   {% include "admin/arrival_fieldset.html" %}
 {% endfor %}
-{% endblock %}
-
-{% block inline_field_sets %}
-{% for inline_admin_formset in inline_admin_formsets %}
-    {% include inline_admin_formset.opts.template %}
-{% endfor %}
-{% endblock %}
-
-</form>
 {% endblock %}

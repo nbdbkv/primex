@@ -267,7 +267,6 @@ class BoxAdmin(ImportExportModelAdmin):
 
     @admin.display(description=_('Вес'))
     def sum_weight(self, obj):
-        print(obj)
         weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
 
