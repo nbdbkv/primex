@@ -99,11 +99,27 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         return False
 
     def save_model(self, request, obj, form, change):
+        super(ArrivalAdmin, self).save_model(request, obj, form, change)
         status = form.data.get('status')
-        if status == '6':
+        if status == '5':
             obj.is_archive = True
             obj.save()
-        super(ArrivalAdmin, self).save_model(request, obj, form, change)
+            box_index = 0
+            base_parcel_index = 0
+            for key, value in form.data.items():
+                if key == f'box-{box_index}-status':
+                    if value != '5':
+                        box = Box.objects.get(id=int(form.data.get(f'box-{box_index}-id')))
+                        box.status = 7
+                        box.save()
+                        box_index += 1
+                if key == f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-status':
+                    if value != '5':
+                        base_parcel = BaseParcel.objects.get(
+                            id=int(form.data.get(f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-id')))
+                        base_parcel.status = 7
+                        base_parcel.save()
+                        base_parcel_index += 1
 
 
 @admin.register(Archive)
@@ -120,7 +136,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
         'numeration', 'created_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',)
 
     def get_queryset(self, request):
-        return Arrival.objects.filter(status=6)
+        return Archive.objects.filter(is_archive=True)
 
     def has_add_permission(self, request):
         return False
@@ -209,7 +225,6 @@ class BoxAdmin(ImportExportModelAdmin):
     resource_class = BoxAdminResource
     inlines = [BaseParcelInline]
     change_list_template = "admin/box_change_list.html"
-
 
     def save_model(self, request, obj, form, change):
         a = 0

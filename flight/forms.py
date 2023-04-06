@@ -19,7 +19,7 @@ class ArrivalModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ArrivalModelForm, self).__init__(*args, **kwargs)
-        self.fields["status"].widget = forms.Select(choices=get_status()[2:7])
+        self.fields["status"].widget = forms.Select(choices=get_status()[2:6])
 
     class Meta:
         model = Arrival

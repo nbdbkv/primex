@@ -10,7 +10,6 @@ class StatusChoices(models.IntegerChoices):
     SORTING = 3, _('Сортируется')
     DISTRIBUTING = 4, _('Раздается')
     DISTRIBUTED = 5, _('Роздан')
-    ARCHIVE = 6, _('Архив')
     UNKNOWN = 7, _('Неизвестные заказы')
 
 
