@@ -25,17 +25,25 @@
 {% endblock %}
 
 {% block object-tools %}
-    {{ block.super }}
+    <ul class="object-tools">
+        {% block object-tools-items %}
+            <li>
+                <a href="/admin/flight/flight/add/" class="addlink">{% translate 'Добавить Рейс' %}</a>
+            </li>
+            {% change_list_object_tools %}
+        {% endblock %}
+    </ul>
     {% load i18n %}
     <form action="/m/" method="post">
         {% csrf_token %}
         <select name="flights" id="fl">
+            <option value="" selected="">---------</option>
             {% for flight in flights %}
                 <option value="{{ flight.id }}">{{ flight.numeration }}</option>
             {% endfor %}
         </select>
 
-        <button type="submit" class="button">Добавить в рейс</button>
+        <button type="submit" class="button" style="padding:8px;margin:5px">{% translate 'Добавить в рейс' %}</button>
         {% result_list cl %}
     </form>
 
