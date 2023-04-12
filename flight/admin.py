@@ -112,7 +112,21 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    readonly_fields = ('numeration', 'code', 'quantity', 'sum_boxes', 'weight', 'sum_parcel_weights',)
+    fields = [readonly_fields, 'status']
     inlines = [BoxNestedInline]
+    change_form_template = "admin/arrival_change_form.html"
+
+    @admin.display(description=_('Коробки по прибытии'))
+    def sum_boxes(self, obj):
+        boxes = Box.objects.filter(flight_id=obj.id).count()
+        return boxes
+
+    @admin.display(description=_('Вес (роздан)'))
+    def sum_parcel_weights(self, obj):
+        weight = BaseParcel.objects.filter(box__flight_id=obj.id, status=5).aggregate(Sum('weight'))
+        return weight['weight__sum']
+
 
     def get_queryset(self, request):
         return Arrival.objects.filter(status__in=[2, 3, 4, 5])
@@ -149,8 +163,14 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
                             p.status = 7
                             p.save()
                         box_index += 1
+
         else:
             self.change_statuses(obj, status)
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        return self.changeform_view(request, object_id, form_url, extra_context)
+
+
 @admin.register(Archive)
 class ArchiveAdmin(nested_admin.NestedModelAdmin):
     list_display = (

@@ -18,8 +18,8 @@ urlpatterns = [
     path("getRequisite/<str:requisite>/", views.check_requisite),
     path("makePayment", views.make_payment),
     path("webpush/", include("webpush.urls")),
-    path('m/', include('flight.urls'))
-] + yasg
+    path('m/', include('flight.urls')),
+    ] + yasg
 
 urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
