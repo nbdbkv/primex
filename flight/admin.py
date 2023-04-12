@@ -2,11 +2,13 @@ from django.contrib import admin
 from django.contrib.admin import AdminSite, DateFieldListFilter
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
+from django.urls import path
+from django.db.models import Q
 
 import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
 
-from flight.forms import FlightModelForm, ArrivalModelForm
+from flight.forms import FlightModelForm, ArrivalModelForm, MyInlineForm
 from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
@@ -18,6 +20,7 @@ class BoxInline(admin.StackedInline):
     model = Box
     exclude = ('status',)
     extra = 0
+
 
 
 @admin.register(Flight)
@@ -77,9 +80,10 @@ class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
 class BoxNestedInline(nested_admin.NestedTabularInline):
     model = Box
     readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment',)
-    fields = (readonly_fields, 'status',)
+    fields = (readonly_fields, 'status')
     inlines = [BaseParcelNestedInline]
 
+    
     def has_add_permission(self, request, obj):
         return False
 
@@ -119,30 +123,34 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+    def change_statuses(self, obj, status):
+        for box in obj.box.filter(~Q(status=int(status))):
+            box.status = int(status)
+            box.save()
+            for p in box.base_parcel.filter(~Q(status=int(status))):
+                p.status = int(status)
+                p.save()
+
     def save_model(self, request, obj, form, change):
         super(ArrivalAdmin, self).save_model(request, obj, form, change)
         status = form.data.get('status')
+
         if status == '5':
             obj.is_archive = True
             obj.save()
             box_index = 0
-            base_parcel_index = 0
             for key, value in form.data.items():
                 if key == f'box-{box_index}-status':
                     if value != '5':
                         box = Box.objects.get(id=int(form.data.get(f'box-{box_index}-id')))
                         box.status = 7
                         box.save()
+                        for p in box.base_parcel.filter(~Q(status=5)):
+                            p.status = 7
+                            p.save()
                         box_index += 1
-                if key == f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-status':
-                    if value != '5':
-                        base_parcel = BaseParcel.objects.get(
-                            id=int(form.data.get(f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-id')))
-                        base_parcel.status = 7
-                        base_parcel.save()
-                        base_parcel_index += 1
-
-
+        else:
+            self.change_statuses(obj, status)
 @admin.register(Archive)
 class ArchiveAdmin(nested_admin.NestedModelAdmin):
     list_display = (
