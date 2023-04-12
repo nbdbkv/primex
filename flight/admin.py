@@ -8,7 +8,7 @@ from django.db.models import Q
 import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
 
-from flight.forms import FlightModelForm, ArrivalModelForm, MyInlineForm
+from flight.forms import FlightModelForm, ArrivalModelForm
 from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
