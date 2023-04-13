@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.admin import AdminSite, DateFieldListFilter
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
+from django.urls import path
+from django.db.models import Q
 
 import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
@@ -74,11 +76,11 @@ class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
         return False
 
 
-class BoxNestedInline(admin.TabularInline):
+class BoxNestedInline(nested_admin.NestedTabularInline):
     model = Box
     readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment',)
     fields = (readonly_fields, 'status',)
-    template = 'admin/tabular.html'
+    inlines = [BaseParcelNestedInline]
 
     def has_add_permission(self, request, obj):
         return False
@@ -110,7 +112,6 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     readonly_fields = ('numeration', 'code', 'quantity', 'sum_boxes', 'weight', 'sum_parcel_weights',)
     fields = [readonly_fields, 'status']
-    # inlines = [BoxNestedInline]
     change_form_template = "admin/arrival_change_form.html"
 
     @admin.display(description=_('Коробки по прибытии'))
@@ -133,6 +134,14 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+    def change_statuses(self, obj, status):
+        for box in obj.box.filter(~Q(status=int(status))):
+            box.status = int(status)
+            box.save()
+            for p in box.base_parcel.filter(~Q(status=int(status))):
+                p.status = int(status)
+                p.save()
+
     def save_model(self, request, obj, form, change):
         super(ArrivalAdmin, self).save_model(request, obj, form, change)
         box_index = 0
@@ -153,49 +162,6 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
             base_parcel.status = 7
             base_parcel.save()
             base_parcel_index += 1
-
-        else:
-            pass
-            # self.change_statuses(obj, obj.status)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        # if status == '5':
-        #
-        #     box_index = 0
-        #     base_parcel_index = 0
-        #     for key, value in form.data.items():
-        #         if key == f'box-{box_index}-status':
-        #             if value != '5':
-        #                 box = Box.objects.get(id=int(form.data.get(f'box-{box_index}-id')))
-        #                 box.status = 7
-        #                 box.save()
-        #                 box_index += 1
-        #         if key == f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-status':
-        #             if value != '5':
-        #                 base_parcel = BaseParcel.objects.get(
-        #                     id=int(form.data.get(f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-id')))
-        #                 base_parcel.status = 7
-        #                 base_parcel.save()
-        #                 base_parcel_index += 1
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         return self.changeform_view(request, object_id, form_url, extra_context)

@@ -49,4 +49,7 @@
 {% endblock %}
 
 
-
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script src="{% static 'flight/arrival.js' %}"></script>
+{% endblock %}
