@@ -1,10 +1,3 @@
-{% extends "admin/change_form.html" %}
-{% load i18n admin_urls static admin_modify %}
-
-{% block field_sets %}
-{% for fieldset in adminform %}
-{% include "admin/arrival_fieldset.html" %}
-{% endfor %}
 <div class="inline-group">
   <div class="inline-related">
     <div class="search-box">
@@ -12,13 +5,13 @@
       <input type="text" id="id_search_term" name="search_term">
       <button type="button" id="id_search_btn">Search</button>
     </div>
-    <br>
     <table width="100%" class="inline {{ inline_admin_formset.opts.model_name }}-inline" id="{{ inline_admin_formset.formset.prefix }}-group">
       <tbody>
       </tbody>
     </table>
   </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(function() {
@@ -33,20 +26,4 @@
         });
       });
     });
-    $(function() {
-      $('#id_search_btn').ready(function() {
-        var search_term = $('#id_search_term').val();
-        var url = '{% url "my_view" %}?flight={{object_id}}&?q=' + search_term;
-        $.ajax({
-          url: url,
-          success: function(data) {
-            $('#{{ inline_admin_formset.formset.prefix }}-group tbody').html(data);
-          }
-        });
-      });
-    });
 </script>
-{% endblock %}
-
-
-

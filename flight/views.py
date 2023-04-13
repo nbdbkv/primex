@@ -23,3 +23,23 @@ def add_to_box(request):
         parcel.box_id = bx_obj.id
         parcel.save()
     return redirect('admin:flight_box_changelist')
+
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from flight.models import Box
+
+
+def my_view(request):
+    search_term = request.GET.get('q')
+    flight = request.GET.get('flight')
+    queryset = Box.objects.filter(flight_id=flight)
+    if search_term:
+        queryset = queryset.filter(code__icontains=search_term)
+    all = Box.objects.filter(flight_id=flight)
+    context = {
+        'qs': queryset,
+        'all': all
+    }
+    html = render_to_string('my_formset2.html', context, request=request)
+    return HttpResponse(html)

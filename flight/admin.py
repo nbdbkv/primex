@@ -74,11 +74,11 @@ class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
         return False
 
 
-class BoxNestedInline(nested_admin.NestedTabularInline):
+class BoxNestedInline(admin.TabularInline):
     model = Box
     readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment',)
     fields = (readonly_fields, 'status',)
-    inlines = [BaseParcelNestedInline]
+    template = 'admin/tabular.html'
 
     def has_add_permission(self, request, obj):
         return False
@@ -110,7 +110,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     readonly_fields = ('numeration', 'code', 'quantity', 'sum_boxes', 'weight', 'sum_parcel_weights',)
     fields = [readonly_fields, 'status']
-    inlines = [BoxNestedInline]
+    # inlines = [BoxNestedInline]
     change_form_template = "admin/arrival_change_form.html"
 
     @admin.display(description=_('Коробки по прибытии'))
@@ -135,26 +135,67 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super(ArrivalAdmin, self).save_model(request, obj, form, change)
-        status = form.data.get('status')
-        if status == '5':
+        box_index = 0
+        base_parcel_index = 0
+        for i in request.POST.getlist('boxes'):
+            box = Box.objects.get(id=int(eval(i)['box']))
+            box.status = int(eval(i)['status'])
+            box.save()
+        if obj.status == 5:
             obj.is_archive = True
             obj.save()
-            box_index = 0
-            base_parcel_index = 0
-            for key, value in form.data.items():
-                if key == f'box-{box_index}-status':
-                    if value != '5':
-                        box = Box.objects.get(id=int(form.data.get(f'box-{box_index}-id')))
-                        box.status = 7
-                        box.save()
-                        box_index += 1
-                if key == f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-status':
-                    if value != '5':
-                        base_parcel = BaseParcel.objects.get(
-                            id=int(form.data.get(f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-id')))
-                        base_parcel.status = 7
-                        base_parcel.save()
-                        base_parcel_index += 1
+            box = Box.objects.get(id=int(form.data.get(f'box-{box_index}-id')))
+            box.status = 7
+            box.save()
+            box_index += 1
+            base_parcel = BaseParcel.objects.get(
+                id=int(form.data.get(f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-id')))
+            base_parcel.status = 7
+            base_parcel.save()
+            base_parcel_index += 1
+
+        else:
+            pass
+            # self.change_statuses(obj, obj.status)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # if status == '5':
+        #
+        #     box_index = 0
+        #     base_parcel_index = 0
+        #     for key, value in form.data.items():
+        #         if key == f'box-{box_index}-status':
+        #             if value != '5':
+        #                 box = Box.objects.get(id=int(form.data.get(f'box-{box_index}-id')))
+        #                 box.status = 7
+        #                 box.save()
+        #                 box_index += 1
+        #         if key == f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-status':
+        #             if value != '5':
+        #                 base_parcel = BaseParcel.objects.get(
+        #                     id=int(form.data.get(f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-id')))
+        #                 base_parcel.status = 7
+        #                 base_parcel.save()
+        #                 base_parcel_index += 1
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         return self.changeform_view(request, object_id, form_url, extra_context)

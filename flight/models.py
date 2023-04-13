@@ -11,6 +11,9 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
+    def get_statuses(self):
+        return {key: value for (key, value) in StatusChoices.choices[2:]}
+
 
 class Flight(TimeStampedModel):
     # Рейс
