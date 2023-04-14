@@ -6,18 +6,19 @@
 {% include "admin/arrival_fieldset.html" %}
 {% endfor %}
 <div class="inline-group">
-  <div class="inline-related">
-    <div class="search-box">
-      <label for="id_search_term">Search:</label>
-      <input type="text" id="id_search_term" name="search_term">
-      <button type="button" id="id_search_btn">Search</button>
+    <div class="inline-related">
+        <div class="search-box">
+            <label for="id_search_term">{% translate 'Поиск : ' %}</label>
+            <input type="text" id="id_search_term" name="search_term">
+            <button type="button" id="id_search_btn">{% translate 'Поиск' %}</button>
+        </div>
+        <br>
+        <table width="100%" class="inline {{ inline_admin_formset.opts.model_name }}-inline"
+               id="{{ inline_admin_formset.formset.prefix }}-group">
+            <tbody>
+            </tbody>
+        </table>
     </div>
-    <br>
-    <table width="100%" class="inline {{ inline_admin_formset.opts.model_name }}-inline" id="{{ inline_admin_formset.formset.prefix }}-group">
-      <tbody>
-      </tbody>
-    </table>
-  </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -45,9 +46,9 @@
         });
       });
     });
+
 </script>
 {% endblock %}
-
 
 {% block admin_change_form_document_ready %}
 {{ block.super }}

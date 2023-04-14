@@ -134,34 +134,40 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    def change_statuses(self, obj, status):
-        for box in obj.box.filter(~Q(status=int(status))):
-            box.status = int(status)
+    def if_change(self, obj):
+        if obj.status == 5:
+            obj.is_archive = True
+            obj.save()
+            for box in obj.box.filter(~Q(status=obj.status)):
+                box.status = 7
+                box.save()
+                for p in box.base_parcel.filter(~Q(status=obj.status)):
+                    p.status = 7
+                    p.save()
+        else:
+            self.change_statuses(obj)
+
+    def change_statuses(self, obj):
+        for box in obj.box.filter(~Q(status=obj.status)):
+            box.status = obj.status
             box.save()
-            for p in box.base_parcel.filter(~Q(status=int(status))):
-                p.status = int(status)
+            for p in box.base_parcel.filter(~Q(status=obj.status)):
+                p.status = obj.status
                 p.save()
 
     def save_model(self, request, obj, form, change):
         super(ArrivalAdmin, self).save_model(request, obj, form, change)
-        box_index = 0
-        base_parcel_index = 0
-        for i in request.POST.getlist('boxes'):
-            box = Box.objects.get(id=int(eval(i)['box']))
-            box.status = int(eval(i)['status'])
-            box.save()
-        if obj.status == 5:
-            obj.is_archive = True
-            obj.save()
-            box = Box.objects.get(id=int(form.data.get(f'box-{box_index}-id')))
-            box.status = 7
-            box.save()
-            box_index += 1
-            base_parcel = BaseParcel.objects.get(
-                id=int(form.data.get(f'box-{base_parcel_index}-base_parcel-{base_parcel_index}-id')))
-            base_parcel.status = 7
-            base_parcel.save()
-            base_parcel_index += 1
+        if form.has_changed():
+            self.if_change(obj)
+        else:
+            for i in request.POST.getlist('boxes'):
+                box = Box.objects.get(id=int(eval(i)['box']))
+                box.status = int(eval(i)['status'])
+                box.save()
+            for i in request.POST.getlist('base_parcels'):
+                base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
+                base_parcel.status = int(eval(i)['status'])
+                base_parcel.save()
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         return self.changeform_view(request, object_id, form_url, extra_context)
