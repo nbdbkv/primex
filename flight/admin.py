@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib.admin import AdminSite, DateFieldListFilter
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
-from django.urls import path
 from django.db.models import Q
 
 import nested_admin
@@ -123,7 +122,6 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     def sum_parcel_weights(self, obj):
         weight = BaseParcel.objects.filter(box__flight_id=obj.id, status=5).aggregate(Sum('weight'))
         return weight['weight__sum']
-
 
     def get_queryset(self, request):
         return Arrival.objects.filter(status__in=[2, 3, 4, 5])
@@ -278,6 +276,11 @@ class BoxAdmin(ImportExportModelAdmin):
     inlines = [BaseParcelInline]
     change_list_template = "admin/box_change_list.html"
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "flight":
+            kwargs["queryset"] = Flight.objects.filter(status=0)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     @admin.display(description=_('Вес'))
     def sum_weight(self, obj):
         weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
@@ -333,6 +336,11 @@ class BaseParselAdmin(admin.ModelAdmin):
     exclude = ('status',)
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter),)
     change_list_template = "admin/box_parcel_change_list.html"
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "box":
+            kwargs["queryset"] = Box.objects.filter(status=None)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def get_queryset(self, request):
         qs = self.model._default_manager.get_queryset()

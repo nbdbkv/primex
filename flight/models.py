@@ -19,7 +19,7 @@ class Flight(TimeStampedModel):
     # Рейс
     numeration = models.CharField(db_index=True, max_length=64, verbose_name=_('Нумерация рейсов'))
     code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код'))
-    quantity = models.PositiveIntegerField(verbose_name=_('Количество коробки'))
+    quantity = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Количество коробки'),)
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
     cube = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Куб'), null=True, blank=True)
     density = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Плотность'), null=True, blank=True)
