@@ -80,13 +80,13 @@
     </thead>
     <tbody>
     <tr>
-      <td>{{ item.code }}</td>
-      <td>{{ item.track_code }}</td>
-      <td>{{ item.weight }}</td>
-      <td>{{ item.price }}</td>
-      <td>{{ item.consumption }}</td>
-      <td>{{ item.sum }}</td>
-      <td>{{ item.comment }}</td>
+      <td>{% if item.code %}{{ item.code }}{% else %}-{% endif %}</td>
+      <td>{% if item.track_code %}{{ item.track_code }}{% else %}-{% endif %}</td>
+      <td>{% if item.weight %}{{ item.weight }}{% else %}-{% endif %}</td>
+      <td>{% if item.price %}{{ item.price }}{% else %}-{% endif %}</td>
+      <td>{% if item.consumption %}{{ item.consumption }}{% else %}-{% endif %}</td>
+      <td>{% if item.sum %}{{ item.sum }}{% else %}-{% endif %}</td>
+      <td>{% if item.comment %}{{ item.comment }}{% else %}-{% endif %}</td>
       <td>
         <select name="boxes" id="box_{{ item.id }}">
           {% for key, value in item.get_statuses.items %}
@@ -115,15 +115,15 @@
       </thead>
       <tbody>
       <tr>
-        <td>{{ child.code }}</td>
-        <td>{{ child.track_code }}</td>
-        <td>{{ child.weight }}</td>
-        <td>{{ child.width }}</td>
-        <td>{{ child.length }}</td>
-        <td>{{ child.height }}</td>
+        <td>{% if child.code %}{{ child.code }}{% else %}-{% endif %}</td>
+        <td>{% if child.track_code %}{{ child.track_code }}{% else %}-{% endif %}</td>
+        <td>{% if child.weight %}{{ child.weight }}{% else %}-{% endif %}</td>
+        <td>{% if child.width %}{{ child.width }}{% else %}-{% endif %}</td>
+        <td>{% if child.length %}{{ child.length }}{% else %}-{% endif %}</td>
+        <td>{% if child.height %}{{ child.height }}{% else %}-{% endif %}</td>
         <td>
           <select name="base_parcels" id="base_parcel_{{ child.id }}">
-            {% for key, value in item.get_statuses.items %}
+            {% for key, value in child.get_statuses.items %}
               <option value='{"base_parcel":"{{ child.id }}","status":"{{ key }}"}'
                       {% if child.get_status_display == value %} selected {% endif %}>{{ value }}</option>
             {% endfor %}
