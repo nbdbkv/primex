@@ -15,22 +15,28 @@ from import_export import resources, fields, widgets
 original_get_app_list = AdminSite.get_app_list
 
 
-class BoxInline(admin.StackedInline):
-    model = Box
+class BaseParcelFlightInline(nested_admin.NestedTabularInline):
+    model = BaseParcel
     exclude = ('status',)
     extra = 0
 
 
+class BoxFlightInline(nested_admin.NestedStackedInline):
+    model = Box
+    exclude = ('status',)
+    extra = 0
+    inlines = [BaseParcelFlightInline]
+
+
 @admin.register(Flight)
-class FlightAdmin(admin.ModelAdmin):
+class FlightAdmin(nested_admin.NestedModelAdmin):
     form = FlightModelForm
     list_display = ('numeration', 'code', 'quantity', 'sum_weight', 'cube', 'density', 'consumption',
                     'status', 'created_at', )
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
     search_fields = ['box__code', 'box__base_parcel__code', 'code']
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-
-    inlines = [BoxInline]
+    inlines = [BoxFlightInline]
 
     def get_queryset(self, request):
         return Flight.objects.filter(status__in=[0, 1, 2])
