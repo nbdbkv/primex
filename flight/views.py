@@ -1,4 +1,6 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
 
 from flight.models import Flight, Box, BaseParcel
 
@@ -23,11 +25,6 @@ def add_to_box(request):
         parcel.box_id = bx_obj.id
         parcel.save()
     return redirect('admin:flight_box_changelist')
-
-
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from flight.models import Box
 
 
 def my_view(request):
