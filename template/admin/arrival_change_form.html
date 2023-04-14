@@ -22,6 +22,17 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function disableOptions() {
+      let selects = document.querySelectorAll('select')
+      selects.forEach(function (select) {
+        let index = select.selectedIndex;
+        Array.from(select.options).forEach(function (opt, i) {
+          if (i < index) {
+            opt.disabled = true;
+          }
+        });
+      });
+    }
     $(function() {
       $('#id_search_btn').click(function() {
         var search_term = $('#id_search_term').val();
@@ -30,6 +41,7 @@
           url: url,
           success: function(data) {
             $('#{{ inline_admin_formset.formset.prefix }}-group tbody').html(data);
+            disableOptions();
           }
         });
       });
@@ -42,6 +54,7 @@
           url: url,
           success: function(data) {
             $('#{{ inline_admin_formset.formset.prefix }}-group tbody').html(data);
+              disableOptions();
           }
         });
       });
