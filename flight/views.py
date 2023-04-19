@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -30,13 +31,13 @@ def add_to_box(request):
 def my_view(request):
     search_term = request.GET.get('q')
     flight = request.GET.get('flight')
-    queryset = Box.objects.filter(flight_id=flight)
+    queryset = Box.objects.filter(Q(flight_id=flight) & ~Q(status=7))
     if search_term:
-        queryset = queryset.filter(code__icontains=search_term)
-    all = Box.objects.filter(flight_id=flight)
+        queryset = queryset.filter(
+            (Q(code__icontains=search_term) & ~Q(status=7)) |
+            (Q(base_parcel__code__icontains=search_term) & ~Q(base_parcel__status=7)))
     context = {
         'qs': queryset,
-        'all': all
     }
     html = render_to_string('my_formset2.html', context, request=request)
     return HttpResponse(html)

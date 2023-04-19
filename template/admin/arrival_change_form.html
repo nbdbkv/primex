@@ -36,7 +36,7 @@
     $(function() {
       $('#id_search_btn').click(function() {
         var search_term = $('#id_search_term').val();
-        var url = '{% url "my_view" %}?q=' + search_term;
+        var url = '{% url "my_view" %}?flight={{object_id}}&q=' + search_term;
         $.ajax({
           url: url,
           success: function(data) {
@@ -49,7 +49,7 @@
     $(function() {
       $('#id_search_btn').ready(function() {
         var search_term = $('#id_search_term').val();
-        var url = '{% url "my_view" %}?flight={{object_id}}&?q=' + search_term;
+        var url = '{% url "my_view" %}?flight={{object_id}}&q=' + search_term;
         $.ajax({
           url: url,
           success: function(data) {
