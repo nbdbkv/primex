@@ -130,7 +130,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         return weight['weight__sum']
 
     def get_queryset(self, request):
-        return Arrival.objects.filter(status__in=[2, 3, 4, 5])
+        return Arrival.objects.filter(status__in=[2, 3, 4])
 
     def has_add_permission(self, request):
         return False
