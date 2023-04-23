@@ -4,6 +4,17 @@ from .choices import get_status
 from .models import Flight, Arrival
 
 
+class BaseParcelForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {
+            'code': forms.TextInput(attrs={'size': '8'}),
+            'track_code': forms.TextInput(attrs={'size': '16'}),
+            'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
+            'consumption': forms.NumberInput(attrs={'style': 'width:8ch'}),
+        }
+
+
 class FlightModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
