@@ -1,13 +1,14 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite, DateFieldListFilter
-from django.db.models import Sum
+from django.db import models
+from django.db.models import Sum, Q
+from django.forms import Textarea
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Q
 
 import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
 
-from flight.forms import FlightModelForm, ArrivalModelForm
+from flight.forms import FlightModelForm, ArrivalModelForm, BaseParcelModelForm, FlightBoxModelForm
 from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
@@ -15,17 +16,22 @@ from import_export import resources, fields, widgets
 original_get_app_list = AdminSite.get_app_list
 
 
-class BaseParcelFlightInline(nested_admin.NestedTabularInline):
+class FlightBaseParcelInline(nested_admin.NestedTabularInline):
     model = BaseParcel
+    form = BaseParcelModelForm
     exclude = ('status',)
+    template = 'admin/flight_baseparcel_tabular.html'
     extra = 0
+    classes = ('collapse',)
 
 
-class BoxFlightInline(nested_admin.NestedStackedInline):
+class FlightBoxInline(nested_admin.NestedTabularInline):
     model = Box
+    form = FlightBoxModelForm
     exclude = ('status',)
+    template = 'admin/flight_box_tabular.html'
     extra = 0
-    inlines = [BaseParcelFlightInline]
+    inlines = (FlightBaseParcelInline,)
 
 
 @admin.register(Flight)
@@ -36,10 +42,10 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
     search_fields = ['box__code', 'box__base_parcel__code', 'code']
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    inlines = [BoxFlightInline]
+    inlines = (FlightBoxInline,)
 
     def get_queryset(self, request):
-        return Flight.objects.filter(status__in=[0, 1, 2])
+        return Flight.objects.filter(status__in=[0, 1])
 
     @admin.display(description=_('Вес'))
     def sum_weight(self, obj):
@@ -60,7 +66,7 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
 
 class BaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
-    readonly_fields = ('code', 'track_code', 'weight', 'width', 'length', 'height',)
+    readonly_fields = ('code', 'track_code', 'weight',)
     fields = (readonly_fields, 'status',)
 
     def has_add_permission(self, request, obj):
@@ -72,7 +78,7 @@ class BaseParcelNestedInline(nested_admin.NestedTabularInline):
 
 class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
-    readonly_fields = ('code', 'track_code', 'weight', 'width', 'length', 'height', 'status')
+    readonly_fields = ('code', 'track_code', 'weight', 'status',)
 
     def has_add_permission(self, request, obj):
         return False
@@ -85,7 +91,7 @@ class BoxNestedInline(nested_admin.NestedTabularInline):
     model = Box
     readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment',)
     fields = (readonly_fields, 'status',)
-    inlines = [BaseParcelNestedInline]
+    inlines = (BaseParcelNestedInline,)
 
     def has_add_permission(self, request, obj):
         return False
@@ -97,7 +103,7 @@ class BoxNestedInline(nested_admin.NestedTabularInline):
 class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
     model = Box
     readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment', 'status')
-    inlines = [ArchiveBaseParcelNestedInline]
+    inlines = (ArchiveBaseParcelNestedInline,)
 
     def has_add_permission(self, request, obj):
         return False
@@ -185,7 +191,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
     search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    inlines = [ArchiveBoxNestedInline]
+    inlines = (ArchiveBoxNestedInline,)
     exclude = ('is_archive',)
     readonly_fields = (
         'numeration', 'created_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',)
@@ -210,7 +216,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Unknown)
 class UnknownAdmin(nested_admin.NestedModelAdmin):
-    list_display = ('code', 'track_code', 'weight', 'width', 'length', 'height')
+    list_display = ('code', 'track_code', 'weight',)
     search_fields = ('code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
@@ -225,10 +231,12 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
         return False
 
 
-class BaseParcelInline(admin.StackedInline):
+class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
+    form = BaseParcelModelForm
     exclude = ('status',)
-    extra = 0
+    template = 'admin/box_baseparcel_tabular.html'
+    extra = 50
 
 
 class BoxAdminResource(resources.ModelResource):
@@ -276,21 +284,30 @@ class BoxAdminResource(resources.ModelResource):
 
 @admin.register(Box)
 class BoxAdmin(ImportExportModelAdmin):
-    list_display = ('code', 'track_code', 'sum_weight', 'consumption', 'created_at',)
+    list_display = ('code', 'track_code', 'sum_weight', 'consumption', 'sum_consumption', 'created_at',)
     exclude = ('box', 'status',)
     resource_class = BoxAdminResource
-    inlines = [BaseParcelInline]
+    inlines = (BaseParcelInline,)
     change_list_template = "admin/box_change_list.html"
+    change_form_template = "admin/box_change_form.html"
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': '3', 'cols': '34'})},
+    }
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "flight":
             kwargs["queryset"] = Flight.objects.filter(status=0)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    @admin.display(description=_('Вес'))
+    @admin.display(description=_('Вес посылок'))
     def sum_weight(self, obj):
         weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Доп. расход'))
+    def sum_consumption(self, obj):
+        consumption = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('consumption'))
+        return consumption['consumption__sum']
 
     def save_model(self, request, obj, form, change):
         a = 0
@@ -336,9 +353,9 @@ class AdminSiteExtension(AdminSite):
 AdminSite.get_app_list = AdminSiteExtension.get_app_list
 
 
-@admin.register(BaseParcel)
+# @admin.register(BaseParcel)
 class BaseParselAdmin(admin.ModelAdmin):
-    list_display = ('code', 'track_code', 'weight', 'width', 'length', 'height', 'created_at',)
+    list_display = ('code', 'track_code', 'weight', 'created_at',)
     exclude = ('status',)
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter),)
     change_list_template = "admin/box_parcel_change_list.html"

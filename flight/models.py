@@ -66,9 +66,9 @@ class Box(TimeStampedModel):
     track_code = models.CharField(max_length=64, verbose_name=_('Трек-Код'), null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
     price = models.CharField(max_length=64, verbose_name=_('Цена'), null=True, blank=True)
-    consumption = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Расход'), null=True, blank=True)
+    consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход'), null=True, blank=True)
     sum = models.CharField(max_length=64, verbose_name=_('Сумма'), null=True, blank=True)
-    comment = models.TextField(max_length=64, verbose_name=_('comment'), null=True, blank=True)
+    comment = models.TextField(max_length=128, verbose_name=_('comment'), null=True, blank=True)
     status = models.PositiveIntegerField(choices=get_status()[2:7], verbose_name=_('Статус'), null=True, blank=True,)
 
     class Meta:
@@ -90,12 +90,8 @@ class BaseParcel(TimeStampedModel):
     code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код'))
     track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'))
+    consumption = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Доп. расход'),)
     status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)
-
-    # Габариты
-    width = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Ширина'))
-    length = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Длина'))
-    height = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Высота'))
 
     class Meta:
         verbose_name = _('base_parcel')
