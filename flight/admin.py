@@ -314,7 +314,10 @@ class BoxAdmin(ImportExportModelAdmin):
     @admin.display(description=_('Общий вес'))
     def get_total_weight(self, obj):
         if obj.weight:
-            total_weight = obj.weight + self.sum_baseparcel_weight(obj)
+            if self.sum_baseparcel_weight(obj):
+                total_weight = obj.weight + self.sum_baseparcel_weight(obj)
+            else:
+                total_weight = obj.weight
         else:
             total_weight = None
         return total_weight
