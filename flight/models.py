@@ -84,15 +84,12 @@ class Box(TimeStampedModel):
         else:
             return ''
 
-    counter = 0
-
     def save(self, *args, **kwargs):
-        box = Box.objects.order_by('-id').first()
+        box = Box.objects.last()
         if box.created_at.day == datetime.now().day:
-            Box.counter += 1
+            self.number = box.number + 1
         else:
-            Box.counter = 1
-        self.number = Box.counter
+            self.number = 1
         return super(Box, self).save(*args, **kwargs)
 
 
