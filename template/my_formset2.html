@@ -64,7 +64,7 @@
     <body>
     {% for item in qs %}
         <div class="my_div">
-            <p>КОРОБКА {{ item.code }}</p>
+            <p style="display: flex; justify-content: space-between; align-items: center"><span>КОРОБКА {{ item.code }}</span> <button onclick="toggle_visibility('my_content')" id="toggle_btn" type="button">Показать</button></p>
             <table>
                 <thead>
                 <tr>
@@ -99,50 +99,72 @@
                 </tr>
                 </tbody>
             </table>
-            {% for child in item.base_parcel.all %}
-                {% if child.status == 7 %}
-                    <div></div>
-                {% else %}
-                    <div class="child">
-                        <p class="light">ПОСЫЛКА {{ child.code }}</p>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Код</th>
-                                <th>Трек-код</th>
-                                <th>Вес</th>
-                                <th>Ширина</th>
-                                <th>Длина</th>
-                                <th>Высота</th>
-                                <th>Статус</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>{% if child.code %}{{ child.code }}{% else %}-{% endif %}</td>
-                                <td>{% if child.track_code %}{{ child.track_code }}{% else %}-{% endif %}</td>
-                                <td>{% if child.weight %}{{ child.weight }}{% else %}-{% endif %}</td>
-                                <td>{% if child.width %}{{ child.width }}{% else %}-{% endif %}</td>
-                                <td>{% if child.length %}{{ child.length }}{% else %}-{% endif %}</td>
-                                <td>{% if child.height %}{{ child.height }}{% else %}-{% endif %}</td>
-                                <td>
-                                    <select name="base_parcels" id="base_parcel_{{ child.id }}">
-                                        {% for key, value in child.get_statuses.items %}
-                                            <option value='{"base_parcel":"{{ child.id }}","status":"{{ key }}"}'
-                                                    {% if child.get_status_display == value %}
-                                                    selected {% endif %}>{{ value }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
+            <div id="my_content" style="display: none;">
+                {% for child in item.base_parcel.all %}
+                    {% if child.status == 7 %}
+                        <div></div>
+                    {% else %}
+                        <div class="child">
+                            <p class="light">ПОСЫЛКА {{ child.code }}</p>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Код</th>
+                                    <th>Трек-код</th>
+                                    <th>Вес</th>
+                                    <th>Ширина</th>
+                                    <th>Длина</th>
+                                    <th>Высота</th>
+                                    <th>Статус</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{% if child.code %}{{ child.code }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.track_code %}{{ child.track_code }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.weight %}{{ child.weight }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.width %}{{ child.width }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.length %}{{ child.length }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.height %}{{ child.height }}{% else %}-{% endif %}</td>
+                                    <td>
+                                        <select name="base_parcels" id="base_parcel_{{ child.id }}">
+                                            {% for key, value in child.get_statuses.items %}
+                                                <option value='{"base_parcel":"{{ child.id }}","status":"{{ key }}"}'
+                                                        {% if child.get_status_display == value %}
+                                                        selected {% endif %}>{{ value }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
 
-            {% endfor %}
+                {% endfor %}
+            </div>
+
         </div>
     {% endfor %}
+
+
+    <!-- The JavaScript function to show/hide the content -->
+    <script>
+        function toggle_visibility(id) {
+            var element = document.getElementById(id);
+            const btn = document.getElementById('toggle_btn')
+            if (element.style.display == 'none') {
+                element.style.display = 'block';
+                btn.textContent = 'Скрыть'
+            } else {
+                element.style.display = 'none';
+                btn.textContent = 'Показать'
+
+            }
+        }
+    </script>
+
+
     </body>
     </html>
 {% endblock content %}
