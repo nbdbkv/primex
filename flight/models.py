@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -62,6 +64,7 @@ class Box(TimeStampedModel):
     # Коробка
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='box', verbose_name=_('Рейс коробки'),
                                null=True, blank=True)
+    number = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Номер'), )
     code = models.CharField(max_length=64, verbose_name=_('Код'), null=True, blank=True)
     track_code = models.CharField(max_length=64, verbose_name=_('Трек-Код'), null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
@@ -80,6 +83,17 @@ class Box(TimeStampedModel):
             return self.code
         else:
             return ''
+
+    counter = 0
+
+    def save(self, *args, **kwargs):
+        box = Box.objects.order_by('-id').first()
+        if box.created_at.day == datetime.now().day:
+            Box.counter += 1
+        else:
+            Box.counter = 1
+        self.number = Box.counter
+        return super(Box, self).save(*args, **kwargs)
 
 
 class BaseParcel(TimeStampedModel):

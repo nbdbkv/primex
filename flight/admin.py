@@ -284,8 +284,15 @@ class BoxAdminResource(resources.ModelResource):
 
 @admin.register(Box)
 class BoxAdmin(ImportExportModelAdmin):
-    list_display = ('code', 'track_code', 'sum_weight', 'consumption', 'sum_consumption', 'created_at',)
-    exclude = ('box', 'status',)
+    list_display = (
+        'number', 'created_at', 'sum_baseparcel_quantity', 'code', 'track_code', 'sum_baseparcel_weight', 'consumption',
+        'sum_baseparcel_consumption',
+    )
+    list_display_links = ('number', 'created_at', )
+    exclude = ('number', 'box', 'status',)
+    date_hierarchy = 'created_at'
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter),)
+    search_fields = ('base_parcel__code',)
     resource_class = BoxAdminResource
     inlines = (BaseParcelInline,)
     change_list_template = "admin/box_change_list.html"
@@ -299,13 +306,18 @@ class BoxAdmin(ImportExportModelAdmin):
             kwargs["queryset"] = Flight.objects.filter(status=0)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    @admin.display(description=_('Кол. посылок'))
+    def sum_baseparcel_quantity(self, obj):
+        quantity = BaseParcel.objects.filter(box_id=obj.id).count()
+        return quantity
+
     @admin.display(description=_('Вес посылок'))
-    def sum_weight(self, obj):
+    def sum_baseparcel_weight(self, obj):
         weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
 
     @admin.display(description=_('Доп. расход'))
-    def sum_consumption(self, obj):
+    def sum_baseparcel_consumption(self, obj):
         consumption = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('consumption'))
         return consumption['consumption__sum']
 
