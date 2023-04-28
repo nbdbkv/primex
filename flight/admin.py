@@ -285,8 +285,8 @@ class BoxAdminResource(resources.ModelResource):
 @admin.register(Box)
 class BoxAdmin(ImportExportModelAdmin):
     list_display = (
-        'number', 'created_at', 'sum_baseparcel_quantity', 'code', 'track_code', 'sum_baseparcel_weight', 'consumption',
-        'sum_baseparcel_consumption',
+        'number', 'created_at', 'code', 'track_code', 'sum_baseparcel_quantity', 'get_total_weight',
+        'sum_baseparcel_weight', 'get_total_consumption', 'sum_baseparcel_consumption',
     )
     list_display_links = ('number', 'created_at', )
     exclude = ('number', 'box', 'status',)
@@ -308,29 +308,34 @@ class BoxAdmin(ImportExportModelAdmin):
 
     @admin.display(description=_('Кол. посылок'))
     def sum_baseparcel_quantity(self, obj):
-        quantity = BaseParcel.objects.filter(box_id=obj.id).count()
-        return quantity
+        baseparcel_quantity = BaseParcel.objects.filter(box_id=obj.id).count()
+        return baseparcel_quantity
+
+    @admin.display(description=_('Общий вес'))
+    def get_total_weight(self, obj):
+        if obj.weight:
+            total_weight = obj.weight + self.sum_baseparcel_weight(obj)
+        else:
+            total_weight = None
+        return total_weight
 
     @admin.display(description=_('Вес посылок'))
     def sum_baseparcel_weight(self, obj):
-        weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
-        return weight['weight__sum']
+        baseparcel_weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
+        return baseparcel_weight['weight__sum']
 
-    @admin.display(description=_('Доп. расход'))
+    @admin.display(description=_('Общий расход $'))
+    def get_total_consumption(self, obj):
+        if obj.consumption:
+            total_consumption = obj.consumption + self.sum_baseparcel_consumption(obj)
+        else:
+            total_consumption = None
+        return total_consumption
+
+    @admin.display(description=_('Доп. расход $'))
     def sum_baseparcel_consumption(self, obj):
-        consumption = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('consumption'))
-        return consumption['consumption__sum']
-
-    def save_model(self, request, obj, form, change):
-        a = 0
-        sum = 0.0
-        for key, value in form.data.items():
-            if key == f'base_parcel-{a}-weight':
-                if value:
-                    sum += float(value)
-                    a += 1
-        obj.weight = sum
-        super(BoxAdmin, self).save_model(request, obj, form, change)
+        baseparcel_consumption = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('consumption'))
+        return baseparcel_consumption['consumption__sum']
 
     def get_queryset(self, request):
         qs = self.model._default_manager.get_queryset()
