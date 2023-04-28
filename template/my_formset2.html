@@ -64,7 +64,7 @@
     <body>
     {% for item in qs %}
         <div class="my_div">
-            <p style="display: flex; justify-content: space-between; align-items: center"><span>КОРОБКА {{ item.code }}</span> <button onclick="toggle_visibility('my_content')" id="toggle_btn" type="button">Показать</button></p>
+            <p style="display: flex; justify-content: space-between; align-items: center"><span>КОРОБКА {{ item.code }}</span> <button onclick="toggle_visibility('toggle_btn_{{ item.code }}', 'my_content_{{ item.code }}')" id="toggle_btn_{{ item.code }}" type="button">Показать</button></p>
             <table>
                 <thead>
                 <tr>
@@ -99,7 +99,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div id="my_content" style="display: none;">
+            <div id="my_content_{{ item.code }}" style="display: none;">
                 {% for child in item.base_parcel.all %}
                     {% if child.status == 7 %}
                         <div></div>
@@ -150,9 +150,9 @@
 
     <!-- The JavaScript function to show/hide the content -->
     <script>
-        function toggle_visibility(id) {
+        function toggle_visibility(btn_id, id) {
             var element = document.getElementById(id);
-            const btn = document.getElementById('toggle_btn')
+            const btn = document.getElementById(btn_id)
             if (element.style.display == 'none') {
                 element.style.display = 'block';
                 btn.textContent = 'Скрыть'
