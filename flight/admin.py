@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
 
-from flight.forms import FlightModelForm, ArrivalModelForm, BaseParcelModelForm, FlightBoxModelForm
+from flight.forms import FlightModelForm, ArrivalModelForm
 from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets

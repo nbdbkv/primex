@@ -104,8 +104,12 @@ class BaseParcel(TimeStampedModel):
     code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код'))
     track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'))
-    consumption = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Доп. расход'),)
     status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)
+
+    # Габариты
+    width = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Ширина'))
+    length = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Длина'))
+    height = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Высота'))
 
     class Meta:
         verbose_name = _('base_parcel')
