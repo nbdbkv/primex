@@ -295,7 +295,7 @@ class BoxAdmin(ImportExportModelAdmin):
     search_fields = ('base_parcel__code',)
     resource_class = BoxAdminResource
     inlines = (BaseParcelInline,)
-    change_list_template = "admin/box_change_list.html"
+    # change_list_template = "admin/box_change_list.html"
     change_form_template = "admin/box_change_form.html"
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': '3', 'cols': '34'})},
