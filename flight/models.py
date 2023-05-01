@@ -67,7 +67,7 @@ class Box(TimeStampedModel):
     number = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Номер'), )
     code = models.CharField(max_length=64, verbose_name=_('Код'), null=True, blank=True)
     track_code = models.CharField(max_length=64, verbose_name=_('Трек-Код'), null=True, blank=True)
-    weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
+    weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес с коробкой'), null=True, blank=True)
     price = models.CharField(max_length=64, verbose_name=_('Цена'), null=True, blank=True)
     consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход $'), null=True, blank=True)
     sum = models.CharField(max_length=64, verbose_name=_('Сумма'), null=True, blank=True)
@@ -84,14 +84,6 @@ class Box(TimeStampedModel):
         else:
             return ''
 
-    def save(self, *args, **kwargs):
-        box = Box.objects.last()
-        if box.created_at.day == datetime.now().day:
-            self.number = box.number + 1
-        else:
-            self.number = 1
-        return super(Box, self).save(*args, **kwargs)
-
 
 class BaseParcel(TimeStampedModel):
     # Посылка
@@ -99,7 +91,7 @@ class BaseParcel(TimeStampedModel):
                             verbose_name=_('Коробка посылки'),
                             null=True, blank=True)
     code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код'))
-    track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
+    track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код клиента'))
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'))
     consumption = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Доп. расход $'),)
     status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)

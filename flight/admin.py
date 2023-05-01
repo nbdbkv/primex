@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import admin
 from django.contrib.admin import AdminSite, DateFieldListFilter
 from django.db import models
@@ -37,15 +39,21 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
 @admin.register(Flight)
 class FlightAdmin(nested_admin.NestedModelAdmin):
     form = FlightModelForm
-    list_display = ('numeration', 'code', 'quantity', 'sum_weight', 'cube', 'density', 'consumption',
+    list_display = ('numeration', 'code', 'sum_box_quantity', 'sum_weight', 'cube', 'density', 'consumption',
                     'status', 'created_at', )
-    exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum')
+    list_display_links = ('numeration', 'code',)
+    exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum', 'quantity',)
     search_fields = ['box__code', 'box__base_parcel__code', 'code']
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = (FlightBoxInline,)
 
     def get_queryset(self, request):
         return Flight.objects.filter(status__in=[0, 1])
+
+    @admin.display(description=_('Кол. коробок'))
+    def sum_box_quantity(self, obj):
+        box_quantity = Box.objects.filter(flight_id=obj.id).count()
+        return box_quantity
 
     @admin.display(description=_('Вес'))
     def sum_weight(self, obj):
@@ -285,10 +293,10 @@ class BoxAdminResource(resources.ModelResource):
 @admin.register(Box)
 class BoxAdmin(ImportExportModelAdmin):
     list_display = (
-        'number', 'created_at', 'code', 'track_code', 'sum_baseparcel_quantity', 'get_total_weight',
-        'sum_baseparcel_weight', 'get_total_consumption', 'sum_baseparcel_consumption',
+        'number', 'created_at', 'code', 'track_code', 'sum_baseparcel_quantity', 'weight', 'get_total_consumption',
+        'sum_baseparcel_consumption',
     )
-    list_display_links = ('number', 'created_at', )
+    list_display_links = ('number', 'created_at', 'code', 'track_code',)
     exclude = ('number', 'box', 'status',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter),)
@@ -306,21 +314,19 @@ class BoxAdmin(ImportExportModelAdmin):
             kwargs["queryset"] = Flight.objects.filter(status=0)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    def save_model(self, request, obj, form, change):
+        if not change:
+            box = Box.objects.last()
+            if box.created_at.day == datetime.now().day:
+                obj.number = box.number + 1
+            else:
+                obj.number = 1
+        super(BoxAdmin, self).save_model(request, obj, form, change)
+
     @admin.display(description=_('Кол. посылок'))
     def sum_baseparcel_quantity(self, obj):
         baseparcel_quantity = BaseParcel.objects.filter(box_id=obj.id).count()
         return baseparcel_quantity
-
-    @admin.display(description=_('Общий вес'))
-    def get_total_weight(self, obj):
-        if obj.weight:
-            if self.sum_baseparcel_weight(obj):
-                total_weight = obj.weight + self.sum_baseparcel_weight(obj)
-            else:
-                total_weight = obj.weight
-        else:
-            total_weight = None
-        return total_weight
 
     @admin.display(description=_('Вес посылок'))
     def sum_baseparcel_weight(self, obj):
