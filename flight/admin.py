@@ -39,7 +39,7 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
 @admin.register(Flight)
 class FlightAdmin(nested_admin.NestedModelAdmin):
     form = FlightModelForm
-    list_display = ('numeration', 'code', 'sum_box_quantity', 'sum_weight', 'cube', 'density', 'consumption',
+    list_display = ('numeration', 'code', 'sum_box_quantity', 'sum_weight', 'cube', 'density', 'get_total_consumption',
                     'status', 'created_at', )
     list_display_links = ('numeration', 'code',)
     exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum', 'quantity',)
@@ -59,6 +59,17 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     def sum_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Общий расход в $'))
+    def get_total_consumption(self, obj):
+        boxes = Box.objects.filter(flight_id=obj.id)
+        boxes_consumption = boxes.aggregate(Sum('consumption'))
+        baseparcels_consumption = 0
+        for box in boxes:
+            baseparcels_per_box_consumption = BaseParcel.objects.filter(box_id=box.id).aggregate(Sum('consumption'))
+            baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
+        total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
+        return total_consumption
 
     def save_model(self, request, obj, form, change):
         a = 0
