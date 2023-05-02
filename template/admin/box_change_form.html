@@ -28,12 +28,12 @@
             {% endblock %}
             <div class="form-row">
                 <div>
-                    <label style="padding-right: 80px">Общий вес посылок:</label>
-                    <input type="text" class="vTextField" maxlength="64" id="total_weight" readonly>
+                    <label style="padding-right: 100px">Общий вес посылок:</label>
+                    <input style="text-align: right; width: 5%" type="text" class="vTextField" maxlength="64" id="total_weight" readonly>
                 </div>
                 <div>
-                    <label style="padding-right: 18px">Общий доп. расход посылок $:</label>
-                    <input type="text" class="vTextField" maxlength="64" id="total_consumption" readonly>
+                    <label style="padding-right: 28px">Общий доп. расход посылок в $:</label>
+                    <input style="text-align: right; width: 5%" type="text" class="vTextField" maxlength="64" id="total_consumption" readonly>
                 </div>
             </div>
             {% block field_sets %}

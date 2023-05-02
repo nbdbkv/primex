@@ -294,7 +294,7 @@ class BoxAdminResource(resources.ModelResource):
 class BoxAdmin(ImportExportModelAdmin):
     list_display = (
         'number', 'created_at', 'code', 'track_code', 'sum_baseparcel_quantity', 'weight', 'get_total_consumption',
-        'sum_baseparcel_consumption',
+        'sum_baseparcel_consumption', 'sum',
     )
     list_display_links = ('number', 'created_at', 'code', 'track_code',)
     exclude = ('number', 'box', 'status',)
@@ -333,15 +333,15 @@ class BoxAdmin(ImportExportModelAdmin):
         baseparcel_weight = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('weight'))
         return baseparcel_weight['weight__sum']
 
-    @admin.display(description=_('Общий расход $'))
+    @admin.display(description=_('Общий расход в $'))
     def get_total_consumption(self, obj):
         if obj.consumption:
             total_consumption = obj.consumption + self.sum_baseparcel_consumption(obj)
         else:
-            total_consumption = None
+            total_consumption = self.sum_baseparcel_consumption(obj)
         return total_consumption
 
-    @admin.display(description=_('Доп. расход $'))
+    @admin.display(description=_('Доп. расход в $'))
     def sum_baseparcel_consumption(self, obj):
         baseparcel_consumption = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('consumption'))
         return baseparcel_consumption['consumption__sum']
