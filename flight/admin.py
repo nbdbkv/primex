@@ -67,7 +67,10 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
         for box in boxes:
             baseparcels_per_box_consumption = BaseParcel.objects.filter(box_id=box.id).aggregate(Sum('consumption'))
             baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
-        total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
+        if boxes_consumption['consumption__sum']:
+            total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
+        else:
+            total_consumption = baseparcels_consumption
         return total_consumption
 
     def save_model(self, request, obj, form, change):
