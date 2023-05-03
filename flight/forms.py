@@ -1,5 +1,7 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
+from account.models import User
 from .choices import get_status
 from .models import Flight, Arrival
 
@@ -13,6 +15,14 @@ class BaseParcelModelForm(forms.ModelForm):
             'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
             'consumption': forms.NumberInput(attrs={'style': 'width:8ch'}),
         }
+
+    def clean_track_code(self):
+        track_code = self.cleaned_data['track_code']
+        code_logistics = User.objects.filter(role=1).values_list('code_logistic', flat=True)
+        if track_code not in code_logistics:
+            raise ValidationError(f"Клиент с кодом {track_code} не существует")
+        else:
+            return self.cleaned_data['track_code']
 
 
 class FlightBoxModelForm(forms.ModelForm):

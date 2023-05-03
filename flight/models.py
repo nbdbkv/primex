@@ -9,7 +9,6 @@ class TimeStampedModel(models.Model):
     updated_at = models.DateTimeField(db_index=True, auto_now=True, verbose_name=_('Дата изменения'))
     arrived_at = models.DateTimeField(db_index=True, null=True, blank=True, verbose_name=_('Дата прибытия'))
 
-
     class Meta:
         abstract = True
 
