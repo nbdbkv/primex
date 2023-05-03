@@ -14,6 +14,8 @@ from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
 
+from flight.utils import make_add_box_to_flight_action
+
 original_get_app_list = AdminSite.get_app_list
 
 
@@ -355,6 +357,14 @@ class BoxAdmin(ImportExportModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': '3', 'cols': '34'})},
     }
+
+    def get_actions(self, request):
+        actions = super(BoxAdmin, self).get_actions(request)
+        flights = Flight.objects.filter(status=0)
+        for flight in flights:
+            action = make_add_box_to_flight_action(flight)
+            actions[action.__name__] = (action, action.__name__, action.short_description)
+        return actions
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "flight":
