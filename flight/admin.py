@@ -154,14 +154,29 @@ class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
 class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
     list_display = (
-        'numeration', 'arrived_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',
+        'numeration', 'arrived_at', 'code', 'quantity', 'weight', 'cube', 'density', 'get_total_consumption', 'status',
     )
+    list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     readonly_fields = ('numeration', 'code', 'quantity', 'sum_boxes', 'weight', 'sum_parcel_weights',)
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
+
+    @admin.display(description=_('Общий расход в $'))
+    def get_total_consumption(self, obj):
+        boxes = Box.objects.filter(flight_id=obj.id)
+        boxes_consumption = boxes.aggregate(Sum('consumption'))
+        baseparcels_consumption = 0
+        for box in boxes:
+            baseparcels_per_box_consumption = BaseParcel.objects.filter(box_id=box.id).aggregate(Sum('consumption'))
+            baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
+        if boxes_consumption['consumption__sum']:
+            total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
+        else:
+            total_consumption = baseparcels_consumption
+        return total_consumption
 
     @admin.display(description=_('Коробки по прибытии'))
     def sum_boxes(self, obj):
