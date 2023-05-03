@@ -7,6 +7,8 @@ from flight.choices import StatusChoices, get_status
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(db_index=True, auto_now_add=True, verbose_name=_('Дата создания'))
     updated_at = models.DateTimeField(db_index=True, auto_now=True, verbose_name=_('Дата изменения'))
+    arrived_at = models.DateTimeField(db_index=True, null=True, blank=True, verbose_name=_('Дата прибытия'))
+
 
     class Meta:
         abstract = True
@@ -23,7 +25,7 @@ class Flight(TimeStampedModel):
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
     cube = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Куб'), null=True, blank=True)
     density = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Плотность'), null=True, blank=True)
-    consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход $'), null=True,
+    consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход в $'), null=True,
                                       blank=True)
     status = models.PositiveIntegerField(default=StatusChoices.FORMING, choices=StatusChoices.choices,
                                          verbose_name=_('Статус'), null=True, blank=True,)
@@ -92,7 +94,7 @@ class BaseParcel(TimeStampedModel):
     track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код клиента'))
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'))
     consumption = models.DecimalField(
-        max_digits=10, decimal_places=2,  verbose_name=_('Доп. расход $'), null=True, blank=True,
+        max_digits=10, decimal_places=2,  verbose_name=_('Доп. расход в $'), null=True, blank=True,
     )
     status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)
 

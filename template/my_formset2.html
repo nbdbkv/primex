@@ -72,7 +72,7 @@
                     <th>Трек-код</th>
                     <th>Вес</th>
                     <th>Цена</th>
-                    <th>Расход</th>
+                    <th>Расход в $</th>
                     <th>Сумма</th>
                     <th>Комментарий</th>
                     <th>Статус</th>
@@ -112,9 +112,7 @@
                                     <th>Код</th>
                                     <th>Трек-код</th>
                                     <th>Вес</th>
-                                    <th>Ширина</th>
-                                    <th>Длина</th>
-                                    <th>Высота</th>
+                                    <th>Доп. расход в $</th>
                                     <th>Статус</th>
                                 </tr>
                                 </thead>
@@ -123,9 +121,7 @@
                                     <td>{% if child.code %}{{ child.code }}{% else %}-{% endif %}</td>
                                     <td>{% if child.track_code %}{{ child.track_code }}{% else %}-{% endif %}</td>
                                     <td>{% if child.weight %}{{ child.weight }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.width %}{{ child.width }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.length %}{{ child.length }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.height %}{{ child.height }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.consumption %}{{ child.consumption }}{% else %}-{% endif %}</td>
                                     <td>
                                         <select name="base_parcels" id="base_parcel_{{ child.id }}">
                                             {% for key, value in child.get_statuses.items %}
@@ -140,10 +136,8 @@
                             </table>
                         </div>
                     {% endif %}
-
                 {% endfor %}
             </div>
-
         </div>
     {% endfor %}
 
