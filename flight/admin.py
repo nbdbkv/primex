@@ -116,7 +116,7 @@ class BaseParcelNestedInline(nested_admin.NestedTabularInline):
 
 class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
-    readonly_fields = ('code', 'track_code', 'weight', 'status',)
+    readonly_fields = ('code', 'track_code', 'weight', 'consumption', 'status',)
     exclude = ('arrived_at',)
 
     def has_add_permission(self, request, obj):
@@ -141,7 +141,7 @@ class BoxNestedInline(nested_admin.NestedTabularInline):
 
 class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
     model = Box
-    readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment', 'status')
+    readonly_fields = ('number', 'code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment', 'status')
     exclude = ('arrived_at',)
     inlines = (ArchiveBaseParcelNestedInline,)
 
@@ -225,14 +225,21 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         if form.has_changed():
             self.if_change(obj)
         else:
-            for i in request.POST.getlist('boxes'):
-                box = Box.objects.get(id=int(eval(i)['box']))
-                box.status = int(eval(i)['status'])
-                box.save()
             for i in request.POST.getlist('base_parcels'):
                 base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
                 base_parcel.status = int(eval(i)['status'])
                 base_parcel.save()
+            for i in request.POST.getlist('boxes'):
+                box = Box.objects.get(id=int(eval(i)['box']))
+                box.status = int(eval(i)['status'])
+                box.save()
+                baseparcels = BaseParcel.objects.filter(box__id=int(eval(i)['box']))
+                for baseparcel in baseparcels:
+                    if baseparcel.status == 5:
+                        continue
+                    else:
+                        baseparcel.status = int(eval(i)['status'])
+                        baseparcel.save()
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         return self.changeform_view(request, object_id, form_url, extra_context)
