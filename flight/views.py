@@ -3,7 +3,10 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 
-from flight.models import Flight, Box, BaseParcel
+from rest_framework import generics
+
+from flight.models import Flight, Box, BaseParcel, Media
+from flight.serializers import MediaSerializer
 
 
 def add_to_flight(request):
@@ -41,3 +44,8 @@ def my_view(request):
     }
     html = render_to_string('my_formset2.html', context, request=request)
     return HttpResponse(html)
+
+
+class MediaListView(generics.ListAPIView):
+    serializer_class = MediaSerializer
+    queryset = Media.objects.all()

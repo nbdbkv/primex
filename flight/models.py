@@ -116,3 +116,15 @@ class Unknown(BaseParcel):
         verbose_name = _('Неизвестный заказ')
         verbose_name_plural = _('Неизвестные заказы')
 
+
+class Media(models.Model):
+    # Медиа
+    title = models.CharField(_("title"), max_length=127, unique=True)
+    media = models.FileField(_("media"), upload_to='operation/media', null=True, blank=True,)
+
+    class Meta:
+        verbose_name = _("Media")
+        verbose_name_plural = _("Media")
+
+    def __str__(self):
+        return self.title

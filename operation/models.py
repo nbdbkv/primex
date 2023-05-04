@@ -357,6 +357,10 @@ class Images(models.Model):
     )
     img = models.FileField(upload_to="operation/parcel", null=True, blank=True)
 
+    class Meta:
+        verbose_name = _("Images")
+        verbose_name_plural = _("Images")
+
     def image_preview(self):
         if self.img:
             return mark_safe('<img src="{0}" width="1000" height="500" />'.format(self.img.url))

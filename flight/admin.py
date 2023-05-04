@@ -10,7 +10,7 @@ import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
 
 from flight.forms import FlightModelForm, ArrivalModelForm, BaseParcelModelForm, FlightBoxModelForm
-from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown
+from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown, Media
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
 
@@ -421,6 +421,11 @@ class BoxAdmin(ImportExportModelAdmin):
         return super(BoxAdmin, self).changelist_view(request, extra_context=extra_context)
 
 
+@admin.register(Media)
+class MediaAdmin(admin.ModelAdmin):
+    list_display = ('title', 'media',)
+
+
 class AdminSiteExtension(AdminSite):
     def get_app_list(self, request):
         app_list = original_get_app_list(self, request)
@@ -431,6 +436,7 @@ class AdminSiteExtension(AdminSite):
             "Arrival": 3,
             "Unknown": 4,
             "Archive": 5,
+            "Media": 6,
         }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':
