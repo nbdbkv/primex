@@ -423,7 +423,7 @@ class BoxAdmin(ImportExportModelAdmin):
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ('title', 'media',)
+    list_display = ('title', 'image', 'video',)
 
 
 class AdminSiteExtension(AdminSite):
