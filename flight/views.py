@@ -3,10 +3,10 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 
-from rest_framework import generics
+from rest_framework import generics, filters
 
 from flight.models import Flight, Box, BaseParcel, Media
-from flight.serializers import MediaSerializer
+from flight.serializers import MediaSerializer, StatisticsSerializer, BaseParcelSearchSerializer
 
 
 def add_to_flight(request):
@@ -49,3 +49,23 @@ def my_view(request):
 class MediaListView(generics.ListAPIView):
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
+
+
+class StatisticsListView(generics.ListAPIView):
+    serializer_class = StatisticsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = BaseParcel.objects.filter(track_code=user.code_logistic, status__in=[0, 1, 2, 3, 4, 5])
+        return queryset
+
+
+class BaseParcelSearchListView(generics.ListAPIView):
+    search_fields = ('code', 'track_code',)
+    filter_backends = (filters.SearchFilter,)
+    serializer_class = BaseParcelSearchSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = BaseParcel.objects.filter(track_code=user.code_logistic, status__in=[0, 1, 2, 3, 4, 5])
+        return queryset

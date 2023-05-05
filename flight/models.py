@@ -119,8 +119,9 @@ class Unknown(BaseParcel):
 
 class Media(models.Model):
     # Медиа
-    title = models.CharField(_("title"), max_length=127, unique=True)
-    media = models.FileField(_("media"), upload_to='operation/media', null=True, blank=True,)
+    title = models.CharField(_("title"), max_length=127,)
+    image = models.ImageField(_("image"), upload_to='operation/image', null=True, blank=True,)
+    video = models.FileField(_("video"), upload_to='operation/video', null=True, blank=True,)
 
     class Meta:
         verbose_name = _("Media")
