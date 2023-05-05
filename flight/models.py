@@ -120,12 +120,12 @@ class Unknown(BaseParcel):
 class Media(models.Model):
     # Медиа
     title = models.CharField(_("title"), max_length=127,)
-    image = models.ImageField(_("image"), upload_to='operation/image', null=True, blank=True,)
-    video = models.FileField(_("video"), upload_to='operation/video', null=True, blank=True,)
+    image = models.ImageField(_("image"), upload_to='operation/media/image', null=True, blank=True,)
+    video = models.FileField(_("video"), upload_to='operation/media/video', null=True, blank=True,)
 
     class Meta:
-        verbose_name = _("Media")
-        verbose_name_plural = _("Media")
+        verbose_name = _("Медиа")
+        verbose_name_plural = _("Медиа")
 
     def __str__(self):
         return self.title
