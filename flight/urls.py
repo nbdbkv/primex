@@ -1,7 +1,7 @@
 from django.urls import path
 
 from flight.views import (
-    add_to_flight, add_to_box, my_view, MediaListView, StatisticsListView, BaseParcelSearchListView,
+    add_to_flight, add_to_box, my_view, MediaListView, StatisticsListView, BaseParcelSearchListView, ContactListView,
 )
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path("media/", MediaListView.as_view()),
     # path("stats/", StatisticsListView.as_view()),
     path("baseparcels/", BaseParcelSearchListView.as_view()),
+    path("contact/", ContactListView.as_view()),
 ]

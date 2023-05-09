@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from flight.models import Media, BaseParcel
+from flight.models import Media, BaseParcel, Contact
 
 
 class MediaSerializer(serializers.ModelSerializer):
@@ -24,3 +24,10 @@ class BaseParcelSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseParcel
         fields = ('created_at', 'arrived_at', 'code', 'track_code', 'weight', 'consumption', 'status', 'status_label',)
+
+
+class ContactSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Contact
+        fields = ('social', 'icon',)

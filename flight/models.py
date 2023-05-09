@@ -129,3 +129,15 @@ class Media(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Contact(models.Model):
+    social = models.CharField(_('social'), max_length=100,)
+    icon = models.ImageField(_('social icon'), upload_to='operation/contact', null=True, blank=True,)
+
+    class Meta:
+        verbose_name = _("Контакт")
+        verbose_name_plural = _("Контакты")
+
+    def __str__(self):
+        return self.social

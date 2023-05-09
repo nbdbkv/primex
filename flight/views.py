@@ -5,8 +5,8 @@ from django.template.loader import render_to_string
 
 from rest_framework import generics, filters
 
-from flight.models import Flight, Box, BaseParcel, Media
-from flight.serializers import MediaSerializer, StatisticsSerializer, BaseParcelSearchSerializer
+from flight.models import Flight, Box, BaseParcel, Media, Contact
+from flight.serializers import MediaSerializer, StatisticsSerializer, BaseParcelSearchSerializer, ContactSerializer
 
 
 def add_to_flight(request):
@@ -69,3 +69,8 @@ class BaseParcelSearchListView(generics.ListAPIView):
         if self.request.query_params:
             return BaseParcel.objects.filter(status__in=[0, 1, 2, 3, 4])
         return BaseParcel.objects.none()
+
+
+class ContactListView(generics.ListAPIView):
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
