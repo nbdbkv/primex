@@ -5,8 +5,8 @@ from django.template.loader import render_to_string
 
 from rest_framework import generics, filters
 
-from flight.models import Flight, Box, BaseParcel, Media, Contact
-from flight.serializers import MediaSerializer, StatisticsSerializer, BaseParcelSearchSerializer, ContactSerializer
+from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact
+from flight.serializers import MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSearchSerializer
 
 
 def add_to_flight(request):
@@ -51,13 +51,14 @@ class MediaListView(generics.ListAPIView):
     queryset = Media.objects.all()
 
 
-class StatisticsListView(generics.ListAPIView):
-    serializer_class = StatisticsSerializer
+class RateListView(generics.ListAPIView):
+    serializer_class = RateSerializer
+    queryset = Rate.objects.all()
 
-    def get_queryset(self):
-        user = self.request.user
-        queryset = BaseParcel.objects.filter(track_code=user.code_logistic, status__in=[0, 1, 2, 3, 4])
-        return queryset
+
+class ContactListView(generics.ListAPIView):
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
 
 
 class BaseParcelSearchListView(generics.ListAPIView):
@@ -69,8 +70,3 @@ class BaseParcelSearchListView(generics.ListAPIView):
         if self.request.query_params:
             return BaseParcel.objects.filter(status__in=[0, 1, 2, 3, 4])
         return BaseParcel.objects.none()
-
-
-class ContactListView(generics.ListAPIView):
-    serializer_class = ContactSerializer
-    queryset = Contact.objects.all()

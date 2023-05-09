@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from flight.models import Media, BaseParcel, Contact
+from flight.models import Media, Rate, Contact, BaseParcel
 
 
 class MediaSerializer(serializers.ModelSerializer):
@@ -10,12 +10,18 @@ class MediaSerializer(serializers.ModelSerializer):
         fields = ('title', 'image', 'video',)
 
 
-class StatisticsSerializer(serializers.ModelSerializer):
-    status_label = serializers.CharField(source='get_status_display', read_only=True)
+class RateSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = BaseParcel
-        fields = ('code', 'status', 'status_label',)
+        model = Rate
+        fields = ('weight', 'service_type', 'air', 'truck', 'commission',)
+
+
+class ContactSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Contact
+        fields = ('social', 'icon',)
 
 
 class BaseParcelSearchSerializer(serializers.ModelSerializer):
@@ -24,10 +30,3 @@ class BaseParcelSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseParcel
         fields = ('created_at', 'arrived_at', 'code', 'track_code', 'weight', 'consumption', 'status', 'status_label',)
-
-
-class ContactSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Contact
-        fields = ('social', 'icon',)

@@ -119,9 +119,9 @@ class Unknown(BaseParcel):
 
 class Media(models.Model):
     # Медиа
-    title = models.CharField(_("title"), max_length=127,)
-    image = models.ImageField(_("image"), upload_to='operation/media/image', null=True, blank=True,)
-    video = models.FileField(_("video"), upload_to='operation/media/video', null=True, blank=True,)
+    title = models.CharField(_("Название"), max_length=127,)
+    image = models.ImageField(_("Изображение"), upload_to='operation/media/image', null=True, blank=True,)
+    video = models.FileField(_("Видео"), upload_to='operation/media/video', null=True, blank=True,)
 
     class Meta:
         verbose_name = _("Медиа")
@@ -131,9 +131,24 @@ class Media(models.Model):
         return self.title
 
 
+class Rate(models.Model):
+    weight = models.CharField(_('Вес'), max_length=100,)
+    service_type = models.CharField(_('Вид услуги'), max_length=100,)
+    air = models.CharField(_('Китай (Авиа)'), max_length=100, null=True, blank=True,)
+    truck = models.CharField(_('Китай (Авто)'), max_length=100, null=True, blank=True,)
+    commission = models.CharField(_('Комиссия'), max_length=100, null=True, blank=True,)
+
+    class Meta:
+        verbose_name = _("Тариф")
+        verbose_name_plural = _("Тарифы")
+
+    def __str__(self):
+        return self.weight
+
+
 class Contact(models.Model):
-    social = models.CharField(_('social'), max_length=100,)
-    icon = models.ImageField(_('social icon'), upload_to='operation/contact', null=True, blank=True,)
+    social = models.CharField(_('Социальная сеть'), max_length=100,)
+    icon = models.ImageField(_('Иконка'), upload_to='operation/contact', null=True, blank=True,)
 
     class Meta:
         verbose_name = _("Контакт")
