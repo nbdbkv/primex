@@ -56,7 +56,7 @@ class StatisticsListView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = BaseParcel.objects.filter(track_code=user.code_logistic, status__in=[0, 1, 2, 3, 4, 5])
+        queryset = BaseParcel.objects.filter(track_code=user.code_logistic, status__in=[0, 1, 2, 3, 4])
         return queryset
 
 
@@ -66,6 +66,6 @@ class BaseParcelSearchListView(generics.ListAPIView):
     serializer_class = BaseParcelSearchSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        queryset = BaseParcel.objects.filter(track_code=user.code_logistic, status__in=[0, 1, 2, 3, 4, 5])
-        return queryset
+        if self.request.query_params:
+            return BaseParcel.objects.filter(status__in=[0, 1, 2, 3, 4])
+        return BaseParcel.objects.none()

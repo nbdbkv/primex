@@ -9,6 +9,6 @@ urlpatterns = [
     path('add_to_box/', add_to_box),
     path('search/', my_view, name='my_view'),
     path("media/", MediaListView.as_view()),
-    path("stats/", StatisticsListView.as_view()),
-    path("baseparcel/", BaseParcelSearchListView.as_view()),
+    # path("stats/", StatisticsListView.as_view()),
+    path("baseparcels/", BaseParcelSearchListView.as_view()),
 ]

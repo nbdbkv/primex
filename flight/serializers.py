@@ -23,4 +23,4 @@ class BaseParcelSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BaseParcel
-        fields = ('code', 'track_code', 'weight', 'consumption', 'status', 'status_label',)
+        fields = ('created_at', 'arrived_at', 'code', 'track_code', 'weight', 'consumption', 'status', 'status_label',)
