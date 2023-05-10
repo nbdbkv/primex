@@ -26,7 +26,7 @@ class User(AbstractUser):
     code_logistic = models.CharField(verbose_name=_("Код логистики"), max_length=200, null=True, blank=True)
     info = models.CharField(_("user info"), max_length=255)
     region = models.ForeignKey(
-        "Region", on_delete=models.SET_NULL, verbose_name=_("region"), null=True
+        "Region", on_delete=models.SET_NULL, verbose_name=_("region"), null=True, blank=True,
     )
     district = models.ForeignKey(
         "District", on_delete=models.SET_NULL, verbose_name=_("district"), null=True, blank=True

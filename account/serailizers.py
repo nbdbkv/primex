@@ -16,7 +16,7 @@ from account.models import District, Village, Region, User
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("code_logistic", "phone", "password", "info", "avatar", "region", "district")
+        fields = ("code_logistic", "phone", "password", "info")
 
     def validate_password(self, password):
         try:
@@ -27,6 +27,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = super().create(validated_data)
+        instance.is_active = True
         instance.set_password(validated_data["password"])
         instance.save()
         return instance
