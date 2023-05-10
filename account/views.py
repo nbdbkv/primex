@@ -32,7 +32,7 @@ class UserSendCodeView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.send_otp_code()
+        # serializer.send_otp_code()
         return Response(Message.CODE_SENT.value, status=status.HTTP_202_ACCEPTED)
 
 
@@ -42,7 +42,7 @@ class RegisterCodeVerifyView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.update()
+        # serializer.update()
         return Response(Message.USER_ACTIVATED.value, status=status.HTTP_202_ACCEPTED)
 
 
