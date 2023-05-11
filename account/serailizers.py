@@ -58,17 +58,17 @@ class UserSendCodeSerializer(serializers.Serializer):
 class RegisterCodeVerifySerializer(serializers.Serializer):
     code = serializers.IntegerField(required=True)
 
-    # def validate(self, attrs):
-    #     phone = cache.get(attrs["code"], version=SendCodeType.REGISTER)
-    #     if phone is not None:
-    #         self.instance = User.objects.get(phone=phone)
-    #         return attrs
-    #     raise ValidationError(ErrorMessage.WRONG_OTP.value)
-    #
-    # def update(self):
-    #     self.instance.is_active = True
-    #     self.instance.save()
-    #     return self.instance
+    def validate(self, attrs):
+        phone = cache.get(attrs["code"], version=SendCodeType.REGISTER)
+        if phone is not None:
+            self.instance = User.objects.get(phone=phone)
+            return attrs
+        raise ValidationError(ErrorMessage.WRONG_OTP.value)
+
+    def update(self):
+        self.instance.is_active = True
+        self.instance.save()
+        return self.instance
 
 
 class PasswordResetVerifySerializer(serializers.Serializer):
