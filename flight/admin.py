@@ -27,6 +27,12 @@ class FlightBaseParcelInline(nested_admin.NestedTabularInline):
     extra = 0
     classes = ('collapse',)
 
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_delete_permission(self, request, obj):
+        return False
+
 
 class FlightBoxInline(nested_admin.NestedTabularInline):
     model = Box
@@ -35,6 +41,9 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
     template = 'admin/flight_box_tabular.html'
     extra = 0
     inlines = (FlightBaseParcelInline,)
+
+    def has_add_permission(self, request, obj):
+        return False
 
 
 @admin.register(Flight)
@@ -68,7 +77,8 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
         baseparcels_consumption = 0
         for box in boxes:
             baseparcels_per_box_consumption = BaseParcel.objects.filter(box_id=box.id).aggregate(Sum('consumption'))
-            baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
+            if baseparcels_per_box_consumption['consumption__sum']:
+                baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
         if boxes_consumption['consumption__sum']:
             total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
         else:
@@ -96,10 +106,17 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
                 box.arrived_at = now()
                 box.status = obj.status
                 box.save()
-                for p in box.base_parcel.filter(~Q(status=obj.status)):
-                    p.arrived_at = now()
-                    box.status = obj.status
-                    p.save()
+                for base_parcel in box.base_parcel.filter(~Q(status=obj.status)):
+                    base_parcel.arrived_at = now()
+                    base_parcel.status = obj.status
+                    base_parcel.save()
+        else:
+            for box in obj.box.filter(~Q(status=obj.status)):
+                box.status = obj.status
+                box.save()
+                for base_parcel in box.base_parcel.filter(~Q(status=obj.status)):
+                    base_parcel.status = obj.status
+                    base_parcel.save()
 
 
 class BaseParcelNestedInline(nested_admin.NestedTabularInline):
@@ -156,7 +173,7 @@ class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
 class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
     list_display = (
-        'numeration', 'arrived_at', 'code', 'quantity', 'weight', 'cube', 'density', 'get_total_consumption', 'status',
+        'numeration', 'arrived_at', 'code', 'sum_boxes', 'weight', 'cube', 'density', 'get_total_consumption', 'status',
     )
     list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = ('numeration', 'box__code', 'box__base_parcel__code',)

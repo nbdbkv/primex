@@ -38,7 +38,9 @@ def my_view(request):
     if search_term:
         queryset = queryset.filter(
             (Q(code__icontains=search_term) & ~Q(status=7)) |
-            (Q(base_parcel__code__icontains=search_term) & ~Q(base_parcel__status=7)))
+            (Q(base_parcel__code__icontains=search_term) & ~Q(base_parcel__status=7)) |
+            (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7))
+        )
     context = {
         'qs': queryset,
     }

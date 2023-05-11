@@ -19,7 +19,7 @@ class TimeStampedModel(models.Model):
 class Flight(TimeStampedModel):
     # Рейс
     numeration = models.CharField(db_index=True, max_length=64, verbose_name=_('Нумерация рейсов'))
-    code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код'))
+    code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код рейса'))
     quantity = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Количество коробки'),)
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
     cube = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Куб'), null=True, blank=True)
@@ -64,7 +64,7 @@ class Box(TimeStampedModel):
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='box', verbose_name=_('Рейс коробки'),
                                null=True, blank=True)
     number = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Номер'), )
-    code = models.CharField(max_length=64, verbose_name=_('Код'), null=True, blank=True)
+    code = models.CharField(max_length=64, verbose_name=_('Код коробки'), null=True, blank=True)
     track_code = models.CharField(max_length=64, verbose_name=_('Трек-Код'), null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес с коробкой'), null=True, blank=True)
     price = models.CharField(max_length=64, verbose_name=_('Цена за кг в $'), null=True, blank=True)
@@ -95,7 +95,9 @@ class BaseParcel(TimeStampedModel):
     consumption = models.DecimalField(
         max_digits=10, decimal_places=2,  verbose_name=_('Доп. расход в $'), null=True, blank=True,
     )
-    status = models.PositiveIntegerField(choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,)
+    status = models.PositiveIntegerField(
+        default=StatusChoices.FORMING, choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,
+    )
 
     class Meta:
         verbose_name = _('base_parcel')

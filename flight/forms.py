@@ -29,6 +29,7 @@ class FlightBoxModelForm(forms.ModelForm):
 
     class Meta:
         widgets = {
+            'number': forms.TextInput(attrs={'size': '4', 'readonly': 'readonly'}),
             'code': forms.TextInput(attrs={'size': '8'}),
             'track_code': forms.TextInput(attrs={'size': '16'}),
             'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
