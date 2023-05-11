@@ -89,8 +89,8 @@ class BaseParcel(TimeStampedModel):
     box = models.ForeignKey(Box, on_delete=models.CASCADE, related_name='base_parcel',
                             verbose_name=_('Коробка посылки'),
                             null=True, blank=True)
-    code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код'))
-    track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код клиента'))
+    code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
+    client_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код клиента'))
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'))
     consumption = models.DecimalField(
         max_digits=10, decimal_places=2,  verbose_name=_('Доп. расход в $'), null=True, blank=True,

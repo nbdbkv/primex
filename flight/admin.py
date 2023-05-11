@@ -104,7 +104,7 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
 
 class BaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
-    readonly_fields = ('code', 'track_code', 'weight',)
+    readonly_fields = ('code', 'client_code', 'weight',)
     fields = (readonly_fields, 'status',)
 
     def has_add_permission(self, request, obj):
@@ -116,7 +116,7 @@ class BaseParcelNestedInline(nested_admin.NestedTabularInline):
 
 class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
-    readonly_fields = ('code', 'track_code', 'weight', 'consumption', 'status',)
+    readonly_fields = ('code', 'client_code', 'weight', 'consumption', 'status',)
     exclude = ('arrived_at',)
 
     def has_add_permission(self, request, obj):
@@ -279,7 +279,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Unknown)
 class UnknownAdmin(nested_admin.NestedModelAdmin):
-    list_display = ('code', 'track_code', 'weight', 'arrived_at',)
+    list_display = ('code', 'client_code', 'weight', 'arrived_at',)
     exclude = ('arrived_at',)
     search_fields = ('code',)
     date_hierarchy = 'created_at'
@@ -463,7 +463,7 @@ AdminSite.get_app_list = AdminSiteExtension.get_app_list
 
 # @admin.register(BaseParcel)
 class BaseParselAdmin(admin.ModelAdmin):
-    list_display = ('code', 'track_code', 'weight', 'created_at',)
+    list_display = ('code', 'client_code', 'weight', 'created_at',)
     exclude = ('status',)
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter),)
     change_list_template = "admin/box_parcel_change_list.html"

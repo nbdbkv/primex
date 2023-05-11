@@ -62,7 +62,7 @@ class ContactListView(generics.ListAPIView):
 
 
 class BaseParcelSearchListView(generics.ListAPIView):
-    search_fields = ('code', 'track_code',)
+    search_fields = ('code', 'client_code',)
     filter_backends = (filters.SearchFilter,)
     serializer_class = BaseParcelSearchSerializer
 

@@ -11,18 +11,18 @@ class BaseParcelModelForm(forms.ModelForm):
     class Meta:
         widgets = {
             'code': forms.TextInput(attrs={'size': '8'}),
-            'track_code': forms.TextInput(attrs={'size': '16'}),
+            'client_code': forms.TextInput(attrs={'size': '16'}),
             'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
             'consumption': forms.NumberInput(attrs={'style': 'width:8ch'}),
         }
 
-    def clean_track_code(self):
-        track_code = self.cleaned_data['track_code']
+    def clean_client_code(self):
+        client_code = self.cleaned_data['client_code']
         code_logistics = User.objects.filter(role=1).values_list('code_logistic', flat=True)
-        if track_code not in code_logistics:
-            raise ValidationError(f"Клиент с кодом {track_code} не существует")
+        if client_code not in code_logistics:
+            raise ValidationError(f"Клиент с кодом {client_code} не существует")
         else:
-            return self.cleaned_data['track_code']
+            return self.cleaned_data['client_code']
 
 
 class FlightBoxModelForm(forms.ModelForm):
