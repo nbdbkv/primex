@@ -296,7 +296,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Unknown)
 class UnknownAdmin(nested_admin.NestedModelAdmin):
-    list_display = ('code', 'client_code', 'weight', 'arrived_at',)
+    list_display = ('get_flight', 'get_box', 'code', 'client_code', 'weight', 'arrived_at',)
     exclude = ('arrived_at',)
     search_fields = ('code',)
     date_hierarchy = 'created_at'
@@ -310,6 +310,16 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+    @admin.display(description=_('Код рейса'))
+    def get_flight(self, obj):
+        flight = Flight.objects.get(box__base_parcel=obj.id)
+        return flight
+
+    @admin.display(description=_('Код коробки'))
+    def get_box(self, obj):
+        box = Box.objects.get(base_parcel=obj.id)
+        return box
 
 
 class BaseParcelInline(admin.TabularInline):
