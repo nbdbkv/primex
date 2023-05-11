@@ -71,4 +71,6 @@ class BaseParcelSearchListView(generics.ListAPIView):
     def get_queryset(self):
         if self.request.query_params:
             return BaseParcel.objects.filter(status__in=[0, 1, 2, 3, 4])
-        return BaseParcel.objects.none()
+        else:
+            user = self.request.user
+            return BaseParcel.objects.filter(client_code=user.code_logistic, status__in=[0, 1, 2, 3, 4])
