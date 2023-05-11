@@ -296,11 +296,14 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Unknown)
 class UnknownAdmin(nested_admin.NestedModelAdmin):
-    list_display = ('get_flight', 'get_box', 'code', 'client_code', 'weight', 'arrived_at',)
-    exclude = ('arrived_at',)
+    list_display = ('get_flight', 'get_box', 'code', 'client_code', 'weight', 'consumption', 'arrived_at',)
+    list_display_links = ('get_flight', 'get_box', 'code', 'client_code')
+    readonly_fields = ('get_flight', 'get_box', 'code', 'client_code', 'weight', 'consumption', 'arrived_at')
+    fields = [readonly_fields, 'status']
     search_fields = ('code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    change_form_template = "admin/unknown_change_form.html"
 
     def get_queryset(self, request):
         return Unknown.objects.filter(status=7)
