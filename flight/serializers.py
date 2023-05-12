@@ -7,7 +7,7 @@ class MediaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Media
-        fields = ('title', 'image', 'video',)
+        fields = ('id', 'title', 'image', 'video',)
 
 
 class RateSerializer(serializers.ModelSerializer):
