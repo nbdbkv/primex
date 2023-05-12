@@ -1,3 +1,6 @@
+import mimetypes
+from wsgiref.util import FileWrapper
+
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -5,6 +8,7 @@ from django.template.loader import render_to_string
 
 from rest_framework import generics, filters
 
+from core.settings import BASE_DIR
 from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact
 from flight.serializers import MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSearchSerializer
 
@@ -51,6 +55,17 @@ def my_view(request):
 class MediaListView(generics.ListAPIView):
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
+
+
+class FileDownloadListView(generics.ListAPIView):
+
+    def get(self, request, filename):
+        filepath = str(BASE_DIR) + '/media/operation/media/video/' + filename
+        mimetype, _ = mimetypes.guess_type(filepath)
+        with open(filepath, 'rb') as file:
+            response = HttpResponse(FileWrapper(file), content_type=mimetype)
+            response['Content-Disposition'] = f'attachment; filename={filename}'
+            return response
 
 
 class RateListView(generics.ListAPIView):
