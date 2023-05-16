@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 
-from rest_framework import generics, filters
+from rest_framework import generics, filters, views
 
 from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact
 from flight.serializers import MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSearchSerializer
@@ -57,7 +57,7 @@ class MediaListView(generics.ListAPIView):
     queryset = Media.objects.all()
 
 
-class FileDownloadListView(generics.ListAPIView):
+class FileDownloadListView(views.APIView):
 
     def get(self, request, id):
         media = Media.objects.get(id=id)
