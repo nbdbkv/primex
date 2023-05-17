@@ -190,7 +190,8 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         baseparcels_consumption = 0
         for box in boxes:
             baseparcels_per_box_consumption = BaseParcel.objects.filter(box_id=box.id).aggregate(Sum('consumption'))
-            baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
+            if baseparcels_per_box_consumption['consumption__sum']:
+                baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
         if boxes_consumption['consumption__sum']:
             total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
         else:
