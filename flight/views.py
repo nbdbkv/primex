@@ -92,3 +92,14 @@ class BaseParcelSearchListView(generics.ListAPIView):
             return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 5, 7])
         else:
             return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 7])
+
+
+class BaseParcelHistoryListView(generics.ListAPIView):
+    search_fields = ('code', 'client_code',)
+    filter_backends = (filters.SearchFilter,)
+    serializer_class = BaseParcelSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        base_parcels = BaseParcel.objects.filter(client_code=user.code_logistic, status=5)
+        return base_parcels
