@@ -96,7 +96,7 @@ class BaseParcel(TimeStampedModel):
         max_digits=10, decimal_places=2,  verbose_name=_('Доп. расход в $'), null=True, blank=True,
     )
     status = models.PositiveIntegerField(
-        default=StatusChoices.FORMING, choices=get_status()[2:], verbose_name=_('Статус'), null=True, blank=True,
+        default=StatusChoices.FORMING, choices=get_status(), verbose_name=_('Статус'), null=True, blank=True,
     )
 
     class Meta:

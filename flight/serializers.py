@@ -31,9 +31,13 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = ('social', 'icon',)
 
 
-class BaseParcelSearchSerializer(serializers.ModelSerializer):
+class BaseParcelSerializer(serializers.ModelSerializer):
     status_label = serializers.CharField(source='get_status_display', read_only=True)
+    flight_code = serializers.CharField(source='box.flight.code', read_only=True)
 
     class Meta:
         model = BaseParcel
-        fields = ('created_at', 'arrived_at', 'code', 'client_code', 'weight', 'consumption', 'status', 'status_label',)
+        fields = (
+            'created_at', 'arrived_at', 'code', 'client_code', 'weight', 'consumption', 'status', 'status_label',
+            'flight_code',
+        )

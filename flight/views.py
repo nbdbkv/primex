@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from rest_framework import generics, filters, views
 
 from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact
-from flight.serializers import MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSearchSerializer
+from flight.serializers import MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSerializer
 
 
 def add_to_flight(request):
@@ -83,11 +83,12 @@ class ContactListView(generics.ListAPIView):
 class BaseParcelSearchListView(generics.ListAPIView):
     search_fields = ('code', 'client_code',)
     filter_backends = (filters.SearchFilter,)
-    serializer_class = BaseParcelSearchSerializer
+    serializer_class = BaseParcelSerializer
 
     def get_queryset(self):
+        user = self.request.user
+        base_parcels = BaseParcel.objects.filter(client_code=user.code_logistic)
         if self.request.query_params:
-            return BaseParcel.objects.filter(status__in=[0, 1, 2, 3, 4])
+            return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 5, 7])
         else:
-            user = self.request.user
-            return BaseParcel.objects.filter(client_code=user.code_logistic, status__in=[0, 1, 2, 3, 4])
+            return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 7])
