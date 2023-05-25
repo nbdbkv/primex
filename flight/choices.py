@@ -6,10 +6,10 @@ class StatusChoices(models.IntegerChoices):
     # Статусы
     FORMING = 0, _('Формируется')
     TRANSPORTING = 1, _('В пути')
-    ARRIVED = 2, _('Прибыл')
-    SORTING = 3, _('Сортируется')
-    DISTRIBUTING = 4, _('Раздается')
-    DISTRIBUTED = 5, _('Роздан')
+    ARRIVED = 2, _('Прибыл рейс')
+    SORTING = 3, _('Сортируется на складе')
+    DISTRIBUTING = 4, _('Готов к выдаче')
+    DISTRIBUTED = 5, _('Выдан')
     UNKNOWN = 7, _('Неизвестные заказы')
 
 
