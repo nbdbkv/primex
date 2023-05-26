@@ -86,26 +86,26 @@ class Box(TimeStampedModel):
 
 class BaseParcel(TimeStampedModel):
     # Посылка
-    box = models.ForeignKey(Box, on_delete=models.CASCADE, related_name='base_parcel',
-                            verbose_name=_('Коробка посылки'),
-                            null=True, blank=True)
-    code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
-    client_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код клиента'))
-    weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'))
-    consumption = models.DecimalField(
-        max_digits=10, decimal_places=2,  verbose_name=_('Доп. расход в $'), null=True, blank=True,
+    box = models.ForeignKey(
+        Box, on_delete=models.CASCADE, related_name='base_parcel', null=True, blank=True,
+        verbose_name=_('Коробка посылки'),
     )
-    status = models.PositiveIntegerField(
-        default=StatusChoices.FORMING, choices=get_status(), verbose_name=_('Статус'), null=True, blank=True,
-    )
+    track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
+    client_code = models.CharField(db_index=True, max_length=64, null=True, blank=True, verbose_name=_('Код клиента'))
+    phone = models.CharField(max_length=16, unique=True, null=True, blank=True, verbose_name=_('Телефон клиента'))
+    shelf = models.CharField(max_length=16, null=True, blank=True, verbose_name=_('Полка'))
+    price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_('Цена'))
+    weight = models.DecimalField(max_digits=8, decimal_places=3, verbose_name=_('Вес'))
+    cost = models.DecimalField(max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name=_('Стоимость в $'))
+    status = models.PositiveIntegerField(default=StatusChoices.FORMING, null=True, blank=True, choices=get_status())
 
     class Meta:
         verbose_name = _('base_parcel')
         verbose_name_plural = _('base_parcels')
 
     def __str__(self):
-        if self.code:
-            return self.code
+        if self.track_code:
+            return self.track_code
         else:
             return ''
 
