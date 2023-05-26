@@ -331,7 +331,12 @@ class BaseParcelInline(admin.TabularInline):
     form = BaseParcelModelForm
     exclude = ('status', 'arrived_at',)
     template = 'admin/box_baseparcel_tabular.html'
-    extra = 50
+
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj:
+            return 25
+        else:
+            return 50
 
 
 class BoxAdminResource(resources.ModelResource):
