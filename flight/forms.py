@@ -10,10 +10,12 @@ class BaseParcelModelForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'code': forms.TextInput(attrs={'size': '8'}),
-            'client_code': forms.TextInput(attrs={'size': '16'}),
-            'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
-            'consumption': forms.NumberInput(attrs={'style': 'width:8ch'}),
+            'track_code': forms.TextInput(attrs={'size': '10'}),
+            'client_code': forms.TextInput(attrs={'size': '8'}),
+            'phone': forms.TextInput(attrs={'size': '12'}),
+            'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
+            'weight': forms.NumberInput(attrs={'style': 'width:9ch'}),
+            'cost': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
         }
 
     def clean_client_code(self):

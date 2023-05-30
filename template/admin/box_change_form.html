@@ -24,6 +24,15 @@
             {% endif %}
 
             {% block inline_field_sets %}
+                <div>
+                    <select id="destinations" onchange="setAllPrice()">
+                        <option selected disabled> -- Направление -- </option>
+                        {% for destination in destinations %}
+                            <option value="{{ destination.price_per_kg }}">{{ destination }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <br>
                 {{ block.super }}
             {% endblock %}
             <div class="form-row">
@@ -32,8 +41,8 @@
                     <input style="text-align: right; width: 5%" type="text" class="vTextField" maxlength="64" id="total_weight" readonly>
                 </div>
                 <div>
-                    <label style="padding-right: 28px">Общий доп. расход посылок в $:</label>
-                    <input style="text-align: right; width: 5%" type="text" class="vTextField" maxlength="64" id="total_consumption" readonly>
+                    <label style="padding-right: 35px">Общая стоимость посылок в $:</label>
+                    <input style="text-align: right; width: 5%" type="text" class="vTextField" maxlength="64" id="total_cost" readonly>
                 </div>
             </div>
             {% block field_sets %}

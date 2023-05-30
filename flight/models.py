@@ -16,6 +16,18 @@ class TimeStampedModel(models.Model):
         return {key: value for (key, value) in StatusChoices.choices[2:]}
 
 
+class Destination(models.Model):
+    point = models.CharField(max_length=100, verbose_name=_('Пункт назначения'))
+    price_per_kg = models.CharField(max_length=8, verbose_name=_('Цена за кг в $'))
+
+    class Meta:
+        verbose_name = _("Направление")
+        verbose_name_plural = _("Направления")
+
+    def __str__(self):
+        return self.point
+
+
 class Flight(TimeStampedModel):
     # Рейс
     numeration = models.CharField(db_index=True, max_length=64, verbose_name=_('Нумерация рейсов'))
@@ -67,7 +79,6 @@ class Box(TimeStampedModel):
     code = models.CharField(max_length=64, verbose_name=_('Код коробки'), null=True, blank=True)
     track_code = models.CharField(max_length=64, verbose_name=_('Трек-Код'), null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес с коробкой'), null=True, blank=True)
-    price = models.CharField(max_length=64, verbose_name=_('Цена за кг в $'), null=True, blank=True)
     consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход в $'), null=True, blank=True)
     sum = models.CharField(max_length=64, verbose_name=_('Сумма в $'), null=True, blank=True)
     comment = models.TextField(max_length=128, verbose_name=_('comment'), null=True, blank=True)

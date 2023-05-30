@@ -400,6 +400,12 @@ class BoxAdmin(ImportExportModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': '3', 'cols': '34'})},
     }
+    save_on_top = True
+
+    class Media:
+        css = {
+            'all': ('flight/box.css',)
+        }
 
     def get_actions(self, request):
         actions = super(BoxAdmin, self).get_actions(request)
@@ -456,6 +462,11 @@ class BoxAdmin(ImportExportModelAdmin):
         extra_context['flights'] = flight
         return super(BoxAdmin, self).changelist_view(request, extra_context=extra_context)
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['destinations'] = Destination.objects.all()
+        return super().change_view(request, object_id, form_url, extra_context=extra_context)
+
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
@@ -476,15 +487,16 @@ class AdminSiteExtension(AdminSite):
     def get_app_list(self, request):
         app_list = original_get_app_list(self, request)
         ordering = {
-            "BaseParcel": 0,
-            "Box": 1,
-            "Flight": 2,
-            "Arrival": 3,
-            "Unknown": 4,
-            "Archive": 5,
-            "Media": 6,
-            'Rate': 7,
-            "Contact": 8,
+            "Destination": 0,
+            "BaseParcel": 1,
+            "Box": 2,
+            "Flight": 3,
+            "Arrival": 4,
+            "Unknown": 5,
+            "Archive": 6,
+            "Media": 7,
+            'Rate': 8,
+            "Contact": 9,
         }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':
