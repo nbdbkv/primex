@@ -1,66 +1,67 @@
 let weights = document.querySelectorAll("td.field-weight input");
-let consumptions = document.querySelectorAll("td.field-consumption input");
-let totalConsumption = document.getElementById('total_consumption')
-let totalBoxWeight = document.getElementById('id_weight')
-let pricePerKg = document.getElementById('id_price')
+let costs = document.querySelectorAll("td.field-cost input");
+let totalCost = document.getElementById('total_cost')
 let consumption = document.getElementById('id_consumption')
 
 window.addEventListener('DOMContentLoaded', () =>  {
     getTotalWeight();
-    getTotalConsumption();
+    getTotalCost();
     getTotalPrice();
 });
 
+function getCostPerParcel (weight) {
+    let costPerParcel = 0
+    const id = weight.id
+    let number = id.replace(/[^0-9]/g,"");
+    const price = document.getElementById(`id_base_parcel-${number}-price`);
+    costPerParcel = price.value * weight.value
+    document.getElementById(`id_base_parcel-${number}-cost`).value = costPerParcel.toFixed(2)
+}
+
 function getTotalWeight () {
-    let total_weight = 0
+    let totalWeight = 0
     weights.forEach(weight => {
         if (weight.value) {
-            total_weight += parseFloat(weight.value);
-            document.getElementById('total_weight').value = total_weight;
+            totalWeight += parseFloat(weight.value);
+            document.getElementById('total_weight').value = totalWeight.toFixed(3);
         }
     });
 }
 
-function getTotalConsumption () {
-    let total_consumption = 0
-    consumptions.forEach(consumption => {
-        if (consumption.value) {
-            total_consumption += parseFloat(consumption.value);
-            document.getElementById('total_consumption').value = total_consumption;
+function getTotalCost () {
+    let totalCost = 0
+    costs.forEach(cost => {
+        if (cost.value) {
+            totalCost += parseFloat(cost.value);
+            document.getElementById('total_cost').value = totalCost.toFixed(2);
             getTotalPrice();
         }
     });
 }
 
 function getTotalPrice () {
-    let total = 0
+    let totalPrice= 0
     if (!consumption.value) {
-        total = parseFloat(totalBoxWeight.value) * parseFloat(pricePerKg.value) - parseFloat(totalConsumption.value)
+        totalPrice = parseFloat(totalCost.value)
     } else {
-        total = parseFloat(totalBoxWeight.value) * parseFloat(pricePerKg.value) - parseFloat(consumption.value) - parseFloat(totalConsumption.value)
+        totalPrice = parseFloat(totalCost.value) - parseFloat(consumption.value)
     }
-    document.getElementById('id_sum').value = total;
+    document.getElementById('id_sum').value = totalPrice.toFixed(2);
 }
 
 weights.forEach(weight => {
     weight.addEventListener('input', () => {
+        getCostPerParcel(weight);
         getTotalWeight();
+        getTotalCost();
     })
 });
 
-consumptions.forEach(consumption => {
-    consumption.addEventListener('input', () => {
-        getTotalConsumption();
+costs.forEach(cost => {
+    cost.addEventListener('input', () => {
+        getTotalCost();
     })
 });
-
-totalBoxWeight.addEventListener('input', () => {
-    getTotalPrice();
-})
-
-pricePerKg.addEventListener('input', () => {
-    getTotalPrice();
-})
 
 consumption.addEventListener('input', () => {
     getTotalPrice();
