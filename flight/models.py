@@ -25,7 +25,7 @@ class Destination(models.Model):
         verbose_name_plural = _("Направления")
 
     def __str__(self):
-        return self.point
+        return f'{self.point} / {self.price_per_kg}$'
 
 
 class Flight(TimeStampedModel):
