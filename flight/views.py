@@ -42,7 +42,7 @@ def my_view(request):
     if search_term:
         queryset = queryset.filter(
             (Q(code__icontains=search_term) & ~Q(status=7)) |
-            (Q(base_parcel__code__icontains=search_term) & ~Q(base_parcel__status=7)) |
+            (Q(base_parcel__track_code__icontains=search_term) & ~Q(base_parcel__status=7)) |
             (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7))
         ).distinct()
     context = {
@@ -81,7 +81,7 @@ class ContactListView(generics.ListAPIView):
 
 
 class BaseParcelSearchListView(generics.ListAPIView):
-    search_fields = ('code', 'client_code',)
+    search_fields = ('track_code', 'client_code',)
     filter_backends = (filters.SearchFilter,)
     serializer_class = BaseParcelSerializer
 
@@ -95,7 +95,7 @@ class BaseParcelSearchListView(generics.ListAPIView):
 
 
 class BaseParcelHistoryListView(generics.ListAPIView):
-    search_fields = ('code', 'client_code',)
+    search_fields = ('track_code', 'client_code',)
     filter_backends = (filters.SearchFilter,)
     serializer_class = BaseParcelSerializer
 

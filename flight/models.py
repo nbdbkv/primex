@@ -73,15 +73,19 @@ class Archive(Flight):
 
 class Box(TimeStampedModel):
     # Коробка
+    destination = models.ForeignKey(
+        Destination, on_delete=models.CASCADE, related_name='boxes', verbose_name=_('Направление'), null=True,
+        blank=True,
+    )
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='box', verbose_name=_('Рейс коробки'),
                                null=True, blank=True)
     number = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Номер'), )
     code = models.CharField(max_length=64, verbose_name=_('Код коробки'), null=True, blank=True)
     track_code = models.CharField(max_length=64, verbose_name=_('Трек-Код'), null=True, blank=True)
-    weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес с коробкой'), null=True, blank=True)
-    consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход в $'), null=True, blank=True)
-    sum = models.CharField(max_length=64, verbose_name=_('Сумма в $'), null=True, blank=True)
-    comment = models.TextField(max_length=128, verbose_name=_('comment'), null=True, blank=True)
+    weight = models.DecimalField(
+        max_digits=10, decimal_places=3, verbose_name=_('Вес с коробкой'), null=True, blank=True,
+    )
+    comment = models.TextField(max_length=128, verbose_name=_('Комментарий'), null=True, blank=True)
     status = models.PositiveIntegerField(choices=get_status()[2:7], verbose_name=_('Статус'), null=True, blank=True,)
 
     class Meta:
@@ -103,7 +107,7 @@ class BaseParcel(TimeStampedModel):
     )
     track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
     client_code = models.CharField(db_index=True, max_length=64, null=True, blank=True, verbose_name=_('Код клиента'))
-    phone = models.CharField(max_length=16, unique=True, null=True, blank=True, verbose_name=_('Телефон клиента'))
+    phone = models.CharField(db_index=True, max_length=16, null=True, blank=True, verbose_name=_('Телефон клиента'))
     shelf = models.CharField(max_length=16, null=True, blank=True, verbose_name=_('Полка'))
     price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_('Цена'))
     weight = models.DecimalField(max_digits=8, decimal_places=3, verbose_name=_('Вес'))

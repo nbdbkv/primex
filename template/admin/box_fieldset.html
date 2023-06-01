@@ -1,0 +1,66 @@
+<style>
+    .custom-form-row {
+        padding: 0 !important;
+    }
+
+    .aligned label {
+        min-width: 120px;
+        width: auto;
+    }
+
+    .custom-tbody td:nth-child(1) label {
+        min-width: 116px;
+    }
+
+    .custom-tbody td:nth-child(2) label {
+        min-width: 101px;
+    }
+
+    .custom-tbody td:nth-child(3) label {
+        min-width: 80px;
+    }
+
+    .custom-tbody td:nth-child(4) label {
+        min-width: 60px;
+    }
+
+    .custom-tbody td:nth-child(5) label {
+        min-width: 100px;
+    }
+
+</style>
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    <table style="max-width: 800px">
+        <tbody class="custom-tbody">
+        <tr>
+            {% for line in fieldset %}
+                <div class="form-row custom-form-row {% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+                    {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+                    {% for field in line %}
+                        <td {% if not line.fields|length_is:'1' %} class="fieldBox{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                            {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                            {% if field.is_checkbox %}
+                                {{ field.field }}{{ field.label_tag }}
+                            {% else %}
+                                {{ field.label_tag }}
+                                {% if field.is_readonly %}
+                                    <div class="readonly">{{ field.contents }}</div>
+                                {% else %}
+                                    {{ field.field }}
+                                {% endif %}
+                            {% endif %}
+                            {% if field.field.help_text %}
+                                <div class="help">{{ field.field.help_text|safe }}</div>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+</fieldset>

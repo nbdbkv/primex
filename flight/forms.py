@@ -26,6 +26,39 @@ class BaseParcelModelForm(forms.ModelForm):
         else:
             return self.cleaned_data['client_code']
 
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        if phone:
+            phones = User.objects.filter(role=1).values_list('phone', flat=True)
+            if phone not in phones:
+                raise ValidationError(f"Клиент с телефонным номером {phone} не существует")
+            else:
+                return self.cleaned_data['phone']
+
+
+class BoxModelForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {
+            'code': forms.TextInput(attrs={'size': '9', 'readonly': 'readonly'}),
+            'track_code': forms.TextInput(attrs={'size': '5', 'readonly': 'readonly'}),
+            'weight': forms.NumberInput(attrs={'style': 'width:9ch'}),
+            'comment': forms.Textarea(attrs={'rows': '1', 'cols': '40'}),
+        }
+
+
+class FlightBaseParcelModelForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {
+            'track_code': forms.TextInput(attrs={'size': '10', 'readonly': 'readonly'}),
+            'client_code': forms.TextInput(attrs={'size': '8', 'readonly': 'readonly'}),
+            'phone': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
+            'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
+            'weight': forms.NumberInput(attrs={'style': 'width:9ch', 'readonly': 'readonly'}),
+            'cost': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
+        }
+
 
 class FlightBoxModelForm(forms.ModelForm):
 

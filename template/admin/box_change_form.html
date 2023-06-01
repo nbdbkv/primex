@@ -23,18 +23,14 @@
                 {{ adminform.form.non_field_errors }}
             {% endif %}
 
-            {% block inline_field_sets %}
-                <div>
-                    <select id="destinations" onchange="setAllPrice()">
-                        <option selected disabled> -- Направление -- </option>
-                        {% for destination in destinations %}
-                            <option value="{{ destination.price_per_kg }}">{{ destination }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <br>
-                {{ block.super }}
+            {% block field_sets %}
+                {% for fieldset in adminform %}
+                    {% include "admin/box_fieldset.html" %}
+                {% endfor %}
             {% endblock %}
+
+            {% block after_field_sets %}{% endblock %}
+
             <div class="form-row">
                 <div>
                     <label style="padding-right: 100px">Общий вес посылок:</label>
@@ -45,11 +41,12 @@
                     <input style="text-align: right; width: 5%" type="text" class="vTextField" maxlength="64" id="total_cost" readonly>
                 </div>
             </div>
-            {% block field_sets %}
-                {{ block.super }}
-            {% endblock %}
 
-            {% block after_field_sets %}{% endblock %}
+            {% block inline_field_sets %}
+                {% for inline_admin_formset in inline_admin_formsets %}
+                    {% include inline_admin_formset.opts.template %}
+                {% endfor %}
+            {% endblock %}
 
             {% block after_related_objects %}{% endblock %}
 

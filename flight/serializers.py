@@ -38,6 +38,6 @@ class BaseParcelSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseParcel
         fields = (
-            'created_at', 'arrived_at', 'code', 'client_code', 'weight', 'consumption', 'status', 'status_label',
+            'created_at', 'arrived_at', 'track_code', 'client_code', 'weight', 'consumption', 'status', 'status_label',
             'flight_code',
         )
