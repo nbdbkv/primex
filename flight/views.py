@@ -3,13 +3,13 @@ import os
 from wsgiref.util import FileWrapper
 
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 
 from rest_framework import generics, filters, views
 
-from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact
+from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact, TrackCode
 from flight.serializers import MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSerializer
 
 
@@ -103,3 +103,13 @@ class BaseParcelHistoryListView(generics.ListAPIView):
         user = self.request.user
         base_parcels = BaseParcel.objects.filter(client_code=user.code_logistic, status=5)
         return base_parcels
+
+
+def ajax_get_track_code_view(request):
+    track_code = TrackCode.objects.first()
+    track_code.code += 1
+    track_code.save()
+    response = {
+        'code': str(track_code.code).zfill(6)
+    }
+    return JsonResponse(response)

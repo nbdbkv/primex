@@ -24,6 +24,42 @@ function setAllPrice () {
     getTotalCost();
 }
 
+function setCodes () {
+    const track_code = document.getElementById(`id_track_code`);
+    if (track_code.value) {
+        setCode(track_code.value);
+    } else {
+        getTrackCode();
+    }
+}
+
+function setCode (track_code) {
+    const a= {
+        "Ё":"YO","Й":"I","Ц":"TS","У":"U","К":"K","Е":"E","Н":"N","Г":"G","Ш":"SH","Щ":"SCH","З":"Z","Х":"H","Ъ":"",
+        "ё":"yo","й":"i","ц":"ts","у":"u","к":"k","е":"e","н":"n","г":"g","ш":"sh","щ":"sch","з":"z","х":"h","ъ":"",
+        "Ф":"F","Ы":"I","В":"V","А":"a","П":"P","Р":"R","О":"O","Л":"L","Д":"D","Ж":"ZH","Э":"E","ф":"f","ы":"i",
+        "в":"v","а":"a","п":"p","р":"r","о":"o","л":"l","д":"d","ж":"zh","э":"e","Я":"Ya","Ч":"CH","С":"S","М":"M",
+        "И":"I","Т":"T","Ь":"","Б":"B","Ю":"YU","я":"ya","ч":"ch","с":"s","м":"m","и":"i","т":"t","ь":"","б":"b","ю":"yu"
+    };
+    let point = destination.options[destination.selectedIndex].text;
+    point = point.split('').map(function (char) { return a[char] || char; }).join("");
+    document.getElementById(`id_code`).value = point.slice(0, 3).toUpperCase() + track_code;
+}
+
+function getTrackCode () {
+    fetch(window.location.origin + '/flight/' + 'track_code/', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        },
+    })
+        .then(response => response.json())
+        .then(response => {
+            document.getElementById('id_track_code').value = response['code'];
+            setCode(response['code']);
+        });
+}
+
 function setPrice (track_code) {
     const id = track_code.id;
     let number = id.replace(/[^0-9]/g,"");
@@ -64,6 +100,7 @@ function getTotalCost () {
 
 destination.addEventListener('change', () => {
     setAllPrice();
+    setCodes();
 })
 
 track_codes.forEach(track_code => {

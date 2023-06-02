@@ -363,19 +363,6 @@ class BoxAdminResource(resources.ModelResource):
         column_name='ВЕС',
         attribute='weight'
     )
-
-    price = fields.Field(
-        column_name='ЦЕНА',
-        attribute='price',
-    )
-    consumption = fields.Field(
-        column_name='РАСХОД',
-        attribute='consumption'
-    )
-    sum = fields.Field(
-        column_name='СУММА',
-        attribute='sum'
-    )
     comment = fields.Field(
         column_name='ПРИМЕЧАНИЕ',
         attribute='comment'
@@ -397,7 +384,7 @@ class BoxAdmin(ImportExportModelAdmin):
     exclude = ('number', 'box', 'status', 'arrived_at',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter),)
-    search_fields = ('base_parcel__code',)
+    search_fields = ('base_parcel__track_code',)
     resource_class = BoxAdminResource
     inlines = (BaseParcelInline,)
     change_form_template = "admin/box_change_form.html"

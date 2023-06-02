@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from solo.models import SingletonModel
+
 from flight.choices import StatusChoices, get_status
 
 
@@ -14,6 +16,10 @@ class TimeStampedModel(models.Model):
 
     def get_statuses(self):
         return {key: value for (key, value) in StatusChoices.choices[2:]}
+
+
+class TrackCode(SingletonModel):
+    code = models.IntegerField(max_length=6, default=0)
 
 
 class Destination(models.Model):

@@ -2,7 +2,7 @@ from django.urls import path
 
 from flight.views import (
     add_to_flight, add_to_box, my_view, MediaListView, FileDownloadListView, RateListView, ContactListView,
-    BaseParcelSearchListView, BaseParcelHistoryListView,
+    BaseParcelSearchListView, BaseParcelHistoryListView, ajax_get_track_code_view,
 )
 
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
     path("contact/", ContactListView.as_view()),
     path("baseparcels/", BaseParcelSearchListView.as_view()),
     path("history/", BaseParcelHistoryListView.as_view()),
+    path('track_code/', ajax_get_track_code_view, name='track_code'),
 ]
