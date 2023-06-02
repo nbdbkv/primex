@@ -42,7 +42,7 @@ class FlightBaseParcelInline(nested_admin.NestedTabularInline):
 class FlightBoxInline(nested_admin.NestedTabularInline):
     model = Box
     form = FlightBoxModelForm
-    exclude = ('status', 'arrived_at',)
+    exclude = ('destination', 'status', 'arrived_at',)
     template = 'admin/flight_box_tabular.html'
     extra = 0
     inlines = (FlightBaseParcelInline,)
@@ -54,10 +54,8 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
 @admin.register(Flight)
 class FlightAdmin(nested_admin.NestedModelAdmin):
     form = FlightModelForm
-    list_display = ('numeration', 'code', 'sum_box_quantity', 'sum_weight', 'cube', 'density', 'get_total_consumption',
-                    'status', 'created_at', )
+    list_display = ('numeration', 'code', 'sum_box_quantity', 'sum_box_weight', 'status', 'created_at', )
     list_display_links = ('numeration', 'code',)
-    exclude = ('weight', 'cube', 'density', 'consumption', 'price', 'sum', 'quantity',)
     search_fields = ['box__code', 'box__base_parcel__track_code', 'code']
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = (FlightBoxInline,)
@@ -70,25 +68,10 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
         box_quantity = Box.objects.filter(flight_id=obj.id).count()
         return box_quantity
 
-    @admin.display(description=_('Вес'))
-    def sum_weight(self, obj):
+    @admin.display(description=_('Вес коробок'))
+    def sum_box_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
-
-    @admin.display(description=_('Общий расход в $'))
-    def get_total_consumption(self, obj):
-        boxes = Box.objects.filter(flight_id=obj.id)
-        boxes_consumption = boxes.aggregate(Sum('consumption'))
-        baseparcels_consumption = 0
-        for box in boxes:
-            baseparcels_per_box_consumption = BaseParcel.objects.filter(box_id=box.id).aggregate(Sum('consumption'))
-            if baseparcels_per_box_consumption['consumption__sum']:
-                baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
-        if boxes_consumption['consumption__sum']:
-            total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
-        else:
-            total_consumption = baseparcels_consumption
-        return total_consumption
 
     def save_model(self, request, obj, form, change):
         a = 0
@@ -177,14 +160,12 @@ class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
 @admin.register(Arrival)
 class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
-    list_display = (
-        'numeration', 'arrived_at', 'code', 'sum_boxes', 'weight', 'cube', 'density', 'get_total_consumption', 'status',
-    )
+    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'get_total_consumption', 'status')
     list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = ('numeration', 'box__code', 'box__base_parcel__track_code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    readonly_fields = ('numeration', 'code', 'quantity', 'sum_boxes', 'weight', 'sum_parcel_weights',)
+    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights',)
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
 
@@ -270,17 +251,14 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Archive)
 class ArchiveAdmin(nested_admin.NestedModelAdmin):
-    list_display = (
-        'numeration', 'arrived_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',
-    )
+    list_display = ('numeration', 'arrived_at', 'code', 'status')
     exclude = ('arrived_at',)
     search_fields = ('numeration', 'box__code', 'box__base_parcel__track_code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = (ArchiveBoxNestedInline,)
     exclude = ('is_archive',)
-    readonly_fields = (
-        'numeration', 'created_at', 'code', 'quantity', 'weight', 'cube', 'density', 'consumption', 'status',)
+    readonly_fields = ('numeration', 'created_at', 'code', 'status')
 
     def get_queryset(self, request):
         return Archive.objects.filter(is_archive=True)

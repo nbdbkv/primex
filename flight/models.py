@@ -19,7 +19,7 @@ class TimeStampedModel(models.Model):
 
 
 class TrackCode(SingletonModel):
-    code = models.IntegerField(max_length=6, default=0)
+    code = models.IntegerField(default=0)
 
 
 class Destination(models.Model):
@@ -38,12 +38,6 @@ class Flight(TimeStampedModel):
     # Рейс
     numeration = models.CharField(db_index=True, max_length=64, verbose_name=_('Нумерация рейсов'))
     code = models.CharField(db_index=True, max_length=64, verbose_name=_('Код рейса'))
-    quantity = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Количество коробки'),)
-    weight = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=_('Вес'), null=True, blank=True)
-    cube = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Куб'), null=True, blank=True)
-    density = models.DecimalField(max_digits=9, decimal_places=2, verbose_name=_('Плотность'), null=True, blank=True)
-    consumption = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('Расход в $'), null=True,
-                                      blank=True)
     status = models.PositiveIntegerField(default=StatusChoices.FORMING, choices=StatusChoices.choices,
                                          verbose_name=_('Статус'), null=True, blank=True,)
     is_archive = models.BooleanField(default=False, verbose_name=_('Архив'))

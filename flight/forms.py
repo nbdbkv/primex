@@ -65,12 +65,9 @@ class FlightBoxModelForm(forms.ModelForm):
     class Meta:
         widgets = {
             'number': forms.TextInput(attrs={'size': '4', 'readonly': 'readonly'}),
-            'code': forms.TextInput(attrs={'size': '8'}),
-            'track_code': forms.TextInput(attrs={'size': '16'}),
-            'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
-            'price': forms.TextInput(attrs={'size': '6'}),
-            'consumption': forms.NumberInput(attrs={'style': 'width:8ch'}),
-            'sum': forms.TextInput(attrs={'size': '6'}),
+            'code': forms.TextInput(attrs={'size': '8', 'readonly': 'readonly'}),
+            'track_code': forms.TextInput(attrs={'size': '16', 'readonly': 'readonly'}),
+            'weight': forms.NumberInput(attrs={'style': 'width:10ch', 'readonly': 'readonly'}),
             'comment': forms.Textarea(attrs={'rows': '1', 'cols': '40'}),
         }
 
@@ -83,7 +80,7 @@ class FlightModelForm(forms.ModelForm):
 
     class Meta:
         model = Flight
-        fields = ('numeration',  'code', 'quantity', 'status',)
+        fields = ('numeration', 'code', 'status',)
 
 
 class ArrivalModelForm(forms.ModelForm):
@@ -94,4 +91,4 @@ class ArrivalModelForm(forms.ModelForm):
 
     class Meta:
         model = Arrival
-        fields = ('numeration',  'code', 'quantity', 'status',)
+        fields = ('numeration',  'code', 'status',)
