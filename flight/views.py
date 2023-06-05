@@ -106,6 +106,8 @@ class BaseParcelHistoryListView(generics.ListAPIView):
 
 
 def ajax_get_track_code_view(request):
+    if not TrackCode.objects.first():
+        TrackCode.objects.create()
     track_code = TrackCode.objects.first()
     track_code.code += 1
     track_code.save()

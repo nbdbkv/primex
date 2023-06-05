@@ -160,7 +160,7 @@ class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
 @admin.register(Arrival)
 class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
-    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'get_total_consumption', 'status')
+    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'status')
     list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = ('numeration', 'box__code', 'box__base_parcel__track_code',)
     date_hierarchy = 'created_at'
@@ -169,25 +169,15 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
 
-    @admin.display(description=_('Общий расход в $'))
-    def get_total_consumption(self, obj):
-        boxes = Box.objects.filter(flight_id=obj.id)
-        boxes_consumption = boxes.aggregate(Sum('consumption'))
-        baseparcels_consumption = 0
-        for box in boxes:
-            baseparcels_per_box_consumption = BaseParcel.objects.filter(box_id=box.id).aggregate(Sum('consumption'))
-            if baseparcels_per_box_consumption['consumption__sum']:
-                baseparcels_consumption += baseparcels_per_box_consumption['consumption__sum']
-        if boxes_consumption['consumption__sum']:
-            total_consumption = boxes_consumption['consumption__sum'] + baseparcels_consumption
-        else:
-            total_consumption = baseparcels_consumption
-        return total_consumption
-
     @admin.display(description=_('Коробки по прибытии'))
     def sum_boxes(self, obj):
         boxes = Box.objects.filter(flight_id=obj.id).count()
         return boxes
+
+    @admin.display(description=_('Вес коробок'))
+    def sum_box_weight(self, obj):
+        weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
+        return weight['weight__sum']
 
     @admin.display(description=_('Вес (роздан)'))
     def sum_parcel_weights(self, obj):
@@ -229,6 +219,14 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         if form.has_changed():
             self.if_change(obj)
         else:
+            for query_dict in request.POST:
+                if 'shelf' in query_dict:
+                    base_parcel_id = query_dict.split('_')[-1]
+                    value = request.POST.get(f'shelf_{base_parcel_id}')
+                    if value:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.shelf = value
+                        base_parcel.save()
             for i in request.POST.getlist('base_parcels'):
                 base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
                 base_parcel.status = int(eval(i)['status'])

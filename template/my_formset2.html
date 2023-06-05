@@ -70,10 +70,7 @@
                 <tr>
                     <th>Код</th>
                     <th>Трек-код</th>
-                    <th>Вес</th>
-                    <th>Цена</th>
-                    <th>Расход в $</th>
-                    <th>Сумма</th>
+                    <th>Вес с коробкой</th>
                     <th>Комментарий</th>
                     <th>Статус</th>
                 </tr>
@@ -83,9 +80,6 @@
                     <td>{% if item.code %}{{ item.code }}{% else %}-{% endif %}</td>
                     <td>{% if item.track_code %}{{ item.track_code }}{% else %}-{% endif %}</td>
                     <td>{% if item.weight %}{{ item.weight }}{% else %}-{% endif %}</td>
-                    <td>{% if item.price %}{{ item.price }}{% else %}-{% endif %}</td>
-                    <td>{% if item.consumption %}{{ item.consumption }}{% else %}-{% endif %}</td>
-                    <td>{% if item.sum %}{{ item.sum }}{% else %}-{% endif %}</td>
                     <td>{% if item.comment %}{{ item.comment }}{% else %}-{% endif %}</td>
                     <td>
                         <select name="boxes" id="box_{{ item.id }}">
@@ -105,23 +99,30 @@
                         <div></div>
                     {% else %}
                         <div class="child">
-                            <p class="light">ПОСЫЛКА {{ child.code }}</p>
+                            <p class="light">ПОСЫЛКА {{ child.track_code }}</p>
                             <table>
                                 <thead>
                                 <tr>
                                     <th>Трек-код</th>
                                     <th>Код клиента</th>
+                                    <th>Телефон клиента</th>
+                                    <th>Полка</th>
+                                    <th>Цена</th>
                                     <th>Вес</th>
-                                    <th>Доп. расход в $</th>
+                                    <th>Стоимость в $</th>
                                     <th>Статус</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>{% if child.code %}{{ child.code }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.track_code %}{{ child.track_code }}{% else %}-{% endif %}</td>
                                     <td>{% if child.client_code %}{{ child.client_code }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.phone %}{{ child.phone }}{% else %}-{% endif %}</td>
+                                    <td><input type="text" name="shelf_{{ child.id }}" size="12" maxlength="16" id="id_shelf_{{ child.id }}"
+                                               value="{% if child.shelf %}{{ child.shelf }}{% else %}{% endif %}"></td>
+                                    <td>{% if child.price %}{{ child.price }}{% else %}-{% endif %}</td>
                                     <td>{% if child.weight %}{{ child.weight }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.consumption %}{{ child.consumption }}{% else %}-{% endif %}</td>
+                                    <td>{% if child.cost %}{{ child.cost }}{% else %}-{% endif %}</td>
                                     <td>
                                         <select name="base_parcels" id="base_parcel_{{ child.id }}">
                                             {% for key, value in child.get_statuses.items %}
