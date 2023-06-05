@@ -121,7 +121,7 @@ class BaseParcelNestedInline(nested_admin.NestedTabularInline):
 
 class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
-    readonly_fields = ('track_code', 'client_code', 'weight', 'consumption', 'status',)
+    readonly_fields = ('track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'status',)
     exclude = ('arrived_at',)
 
     def has_add_permission(self, request, obj):
@@ -133,7 +133,7 @@ class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
 
 class BoxNestedInline(nested_admin.NestedTabularInline):
     model = Box
-    readonly_fields = ('code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment',)
+    readonly_fields = ('code', 'track_code', 'weight', 'comment',)
     fields = (readonly_fields, 'status',)
     inlines = (BaseParcelNestedInline,)
 
@@ -147,7 +147,7 @@ class BoxNestedInline(nested_admin.NestedTabularInline):
 class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
     model = Box
     readonly_fields = ('number', 'code', 'track_code', 'weight', 'comment', 'status')
-    exclude = ('arrived_at',)
+    exclude = ('arrived_at', 'destination')
     inlines = (ArchiveBaseParcelNestedInline,)
 
     def has_add_permission(self, request, obj):
@@ -249,7 +249,8 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Archive)
 class ArchiveAdmin(nested_admin.NestedModelAdmin):
-    list_display = ('numeration', 'arrived_at', 'code', 'status')
+    list_display = ('numeration', 'code', 'arrived_at', 'status')
+    list_display_links = ('numeration', 'code', 'arrived_at', 'status')
     exclude = ('arrived_at',)
     search_fields = ('numeration', 'box__code', 'box__base_parcel__track_code',)
     date_hierarchy = 'created_at'
@@ -278,9 +279,9 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Unknown)
 class UnknownAdmin(nested_admin.NestedModelAdmin):
-    list_display = ('get_flight', 'get_box', 'track_code', 'client_code', 'weight', 'cost', 'arrived_at',)
+    list_display = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'weight', 'cost', 'arrived_at',)
     list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code')
-    readonly_fields = ('get_flight', 'get_box', 'track_code', 'client_code', 'weight', 'cost', 'arrived_at')
+    readonly_fields = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'weight', 'cost', 'arrived_at')
     fields = [readonly_fields, 'status']
     search_fields = ('track_code',)
     date_hierarchy = 'created_at'
