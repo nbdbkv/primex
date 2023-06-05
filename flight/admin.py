@@ -257,7 +257,9 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = (ArchiveBoxNestedInline,)
     exclude = ('is_archive',)
-    readonly_fields = ('numeration', 'created_at', 'code', 'status')
+    readonly_fields = ('numeration', 'code', 'created_at', 'status')
+    fields = [readonly_fields]
+    change_form_template = "admin/archive_change_form.html"
 
     def get_queryset(self, request):
         return Archive.objects.filter(is_archive=True)
@@ -279,9 +281,13 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 
 @admin.register(Unknown)
 class UnknownAdmin(nested_admin.NestedModelAdmin):
-    list_display = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'weight', 'cost', 'arrived_at',)
-    list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code')
-    readonly_fields = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'weight', 'cost', 'arrived_at')
+    list_display = (
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+    )
+    list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
+    readonly_fields = (
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+    )
     fields = [readonly_fields, 'status']
     search_fields = ('track_code',)
     date_hierarchy = 'created_at'
