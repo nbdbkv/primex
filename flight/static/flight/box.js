@@ -104,7 +104,8 @@ destination.addEventListener('change', () => {
 })
 
 track_codes.forEach(track_code => {
-    track_code.addEventListener('input', () => {
+    track_code.addEventListener('input', (event) => {
+        document.getElementById('save').disabled = true;
         setPrice(track_code);
     })
 });

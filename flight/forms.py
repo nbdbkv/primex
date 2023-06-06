@@ -10,7 +10,7 @@ class BaseParcelModelForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'track_code': forms.TextInput(attrs={'size': '10'}),
+            'track_code': forms.TextInput(attrs={'size': '15'}),
             'client_code': forms.TextInput(attrs={'size': '8'}),
             'phone': forms.TextInput(attrs={'size': '12'}),
             'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),

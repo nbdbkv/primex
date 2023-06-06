@@ -25,6 +25,7 @@ class TrackCode(SingletonModel):
 class Destination(models.Model):
     point = models.CharField(max_length=100, verbose_name=_('Пункт назначения'))
     price_per_kg = models.CharField(max_length=8, verbose_name=_('Цена за кг в $'))
+    currency = models.CharField(max_length=8, verbose_name=_('1 доллар в сомах'))
 
     class Meta:
         verbose_name = _("Направление")
