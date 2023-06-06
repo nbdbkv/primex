@@ -21,7 +21,7 @@ original_get_app_list = AdminSite.get_app_list
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('point', 'price_per_kg',)
+    list_display = ('point', 'price_per_kg', 'currency')
 
 
 class FlightBaseParcelInline(nested_admin.NestedTabularInline):
@@ -162,7 +162,10 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
     list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'status')
     list_display_links = ('numeration', 'arrived_at', 'code',)
-    search_fields = ('numeration', 'box__code', 'box__base_parcel__track_code',)
+    search_fields = (
+        'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
+        'box__base_parcel__phone',
+    )
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights',)
@@ -317,7 +320,7 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
 class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
     form = BaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at',)
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode')
     template = 'admin/box_baseparcel_tabular.html'
 
     def get_extra(self, request, obj=None, **kwargs):
@@ -354,7 +357,7 @@ class BoxAdminResource(resources.ModelResource):
     class Meta:
         model = Box
         import_id_fields = ['track_code']
-        fields = ('created_at', 'code', 'track_code', 'weight', 'price', 'consumption', 'sum', 'comment')
+        fields = ('created_at', 'code', 'track_code', 'weight', 'comment')
 
 
 @admin.register(Box)
