@@ -1,4 +1,10 @@
+import barcode
+
+from barcode.writer import ImageWriter
+from io import BytesIO
+
 from django.db import models
+from django.core.files import File
 from django.utils.translation import gettext_lazy as _
 
 from solo.models import SingletonModel
@@ -107,6 +113,9 @@ class BaseParcel(TimeStampedModel):
         verbose_name=_('Коробка посылки'),
     )
     track_code = models.CharField(db_index=True, max_length=64, verbose_name=_('Трек-Код'))
+    barcode = models.ImageField(
+        upload_to='flight/baseparcel/barcode', null=True, blank=True, verbose_name=_("Штрих-Код"),
+    )
     client_code = models.CharField(db_index=True, max_length=64, null=True, blank=True, verbose_name=_('Код клиента'))
     phone = models.CharField(db_index=True, max_length=16, null=True, blank=True, verbose_name=_('Телефон клиента'))
     shelf = models.CharField(max_length=16, null=True, blank=True, verbose_name=_('Полка'))
@@ -125,6 +134,13 @@ class BaseParcel(TimeStampedModel):
         else:
             return ''
 
+    def save(self, *args, **kwargs):
+        COD128 = barcode.get_barcode_class('code128')
+        rv = BytesIO()
+        code = COD128(f'{self.track_code}', writer=ImageWriter()).write(rv)
+        self.barcode.save(f'{self.track_code}.png', File(rv), save=False)
+        super(BaseParcel, self).save(*args, **kwargs)
+
 
 class Unknown(BaseParcel):
     # Неизвестные заказы
@@ -138,8 +154,8 @@ class Unknown(BaseParcel):
 class Media(models.Model):
     # Медиа
     title = models.CharField(_("Название"), max_length=127,)
-    image = models.ImageField(_("Изображение"), upload_to='operation/media/image', null=True, blank=True,)
-    video = models.FileField(_("Видео"), upload_to='operation/media/video', null=True, blank=True,)
+    image = models.ImageField(_("Изображение"), upload_to='flight/media/image', null=True, blank=True,)
+    video = models.FileField(_("Видео"), upload_to='flight/media/video', null=True, blank=True,)
 
     class Meta:
         verbose_name = _("Медиа")
@@ -166,7 +182,7 @@ class Rate(models.Model):
 
 class Contact(models.Model):
     social = models.CharField(_('Социальная сеть'), max_length=100,)
-    icon = models.ImageField(_('Иконка'), upload_to='operation/contact', null=True, blank=True,)
+    icon = models.ImageField(_('Иконка'), upload_to='flight/contact', null=True, blank=True,)
 
     class Meta:
         verbose_name = _("Контакт")
