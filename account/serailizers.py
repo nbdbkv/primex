@@ -1,3 +1,6 @@
+from io import BytesIO
+from django.core.files import File
+
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
@@ -5,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
 from django.conf import settings
-
+import qrcode
 from account.validators import PhoneValidator
 from account.utils import SendSMS, get_otp
 from account.choices import SendCodeType
@@ -65,9 +68,35 @@ class RegisterCodeVerifySerializer(serializers.Serializer):
             return attrs
         raise ValidationError(ErrorMessage.WRONG_OTP.value)
 
+    def generate_qr_phone(self, user):
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+
+        qr.add_data(user.phone)  # Modify this with your desired data
+
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buffer = BytesIO()
+        img.save(buffer)
+        buffer.seek(0)
+
+        # Set the image field of the model
+        user.qr_phone.save(f'{user.phone}.png', File(buffer), save=True)
+
+
+    def generate_code_logistic(self, user):
+        startswith = user.region.name.upper()
+        print(startswith)
     def update(self):
         self.instance.is_active = True
         self.instance.save()
+        self.generate_qr_phone(self.instance)
+        self.generate_code_logistic(self.instance)
         return self.instance
 
 
@@ -131,6 +160,11 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "groups",
             "user_permissions",
         )
+    def to_representation(self, instance):
+        super().to_representation(instance)
+
+        startswith = instance.region.name.upper()
+        print(startswith)
 
 
 class DistrictsSerializer(serializers.ModelSerializer):

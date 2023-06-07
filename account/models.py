@@ -24,6 +24,12 @@ class User(AbstractUser):
         },
     )
     code_logistic = models.CharField(verbose_name=_("Код логистики"), max_length=200, null=True, blank=True)
+    qr_phone = models.ImageField(
+        verbose_name=_("QR-Код телефона"), upload_to='account/user/qrcode/phone', null=True, blank=True,
+    )
+    qr_logistic = models.ImageField(
+        verbose_name=_("QR-Код логистики"), upload_to='account/user/qrcode/logistic', null=True, blank=True,
+    )
     info = models.CharField(_("user info"), max_length=255)
     region = models.ForeignKey(
         "Region", on_delete=models.SET_NULL, verbose_name=_("region"), null=True, blank=True,
