@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
-
+from django.views.generic import TemplateView
 from rest_framework import generics, filters, views
 
 from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact, TrackCode
@@ -55,6 +55,17 @@ def my_view(request):
 class MediaListView(generics.ListAPIView):
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
+
+
+class DeliveryPrintView(TemplateView):
+    template_name = 'delivery_print.html'
+
+    def get(self, request, *args, **kwargs):
+        print(request, args, kwargs)
+        # value
+        context = self.get_context_data(**kwargs)
+        context['baseparcels'] = BaseParcel.objects.filter(Q(track_code='user_1') | Q(client_code='user_1'))
+        return self.render_to_response(context)
 
 
 class FileDownloadListView(views.APIView):
