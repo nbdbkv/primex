@@ -2,7 +2,7 @@ let destination  = document.getElementById('id_destination');
 let track_codes = document.querySelectorAll("td.field-track_code input");
 let prices = document.querySelectorAll("td.field-price input");
 let weights = document.querySelectorAll("td.field-weight input");
-let costs = document.querySelectorAll("td.field-cost input");
+let costsUSD = document.querySelectorAll("td.field-cost_usd input");
 
 window.addEventListener('DOMContentLoaded', () =>  {
     getTotalWeight();
@@ -18,7 +18,7 @@ function setAllPrice () {
             price = price.match(regex).map(function(p) { return parseFloat(p); });
             document.getElementById(`id_base_parcel-${i}-price`).value = price[0].toFixed(2);
             let weight = document.getElementById(`id_base_parcel-${i}-weight`).value;
-            document.getElementById(`id_base_parcel-${i}-cost`).value = (price * weight).toFixed(2);
+            document.getElementById(`id_base_parcel-${i}-cost_usd`).value = (price * weight).toFixed(2);
         }
     }
     getTotalCost();
@@ -75,7 +75,7 @@ function getCostPerParcel (weight) {
     let number = id.replace(/[^0-9]/g,"");
     const price = document.getElementById(`id_base_parcel-${number}-price`);
     costPerParcel = price.value * weight.value
-    document.getElementById(`id_base_parcel-${number}-cost`).value = costPerParcel.toFixed(2)
+    document.getElementById(`id_base_parcel-${number}-cost_usd`).value = costPerParcel.toFixed(2)
 }
 
 function getTotalWeight () {
@@ -90,9 +90,9 @@ function getTotalWeight () {
 
 function getTotalCost () {
     let totalCost = 0
-    costs.forEach(cost => {
-        if (cost.value) {
-            totalCost += parseFloat(cost.value);
+    costsUSD.forEach(cost_usd => {
+        if (cost_usd.value) {
+            totalCost += parseFloat(cost_usd.value);
             document.getElementById('total_cost').value = totalCost.toFixed(2);
         }
     });
@@ -118,8 +118,8 @@ weights.forEach(weight => {
     })
 });
 
-costs.forEach(cost => {
-    cost.addEventListener('input', () => {
+costsUSD.forEach(cost_usd => {
+    cost_usd.addEventListener('input', () => {
         getTotalCost();
     })
 });
