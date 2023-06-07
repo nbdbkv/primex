@@ -61,10 +61,11 @@ class DeliveryPrintView(TemplateView):
     template_name = 'delivery_print.html'
 
     def get(self, request, *args, **kwargs):
-        print(request, args, kwargs)
-        # value
         context = self.get_context_data(**kwargs)
-        context['baseparcels'] = BaseParcel.objects.filter(Q(track_code='user_1') | Q(client_code='user_1'))
+        if 'q' in request.session:
+            q = request.session['q']
+            context['baseparcels'] = BaseParcel.objects.filter(Q(track_code=q) | Q(client_code=q))
+            del request.session['q']
         return self.render_to_response(context)
 
 

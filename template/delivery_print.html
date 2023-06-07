@@ -1,136 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
-    .container {
-        max-width: 1280px;
-        margin: 0 auto;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
 
-    .container table {
-        border-collapse: collapse;
-        width: 100%;
-        margin-bottom: 30px;
-    }
+        .container table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 30px;
+        }
 
-    .container th, td {
-        border: 1px solid #dddddd;
-        text-align: center;
-        padding: 8px;
-        font-size: 12px;
-    }
+        .container th, td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+        }
 
-    .container th {
-        background-color: #f9f9f9;
-        font-weight: bold;
-    }
+        .container th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
 
-    .container tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+        .container tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-    .podpise {
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-    }
+        .podpise {
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
 
-    .podpise span {
-        width: 200px;
-        display: inline-block;
-        border-bottom: 1px solid #000;
-    }
+        .podpise span {
+            width: 200px;
+            display: inline-block;
+            border-bottom: 1px solid #000;
+        }
 
-    .podpise p:first-child {
-        flex-grow: 1;
-        white-space: nowrap;
-        margin-right: 40px;
-        overflow: hidden;
-    }
+        .podpise p:first-child {
+            flex-grow: 1;
+            white-space: nowrap;
+            margin-right: 40px;
+            overflow: hidden;
+        }
 
-    .podpise p:first-child span {
-        width: 100%;
-    }
-  </style>
+        .podpise p:first-child span {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <table>
-      <thead>
+        <thead>
         <tr>
-          <th>Дата</th>
-          <th>Код</th>
-          <th>Трек</th>
-          <th>вес</th>
-          <th>полка</th>
-          <th>цена</th>
-          <th>сумма в <br> долларах</th>
-          <th>сумма в <br> сомах</th>
-          <th>дата</th>
-          <th>примечание</th>
+            <th>Код <br> клиента</th>
+            <th>Трек-код</th>
+            <th>Полка</th>
+            <th>Вес</th>
+            <th>Цена за <br> кг в $</th>
+            <th>Cумма в $</th>
+            <th>Cумма <br> в сомах</th>
+            <th>Примечание</th>
         </tr>
-      </thead>
-      <tbody>
-      {% for baseparcel in baseparcels %}
-          <tr>
-              <td>{% if baseparcel.created_at %}{{ baseparcel.created_at }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.track_code %}{{ baseparcel.track_code }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.weight %}{{ baseparcel.weight }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.shelf %}{{ baseparcel.shelf }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.price %}{{ baseparcel.price }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.cost %}{{ baseparcel.cost }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.cost %}{% widthratio baseparcel.cost 1 87 %}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.arrived_at %}{{ baseparcel.arrived_at }}{% else %}{% endif %}</td>
-              <td>{% if baseparcel.box.comment %}{{ baseparcel.box.comment }}{% else %}{% endif %}</td>
-          </tr>
-      {% endfor %}
-      </tbody>
+        </thead>
+        <tbody>
+        {% for baseparcel in baseparcels %}
+            <tr>
+                <td>{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.track_code %}{{ baseparcel.track_code }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.shelf %}{{ baseparcel.shelf }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.weight %}{{ baseparcel.weight }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.price %}{{ baseparcel.price }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.cost_usd %}{{ baseparcel.cost_usd }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.cost_kgs %}{{ baseparcel.cost_kgs }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.comment %}{{ baseparcel.comment }}{% else %}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
     <div class="podpise">
-      <p>
-        ФИО получателя:
-        <span>
-
+        <p>
+            ФИО получателя:
+            <span>
         </span>
-      </p>
-      <p>
-        Подпись:
-        <span>
-
+        </p>
+        <p>
+            Подпись:
+            <span>
         </span>
-      </p>
+        </p>
     </div>
     <div class="podpise">
-      <p>
-        ФИО оператора:
-        <span>
-
+        <p>
+            ФИО оператора:
+            <span>
         </span>
-      </p>
-      <p>
-        Подпись:
-        <span>
-
+        </p>
+        <p>
+            Подпись:
+            <span>
         </span>
-      </p>
+        </p>
     </div>
     <div class="podpise">
-      <p>
-
-      </p>
-      <p>
-        ДАТА:
-        <span>
-
+        <p></p>
+        <p>
+            ДАТА:
+            <span>
         </span>
-      </p>
+        </p>
     </div>
-  </div>
+</div>
 </body>
 </html>

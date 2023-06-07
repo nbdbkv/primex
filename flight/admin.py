@@ -267,6 +267,7 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
         url = '{}?q={}'.format(reverse('admin:flight_deliverybaseparcel_changelist'),
                                       search_data)
         if search_data:
+            request.session['q'] = search_data
             return HttpResponseRedirect(url)
         else:
             return super().changelist_view(request, extra_context)
