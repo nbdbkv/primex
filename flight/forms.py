@@ -15,7 +15,7 @@ class BaseParcelModelForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'size': '12'}),
             'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
             'weight': forms.NumberInput(attrs={'style': 'width:9ch'}),
-            'cost': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
+            'cost_usd': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
         }
 
     def clean_client_code(self):
@@ -56,7 +56,7 @@ class FlightBaseParcelModelForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
             'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
             'weight': forms.NumberInput(attrs={'style': 'width:9ch', 'readonly': 'readonly'}),
-            'cost': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
+            'cost_usd': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
         }
 
 

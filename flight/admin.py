@@ -33,7 +33,7 @@ class DestinationAdmin(admin.ModelAdmin):
 class FlightBaseParcelInline(nested_admin.NestedTabularInline):
     model = BaseParcel
     form = FlightBaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at', 'barcode')
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs')
     template = 'admin/flight_baseparcel_tabular.html'
     extra = 0
     classes = ('collapse',)
@@ -128,8 +128,10 @@ class BaseParcelNestedInline(nested_admin.NestedTabularInline):
 
 class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
-    readonly_fields = ('track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'status',)
-    exclude = ('arrived_at',)
+    readonly_fields = (
+        'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd', 'cost_kgs', 'status',
+    )
+    exclude = ('arrived_at', 'barcode')
 
     def has_add_permission(self, request, obj):
         return False
@@ -384,11 +386,13 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 @admin.register(Unknown)
 class UnknownAdmin(nested_admin.NestedModelAdmin):
     list_display = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'cost_kgs', 'arrived_at',
     )
     list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'cost_kgs', 'arrived_at',
     )
     fields = [readonly_fields, 'status']
     search_fields = ('track_code',)
@@ -408,7 +412,7 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
     @admin.display(description=_('Код рейса'))
     def get_flight(self, obj):
         flight = Flight.objects.get(box__base_parcel=obj.id)
-        return flight
+        return flight.code
 
     @admin.display(description=_('Код коробки'))
     def get_box(self, obj):
@@ -419,11 +423,13 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
 @admin.register(DeliveryBaseParcel)
 class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     list_display = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'cost_kgs', 'arrived_at',
     )
     list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'cost_kgs', 'arrived_at',
     )
     fields = [readonly_fields, 'status']
     search_fields = ('track_code',)
@@ -444,7 +450,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     @admin.display(description=_('Код рейса'))
     def get_flight(self, obj):
         flight = Flight.objects.get(box__base_parcel=obj.id)
-        return flight
+        return flight.code
 
     @admin.display(description=_('Код коробки'))
     def get_box(self, obj):
@@ -455,7 +461,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
 class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
     form = BaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at', 'barcode')
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs')
     template = 'admin/box_baseparcel_tabular.html'
 
     def get_extra(self, request, obj=None, **kwargs):
@@ -551,8 +557,8 @@ class BoxAdmin(ImportExportModelAdmin):
 
     @admin.display(description=_('Стоим. посылок в $'))
     def sum_baseparcel_cost(self, obj):
-        baseparcel_price = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('cost'))
-        return baseparcel_price['cost__sum']
+        baseparcel_price = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('cost_usd'))
+        return baseparcel_price['cost_usd__sum']
 
 
 @admin.register(Media)
@@ -580,12 +586,13 @@ class AdminSiteExtension(AdminSite):
             "Flight": 3,
             "Arrival": 4,
             "Delivery": 5,
-            "Unknown": 6,
-            "Archive": 7,
-            "Media": 8,
-            'Rate': 9,
-            "Contact": 10,
-            'DeliveryBaseParcel': 11
+            'DeliveryBaseParcel': 6,
+            "Unknown": 7,
+            "Archive": 8,
+            "Media": 9,
+            'Rate': 10,
+            "Contact": 11,
+
         }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':
