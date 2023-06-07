@@ -78,16 +78,16 @@
       <tbody>
       {% for baseparcel in baseparcels %}
           <tr>
-              <td>{{ baseparcel.created_at }}</td>
-              <td>{{ baseparcel.track_code }}</td>
-              <td>{{ baseparcel.client_code }}</td>
-              <td>{{ baseparcel.weight }}</td>
-              <td>{{ baseparcel.shelf }}</td>
-              <td>{{ baseparcel.price }}</td>
-              <td>{{ baseparcel.cost }}</td>
-              <td>{% widthratio baseparcel.cost 1 87 %}</td>
-              <td>{{ baseparcel.arrrived_at }}</td>
-              <td>{{ baseparcel.box.comment }}</td>
+              <td>{% if baseparcel.created_at %}{{ baseparcel.created_at }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.track_code %}{{ baseparcel.track_code }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.weight %}{{ baseparcel.weight }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.shelf %}{{ baseparcel.shelf }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.price %}{{ baseparcel.price }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.cost %}{{ baseparcel.cost }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.cost %}{% widthratio baseparcel.cost 1 87 %}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.arrived_at %}{{ baseparcel.arrived_at }}{% else %}{% endif %}</td>
+              <td>{% if baseparcel.box.comment %}{{ baseparcel.box.comment }}{% else %}{% endif %}</td>
           </tr>
       {% endfor %}
       </tbody>
