@@ -3,6 +3,8 @@ from django.contrib.admin import AdminSite, DateFieldListFilter
 from django.db.models import Sum, Q
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
@@ -12,7 +14,8 @@ from flight.forms import (
     FlightBoxModelForm,
 )
 from flight.models import (
-    Flight, Box, BaseParcel, Arrival, Delivery, Archive, Unknown, Media, Contact, Rate, Destination,
+    Flight, Box, BaseParcel, Arrival, Delivery, Archive, Unknown, Media,
+    Contact, Rate, Destination, DeliveryBaseParcel,
 )
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
@@ -257,6 +260,15 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
 
+    def changelist_view(self, request, extra_context=None):
+        search_data = request.GET.get('q')
+        url = '{}?q={}'.format(reverse('admin:flight_deliverybaseparcel_changelist'),
+                                      search_data)
+        if search_data:
+            return HttpResponseRedirect(url)
+        else:
+            return super().changelist_view(request, extra_context)
+
     @admin.display(description=_('Коробки по прибытии'))
     def sum_boxes(self, obj):
         boxes = Box.objects.filter(flight_id=obj.id).count()
@@ -386,6 +398,42 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
 
     def get_queryset(self, request):
         return Unknown.objects.filter(status=7)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description=_('Код рейса'))
+    def get_flight(self, obj):
+        flight = Flight.objects.get(box__base_parcel=obj.id)
+        return flight
+
+    @admin.display(description=_('Код коробки'))
+    def get_box(self, obj):
+        box = Box.objects.get(base_parcel=obj.id)
+        return box
+
+
+@admin.register(DeliveryBaseParcel)
+class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
+    list_display = (
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+    )
+    list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
+    readonly_fields = (
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost', 'arrived_at',
+    )
+    fields = [readonly_fields, 'status']
+    search_fields = ('track_code',)
+    date_hierarchy = 'created_at'
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    # change_list_template = 'admin/delivery_base_parcel_change_list.html'
+    change_form_template = "admin/unknown_change_form.html"
+
+    def get_queryset(self, request):
+        return Unknown.objects.filter(status=4)
 
     def has_add_permission(self, request):
         return False
@@ -537,6 +585,7 @@ class AdminSiteExtension(AdminSite):
             "Media": 8,
             'Rate': 9,
             "Contact": 10,
+            'DeliveryBaseParcel': 11
         }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':

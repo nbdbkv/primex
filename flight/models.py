@@ -160,6 +160,14 @@ class Unknown(BaseParcel):
         verbose_name_plural = _('Неизвестные заказы')
 
 
+class DeliveryBaseParcel(BaseParcel):
+
+    class Meta:
+        proxy = True
+        verbose_name = _('Выдача посылок')
+        verbose_name_plural = _('Выдача посылок')
+
+
 class Media(models.Model):
     # Медиа
     title = models.CharField(_("Название"), max_length=127,)
