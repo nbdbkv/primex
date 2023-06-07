@@ -20,7 +20,7 @@ from account.models import District, Village, Region, User
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("phone", "password", "info")
+        fields = ("phone", "password", "info", "region")
 
     def validate_password(self, password):
         try:
@@ -171,12 +171,6 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "groups",
             "user_permissions",
         )
-
-    def to_representation(self, instance):
-        super().to_representation(instance)
-
-        startswith = instance.region.name.upper()
-        print(startswith)
 
 
 class DistrictsSerializer(serializers.ModelSerializer):
