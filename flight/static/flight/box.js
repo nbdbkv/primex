@@ -106,6 +106,12 @@ destination.addEventListener('change', () => {
 track_codes.forEach(track_code => {
     track_code.addEventListener('input', (event) => {
         document.getElementById('save').disabled = true;
+        timeoutId = setTimeout(function() {
+            const id = track_code.id
+            let number = id.replace(/[^0-9]/g,"");
+            const clientCode = document.getElementById(`id_base_parcel-${number}-client_code`);
+            clientCode.focus()
+        }, 400);
         setPrice(track_code);
     })
 });
