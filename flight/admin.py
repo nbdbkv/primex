@@ -460,9 +460,9 @@ class BaseParcelInline(admin.TabularInline):
 
     def get_extra(self, request, obj=None, **kwargs):
         if obj:
-            return 25
-        else:
             return 50
+        else:
+            return 100
 
 
 class BoxAdminResource(resources.ModelResource):
