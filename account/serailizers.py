@@ -27,7 +27,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = super().create(validated_data)
-        instance.is_active = True
+        # instance.is_active = True
         instance.set_password(validated_data["password"])
         instance.save()
         return instance
