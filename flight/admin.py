@@ -429,7 +429,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     search_fields = ('track_code',)
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    # change_list_template = 'admin/delivery_base_parcel_change_list.html'
+    change_list_template = 'admin/delivery_base_parcel_change_list.html'
     change_form_template = "admin/unknown_change_form.html"
 
     def get_queryset(self, request):
