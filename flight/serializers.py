@@ -33,11 +33,11 @@ class ContactSerializer(serializers.ModelSerializer):
 
 class BaseParcelSerializer(serializers.ModelSerializer):
     status_label = serializers.CharField(source='get_status_display', read_only=True)
-    flight_code = serializers.CharField(source='box.flight.code', read_only=True)
+    flight_numeration = serializers.CharField(source='box.flight.numeration', default=None, read_only=True)
 
     class Meta:
         model = BaseParcel
         fields = (
             'created_at', 'arrived_at', 'track_code', 'client_code', 'phone', 'price', 'weight', 'cost', 'status',
-            'status_label', 'flight_code',
+            'status_label', 'flight_numeration',
         )
