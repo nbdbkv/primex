@@ -8,9 +8,12 @@ import nested_admin
 from rangefilter.filters import DateTimeRangeFilter
 
 from flight.forms import (
-    FlightModelForm, ArrivalModelForm, BaseParcelModelForm, BoxModelForm, FlightBaseParcelModelForm, FlightBoxModelForm,
+    FlightModelForm, ArrivalModelForm, DeliveryModelForm, BaseParcelModelForm, BoxModelForm, FlightBaseParcelModelForm,
+    FlightBoxModelForm,
 )
-from flight.models import Flight, Box, BaseParcel, Arrival, Archive, Unknown, Media, Contact, Rate, Destination
+from flight.models import (
+    Flight, Box, BaseParcel, Arrival, Delivery, Archive, Unknown, Media, Contact, Rate, Destination,
+)
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields, widgets
 
@@ -27,7 +30,7 @@ class DestinationAdmin(admin.ModelAdmin):
 class FlightBaseParcelInline(nested_admin.NestedTabularInline):
     model = BaseParcel
     form = FlightBaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at',)
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode')
     template = 'admin/flight_baseparcel_tabular.html'
     extra = 0
     classes = ('collapse',)
@@ -61,7 +64,8 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     inlines = (FlightBoxInline,)
 
     def get_queryset(self, request):
-        return Flight.objects.filter(status__in=[0, 1])
+        queryset = super().get_queryset(request)
+        return queryset.filter(status__in=[0, 1])
 
     @admin.display(description=_('Кол. коробок'))
     def sum_box_quantity(self, obj):
@@ -188,7 +192,89 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         return weight['weight__sum']
 
     def get_queryset(self, request):
-        return Arrival.objects.filter(status__in=[2, 3, 4])
+        queryset = super().get_queryset(request)
+        return queryset.filter(status__in=[2, 3])
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def change_statuses(self, obj):
+        for box in obj.box.filter(~Q(status=obj.status)):
+            box.status = obj.status
+            box.save()
+            for p in box.base_parcel.filter(~Q(status=obj.status)):
+                p.status = obj.status
+                p.save()
+
+    def save_model(self, request, obj, form, change):
+        super(ArrivalAdmin, self).save_model(request, obj, form, change)
+        if form.has_changed():
+            self.change_statuses(obj)
+        else:
+            for query_dict in request.POST:
+                if 'shelf' in query_dict:
+                    base_parcel_id = query_dict.split('_')[-1]
+                    value = request.POST.get(f'shelf_{base_parcel_id}')
+                    if value:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.shelf = value
+                        base_parcel.save()
+            for i in request.POST.getlist('base_parcels'):
+                base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
+                base_parcel.status = int(eval(i)['status'])
+                base_parcel.save()
+            for i in request.POST.getlist('boxes'):
+                box = Box.objects.get(id=int(eval(i)['box']))
+                box.status = int(eval(i)['status'])
+                box.save()
+                baseparcels = BaseParcel.objects.filter(box__id=int(eval(i)['box']))
+                for baseparcel in baseparcels:
+                    if baseparcel.status == 5:
+                        continue
+                    else:
+                        baseparcel.status = int(eval(i)['status'])
+                        baseparcel.save()
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        return self.changeform_view(request, object_id, form_url, extra_context)
+
+
+@admin.register(Delivery)
+class DeliveryAdmin(nested_admin.NestedModelAdmin):
+    form = DeliveryModelForm
+    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'status')
+    list_display_links = ('numeration', 'arrived_at', 'code',)
+    search_fields = (
+        'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
+        'box__base_parcel__phone',
+    )
+    date_hierarchy = 'created_at'
+    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights',)
+    fields = [readonly_fields, 'status']
+    change_form_template = "admin/arrival_change_form.html"
+
+    @admin.display(description=_('Коробки по прибытии'))
+    def sum_boxes(self, obj):
+        boxes = Box.objects.filter(flight_id=obj.id).count()
+        return boxes
+
+    @admin.display(description=_('Вес коробок'))
+    def sum_box_weight(self, obj):
+        weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
+        return weight['weight__sum']
+
+    @admin.display(description=_('Вес (роздан)'))
+    def sum_parcel_weights(self, obj):
+        weight = BaseParcel.objects.filter(box__flight_id=obj.id, status=5).aggregate(Sum('weight'))
+        return weight['weight__sum']
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.filter(status__in=[4, 5])
 
     def has_add_permission(self, request):
         return False
@@ -218,7 +304,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
                 p.save()
 
     def save_model(self, request, obj, form, change):
-        super(ArrivalAdmin, self).save_model(request, obj, form, change)
+        super(DeliveryAdmin, self).save_model(request, obj, form, change)
         if form.has_changed():
             self.if_change(obj)
         else:
@@ -247,6 +333,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
                         baseparcel.save()
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
+        print('!' * 50, request)
         return self.changeform_view(request, object_id, form_url, extra_context)
 
 
@@ -444,11 +531,12 @@ class AdminSiteExtension(AdminSite):
             "Box": 2,
             "Flight": 3,
             "Arrival": 4,
-            "Unknown": 5,
-            "Archive": 6,
-            "Media": 7,
-            'Rate': 8,
-            "Contact": 9,
+            "Delivery": 5,
+            "Unknown": 6,
+            "Archive": 7,
+            "Media": 8,
+            'Rate': 9,
+            "Contact": 10,
         }
         for idx, app in enumerate(app_list):
             if app['app_label'] == 'flight':

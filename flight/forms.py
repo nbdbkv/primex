@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from account.models import User
 from .choices import get_status
-from .models import Flight, Arrival
+from .models import Flight, Arrival, Delivery
 
 
 class BaseParcelModelForm(forms.ModelForm):
@@ -51,7 +51,7 @@ class FlightBaseParcelModelForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'track_code': forms.TextInput(attrs={'size': '10', 'readonly': 'readonly'}),
+            'track_code': forms.TextInput(attrs={'size': '15', 'readonly': 'readonly'}),
             'client_code': forms.TextInput(attrs={'size': '8', 'readonly': 'readonly'}),
             'phone': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
             'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
@@ -87,8 +87,19 @@ class ArrivalModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ArrivalModelForm, self).__init__(*args, **kwargs)
-        self.fields["status"].widget = forms.Select(choices=get_status()[2:6])
+        self.fields["status"].widget = forms.Select(choices=get_status()[2:5])
 
     class Meta:
         model = Arrival
+        fields = ('numeration',  'code', 'status',)
+
+
+class DeliveryModelForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(DeliveryModelForm, self).__init__(*args, **kwargs)
+        self.fields["status"].widget = forms.Select(choices=get_status()[4:6])
+
+    class Meta:
+        model = Delivery
         fields = ('numeration',  'code', 'status',)

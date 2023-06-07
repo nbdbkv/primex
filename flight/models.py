@@ -69,6 +69,15 @@ class Arrival(Flight):
         verbose_name_plural = _('Поступления')
 
 
+class Delivery(Flight):
+    # Поступления
+
+    class Meta:
+        proxy = True
+        verbose_name = _('Выдача товаров')
+        verbose_name_plural = _('Выдача товаров')
+
+
 class Archive(Flight):
     # Архив Рейсов
 
