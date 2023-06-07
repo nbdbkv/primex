@@ -1,9 +1,10 @@
 from io import BytesIO
+import random
 from django.core.files import File
 
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
-
+from transliterate import translit
 from django.utils.translation import gettext_lazy as _
 from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
@@ -68,34 +69,44 @@ class RegisterCodeVerifySerializer(serializers.Serializer):
             return attrs
         raise ValidationError(ErrorMessage.WRONG_OTP.value)
 
-    def generate_qr_phone(self, user):
+    def generate_qr(self, user, code=None):
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
             box_size=10,
             border=4,
         )
+        if code:
+            qr.add_data(code)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="black", back_color="white")
 
-        qr.add_data(user.phone)  # Modify this with your desired data
+            buffer = BytesIO()
+            img.save(buffer)
+            buffer.seek(0)
+            user.qr_logistic.save(f'{code}.png', File(buffer), save=True)
+        else:
+            qr.add_data(user.phone)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="black", back_color="white")
 
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-
-        buffer = BytesIO()
-        img.save(buffer)
-        buffer.seek(0)
-
-        # Set the image field of the model
-        user.qr_phone.save(f'{user.phone}.png', File(buffer), save=True)
-
+            buffer = BytesIO()
+            img.save(buffer)
+            buffer.seek(0)
+            user.qr_phone.save(f'{user.phone}.png', File(buffer), save=True)
 
     def generate_code_logistic(self, user):
-        startswith = user.region.name.upper()
-        print(startswith)
+        startswith = user.region.name
+        text = translit(startswith, language_code='ru', reversed=True)
+        code_logistic = text.upper() + str(random.randint(11111, 99999))
+        user.code_logistic = code_logistic
+        user.save()
+        self.generate_qr(user, code_logistic)
+
     def update(self):
         self.instance.is_active = True
         self.instance.save()
-        self.generate_qr_phone(self.instance)
+        self.generate_qr(self.instance)
         self.generate_code_logistic(self.instance)
         return self.instance
 
@@ -160,6 +171,7 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "groups",
             "user_permissions",
         )
+
     def to_representation(self, instance):
         super().to_representation(instance)
 
