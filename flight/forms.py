@@ -18,22 +18,22 @@ class BaseParcelModelForm(forms.ModelForm):
             'cost_usd': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
         }
 
-    def clean_client_code(self):
-        client_code = self.cleaned_data['client_code']
-        code_logistics = User.objects.filter(role=1).values_list('code_logistic', flat=True)
-        if client_code not in code_logistics:
-            raise ValidationError(f"Клиент с кодом {client_code} не существует")
-        else:
-            return self.cleaned_data['client_code']
-
-    def clean_phone(self):
-        phone = self.cleaned_data['phone']
-        if phone:
-            phones = User.objects.filter(role=1).values_list('phone', flat=True)
-            if phone not in phones:
-                raise ValidationError(f"Клиент с телефонным номером {phone} не существует")
-            else:
-                return self.cleaned_data['phone']
+    # def clean_client_code(self):
+    #     client_code = self.cleaned_data['client_code']
+    #     code_logistics = User.objects.filter(role=1).values_list('code_logistic', flat=True)
+    #     if client_code not in code_logistics:
+    #         raise ValidationError(f"Клиент с кодом {client_code} не существует")
+    #     else:
+    #         return self.cleaned_data['client_code']
+    #
+    # def clean_phone(self):
+    #     phone = self.cleaned_data['phone']
+    #     if phone:
+    #         phones = User.objects.filter(role=1).values_list('phone', flat=True)
+    #         if phone not in phones:
+    #             raise ValidationError(f"Клиент с телефонным номером {phone} не существует")
+    #         else:
+    #             return self.cleaned_data['phone']
 
 
 class BoxModelForm(forms.ModelForm):
