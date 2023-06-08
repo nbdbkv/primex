@@ -3,8 +3,7 @@ from django_2gis_maps.admin import DoubleGisAdmin
 from django.utils.translation import gettext_lazy as _
 from account.roles.mixins import UserAdminMixin
 from account.models import User, Region, District, Village
-
-admin.site.site_header = _("Администрация 9999")
+from django.contrib.auth.forms import UserChangeForm
 
 
 @admin.register(User)
@@ -14,6 +13,7 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
     # list_filter = ('role', 'region')
     search_fields = ['code_logistic', 'first_name', 'last_name', 'phone']
     change_list_template = 'admin/user_change_list.html'
+    form = UserChangeForm
 
     def save_model(self, request, obj, form, change) -> None:
         new_password = form.data["password"]
