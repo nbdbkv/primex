@@ -223,10 +223,10 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
             for query_dict in request.POST:
                 if 'shelf' in query_dict:
                     base_parcel_id = query_dict.split('_')[-1]
-                    value = request.POST.get(f'shelf_{base_parcel_id}')
-                    if value:
+                    shelf = request.POST.get(f'shelf_{base_parcel_id}')
+                    if shelf:
                         base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.shelf = value
+                        base_parcel.shelf = shelf
                         base_parcel.save()
             for i in request.POST.getlist('base_parcels'):
                 base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
@@ -258,12 +258,11 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights',)
     fields = [readonly_fields, 'status']
-    change_form_template = "admin/arrival_change_form.html"
+    change_form_template = "admin/delivery_change_form.html"
 
     def changelist_view(self, request, extra_context=None):
         search_data = request.GET.get('q')
-        url = '{}?q={}'.format(reverse('admin:flight_deliverybaseparcel_changelist'),
-                                      search_data)
+        url = '{}?q={}'.format(reverse('admin:flight_deliverybaseparcel_changelist'), search_data)
         if search_data:
             request.session['q'] = search_data
             return HttpResponseRedirect(url)
@@ -287,7 +286,7 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.filter(status__in=[4, 5])
+        return queryset.filter(status=4)
 
     def has_add_permission(self, request):
         return False
@@ -324,10 +323,17 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
             for query_dict in request.POST:
                 if 'shelf' in query_dict:
                     base_parcel_id = query_dict.split('_')[-1]
-                    value = request.POST.get(f'shelf_{base_parcel_id}')
-                    if value:
+                    shelf = request.POST.get(f'shelf_{base_parcel_id}')
+                    if shelf:
                         base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.shelf = value
+                        base_parcel.shelf = shelf
+                        base_parcel.save()
+                if 'note' in query_dict:
+                    base_parcel_id = query_dict.split('_')[-1]
+                    note = request.POST.get(f'note_{base_parcel_id}')
+                    if note:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.note = note
                         base_parcel.save()
             for i in request.POST.getlist('base_parcels'):
                 base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))

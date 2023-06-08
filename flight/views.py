@@ -53,6 +53,24 @@ def my_view(request):
     return HttpResponse(html)
 
 
+def delivery_view(request):
+    search_term = request.GET.get('q')
+    flight = request.GET.get('flight')
+    queryset = Box.objects.filter(Q(flight_id=flight) & ~Q(status=7))
+    if search_term:
+        queryset = queryset.filter(
+            (Q(code__icontains=search_term) & ~Q(status=7)) |
+            (Q(base_parcel__track_code__icontains=search_term) & ~Q(base_parcel__status=7)) |
+            (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7)) |
+            (Q(base_parcel__phone__exact=search_term) & ~Q(base_parcel__status=7))
+        ).distinct()
+    context = {
+        'qs': queryset,
+    }
+    html = render_to_string('delivery_formset2.html', context, request=request)
+    return HttpResponse(html)
+
+
 class MediaListView(generics.ListAPIView):
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
