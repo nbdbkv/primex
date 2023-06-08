@@ -84,9 +84,11 @@
                     <td>
                         <select name="boxes" id="box_{{ item.id }}">
                             {% for key, value in item.get_statuses.items %}
-                                <option value='{"box":"{{ item.id }}","status":"{{ key }}"}'
-                                        {% if item.get_status_display == value %}
-                                        selected {% endif %}>{{ value }}</option>
+                                {% if key == 2 or key == 3 or key == 4  %}
+                                    <option value='{"box":"{{ item.id }}","status":"{{ key }}"}'
+                                            {% if item.get_status_display == value %}
+                                            selected {% endif %}>{{ value }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </td>
@@ -128,9 +130,11 @@
                                     <td>
                                         <select name="base_parcels" id="base_parcel_{{ child.id }}">
                                             {% for key, value in child.get_statuses.items %}
-                                                <option value='{"base_parcel":"{{ child.id }}","status":"{{ key }}"}'
-                                                        {% if child.get_status_display == value %}
-                                                        selected {% endif %}>{{ value }}</option>
+                                                {% if key == 2 or key == 3 or key == 4  %}
+                                                    <option value='{"base_parcel":"{{ child.id }}","status":"{{ key }}"}'
+                                                            {% if child.get_status_display == value %}
+                                                            selected {% endif %}>{{ value }}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                     </td>

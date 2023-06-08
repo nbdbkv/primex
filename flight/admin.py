@@ -178,7 +178,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     )
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights',)
+    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_box_weight',)
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
 
@@ -238,11 +238,8 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
                 box.save()
                 baseparcels = BaseParcel.objects.filter(box__id=int(eval(i)['box']))
                 for baseparcel in baseparcels:
-                    if baseparcel.status == 5:
-                        continue
-                    else:
-                        baseparcel.status = int(eval(i)['status'])
-                        baseparcel.save()
+                    baseparcel.status = int(eval(i)['status'])
+                    baseparcel.save()
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         return self.changeform_view(request, object_id, form_url, extra_context)

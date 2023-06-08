@@ -43,7 +43,8 @@ def my_view(request):
         queryset = queryset.filter(
             (Q(code__icontains=search_term) & ~Q(status=7)) |
             (Q(base_parcel__track_code__icontains=search_term) & ~Q(base_parcel__status=7)) |
-            (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7))
+            (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7)) |
+            (Q(base_parcel__phone__exact=search_term) & ~Q(base_parcel__status=7))
         ).distinct()
     context = {
         'qs': queryset,
@@ -64,7 +65,7 @@ class DeliveryPrintView(TemplateView):
         context = self.get_context_data(**kwargs)
         if 'q' in request.session:
             q = request.session['q']
-            context['baseparcels'] = BaseParcel.objects.filter(Q(track_code=q) | Q(client_code=q))
+            context['baseparcels'] = BaseParcel.objects.filter(Q(track_code=q) | Q(client_code=q) | Q(phone=q))
             del request.session['q']
         return self.render_to_response(context)
 
