@@ -98,7 +98,7 @@ class RegisterCodeVerifySerializer(serializers.Serializer):
     def generate_code_logistic(self, user):
         startswith = user.region.name
         text = translit(startswith, language_code='ru', reversed=True)
-        code_logistic = text.upper()[:3] + str(random.randint(11111, 99999))
+        code_logistic = text.upper()[:4] + str(random.randint(11111, 99999))
         user.code_logistic = code_logistic
         user.save()
         self.generate_qr(user, code_logistic)
