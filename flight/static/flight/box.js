@@ -43,7 +43,7 @@ function setCode (track_code) {
     };
     let point = destination.options[destination.selectedIndex].text;
     point = point.split('').map(function (char) { return a[char] || char; }).join("");
-    document.getElementById(`id_code`).value = point.slice(0, 3).toUpperCase() + track_code;
+    document.getElementById(`id_code`).value = point.slice(0, 4).trim().toUpperCase() + track_code;
 }
 
 function getTrackCode () {
@@ -111,6 +111,7 @@ track_codes.forEach(track_code => {
             let number = id.replace(/[^0-9]/g,"");
             const clientCode = document.getElementById(`id_base_parcel-${number}-client_code`);
             clientCode.focus()
+            document.getElementById('save').disabled = false;
         }, 400);
         setPrice(track_code);
     })

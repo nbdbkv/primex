@@ -23,6 +23,7 @@ from import_export import resources, fields, widgets
 from flight.utils import make_add_box_to_flight_action
 
 original_get_app_list = AdminSite.get_app_list
+admin.site.site_header = 'Taura Express'
 
 
 @admin.register(Destination)
