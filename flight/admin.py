@@ -34,7 +34,7 @@ class DestinationAdmin(admin.ModelAdmin):
 class FlightBaseParcelInline(nested_admin.NestedTabularInline):
     model = BaseParcel
     form = FlightBaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs')
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'note')
     template = 'admin/flight_baseparcel_tabular.html'
     extra = 0
     classes = ('collapse',)
@@ -423,7 +423,7 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
 class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     list_display = (
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
-        'cost_kgs', 'arrived_at',
+        'cost_kgs', 'note', 'arrived_at',
     )
     list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
@@ -460,7 +460,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
 class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
     form = BaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs')
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'note')
     template = 'admin/box_baseparcel_tabular.html'
 
     def get_extra(self, request, obj=None, **kwargs):
