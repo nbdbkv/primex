@@ -178,7 +178,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     )
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_box_weight',)
+    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights')
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
 
@@ -192,9 +192,9 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
 
-    @admin.display(description=_('Вес (роздан)'))
+    @admin.display(description=_('Вес посылок'))
     def sum_parcel_weights(self, obj):
-        weight = BaseParcel.objects.filter(box__flight_id=obj.id, status=5).aggregate(Sum('weight'))
+        weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
 
     def get_queryset(self, request):
@@ -256,7 +256,7 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
     )
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights',)
+    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights', 'sum_parcel_weights_distributed')
     fields = [readonly_fields, 'status']
     change_form_template = "admin/delivery_change_form.html"
 
@@ -279,8 +279,13 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
 
-    @admin.display(description=_('Вес (роздан)'))
+    @admin.display(description=_('Вес посылок'))
     def sum_parcel_weights(self, obj):
+        weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
+        return weight['weight__sum']
+
+    @admin.display(description=_('Вес (выдан)'))
+    def sum_parcel_weights_distributed(self, obj):
         weight = BaseParcel.objects.filter(box__flight_id=obj.id, status=5).aggregate(Sum('weight'))
         return weight['weight__sum']
 
@@ -444,7 +449,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     change_form_template = "admin/unknown_change_form.html"
 
     def get_queryset(self, request):
-        return Unknown.objects.filter(status=4)
+        return DeliveryBaseParcel.objects.filter(status__in=[2, 3, 4])
 
     def has_add_permission(self, request):
         return False
