@@ -473,7 +473,7 @@ class BaseParcelInline(admin.TabularInline):
     form = BaseParcelModelForm
     exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'note')
     template = 'admin/box_baseparcel_tabular.html'
-
+    max_num = 500
     def get_extra(self, request, obj=None, **kwargs):
         if obj:
             return 50
