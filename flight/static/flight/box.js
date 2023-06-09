@@ -1,5 +1,6 @@
 let destination  = document.getElementById('id_destination');
 let track_codes = document.querySelectorAll("td.field-track_code input");
+let phones = document.querySelectorAll("td.field-phone input");
 let prices = document.querySelectorAll("td.field-price input");
 let weights = document.querySelectorAll("td.field-weight input");
 let costsUSD = document.querySelectorAll("td.field-cost_usd input");
@@ -114,6 +115,17 @@ track_codes.forEach(track_code => {
             document.getElementById('save').disabled = false;
         }, 400);
         setPrice(track_code);
+    })
+});
+
+phones.forEach(phone => {
+    phone.addEventListener('input', () => {
+        let value = phone.value
+        if (value.length === 1) {
+            phone.value = "996" + value
+        } else if (value === '996') {
+            phone.value = ''
+        }
     })
 });
 

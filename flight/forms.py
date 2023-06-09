@@ -10,9 +10,9 @@ class BaseParcelModelForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'track_code': forms.TextInput(attrs={'size': '15'}),
-            'client_code': forms.TextInput(attrs={'size': '8'}),
-            'phone': forms.TextInput(attrs={'size': '12'}),
+            'track_code': forms.TextInput(attrs={'size': '20'}),
+            'client_code': forms.TextInput(attrs={'size': '12'}),
+            'phone': forms.TextInput(attrs={'size': '18'}),
             'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
             'weight': forms.NumberInput(attrs={'style': 'width:9ch'}),
             'cost_usd': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
@@ -40,9 +40,9 @@ class BoxModelForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'code': forms.TextInput(attrs={'size': '9', 'readonly': 'readonly'}),
-            'track_code': forms.TextInput(attrs={'size': '5', 'readonly': 'readonly'}),
-            'weight': forms.NumberInput(attrs={'style': 'width:9ch'}),
+            'code': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
+            'track_code': forms.TextInput(attrs={'size': '10', 'readonly': 'readonly'}),
+            'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
             'comment': forms.Textarea(attrs={'rows': '1', 'cols': '40'}),
         }
 
@@ -51,9 +51,9 @@ class FlightBaseParcelModelForm(forms.ModelForm):
 
     class Meta:
         widgets = {
-            'track_code': forms.TextInput(attrs={'size': '15', 'readonly': 'readonly'}),
-            'client_code': forms.TextInput(attrs={'size': '8', 'readonly': 'readonly'}),
-            'phone': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
+            'track_code': forms.TextInput(attrs={'size': '20', 'readonly': 'readonly'}),
+            'client_code': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
+            'phone': forms.TextInput(attrs={'size': '18', 'readonly': 'readonly'}),
             'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
             'weight': forms.NumberInput(attrs={'style': 'width:9ch', 'readonly': 'readonly'}),
             'cost_usd': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
@@ -65,9 +65,9 @@ class FlightBoxModelForm(forms.ModelForm):
     class Meta:
         widgets = {
             'number': forms.TextInput(attrs={'size': '4', 'readonly': 'readonly'}),
-            'code': forms.TextInput(attrs={'size': '8', 'readonly': 'readonly'}),
-            'track_code': forms.TextInput(attrs={'size': '16', 'readonly': 'readonly'}),
-            'weight': forms.NumberInput(attrs={'style': 'width:10ch', 'readonly': 'readonly'}),
+            'code': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
+            'track_code': forms.TextInput(attrs={'size': '10', 'readonly': 'readonly'}),
+            'weight': forms.NumberInput(attrs={'style': 'width:10ch'}),
             'comment': forms.Textarea(attrs={'rows': '1', 'cols': '40'}),
         }
 

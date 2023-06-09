@@ -64,6 +64,7 @@
         <thead>
         <tr>
             <th>Код <br> клиента</th>
+            <th>Телефон <br> клиента</th>
             <th>Трек-код</th>
             <th>Полка</th>
             <th>Вес</th>
@@ -77,6 +78,7 @@
         {% for baseparcel in baseparcels %}
             <tr>
                 <td>{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.phone %}{{ baseparcel.phone }}{% else %}{% endif %}</td>
                 <td>{% if baseparcel.track_code %}{{ baseparcel.track_code }}{% else %}{% endif %}</td>
                 <td>{% if baseparcel.shelf %}{{ baseparcel.shelf }}{% else %}{% endif %}</td>
                 <td>{% if baseparcel.weight %}{{ baseparcel.weight }}{% else %}{% endif %}</td>

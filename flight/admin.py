@@ -61,7 +61,9 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
 @admin.register(Flight)
 class FlightAdmin(nested_admin.NestedModelAdmin):
     form = FlightModelForm
-    list_display = ('numeration', 'code', 'sum_box_quantity', 'sum_box_weight', 'status', 'created_at', )
+    list_display = (
+        'numeration', 'code', 'sum_box_quantity', 'sum_box_weight', 'sum_baseparcel_cost', 'status', 'created_at',
+    )
     list_display_links = ('numeration', 'code',)
     search_fields = ['box__code', 'box__base_parcel__track_code', 'code']
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
@@ -80,6 +82,11 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     def sum_box_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Стоим. посылок в $'))
+    def sum_baseparcel_cost(self, obj):
+        baseparcel_price = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('cost_usd'))
+        return baseparcel_price['cost_usd__sum']
 
     def save_model(self, request, obj, form, change):
         a = 0
@@ -170,7 +177,7 @@ class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
 @admin.register(Arrival)
 class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
-    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'status')
+    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_cost', 'status')
     list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = (
         'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
@@ -191,6 +198,11 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     def sum_box_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Стоим. посылок в $'))
+    def sum_baseparcel_cost(self, obj):
+        baseparcel_price = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('cost_usd'))
+        return baseparcel_price['cost_usd__sum']
 
     @admin.display(description=_('Вес посылок'))
     def sum_parcel_weights(self, obj):
@@ -248,7 +260,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
 @admin.register(Delivery)
 class DeliveryAdmin(nested_admin.NestedModelAdmin):
     form = DeliveryModelForm
-    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'status')
+    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_cost', 'status')
     list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = (
         'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
@@ -278,6 +290,11 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
     def sum_box_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Стоим. посылок в $'))
+    def sum_baseparcel_cost(self, obj):
+        baseparcel_price = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('cost_usd'))
+        return baseparcel_price['cost_usd__sum']
 
     @admin.display(description=_('Вес посылок'))
     def sum_parcel_weights(self, obj):
@@ -357,7 +374,6 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
                         baseparcel.save()
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
-        print('!' * 50, request)
         return self.changeform_view(request, object_id, form_url, extra_context)
 
 
@@ -442,7 +458,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
         'cost_kgs', 'arrived_at',
     )
     fields = [readonly_fields, 'status']
-    search_fields = ('track_code',)
+    search_fields = ('track_code', 'client_code', 'phone')
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     change_list_template = 'admin/delivery_base_parcel_change_list.html'
