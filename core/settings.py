@@ -171,6 +171,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 FIREBASE_APP = initialize_app()
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 EMAIL_FROM = "some.email634@gmail.com"
 EMAIL_TO = "genry03gh@gmail.com"
