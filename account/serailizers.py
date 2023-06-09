@@ -22,12 +22,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ("phone", "password", "info", "region")
 
-    def validate_password(self, password):
-        try:
-            validate_password(password)
-            return password
-        except BaseException as err:
-            raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
+    # def validate_password(self, password):
+    #     try:
+    #         validate_password(password)
+    #         return password
+    #     except BaseException as err:
+    #         raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
 
     def create(self, validated_data):
         instance = super().create(validated_data)
