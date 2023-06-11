@@ -62,7 +62,8 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
 class FlightAdmin(nested_admin.NestedModelAdmin):
     form = FlightModelForm
     list_display = (
-        'numeration', 'code', 'sum_box_quantity', 'sum_box_weight', 'sum_baseparcel_cost', 'status', 'created_at',
+        'numeration', 'code', 'sum_box_quantity', 'sum_box_weight', 'sum_baseparcel_weight', 'sum_baseparcel_cost',
+        'status', 'created_at',
     )
     list_display_links = ('numeration', 'code',)
     search_fields = ['box__code', 'box__base_parcel__track_code', 'code']
@@ -82,6 +83,11 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     def sum_box_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Вес посылок'))
+    def sum_baseparcel_weight(self, obj):
+        baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
+        return baseparcel_weight['weight__sum']
 
     @admin.display(description=_('Стоим. посылок в $'))
     def sum_baseparcel_cost(self, obj):
@@ -177,7 +183,10 @@ class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
 @admin.register(Arrival)
 class ArrivalAdmin(nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
-    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_cost', 'status')
+    list_display = (
+        'numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_weight',
+        'sum_baseparcel_cost', 'status',
+    )
     list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = (
         'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
@@ -189,7 +198,7 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
 
-    @admin.display(description=_('Коробки по прибытии'))
+    @admin.display(description=_('Кол. коробок'))
     def sum_boxes(self, obj):
         boxes = Box.objects.filter(flight_id=obj.id).count()
         return boxes
@@ -198,6 +207,11 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     def sum_box_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Вес посылок'))
+    def sum_baseparcel_weight(self, obj):
+        baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
+        return baseparcel_weight['weight__sum']
 
     @admin.display(description=_('Стоим. посылок в $'))
     def sum_baseparcel_cost(self, obj):
@@ -260,7 +274,10 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
 @admin.register(Delivery)
 class DeliveryAdmin(nested_admin.NestedModelAdmin):
     form = DeliveryModelForm
-    list_display = ('numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_cost', 'status')
+    list_display = (
+        'numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_weight',
+        'sum_baseparcel_cost', 'status',
+    )
     list_display_links = ('numeration', 'arrived_at', 'code',)
     search_fields = (
         'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
@@ -281,7 +298,7 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
         else:
             return super().changelist_view(request, extra_context)
 
-    @admin.display(description=_('Коробки по прибытии'))
+    @admin.display(description=_('Кол. коробок'))
     def sum_boxes(self, obj):
         boxes = Box.objects.filter(flight_id=obj.id).count()
         return boxes
@@ -290,6 +307,11 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
     def sum_box_weight(self, obj):
         weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
         return weight['weight__sum']
+
+    @admin.display(description=_('Вес посылок'))
+    def sum_baseparcel_weight(self, obj):
+        baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
+        return baseparcel_weight['weight__sum']
 
     @admin.display(description=_('Стоим. посылок в $'))
     def sum_baseparcel_cost(self, obj):
@@ -490,6 +512,7 @@ class BaseParcelInline(admin.TabularInline):
     exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'note')
     template = 'admin/box_baseparcel_tabular.html'
     max_num = 500
+
     def get_extra(self, request, obj=None, **kwargs):
         if obj:
             return 50
