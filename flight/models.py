@@ -135,6 +135,7 @@ class BaseParcel(TimeStampedModel):
     )
     cost_kgs = models.IntegerField(null=True, blank=True, verbose_name=_('Стоимость в сомах'))
     note = models.CharField(max_length=128, null=True, blank=True, verbose_name=_('Примечание'))
+    delivered_at = models.DateTimeField(db_index=True, null=True, blank=True, verbose_name=_('Дата выдачи'))
     status = models.PositiveIntegerField(default=StatusChoices.FORMING, null=True, blank=True, choices=get_status())
 
     class Meta:
