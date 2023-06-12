@@ -1,0 +1,119 @@
+{% block content %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <style>
+            body {
+                margin: 0;
+                box-sizing: border-box;
+            }
+
+            .my_div {
+                width: 100%;
+            }
+
+            .baseparcel {
+                width: 96%;
+                margin-left: auto;
+            }
+
+            .my_div p {
+                text-align: left;
+                padding: 8px;
+                margin: 0;
+                border-bottom: 1px solid #e8e8e8;
+                background: #6cadca;
+                color: #fff;
+            }
+
+            .my_div .light {
+                background: #bbccdd;
+            }
+
+            .my_div table {
+                color: #7d6866;
+                font-size: 12px;
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+
+            .my_div th, td {
+                text-align: left;
+                padding: 8px;
+                border-bottom: 1px solid #e8e8e8;
+            }
+
+            .my_div td {
+                font-size: 15px;
+                padding: 20px 8px;
+            }
+
+            .my_div th {
+                text-transform: uppercase;
+                background-color: #f8f8f8;
+            }
+
+        </style>
+    </head>
+    <body>
+    <div class="my_div">
+        {% for baseparcel in baseparcels %}
+            {% if baseparcel.status == 7 %}
+                <div></div>
+            {% else %}
+                <div class="baseparcel">
+                    <p class="light">ПОСЫЛКА {{ baseparcel.track_code }}</p>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Код коробки</th>
+                            <th>Трек-код</th>
+                            <th>Код клиента</th>
+                            <th>Телефон клиента</th>
+                            <th>Полка</th>
+                            <th>Цена</th>
+                            <th>Вес</th>
+                            <th>Стоимость в $</th>
+                            <th>Стоимость в сомах</th>
+                            <th>Статус</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{% if baseparcel.box.code %}{{ baseparcel.box.code }}{% else %}-{% endif %}</td>
+                            <td>{% if baseparcel.track_code %}{{ baseparcel.track_code }}{% else %}-{% endif %}</td>
+                            <td>{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}-{% endif %}</td>
+                            <td>{% if baseparcel.phone %}{{ baseparcel.phone }}{% else %}-{% endif %}</td>
+                            <td><input type="text" name="shelf_{{ baseparcel.id }}" size="6" maxlength="16" id="id_shelf_{{ baseparcel.id }}"
+                                       value="{% if baseparcel.shelf %}{{ baseparcel.shelf }}{% else %}{% endif %}"></td>
+                            <td>{% if baseparcel.price %}{{ baseparcel.price }}{% else %}-{% endif %}</td>
+                            <td>{% if baseparcel.weight %}{{ baseparcel.weight }}{% else %}-{% endif %}</td>
+                            <td>{% if baseparcel.cost_usd %}{{ baseparcel.cost_usd }}{% else %}-{% endif %}</td>
+                            <td>{% if baseparcel.cost_kgs %}{{ baseparcel.cost_kgs }}{% else %}-{% endif %}</td>
+                            <td>
+                                <select name="base_parcels" id="base_parcel_{{ baseparcel.id }}">
+                                    {% for key, value in baseparcel.get_statuses.items %}
+                                        {% if key == 2 or key == 3 or key == 4  %}
+                                            <option value='{"base_parcel":"{{ baseparcel.id }}","status":"{{ key }}"}'
+                                                    {% if baseparcel.get_status_display == value %}
+                                                    selected {% endif %}>{{ value }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    </body>
+    </html>
+{% endblock content %}

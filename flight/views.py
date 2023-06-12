@@ -38,19 +38,24 @@ def add_to_box(request):
 def my_view(request):
     search_term = request.GET.get('q')
     flight = request.GET.get('flight')
-    queryset = Box.objects.filter(Q(flight_id=flight) & ~Q(status=7))
-    if search_term:
-        queryset = queryset.filter(
-            (Q(code__icontains=search_term) & ~Q(status=7)) |
-            (Q(base_parcel__track_code__icontains=search_term) & ~Q(base_parcel__status=7)) |
-            (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7)) |
-            (Q(base_parcel__phone__exact=search_term) & ~Q(base_parcel__status=7))
-        ).distinct()
-    context = {
-        'qs': queryset,
-    }
-    html = render_to_string('my_formset2.html', context, request=request)
-    return HttpResponse(html)
+    if not search_term:
+        box = Box.objects.filter(Q(flight_id=flight) & ~Q(status=7)).distinct()
+        context = {
+            'qs': box,
+        }
+        return HttpResponse(render_to_string('my_formset2.html', context, request=request))
+    else:
+        baseparcels = BaseParcel.objects.filter(Q(box__flight_id=flight) & ~Q(status=7)).prefetch_related('box')
+        baseparcels = baseparcels.filter(
+            (Q(box__code__icontains=search_term) & ~Q(status=7)) |
+            (Q(track_code__icontains=search_term) & ~Q(status=7)) |
+            (Q(client_code__exact=search_term) & ~Q(status=7)) |
+            (Q(phone__exact=search_term) & ~Q(status=7))
+        )
+        context = {
+            'baseparcels': baseparcels,
+        }
+        return HttpResponse(render_to_string('my_formset.html', context, request=request))
 
 
 def delivery_view(request):
