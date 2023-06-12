@@ -16,7 +16,7 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
     form = UserChangeForm
 
     def save_model(self, request, obj, form, change) -> None:
-        new_password = form.data["password"]
+        new_password = form.data.get("password")
         if not change or self.get_object(request, obj.id).password != new_password:
             obj.set_password(new_password)
         return super().save_model(request, obj, form, change)
