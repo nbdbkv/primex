@@ -41,6 +41,7 @@
         }
 
         .podpise span {
+            text-align: center;
             width: 200px;
             display: inline-block;
             border-bottom: 1px solid #000;
@@ -106,6 +107,7 @@
         <p>
             ФИО оператора:
             <span>
+                {{ user.first_name }} {{ user.last_name }}
         </span>
         </p>
         <p>
@@ -119,6 +121,7 @@
         <p>
             ДАТА:
             <span>
+                {% now "d-m-Y" %}
         </span>
         </p>
     </div>
