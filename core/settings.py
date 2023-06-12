@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
+import firebase_admin
 from dotenv import load_dotenv
 from firebase_admin import initialize_app
 from datetime import timedelta
@@ -169,7 +170,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-FIREBASE_APP = initialize_app()
+CREDENTIALS = firebase_admin.credentials.Certificate(BASE_DIR / 'account/config/firebase-back.json')
+
+FIREBASE_APP = firebase_admin.initialize_app(CREDENTIALS)
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
@@ -190,6 +193,7 @@ SERVER_EMAIL = "some.email634@gmail.com"
 
 FCM_DJANGO_SETTINGS = {
     "UPDATE_ON_DUPLICATE_REG_ID": True,
+    "FCM_SERVER_KEY": "AAAArbXjJ-o:APA91bFy4NcAtKFINJ_Nts2b1eV0AXudy7O-WhICHTfiuV4u4xfrQkdmiXXoHrcCmyAH9nzchep5Mc_OcbgmSymIMmtARM7Q31pnBES8B02iHiU8DzBM13EWCz-SxmtPOl3jzk7-0gYS"
 }
 
 WEBPUSH_SETTINGS = {
