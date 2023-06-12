@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite, DateFieldListFilter
 from django.db.models import Sum, Q
+from django.shortcuts import render
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
@@ -475,6 +476,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'note', 'arrived_at',
     )
+    list_editable = ('note',)
     list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
@@ -488,7 +490,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     change_form_template = "admin/unknown_change_form.html"
 
     def get_queryset(self, request):
-        return DeliveryBaseParcel.objects.filter(status__in=[2, 3, 4])
+        return DeliveryBaseParcel.objects.filter(box__flight__status__in=[2, 3, 4], status=4)
 
     def has_add_permission(self, request):
         return False

@@ -81,18 +81,6 @@ class MediaListView(generics.ListAPIView):
     queryset = Media.objects.all()
 
 
-class DeliveryPrintView(TemplateView):
-    template_name = 'delivery_print.html'
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if 'q' in request.session:
-            q = request.session['q']
-            context['baseparcels'] = BaseParcel.objects.filter(Q(track_code=q) | Q(client_code=q) | Q(phone=q))
-            del request.session['q']
-        return self.render_to_response(context)
-
-
 class FileDownloadListView(views.APIView):
 
     def get(self, request, id):
