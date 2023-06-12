@@ -84,7 +84,7 @@
                     <td>
                         <select name="boxes" id="box_{{ item.id }}">
                             {% for key, value in item.get_statuses.items %}
-                                {% if key == 2 or key == 3 or key == 4  %}
+                                {% if key == 4 or key == 5 %}
                                     <option value='{"box":"{{ item.id }}","status":"{{ key }}"}'
                                             {% if item.get_status_display == value %}
                                             selected {% endif %}>{{ value }}</option>
@@ -113,6 +113,7 @@
                                     <th>Вес</th>
                                     <th>Стоимость в $</th>
                                     <th>Стоимость в сомах</th>
+                                    <th>Примечание</th>
                                     <th>Статус</th>
                                 </tr>
                                 </thead>
@@ -127,10 +128,12 @@
                                     <td>{% if child.weight %}{{ child.weight }}{% else %}-{% endif %}</td>
                                     <td>{% if child.cost_usd %}{{ child.cost_usd }}{% else %}-{% endif %}</td>
                                     <td>{% if child.cost_kgs %}{{ child.cost_kgs }}{% else %}-{% endif %}</td>
+                                    <td><input type="text" name="note_{{ child.id }}" size="24" maxlength="128" id="id_note_{{ child.id }}"
+                                               value="{% if child.note %}{{ child.note }}{% else %}{% endif %}"></td>
                                     <td>
                                         <select name="base_parcels" id="base_parcel_{{ child.id }}">
                                             {% for key, value in child.get_statuses.items %}
-                                                {% if key == 2 or key == 3 or key == 4  %}
+                                                {% if key == 4 or key == 5  %}
                                                     <option value='{"base_parcel":"{{ child.id }}","status":"{{ key }}"}'
                                                             {% if child.get_status_display == value %}
                                                             selected {% endif %}>{{ value }}</option>

@@ -69,6 +69,15 @@ class Arrival(Flight):
         verbose_name_plural = _('Поступления')
 
 
+class Delivery(Flight):
+    # Поступления
+
+    class Meta:
+        proxy = True
+        verbose_name = _('Выдача товаров')
+        verbose_name_plural = _('Выдача товаров')
+
+
 class Archive(Flight):
     # Архив Рейсов
 
@@ -121,7 +130,11 @@ class BaseParcel(TimeStampedModel):
     shelf = models.CharField(max_length=16, null=True, blank=True, verbose_name=_('Полка'))
     price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_('Цена'))
     weight = models.DecimalField(max_digits=8, decimal_places=3, verbose_name=_('Вес'))
-    cost = models.DecimalField(max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name=_('Стоимость в $'))
+    cost_usd = models.DecimalField(
+        max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name=_('Стоимость в $'),
+    )
+    cost_kgs = models.IntegerField(null=True, blank=True, verbose_name=_('Стоимость в сомах'))
+    note = models.CharField(max_length=128, null=True, blank=True, verbose_name=_('Примечание'))
     status = models.PositiveIntegerField(default=StatusChoices.FORMING, null=True, blank=True, choices=get_status())
 
     class Meta:
@@ -139,6 +152,8 @@ class BaseParcel(TimeStampedModel):
         rv = BytesIO()
         code = COD128(f'{self.track_code}', writer=ImageWriter()).write(rv)
         self.barcode.save(f'{self.track_code}.png', File(rv), save=False)
+        currency = self.box.destination.currency
+        self.cost_kgs = int(float(self.cost_usd) * float(currency))
         super(BaseParcel, self).save(*args, **kwargs)
 
 
@@ -149,6 +164,14 @@ class Unknown(BaseParcel):
         proxy = True
         verbose_name = _('Неизвестный заказ')
         verbose_name_plural = _('Неизвестные заказы')
+
+
+class DeliveryBaseParcel(BaseParcel):
+
+    class Meta:
+        proxy = True
+        verbose_name = _('Распечатка товаров')
+        verbose_name_plural = _('Распечатка товаров')
 
 
 class Media(models.Model):

@@ -121,12 +121,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
 ]
 
 
@@ -174,6 +174,7 @@ CREDENTIALS = firebase_admin.credentials.Certificate(BASE_DIR / 'account/config/
 
 FIREBASE_APP = firebase_admin.initialize_app(CREDENTIALS)
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 EMAIL_FROM = "some.email634@gmail.com"
 EMAIL_TO = "genry03gh@gmail.com"

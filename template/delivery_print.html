@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .container table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .container th, td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .container th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+
+        .container tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .podpise {
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .podpise span {
+            text-align: center;
+            width: 200px;
+            display: inline-block;
+            border-bottom: 1px solid #000;
+        }
+
+        .podpise p:first-child {
+            flex-grow: 1;
+            white-space: nowrap;
+            margin-right: 40px;
+            overflow: hidden;
+        }
+
+        .podpise p:first-child span {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th>Код <br> клиента</th>
+            <th>Телефон <br> клиента</th>
+            <th>Трек-код</th>
+            <th>Полка</th>
+            <th>Вес</th>
+            <th>Цена за <br> кг в $</th>
+            <th>Cумма в $</th>
+            <th>Cумма <br> в сомах</th>
+            <th>Примечание</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for baseparcel in baseparcels %}
+            <tr>
+                <td>{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.phone %}{{ baseparcel.phone }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.track_code %}{{ baseparcel.track_code }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.shelf %}{{ baseparcel.shelf }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.weight %}{{ baseparcel.weight }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.price %}{{ baseparcel.price }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.cost_usd %}{{ baseparcel.cost_usd }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.cost_kgs %}{{ baseparcel.cost_kgs }}{% else %}{% endif %}</td>
+                <td>{% if baseparcel.note %}{{ baseparcel.note }}{% else %}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="podpise">
+        <p>
+            ФИО получателя:
+            <span>
+        </span>
+        </p>
+        <p>
+            Подпись:
+            <span>
+        </span>
+        </p>
+    </div>
+    <div class="podpise">
+        <p>
+            ФИО оператора:
+            <span>
+                {{ user.first_name }} {{ user.last_name }}
+        </span>
+        </p>
+        <p>
+            Подпись:
+            <span>
+        </span>
+        </p>
+    </div>
+    <div class="podpise">
+        <p></p>
+        <p>
+            ДАТА:
+            <span>
+                {% now "d-m-Y" %}
+        </span>
+        </p>
+    </div>
+</div>
+</body>
+</html>

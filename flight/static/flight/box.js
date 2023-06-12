@@ -1,8 +1,9 @@
 let destination  = document.getElementById('id_destination');
 let track_codes = document.querySelectorAll("td.field-track_code input");
+let phones = document.querySelectorAll("td.field-phone input");
 let prices = document.querySelectorAll("td.field-price input");
 let weights = document.querySelectorAll("td.field-weight input");
-let costs = document.querySelectorAll("td.field-cost input");
+let costsUSD = document.querySelectorAll("td.field-cost_usd input");
 
 window.addEventListener('DOMContentLoaded', () =>  {
     getTotalWeight();
@@ -18,7 +19,7 @@ function setAllPrice () {
             price = price.match(regex).map(function(p) { return parseFloat(p); });
             document.getElementById(`id_base_parcel-${i}-price`).value = price[0].toFixed(2);
             let weight = document.getElementById(`id_base_parcel-${i}-weight`).value;
-            document.getElementById(`id_base_parcel-${i}-cost`).value = (price * weight).toFixed(2);
+            document.getElementById(`id_base_parcel-${i}-cost_usd`).value = (price * weight).toFixed(2);
         }
     }
     getTotalCost();
@@ -43,7 +44,7 @@ function setCode (track_code) {
     };
     let point = destination.options[destination.selectedIndex].text;
     point = point.split('').map(function (char) { return a[char] || char; }).join("");
-    document.getElementById(`id_code`).value = point.slice(0, 3).toUpperCase() + track_code;
+    document.getElementById(`id_code`).value = point.slice(0, 4).trim().toUpperCase() + track_code;
 }
 
 function getTrackCode () {
@@ -75,7 +76,7 @@ function getCostPerParcel (weight) {
     let number = id.replace(/[^0-9]/g,"");
     const price = document.getElementById(`id_base_parcel-${number}-price`);
     costPerParcel = price.value * weight.value
-    document.getElementById(`id_base_parcel-${number}-cost`).value = costPerParcel.toFixed(2)
+    document.getElementById(`id_base_parcel-${number}-cost_usd`).value = costPerParcel.toFixed(2)
 }
 
 function getTotalWeight () {
@@ -90,9 +91,9 @@ function getTotalWeight () {
 
 function getTotalCost () {
     let totalCost = 0
-    costs.forEach(cost => {
-        if (cost.value) {
-            totalCost += parseFloat(cost.value);
+    costsUSD.forEach(cost_usd => {
+        if (cost_usd.value) {
+            totalCost += parseFloat(cost_usd.value);
             document.getElementById('total_cost').value = totalCost.toFixed(2);
         }
     });
@@ -106,7 +107,25 @@ destination.addEventListener('change', () => {
 track_codes.forEach(track_code => {
     track_code.addEventListener('input', (event) => {
         document.getElementById('save').disabled = true;
+        timeoutId = setTimeout(function() {
+            const id = track_code.id
+            let number = id.replace(/[^0-9]/g,"");
+            const clientCode = document.getElementById(`id_base_parcel-${number}-client_code`);
+            clientCode.focus()
+            document.getElementById('save').disabled = false;
+        }, 400);
         setPrice(track_code);
+    })
+});
+
+phones.forEach(phone => {
+    phone.addEventListener('input', () => {
+        let value = phone.value
+        if (value.length === 1) {
+            phone.value = "996" + value
+        } else if (value === '996') {
+            phone.value = ''
+        }
     })
 });
 
@@ -118,8 +137,8 @@ weights.forEach(weight => {
     })
 });
 
-costs.forEach(cost => {
-    cost.addEventListener('input', () => {
+costsUSD.forEach(cost_usd => {
+    cost_usd.addEventListener('input', () => {
         getTotalCost();
     })
 });

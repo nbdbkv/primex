@@ -21,14 +21,14 @@ from account.models import District, Village, Region, User
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("phone", "password", "info")
+        fields = ("phone", "password", "info", "region")
 
-    def validate_password(self, password):
-        try:
-            validate_password(password)
-            return password
-        except BaseException as err:
-            raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
+    # def validate_password(self, password):
+    #     try:
+    #         validate_password(password)
+    #         return password
+    #     except BaseException as err:
+    #         raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
 
     def create(self, validated_data):
         instance = super().create(validated_data)
@@ -99,7 +99,7 @@ class RegisterCodeVerifySerializer(serializers.Serializer):
     def generate_code_logistic(self, user):
         startswith = user.region.name
         text = translit(startswith, language_code='ru', reversed=True)
-        code_logistic = text.upper() + str(random.randint(11111, 99999))
+        code_logistic = text.upper()[:4] + str(random.randint(11111, 99999))
         user.code_logistic = code_logistic
         user.save()
         self.generate_qr(user, code_logistic)
@@ -172,12 +172,6 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "groups",
             "user_permissions",
         )
-
-    def to_representation(self, instance):
-        super().to_representation(instance)
-
-        startswith = instance.region.name.upper()
-        print(startswith)
 
 
 class DistrictsSerializer(serializers.ModelSerializer):

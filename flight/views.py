@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
-
+from django.views.generic import TemplateView
 from rest_framework import generics, filters, views
 
 from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact, TrackCode
@@ -38,23 +38,59 @@ def add_to_box(request):
 def my_view(request):
     search_term = request.GET.get('q')
     flight = request.GET.get('flight')
+    if not search_term:
+        box = Box.objects.filter(Q(flight_id=flight) & ~Q(status=7)).distinct()
+        context = {
+            'qs': box,
+        }
+        return HttpResponse(render_to_string('my_formset2.html', context, request=request))
+    else:
+        baseparcels = BaseParcel.objects.filter(Q(box__flight_id=flight) & ~Q(status=7)).prefetch_related('box')
+        baseparcels = baseparcels.filter(
+            (Q(box__code__icontains=search_term) & ~Q(status=7)) |
+            (Q(track_code__icontains=search_term) & ~Q(status=7)) |
+            (Q(client_code__exact=search_term) & ~Q(status=7)) |
+            (Q(phone__exact=search_term) & ~Q(status=7))
+        )
+        context = {
+            'baseparcels': baseparcels,
+        }
+        return HttpResponse(render_to_string('my_formset.html', context, request=request))
+
+
+def delivery_view(request):
+    search_term = request.GET.get('q')
+    flight = request.GET.get('flight')
     queryset = Box.objects.filter(Q(flight_id=flight) & ~Q(status=7))
     if search_term:
         queryset = queryset.filter(
             (Q(code__icontains=search_term) & ~Q(status=7)) |
             (Q(base_parcel__track_code__icontains=search_term) & ~Q(base_parcel__status=7)) |
-            (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7))
+            (Q(base_parcel__client_code__exact=search_term) & ~Q(base_parcel__status=7)) |
+            (Q(base_parcel__phone__exact=search_term) & ~Q(base_parcel__status=7))
         ).distinct()
     context = {
         'qs': queryset,
     }
-    html = render_to_string('my_formset2.html', context, request=request)
+    html = render_to_string('delivery_formset2.html', context, request=request)
     return HttpResponse(html)
 
 
 class MediaListView(generics.ListAPIView):
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
+
+
+class DeliveryPrintView(TemplateView):
+    template_name = 'delivery_print.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if 'q' in request.session:
+            q = request.session['q']
+            context['baseparcels'] = BaseParcel.objects.filter(Q(track_code=q) | Q(client_code=q) | Q(phone=q))
+            del request.session['q']
+        return self.render_to_response(context)
 
 
 class FileDownloadListView(views.APIView):
@@ -89,9 +125,9 @@ class BaseParcelSearchListView(generics.ListAPIView):
         user = self.request.user
         base_parcels = BaseParcel.objects.filter(Q(client_code=user.code_logistic) | Q(phone=user.phone))
         if self.request.query_params:
-            return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 5, 7])
+            return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 5, 7]).order_by('-id')
         else:
-            return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 7])
+            return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 7]).order_by('-id')
 
 
 class BaseParcelHistoryListView(generics.ListAPIView):
