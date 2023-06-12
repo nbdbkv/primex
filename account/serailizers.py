@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
 from django.conf import settings
+from fcm_django.models import FCMDevice
 import qrcode
 from account.validators import PhoneValidator
 from account.utils import SendSMS, get_otp
@@ -202,3 +203,9 @@ class RegionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Region
         fields = "__all__"
+
+
+class FcmCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FCMDevice
+        fields = '__all__'

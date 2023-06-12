@@ -1,8 +1,11 @@
 from rest_framework import generics, status, permissions
+from rest_framework.generics import UpdateAPIView, GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.utils.translation import gettext_lazy as _
+from fcm_django.models import FCMDevice
 
 from account.messages import Message
 from account.permissions import IsOwner
@@ -17,7 +20,7 @@ from account.serailizers import (
     UserRetrieveSerializer,
     UserSendCodeSerializer,
     RegionsSerializer,
-    DistrictsSerializer,
+    DistrictsSerializer, FcmCreateSerializer,
 )
 
 
@@ -103,3 +106,40 @@ class VillagesView(generics.ListAPIView):
     queryset = Village.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["region"]
+
+
+class FcmCreateView(UpdateAPIView):
+    serializer_class = FcmCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        if user:
+            try:
+                fcm = FCMDevice.objects.get(user_id=user.pk, device_id=request.data['device_id'])
+                fcm.registration_id = request.data['registration_id']
+                fcm.type = request.data['type']
+                fcm.active = request.data['active']
+                fcm.save()
+            except FCMDevice.DoesNotExist:
+                FCMDevice.objects.create(user=user, name=request.data['name'], device_id=request.data['device_id'],
+                                         type=request.data['type'], registration_id=request.data['registration_id'])
+
+            return Response({"data": request.data}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class FcmDeleteView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = FCMDevice.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            fcm = FCMDevice.objects.get(user_id=request.user.pk, id=kwargs['device_id'])
+            fcm.delete()
+            return Response(
+                {"massage": "Успешно удалено"}, status=status.HTTP_204_NO_CONTENT
+            )
+        except FCMDevice.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
