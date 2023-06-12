@@ -486,8 +486,21 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     search_fields = ('track_code', 'client_code', 'phone')
     date_hierarchy = 'created_at'
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
-    change_list_template = 'admin/delivery_base_parcel_change_list.html'
     change_form_template = "admin/unknown_change_form.html"
+    actions = ('print_baseparcel', 'set_baseparcel_status')
+
+    @admin.action(description='Распечатать')
+    def print_baseparcel(self, request, queryset):
+        context = {'baseparcels': queryset}
+        return render(request, 'delivery_print.html', context=context)
+
+    @admin.action(description='Изменить статус на Выдан')
+    def set_baseparcel_status(self, request, queryset):
+        for baseparcel in queryset:
+            baseparcel.status = 5
+            baseparcel.delivered_at = now()
+            baseparcel.save()
+            messages.info(request, f"Статус посылки {baseparcel.id} изменен на Выдан")
 
     def get_queryset(self, request):
         return DeliveryBaseParcel.objects.filter(box__flight__status__in=[2, 3, 4], status=4)
