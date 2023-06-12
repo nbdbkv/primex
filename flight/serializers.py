@@ -13,8 +13,11 @@ class MediaSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'image', 'video',)
 
     def get_video(self, obj):
-        url = 'http://' + f"{get_current_site(self.context['request'])}" + f'/flight/media/download/{obj.pk}/'
-        return url
+        if obj.video:
+            url = 'http://' + f"{get_current_site(self.context['request'])}" + f'/flight/media/download/{obj.pk}/'
+            return url
+        else:
+            return None
 
 
 class RateSerializer(serializers.ModelSerializer):
