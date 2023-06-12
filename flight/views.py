@@ -113,7 +113,7 @@ class BaseParcelSearchListView(generics.ListAPIView):
         user = self.request.user
         base_parcels = BaseParcel.objects.filter(Q(client_code=user.code_logistic) | Q(phone=user.phone))
         if self.request.query_params:
-            return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 5, 7]).order_by('-id')
+            return BaseParcel.objects.filter(status__in=[0, 1, 2, 3, 4, 5, 7]).order_by('-id')
         else:
             return base_parcels.filter(status__in=[0, 1, 2, 3, 4, 7]).order_by('-id')
 
