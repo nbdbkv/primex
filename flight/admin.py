@@ -43,9 +43,6 @@ class FlightBaseParcelInline(nested_admin.NestedTabularInline):
     def has_add_permission(self, request, obj):
         return False
 
-    def has_delete_permission(self, request, obj):
-        return False
-
 
 class FlightBoxInline(nested_admin.NestedTabularInline):
     model = Box
@@ -54,6 +51,11 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
     template = 'admin/flight_box_tabular.html'
     extra = 0
     inlines = (FlightBaseParcelInline,)
+    fields = ('swap', 'number', 'code', 'track_code', 'weight', 'comment')
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.order_by('id')
 
     def has_add_permission(self, request, obj):
         return False
@@ -70,6 +72,7 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     search_fields = ['box__code', 'box__base_parcel__track_code', 'code']
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = (FlightBoxInline,)
+    change_form_template = "admin/flight_change_form.html"
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -96,18 +99,21 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
         return baseparcel_price['cost_usd__sum']
 
     def save_model(self, request, obj, form, change):
-        a = 0
-        sum = 0.0
-        for key, value in form.data.items():
-            if key == f'box-{a}-weight':
-                if value:
-                    sum += float(value)
-                    a += 1
-        obj.weight = sum
+        form_data = form.data
+        for key, value in form_data.items():
+            if 'swap' in key and int(value) != obj.id:
+                index = re.findall(r'\d+', key)
+                box_id = form_data.get(f'box-{int(*index)}-id')
+                box = Box.objects.get(id=box_id)
+                box.flight_id = int(value)
+                box.save()
 
         if form.has_changed():
             self.if_change(obj)
         super(FlightAdmin, self).save_model(request, obj, form, change)
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
 
     def if_change(self, obj):
         if obj.status == 2:

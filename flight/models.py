@@ -54,8 +54,8 @@ class Flight(TimeStampedModel):
         verbose_name_plural = _('Рейсы')
 
     def __str__(self):
-        if self.numeration:
-            return self.numeration
+        if self.code:
+            return self.code
         else:
             return ''
 

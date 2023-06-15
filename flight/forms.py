@@ -61,6 +61,11 @@ class FlightBaseParcelModelForm(forms.ModelForm):
 
 
 class FlightBoxModelForm(forms.ModelForm):
+    swap = forms.ModelChoiceField(
+        required=False,
+        label='Рейс',
+        queryset=Flight.objects.filter(status=0)
+    )
 
     class Meta:
         widgets = {
