@@ -637,7 +637,7 @@ class BoxAdmin(ImportExportModelAdmin):
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image', 'video',)
+    list_display = ('title', 'icon', 'image', 'video',)
 
 
 @admin.register(Rate)

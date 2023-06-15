@@ -10,7 +10,7 @@ class MediaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Media
-        fields = ('id', 'title', 'image', 'video',)
+        fields = ('id', 'title', 'icon', 'image', 'video',)
 
     def get_video(self, obj):
         if obj.video:

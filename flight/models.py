@@ -178,7 +178,8 @@ class DeliveryBaseParcel(BaseParcel):
 class Media(models.Model):
     # Медиа
     title = models.CharField(_("Название"), max_length=127,)
-    image = models.ImageField(_("Изображение"), upload_to='flight/media/image')
+    icon = models.ImageField(_("Иконка"), upload_to='flight/media/icon')
+    image = models.ImageField(_("Изображение"), upload_to='flight/media/image', null=True, blank=True,)
     video = models.FileField(_("Видео"), upload_to='flight/media/video', null=True, blank=True,)
 
     class Meta:
