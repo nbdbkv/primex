@@ -103,12 +103,13 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     def save_model(self, request, obj, form, change):
         form_data = form.data
         for key, value in form_data.items():
-            if 'swap' in key and int(value) != obj.id:
-                index = re.findall(r'\d+', key)
-                box_id = form_data.get(f'box-{int(*index)}-id')
-                box = Box.objects.get(id=box_id)
-                box.flight_id = int(value)
-                box.save()
+            if 'swap' in key and value:
+                if int(value) != obj.id:
+                    index = re.findall(r'\d+', key)
+                    box_id = form_data.get(f'box-{int(*index)}-id')
+                    box = Box.objects.get(id=box_id)
+                    box.flight_id = int(value)
+                    box.save()
 
         if form.has_changed():
             self.if_change(obj)
