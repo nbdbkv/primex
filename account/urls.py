@@ -18,6 +18,7 @@ from account.views import (
     UpdateUserInfoView,
     RegionsView,
     DistrictsView, FcmDeleteView, FcmCreateView,
+    PhoneVerifyView,
 )
 
 router = DefaultRouter()
@@ -40,4 +41,5 @@ urlpatterns = [
     path("districts/", DistrictsView.as_view()),
     path("villages/", VillagesView.as_view()),
     path("telegram/", tg_message_handler),
+    path('phone/verify/', PhoneVerifyView.as_view()),
 ]

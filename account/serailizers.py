@@ -203,3 +203,11 @@ class FcmCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FCMDevice
         fields = '__all__'
+
+
+class PhoneVerifySerializer(serializers.ModelSerializer):
+    token = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ('phone', 'token')

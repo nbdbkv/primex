@@ -6,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from django.utils.translation import gettext_lazy as _
 from fcm_django.models import FCMDevice
+from firebase_admin.auth import verify_id_token
 
 from account.messages import Message
 from account.permissions import IsOwner
@@ -21,6 +22,7 @@ from account.serailizers import (
     UserSendCodeSerializer,
     RegionsSerializer,
     DistrictsSerializer, FcmCreateSerializer,
+    PhoneVerifySerializer,
 )
 
 
@@ -143,3 +145,24 @@ class FcmDeleteView(GenericAPIView):
             )
         except FCMDevice.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class PhoneVerifyView(GenericAPIView):
+    queryset = User
+    permission_classes = [IsAuthenticated]
+    serializer_class = PhoneVerifySerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        try:
+            decoded_token = verify_id_token(serializer.data['token'])
+        except:
+            return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = User.objects.get(phone=serializer.data['phone'])
+            user.is_verified = True
+            user.save()
+            return Response({'token': user.tokens()}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'message': 'Неверный номер'}, status=status.HTTP_404_NOT_FOUND)
