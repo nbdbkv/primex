@@ -380,26 +380,30 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
         if form.has_changed():
             self.if_change(obj)
         else:
-            for query_dict in request.POST:
-                if 'shelf' in query_dict:
-                    base_parcel_id = query_dict.split('_')[-1]
-                    shelf = request.POST.get(f'shelf_{base_parcel_id}')
+            query_dict = request.POST
+
+            for i in query_dict:
+                if 'shelf' in i:
+                    base_parcel_id = i.split('_')[-1]
+                    shelf = query_dict.get(f'shelf_{base_parcel_id}')
                     if shelf:
                         base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
                         base_parcel.shelf = shelf
                         base_parcel.save()
-                if 'note' in query_dict:
-                    base_parcel_id = query_dict.split('_')[-1]
-                    note = request.POST.get(f'note_{base_parcel_id}')
+                if 'note' in i:
+                    base_parcel_id = i.split('_')[-1]
+                    note = query_dict.get(f'note_{base_parcel_id}')
                     if note:
                         base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
                         base_parcel.note = note
                         base_parcel.save()
-            for i in request.POST.getlist('base_parcels'):
+
+            for i in query_dict.getlist('base_parcels'):
                 base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
                 base_parcel.status = int(eval(i)['status'])
                 base_parcel.save()
-            for i in request.POST.getlist('boxes'):
+
+            for i in query_dict.getlist('boxes'):
                 box = Box.objects.get(id=int(eval(i)['box']))
                 box.status = int(eval(i)['status'])
                 box.save()
