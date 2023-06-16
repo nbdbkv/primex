@@ -1,3 +1,14 @@
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+function updateOnlineStatus(event) {
+  const condition = navigator.onLine ? "online" : "offline";
+  if (condition === 'offline') {
+      alert("No Internet connection!")
+  }
+  document.body.className = condition;
+}
+
 let destination  = document.getElementById('id_destination');
 let track_codes = document.querySelectorAll("td.field-track_code input");
 let phones = document.querySelectorAll("td.field-phone input");
