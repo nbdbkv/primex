@@ -1,6 +1,6 @@
 from rest_framework import generics, status, permissions
 from rest_framework.generics import UpdateAPIView, GenericAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -149,7 +149,7 @@ class FcmDeleteView(GenericAPIView):
 
 class PhoneVerifyView(GenericAPIView):
     queryset = User
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     serializer_class = PhoneVerifySerializer
 
     def post(self, request, *args, **kwargs):
