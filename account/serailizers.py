@@ -10,6 +10,7 @@ from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
 from django.conf import settings
 from fcm_django.models import FCMDevice
+from firebase_admin.auth import verify_id_token
 import qrcode
 from account.validators import PhoneValidator
 from account.utils import SendSMS, get_otp
@@ -113,7 +114,7 @@ class RegisterCodeVerifySerializer(serializers.Serializer):
 
 
 class PasswordResetVerifySerializer(serializers.Serializer):
-    code = serializers.IntegerField(required=True)
+    token = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
 
     def validate_password(self, password):
@@ -123,12 +124,11 @@ class PasswordResetVerifySerializer(serializers.Serializer):
         except ValidationError as exc:
             raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
 
-    def validate_code(self, code):
-        phone = cache.get(code, version=SendCodeType.RESET_PASSWORD)
-        if phone is not None:
-            self.instance = User.objects.get(phone=phone)
-            return code
-        raise ValidationError(ErrorMessage.WRONG_OTP.value)
+    def validate_token(self, token):
+        try:
+            decoded_token = verify_id_token(token)
+        except:
+            return ValidationError({'message': 'Токен не действителен'})
 
     def update(self):
         self.instance.set_password(self.validated_data["password"])
