@@ -429,7 +429,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
     list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
     inlines = (ArchiveBoxNestedInline,)
     exclude = ('is_archive',)
-    readonly_fields = ('numeration', 'code', 'created_at', 'status')
+    readonly_fields = ('numeration', 'code', 'arrived_at', 'status')
     fields = [readonly_fields]
     change_form_template = "admin/archive_change_form.html"
 

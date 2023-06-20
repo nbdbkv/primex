@@ -34,7 +34,7 @@ class Destination(models.Model):
     currency = models.CharField(max_length=8, verbose_name=_('Курс валют'))
 
     class Meta:
-        verbose_name = _("Направление")
+        verbose_name = _("пункт назначения")
         verbose_name_plural = _("Направления")
 
     def __str__(self):
@@ -50,7 +50,7 @@ class Flight(TimeStampedModel):
     is_archive = models.BooleanField(default=False, verbose_name=_('Архив'))
 
     class Meta:
-        verbose_name = _('Рейс')
+        verbose_name = _('рейс')
         verbose_name_plural = _('Рейсы')
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Arrival(Flight):
 
     class Meta:
         proxy = True
-        verbose_name = _('Поступление')
+        verbose_name = _('прибывший рейс')
         verbose_name_plural = _('Поступления')
 
 
@@ -74,8 +74,8 @@ class Delivery(Flight):
 
     class Meta:
         proxy = True
-        verbose_name = _('Выдача товаров')
-        verbose_name_plural = _('Выдача товаров')
+        verbose_name = _('готовый к выдаче рейс')
+        verbose_name_plural = _('Выдача посылок')
 
 
 class Archive(Flight):
@@ -83,7 +83,7 @@ class Archive(Flight):
 
     class Meta:
         proxy = True
-        verbose_name = _('Архив рейс')
+        verbose_name = _('выданный рейс')
         verbose_name_plural = _('Архив рейсов')
 
 
@@ -105,8 +105,8 @@ class Box(TimeStampedModel):
     status = models.PositiveIntegerField(choices=get_status()[2:7], verbose_name=_('Статус'), null=True, blank=True,)
 
     class Meta:
-        verbose_name = _('box')
-        verbose_name_plural = _('boxes')
+        verbose_name = _('коробку')
+        verbose_name_plural = _('Коробки')
 
     def __str__(self):
         if self.code:
@@ -163,16 +163,16 @@ class Unknown(BaseParcel):
 
     class Meta:
         proxy = True
-        verbose_name = _('Неизвестный заказ')
-        verbose_name_plural = _('Неизвестные заказы')
+        verbose_name = _('неизвестную посылку')
+        verbose_name_plural = _('Неизвестные посылки')
 
 
 class DeliveryBaseParcel(BaseParcel):
 
     class Meta:
         proxy = True
-        verbose_name = _('Распечатка товаров')
-        verbose_name_plural = _('Распечатка товаров')
+        verbose_name = _('готовую к выдаче посылку')
+        verbose_name_plural = _('Распечатка посылок')
 
 
 class Media(models.Model):
@@ -183,7 +183,7 @@ class Media(models.Model):
     video = models.FileField(_("Видео"), upload_to='flight/media/video', null=True, blank=True,)
 
     class Meta:
-        verbose_name = _("Медиа")
+        verbose_name = _("медиа")
         verbose_name_plural = _("Медиа")
 
     def __str__(self):
@@ -198,7 +198,7 @@ class Rate(models.Model):
     commission = models.CharField(_('Комиссия'), max_length=100, null=True, blank=True,)
 
     class Meta:
-        verbose_name = _("Тариф")
+        verbose_name = _("тариф")
         verbose_name_plural = _("Тарифы")
 
     def __str__(self):
@@ -210,7 +210,7 @@ class Contact(models.Model):
     icon = models.ImageField(_('Иконка'), upload_to='flight/contact', null=True, blank=True,)
 
     class Meta:
-        verbose_name = _("Контакт")
+        verbose_name = _("контакт")
         verbose_name_plural = _("Контакты")
 
     def __str__(self):
