@@ -24,6 +24,7 @@ from account.serailizers import (
     DistrictsSerializer, FcmCreateSerializer,
     PhoneVerifySerializer,
 )
+from account.utils import generate_qr, generate_code_logistic
 
 
 class UserRegisterView(generics.CreateAPIView):
@@ -163,6 +164,8 @@ class PhoneVerifyView(GenericAPIView):
             user = User.objects.get(phone=serializer.data['phone'])
             user.is_active = True
             user.save()
+            generate_qr(user)
+            generate_code_logistic(user)
             return Response(user.tokens(), status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'message': 'Неверный номер'}, status=status.HTTP_404_NOT_FOUND)

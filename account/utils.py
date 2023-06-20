@@ -1,7 +1,13 @@
-from django.conf import settings
+import random
+from io import BytesIO
 from random import randint
-import requests
 from uuid import uuid4
+
+import qrcode
+import requests
+from django.conf import settings
+from django.core.files import File
+from transliterate import translit
 
 
 class SendSMS:
@@ -60,3 +66,39 @@ class SendSMS:
 
 def get_otp() -> int:
     return randint(10000, 99999)
+
+
+def generate_qr(user, code=None):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    if code:
+        qr.add_data(code)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buffer = BytesIO()
+        img.save(buffer)
+        buffer.seek(0)
+        user.qr_logistic.save(f'{code}.png', File(buffer), save=True)
+    else:
+        qr.add_data(user.phone)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buffer = BytesIO()
+        img.save(buffer)
+        buffer.seek(0)
+        user.qr_phone.save(f'{user.phone}.png', File(buffer), save=True)
+
+
+def generate_code_logistic(user):
+    startswith = user.region.name
+    text = translit(startswith, language_code='ru', reversed=True)
+    code_logistic = text.upper()[:4] + str(random.randint(11111, 99999))
+    user.code_logistic = code_logistic
+    user.save()
+    generate_qr(user, code_logistic)
