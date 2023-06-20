@@ -156,12 +156,12 @@ class PhoneVerifyView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid()
         try:
-            decoded_token = verify_id_token(serializer.data['token'])
+            verify_id_token(serializer.data['token'])
         except:
             return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             user = User.objects.get(phone=serializer.data['phone'])
-            user.is_verified = True
+            user.is_active = True
             user.save()
             return Response({'token': user.tokens()}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
