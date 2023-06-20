@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django_2gis_maps import fields as map_fields
 from django_2gis_maps.mixins import DoubleGisMixin
-
+from rest_framework_simplejwt.tokens import RefreshToken
 from account.validators import PhoneValidator, RegionCodeValidator
 from account.managers import UserManager
 from account.choices import UserRole
@@ -71,6 +71,10 @@ class User(AbstractUser):
 
     class Meta(AbstractUser.Meta):
         swappable = "AUTH_USER_MODEL"
+
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {'refresh': str(refresh), 'access': str(refresh.access_token)}
 
 
 class Region(DoubleGisMixin, models.Model):
