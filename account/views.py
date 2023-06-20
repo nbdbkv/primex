@@ -163,6 +163,6 @@ class PhoneVerifyView(GenericAPIView):
             user = User.objects.get(phone=serializer.data['phone'])
             user.is_active = True
             user.save()
-            return Response({'token': user.tokens()}, status=status.HTTP_200_OK)
+            return Response(user.tokens(), status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'message': 'Неверный номер'}, status=status.HTTP_404_NOT_FOUND)
