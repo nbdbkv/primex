@@ -20,7 +20,8 @@ def send_fcm_when_forming(sender, instance, created, **kwargs):
                 device.send_message(
                     Message(
                         notification=Notification(
-                            title='Taura Express', body=f'Посылка {instance.track_code} формируется на складе в Китае.'
+                            title='Taura Express',
+                            body=f'Посылка {instance.track_code} формируется на складе в Китае.'
                         )
                     )
                 )
@@ -38,7 +39,8 @@ def send_fcm_on_arrival(sender, instance, created, **kwargs):
                 device.send_message(
                     Message(
                         notification=Notification(
-                            title='Taura Express', body=f'Посылка {instance.track_code} прибыла на склад в КР.'
+                            title='Taura Express',
+                            body=f'Посылка {instance.track_code} прибыла на склад в КР.'
                         )
                     )
                 )
@@ -56,7 +58,8 @@ def send_fcm_when_ready(sender, instance, created, **kwargs):
                 device.send_message(
                     Message(
                         notification=Notification(
-                            title='Taura Express', body=f'Посылка {instance.track_code} раздается. Заберите посылку.'
+                            title='Taura Express',
+                            body=f'Посылка {instance.track_code} готова к выдаче. Заберите посылку.'
                         )
                     )
                 )
