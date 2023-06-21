@@ -13,6 +13,7 @@ from fcm_django.models import FCMDevice
 from import_export import fields, resources, widgets
 from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateTimeRangeFilter
+from firebase_admin.messaging import Message, Notification
 
 from account.models import User
 from flight.forms import (ArrivalModelForm, BaseParcelModelForm, BoxModelForm,
