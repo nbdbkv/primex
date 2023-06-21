@@ -112,6 +112,33 @@ class RegisterCodeVerifySerializer(serializers.Serializer):
         return self.instance
 
 
+class PasswordUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True)
+    new_password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('password', 'new_password')
+
+    def validate(self, attrs):
+        user = self.context['request'].user
+        password = attrs.get('password')
+        new_password = attrs.get('new_password')
+        if not user.check_password(password):
+            raise serializers.ValidationError(ErrorMessage.PASSWORD_ERROR.value)
+        try:
+            validate_password(new_password, user)
+        except ValidationError as exc:
+            raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
+        return attrs
+
+    def update(self, instance, validated_data):
+        new_password = validated_data.get('new_password')
+        instance.set_password(new_password)
+        instance.save()
+        return instance
+
+
 class PasswordResetVerifySerializer(serializers.Serializer):
     token = serializers.CharField(required=True)
     password = serializers.CharField(required=True)

@@ -15,6 +15,7 @@ from account.serailizers import (
     VillagesSerializer,
     PasswordResetVerifySerializer,
     RegisterCodeVerifySerializer,
+    PasswordUpdateSerializer,
     PhoneResetVerifySerializer,
     UpdateUserInfoSerializer,
     UserRegisterSerializer,
@@ -50,6 +51,14 @@ class RegisterCodeVerifyView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.update()
         return Response(Message.USER_ACTIVATED.value, status=status.HTTP_202_ACCEPTED)
+
+
+class PasswordUpdateView(generics.UpdateAPIView):
+    serializer_class = PasswordUpdateSerializer
+    # permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
 
 
 class PasswordResetVerifyView(generics.GenericAPIView):
