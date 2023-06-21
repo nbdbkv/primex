@@ -278,8 +278,12 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
                 if base_parcel.status == 4 and user:
                     devices = FCMDevice.objects.filter(user_id__in=user)
                     for device in devices:
-                        device.send_message(title='Taura Express', body='message', data=None,
-                                     sound=True)
+                        device.send_message(
+                            Message(
+                                notification=Notification(title='Taura Express', body='Test')
+                            )
+                        )
+
             for i in query_dict.getlist('boxes'):
                 box = Box.objects.get(id=int(eval(i)['box']))
                 box.status = int(eval(i)['status'])
