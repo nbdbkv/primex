@@ -34,7 +34,7 @@ urlpatterns = [
     path("register/", UserRegisterView.as_view()),
     path("code/send/", UserSendCodeView.as_view()),
     path("code/verify/", RegisterCodeVerifyView.as_view()),
-    path("password-change/", PasswordUpdateView.as_view()),
+    path("password/change/", PasswordUpdateView.as_view()),
     path("password/verify/reset/", PasswordResetVerifyView.as_view()),
     path("phone/verify/reset/", PhoneResetVerifyView.as_view()),
     path("update/info/", UpdateUserInfoView.as_view()),
