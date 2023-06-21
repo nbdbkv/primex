@@ -1,28 +1,26 @@
 import re
 
+import nested_admin
 from django.contrib import admin, messages
 from django.contrib.admin import AdminSite, DateFieldListFilter
-from django.db.models import Sum, Q
+from django.db.models import Q, Sum
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
-from django.http import HttpResponseRedirect
-
-import nested_admin
+from fcm_django.models import FCMDevice
+from import_export import fields, resources, widgets
+from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateTimeRangeFilter
 
-from flight.forms import (
-    FlightModelForm, ArrivalModelForm, DeliveryModelForm, BaseParcelModelForm, BoxModelForm, FlightBaseParcelModelForm,
-    FlightBoxModelForm,
-)
-from flight.models import (
-    Flight, Box, BaseParcel, Arrival, Delivery, Archive, Unknown, Media,
-    Contact, Rate, Destination, DeliveryBaseParcel,
-)
-from import_export.admin import ImportExportModelAdmin
-from import_export import resources, fields, widgets
-
+from account.models import User
+from flight.forms import (ArrivalModelForm, BaseParcelModelForm, BoxModelForm,
+                          DeliveryModelForm, FlightBaseParcelModelForm,
+                          FlightBoxModelForm, FlightModelForm)
+from flight.models import (Archive, Arrival, BaseParcel, Box, Contact,
+                           Delivery, DeliveryBaseParcel, Destination, Flight,
+                           Media, Rate, Unknown)
 from flight.utils import make_add_box_to_flight_action
 
 original_get_app_list = AdminSite.get_app_list
@@ -271,8 +269,18 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
             for i in query_dict.getlist('base_parcels'):
                 base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
                 base_parcel.status = int(eval(i)['status'])
+                user = User.objects.exclude(code_logistic=None).filter(
+                    Q(code_logistic=base_parcel.client_code) | (Q(phone=base_parcel.phone))
+                ).values('pk')
                 base_parcel.save()
 
+                from firebase_admin.messaging import Message
+                if base_parcel.status == 4 and user:
+                    devices = FCMDevice.objects.filter(user_id__in=user)
+                    for device in devices:
+                        message = Message(data={'title': "Taura Express",
+                                            'body': f"test"})
+                        device.send_message(message)
             for i in query_dict.getlist('boxes'):
                 box = Box.objects.get(id=int(eval(i)['box']))
                 box.status = int(eval(i)['status'])
