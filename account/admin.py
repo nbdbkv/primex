@@ -12,7 +12,7 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
     list_display_links = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
     # list_filter = ('role', 'region')
     search_fields = ['code_logistic', 'first_name', 'last_name', 'phone']
-    change_list_template = 'admin/user_change_list.html'
+    # change_list_template = 'admin/user_change_list.html'
     form = UserChangeForm
 
     def save_model(self, request, obj, form, change) -> None:
@@ -21,13 +21,13 @@ class UserAdmin(UserAdminMixin, admin.ModelAdmin):
             obj.set_password(new_password)
         return super().save_model(request, obj, form, change)
 
-    def changelist_view(self, request, extra_context=None):
-        extra_context = extra_context or {}
-        if request.GET.get('q'):
-            extra_context['is_search'] = True
-        else:
-            extra_context['is_search'] = False
-        return super(UserAdmin, self).changelist_view(request, extra_context=extra_context)
+    # def changelist_view(self, request, extra_context=None):
+    #     extra_context = extra_context or {}
+    #     if request.GET.get('q'):
+    #         extra_context['is_search'] = True
+    #     else:
+    #         extra_context['is_search'] = False
+    #     return super(UserAdmin, self).changelist_view(request, extra_context=extra_context)
 
 
 class RegionAdmin(DoubleGisAdmin):
