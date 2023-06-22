@@ -91,6 +91,7 @@ class FileDownloadListView(views.APIView):
         with open(filepath, 'rb') as file:
             response = HttpResponse(FileWrapper(file), content_type=mimetype)
             response['Content-Disposition'] = f'attachment; filename={filename}'
+            response['Content-Range'] = 'bytes 0-49999/100000'
             return response
 
 
