@@ -62,13 +62,24 @@ class PasswordUpdateView(generics.UpdateAPIView):
 
 
 class PasswordResetVerifyView(generics.GenericAPIView):
+    queryset = User
+    permission_classes = [AllowAny]
     serializer_class = PasswordResetVerifySerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.update()
-        return Response(Message.PASSWORD_CHANGED.value, status=status.HTTP_202_ACCEPTED)
+        serializer.is_valid()
+        try:
+            verify_id_token(serializer.data['token'])
+        except:
+            return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            user = User.objects.get(phone=serializer.data['phone'])
+            user.set_password(serializer.data['password'])
+            user.save()
+            return Response(user.tokens(), status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'message': 'Неверный номер'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class PhoneResetVerifyView(generics.GenericAPIView):

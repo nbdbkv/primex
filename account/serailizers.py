@@ -139,8 +139,8 @@ class PasswordUpdateSerializer(serializers.ModelSerializer):
         return instance
 
 
-class PasswordResetVerifySerializer(serializers.Serializer):
-    token = serializers.CharField(required=True)
+class PasswordResetVerifySerializer(serializers.ModelSerializer):
+    token = serializers.CharField()
     password = serializers.CharField(required=True)
 
     def validate_password(self, password):
@@ -150,16 +150,9 @@ class PasswordResetVerifySerializer(serializers.Serializer):
         except ValidationError as exc:
             raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
 
-    def validate_token(self, token):
-        try:
-            decoded_token = verify_id_token(token)
-        except:
-            return ValidationError({'message': 'Токен не действителен'})
-
-    def update(self):
-        self.instance.set_password(self.validated_data["password"])
-        self.instance.save()
-        return self.instance
+    class Meta:
+        model = User
+        fields = ('phone', 'token', 'password')
 
 
 class PhoneResetVerifySerializer(serializers.Serializer):
