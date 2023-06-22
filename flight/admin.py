@@ -356,7 +356,7 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
             obj.is_archive = True
             obj.save()
             for box in obj.box.filter(~Q(status=obj.status)):
-                box.status = 7
+                box.status = 5
                 box.save()
                 for p in box.base_parcel.filter(~Q(status=obj.status)):
                     p.status = 7
