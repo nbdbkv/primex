@@ -200,8 +200,9 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
         'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
         'box__base_parcel__phone',
     )
-    date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    date_hierarchy = 'arrived_at'
+    ordering = ('arrived_at',)
+    list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
     readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights')
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
@@ -296,8 +297,9 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
         'numeration', 'box__code', 'box__base_parcel__track_code', 'box__base_parcel__client_code',
         'box__base_parcel__phone',
     )
-    date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    date_hierarchy = 'arrived_at'
+    ordering = ('arrived_at',)
+    list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
     readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights', 'sum_parcel_weights_distributed')
     fields = [readonly_fields, 'status']
     change_form_template = "admin/delivery_change_form.html"
@@ -420,12 +422,11 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
 class ArchiveAdmin(nested_admin.NestedModelAdmin):
     list_display = ('numeration', 'code', 'arrived_at', 'status')
     list_display_links = ('numeration', 'code', 'arrived_at', 'status')
-    exclude = ('arrived_at',)
     search_fields = ('numeration', 'box__code', 'box__base_parcel__track_code',)
-    date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    date_hierarchy = 'arrived_at'
+    ordering = ('arrived_at',)
+    list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
     inlines = (ArchiveBoxNestedInline,)
-    exclude = ('is_archive',)
     readonly_fields = ('numeration', 'code', 'arrived_at', 'status')
     fields = [readonly_fields]
     change_form_template = "admin/archive_change_form.html"
@@ -461,8 +462,9 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
     )
     fields = [readonly_fields, 'status']
     search_fields = ('track_code',)
-    date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    date_hierarchy = 'arrived_at'
+    ordering = ('arrived_at',)
+    list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
     change_form_template = "admin/unknown_change_form.html"
 
     def get_queryset(self, request):
@@ -499,8 +501,9 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     )
     fields = [readonly_fields, 'status']
     search_fields = ('track_code', 'client_code', 'phone')
-    date_hierarchy = 'created_at'
-    list_filter = (('created_at', DateFieldListFilter), ('created_at', DateTimeRangeFilter))
+    date_hierarchy = 'arrived_at'
+    ordering = ('arrived_at',)
+    list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
     change_form_template = "admin/unknown_change_form.html"
     actions = ('print_baseparcel', 'set_baseparcel_status')
 
