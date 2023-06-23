@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserChangeForm
 
 @admin.register(User)
 class UserAdmin(UserAdminMixin, admin.ModelAdmin):
-    list_display = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
+    list_display = ('code_logistic', 'first_name', 'last_name', 'phone', 'region', 'date_joined')
     list_display_links = ('code_logistic', 'first_name', 'last_name', 'phone', 'region')
     # list_filter = ('role', 'region')
     search_fields = ['code_logistic', 'first_name', 'last_name', 'phone']
