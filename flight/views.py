@@ -6,11 +6,12 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
-from django.views.generic import TemplateView
 from rest_framework import generics, filters, views
 
-from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact, TrackCode
-from flight.serializers import MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSerializer
+from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact, TrackCode, OrderDescription
+from flight.serializers import (
+    MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSerializer, OrderDescriptionSerializer,
+)
 
 
 def add_to_flight(request):
@@ -79,6 +80,11 @@ def delivery_view(request):
 class MediaListView(generics.ListAPIView):
     serializer_class = MediaSerializer
     queryset = Media.objects.all()
+
+
+class OrderDescriptionListView(generics.ListAPIView):
+    serializer_class = OrderDescriptionSerializer
+    queryset = OrderDescription.objects.all()
 
 
 class FileDownloadListView(views.APIView):

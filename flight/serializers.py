@@ -1,8 +1,7 @@
 from django.contrib.sites.shortcuts import get_current_site
-
 from rest_framework import serializers
 
-from flight.models import Media, Rate, Contact, BaseParcel
+from flight.models import BaseParcel, Contact, Media, OrderDescription, Rate
 
 
 class MediaSerializer(serializers.ModelSerializer):
@@ -18,6 +17,14 @@ class MediaSerializer(serializers.ModelSerializer):
             return url
         else:
             return None
+
+
+class OrderDescriptionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = OrderDescription
+        fields = ('description',)
+
 
 
 class RateSerializer(serializers.ModelSerializer):

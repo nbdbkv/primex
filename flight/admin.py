@@ -19,6 +19,7 @@ from flight.forms import (
 )
 from flight.models import (
     Archive, Arrival, BaseParcel, Box, Contact, Delivery, DeliveryBaseParcel, Destination, Flight, Media, Rate, Unknown,
+    OrderDescription,
 )
 from flight.utils import make_add_box_to_flight_action
 
@@ -650,6 +651,12 @@ class MediaAdmin(admin.ModelAdmin):
     list_display_links = list_display
 
 
+@admin.register(OrderDescription)
+class OrderDescriptionAdmin(admin.ModelAdmin):
+    list_display = ('description',)
+    list_display_links = list_display
+
+
 @admin.register(Rate)
 class RateAdmin(admin.ModelAdmin):
     list_display = ('weight', 'service_type', 'air', 'truck', 'commission',)
@@ -674,8 +681,9 @@ class AdminSiteExtension(AdminSite):
             "Unknown": 7,
             "Archive": 8,
             "Media": 9,
-            'Rate': 10,
-            "Contact": 11,
+            'OrderDescription': 10,
+            'Rate': 11,
+            "Contact": 12,
 
         }
         for idx, app in enumerate(app_list):

@@ -7,6 +7,7 @@ from django.db import models
 from django.core.files import File
 from django.utils.translation import gettext_lazy as _
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from solo.models import SingletonModel
 
 from flight.choices import StatusChoices, get_status
@@ -188,6 +189,18 @@ class Media(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class OrderDescription(models.Model):
+    # Оформление доставки
+    description = RichTextUploadingField(null=True, blank=True, verbose_name=_('Описание'))
+
+    class Meta:
+        verbose_name = _("оформление доставки")
+        verbose_name_plural = _("Оформление доставки")
+
+    def __str__(self):
+        return self.description
 
 
 class Rate(models.Model):
