@@ -103,7 +103,7 @@ class Option(models.Model):
 
 class Question(models.Model):
     title = models.CharField(_("title"), max_length=255)
-    text = models.TextField(_("text"))
+    text = RichTextUploadingField(_("text"))
 
     def __str__(self) -> str:
         return self.title
