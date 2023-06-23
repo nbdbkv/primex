@@ -390,6 +390,34 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
                         base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
                         base_parcel.shelf = shelf
                         base_parcel.save()
+                if 'price' in i:
+                    base_parcel_id = i.split('_')[-1]
+                    price = query_dict.get(f'price_{base_parcel_id}')
+                    if price:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.price = price
+                        base_parcel.save()
+                if 'weight' in i:
+                    base_parcel_id = i.split('_')[-1]
+                    weight = query_dict.get(f'weight_{base_parcel_id}')
+                    if weight:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.weight = weight
+                        base_parcel.save()
+                if 'cost_usd' in i:
+                    base_parcel_id = i.split('_')[-1]
+                    cost_usd = query_dict.get(f'cost_usd_{base_parcel_id}')
+                    if cost_usd:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.cost_usd = cost_usd
+                        base_parcel.save()
+                if 'cost_kgs' in i:
+                    base_parcel_id = i.split('_')[-1]
+                    cost_kgs = query_dict.get(f'cost_kgs_{base_parcel_id}')
+                    if cost_kgs:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.cost_kgs = cost_kgs
+                        base_parcel.save()
                 if 'note' in i:
                     base_parcel_id = i.split('_')[-1]
                     note = query_dict.get(f'note_{base_parcel_id}')

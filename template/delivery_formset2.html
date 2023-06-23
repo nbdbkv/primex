@@ -122,12 +122,16 @@
                                     <td>{% if child.track_code %}{{ child.track_code }}{% else %}-{% endif %}</td>
                                     <td>{% if child.client_code %}{{ child.client_code }}{% else %}-{% endif %}</td>
                                     <td>{% if child.phone %}{{ child.phone }}{% else %}-{% endif %}</td>
-                                    <td><input type="text" name="shelf_{{ child.id }}" size="6" maxlength="16" id="id_shelf_{{ child.id }}"
+                                    <td><input type="text" name="shelf_{{ child.id }}" size="3" maxlength="16" id="id_shelf_{{ child.id }}"
                                                value="{% if child.shelf %}{{ child.shelf }}{% else %}{% endif %}"></td>
-                                    <td>{% if child.price %}{{ child.price }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.weight %}{{ child.weight }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.cost_usd %}{{ child.cost_usd }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.cost_kgs %}{{ child.cost_kgs }}{% else %}-{% endif %}</td>
+                                    <td><input type="text" name="price_{{ child.id }}" size="3" maxlength="16" id="id_price_{{ child.id }}"
+                                               value="{% if child.price %}{{ child.price }}{% else %}{% endif %}"></td>
+                                    <td><input type="text" name="weight_{{ child.id }}" size="5" maxlength="16" id="id_weight_{{ child.id }}"
+                                               value="{% if child.weight %}{{ child.weight }}{% else %}{% endif %}"></td>
+                                    <td><input type="text" name="cost_usd_{{ child.id }}" size="4" maxlength="16" id="id_cost_usd_{{ child.id }}"
+                                               value="{% if child.cost_usd %}{{ child.cost_usd }}{% else %}{% endif %}"></td>
+                                    <td><input type="text" name="cost_kgs_{{ child.id }}" size="6" maxlength="16" id="id_cost_kgs_{{ child.id }}"
+                                               value="{% if child.cost_kgs %}{{ child.cost_kgs }}{% else %}{% endif %}"></td>
                                     <td><input type="text" name="note_{{ child.id }}" size="24" maxlength="128" id="id_note_{{ child.id }}"
                                                value="{% if child.note %}{{ child.note }}{% else %}{% endif %}"></td>
                                     <td>
