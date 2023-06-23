@@ -94,10 +94,12 @@ class FileDownloadListView(views.APIView):
         filepath = media.video.path
         mimetype, _ = mimetypes.guess_type(filepath)
         filename = os.path.basename(media.video.name)
+        filename_size = os.stat(filepath).st_size
         with open(filepath, 'rb') as file:
+            content_range = 'bytes 0-{}/{}'.format(filename_size - 1, filename_size)
             response = HttpResponse(FileWrapper(file), content_type=mimetype)
             response['Content-Disposition'] = f'attachment; filename={filename}'
-            response['Content-Range'] = 'bytes 0-49999/100000'
+            response['Content-Range'] = content_range
             return response
 
 
