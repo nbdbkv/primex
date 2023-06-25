@@ -100,6 +100,7 @@ class FileDownloadListView(views.APIView):
             response = HttpResponse(FileWrapper(file), content_type=mimetype)
             response['Content-Disposition'] = f'attachment; filename={filename}'
             response['Content-Range'] = content_range
+            response['Content-Length'] = filename_size
             return response
 
 
