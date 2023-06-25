@@ -1,8 +1,10 @@
 import re
 
 import nested_admin
+from django import forms
 from django.contrib import admin, messages
 from django.contrib.admin import AdminSite, DateFieldListFilter
+from django.db import models
 from django.db.models import Q, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -522,7 +524,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'note', 'arrived_at',
     )
-    list_editable = ('note',)
+    list_editable = ('price', 'weight', 'cost_usd', 'cost_kgs', 'note')
     list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
@@ -535,6 +537,10 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
     change_form_template = "admin/unknown_change_form.html"
     actions = ('print_baseparcel', 'set_baseparcel_status')
+    formfield_overrides = {
+        models.DecimalField: {'widget': forms.TextInput(attrs={'size': '4ch'})},
+        models.IntegerField: {'widget': forms.TextInput(attrs={'size': '4ch'})},
+    }
 
     @admin.action(description='Распечатать')
     def print_baseparcel(self, request, queryset):
