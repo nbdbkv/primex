@@ -55,8 +55,7 @@ class UserSendCodeView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        device = get_object_or_404(FCMDevice, registration_id=serializer.data['token'])
-        code = send_push(device)
+        code = send_push(serializer.data['token'])
         user = get_object_or_404(User, phone=serializer.data['phone'])
         user.send_code = code
         user.save()

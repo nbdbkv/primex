@@ -18,15 +18,14 @@ def user_verify(user):
     generate_code_logistic(user)
 
 
-def send_push(device):
+def send_push(token):
     code = get_otp()
-    device.send_message(
-        Message(
-            notification=Notification(
-                title='Taura Express',
-                body=f'{code}'
-            )
-        )
+    Message(
+        notification=Notification(
+            title='Taura Express',
+            body=f'{code}'
+        ),
+        token=token
     )
     return code
 
