@@ -23,14 +23,14 @@ def user_verify(user):
 def send_push(token):
     FCM_SERVER_KEY = FCM_DJANGO_SETTINGS['FCM_SERVER_KEY']
     code = get_otp()
-    requests.post(
+    resp = requests.post(
         url='https://fcm.googleapis.com/fcm/send',
         headers={
             'Content-Type': "application/json; charset=UTF-8",
             'Authorization': f'key={FCM_SERVER_KEY}'
         },
         data=json.dumps({
-            'registration_ids': f'{token}',
+            'registration_ids': [token],
             'notification': {
                 'title': "Taura Express",
                 'body': f"{code}",
