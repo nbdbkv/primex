@@ -23,7 +23,7 @@ from flight.models import (
     Archive, Arrival, BaseParcel, Box, Contact, Delivery, DeliveryBaseParcel, ArchiveBaseParcel, Destination, Flight,
     Media, Rate, Unknown, OrderDescription,
 )
-from flight.utils import make_add_box_to_flight_action
+from flight.utils import make_add_box_to_flight_action, get_start_datetime, get_end_datetime, get_extra_context
 
 original_get_app_list = AdminSite.get_app_list
 admin.site.site_header = 'Taura Express'
@@ -585,14 +585,34 @@ class ArchiveBaseParcelAdmin(admin.ModelAdmin):
     readonly_fields = ('arrived_at', *list_display)
     exclude = ('box', 'barcode')
     search_fields = ('box__flight__code', 'box__code', 'track_code', 'client_code', 'phone')
-    date_hierarchy = 'delivered_at'
+    # date_hierarchy = 'delivered_at'
     ordering = ('delivered_at',)
-    list_filter = (('delivered_at', DateFieldListFilter), ('delivered_at', DateTimeRangeFilter))
+    # list_filter = (('delivered_at', DateFieldListFilter), ('delivered_at', DateTimeRangeFilter))
+    list_filter = (('delivered_at', DateTimeRangeFilter),)
     change_list_template = 'admin/archive_parcel_change_list.html'
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.filter(status=5)
+
+    def changelist_view(self, request, extra_context=None):
+        query_dict = request.GET
+        if query_dict.get('delivered_at__range__gte_0') and query_dict.get('delivered_at__range__lte_0'):
+            start_datetime = get_start_datetime(query_dict)
+            end_datetime = get_end_datetime(query_dict)
+            baseparcels = BaseParcel.objects.filter(
+                Q(delivered_at__gte=start_datetime) & Q(delivered_at__lte=end_datetime)
+            )
+            extra_context = get_extra_context(baseparcels)
+        elif query_dict.get('delivered_at__range__gte_0'):
+            start_datetime = get_start_datetime(query_dict)
+            baseparcels = BaseParcel.objects.filter(delivered_at__gte=start_datetime)
+            extra_context = get_extra_context(baseparcels)
+        elif query_dict.get('delivered_at__range__lte_0'):
+            end_datetime = get_end_datetime(query_dict)
+            baseparcels = BaseParcel.objects.filter(delivered_at__lte=end_datetime)
+            extra_context = get_extra_context(baseparcels)
+        return super().changelist_view(request, extra_context)
 
     def has_change_permission(self, request, obj=None):
         return False

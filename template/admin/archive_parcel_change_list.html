@@ -3,4 +3,7 @@
 
 {% block object-tools %}
     {{ block.super}}
+    <p>Oбщее количество посылок : {% if total_quantity %}{{ total_quantity }}{% else %} 0 {% endif %} шт.</p>
+    <p>Oбщий вес посылок : {% if total_weight %}{{ total_weight }}{% else %} 0 {% endif %} кг</p>
+    <p>Oбщая стоимость посылок : {% if total_cost_kgs %}{{ total_cost_kgs }}{% else %} 0 {% endif %} сом</p>
 {% endblock %}
