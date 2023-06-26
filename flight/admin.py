@@ -538,8 +538,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     change_form_template = "admin/unknown_change_form.html"
     actions = ('print_baseparcel', 'set_baseparcel_status')
     formfield_overrides = {
-        models.DecimalField: {'widget': forms.TextInput(attrs={'size': '4ch'})},
-        models.IntegerField: {'widget': forms.TextInput(attrs={'size': '4ch'})},
+        models.DecimalField: {'widget': forms.NumberInput(attrs={'style': 'width:10ch'})},
     }
 
     @admin.action(description='Распечатать')
