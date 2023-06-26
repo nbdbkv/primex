@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import generics, status
 from rest_framework.generics import UpdateAPIView, GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -58,6 +60,7 @@ class UserSendCodeView(generics.GenericAPIView):
         code = send_push(serializer.data['token'])
         user = get_object_or_404(User, phone=serializer.data['phone'])
         user.send_code = code
+        user.verify_date = datetime.datetime.now()
         user.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -197,6 +200,9 @@ class PhoneVerifyView(GenericAPIView):
         serializer.is_valid()
         if serializer.data['token'].isdigit() and len(serializer.data['token']):
             user = get_object_or_404(User, phone=serializer.data['phone'])
+            current_date = datetime.datetime.now()
+            if user.send_code != serializer.data['token'] and current_date - user.verify_date > datetime.timedelta(minutes=5):
+                return Response({'message': 'Код не действителен'}, status=status.HTTP_400_BAD_REQUEST)
             user_verify(user)
             return Response(user.tokens(), status=status.HTTP_200_OK)
         try:

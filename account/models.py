@@ -57,6 +57,7 @@ class User(AbstractUser):
         ),
     )
     send_code = models.CharField(null=True, blank=True, max_length=8)
+    verify_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.phone

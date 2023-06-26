@@ -9,7 +9,6 @@ import requests
 from django.conf import settings
 from django.core.files import File
 from transliterate import translit
-from account.models import User
 from core.settings import FCM_DJANGO_SETTINGS
 
 
