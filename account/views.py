@@ -197,12 +197,12 @@ class PhoneVerifyView(GenericAPIView):
         serializer.is_valid()
         if serializer.data['token'].isdigit() and len(serializer.data['token']):
             user = get_object_or_404(User, phone=serializer.data['phone'])
-            user = user_verify(user)
+            user_verify(user)
             return Response(user.tokens(), status=status.HTTP_200_OK)
         try:
             verify_id_token(serializer.data['token'])
         except:
             return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
         user = get_object_or_404(User, phone=serializer.data['phone'])
-        user = user_verify(user)
+        user_verify(user)
         return Response(user.tokens(), status=status.HTTP_200_OK)
