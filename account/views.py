@@ -40,8 +40,14 @@ class UserRegisterView(generics.CreateAPIView):
             if user.is_active:
                 return Response({'message': 'Пользователь существует'}, status=status.HTTP_400_BAD_REQUEST)
             else:
+                user.info = serializer.data['info']
+                user.region_id = serializer.data['region']
+                user.set_password(serializer.data['password'])
+                user.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         except User.DoesNotExist:
+            User.objects.create(phone=serializer.data['phone'], password=serializer.data['password'],
+                                info=serializer.data['info'], region=serializer.data['region'])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
