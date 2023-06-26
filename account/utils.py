@@ -1,3 +1,4 @@
+import json
 import random
 from io import BytesIO
 from random import randint
@@ -9,6 +10,7 @@ from django.conf import settings
 from django.core.files import File
 from transliterate import translit
 from account.models import User
+from core.settings import FCM_DJANGO_SETTINGS
 
 
 def user_verify(user):
@@ -19,14 +21,21 @@ def user_verify(user):
 
 
 def send_push(token):
+    FCM_SERVER_KEY = FCM_DJANGO_SETTINGS['FCM_SERVER_KEY']
     code = get_otp()
-    Message(
-        notification=Notification(
-            title='Taura Express',
-            body=f'{code}'
-        ),
-        token=token
-    )
+    requests.post(
+        url='https://fcm.googleapis.com/fcm/send',
+        headers={
+            'Content-Type': "application/json; charset=UTF-8",
+            'Authorization': f'key={FCM_SERVER_KEY}'
+        },
+        data=json.dumps({
+            'registration_ids': f'{token}',
+            'notification': {
+                'title': "Taura Express",
+                'body': f"{code}",
+            }
+        }))
     return code
 
 
