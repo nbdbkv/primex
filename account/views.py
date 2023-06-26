@@ -1,5 +1,7 @@
 import datetime
 
+from django.conf import settings
+from django.core.cache import cache
 from rest_framework import generics, status
 from rest_framework.generics import UpdateAPIView, GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -20,12 +22,11 @@ from account.serailizers import (
     UpdateUserInfoSerializer,
     UserRegisterSerializer,
     UserRetrieveSerializer,
-    UserSendCodeSerializer,
     RegionsSerializer,
     DistrictsSerializer, FcmCreateSerializer,
     PhoneVerifySerializer,
 )
-from account.utils import generate_qr, generate_code_logistic, send_push, user_verify
+from account.utils import generate_qr, generate_code_logistic, send_push, user_verify, get_otp, SendSMS
 
 
 class UserRegisterView(generics.CreateAPIView):
@@ -52,17 +53,22 @@ class UserRegisterView(generics.CreateAPIView):
 
 
 class UserSendCodeView(generics.GenericAPIView):
-    serializer_class = UserSendCodeSerializer
 
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        code = send_push(serializer.data['token'])
-        user = get_object_or_404(User, phone=serializer.data['phone'])
-        user.send_code = code
+    def post(self, request, *args, **kwargs):
+        type = request.POST.get('type')
+        phone = request.POST.get('phone')
+        user = get_object_or_404(User, phone=phone)
+        if type:
+            if int(type) == 0:
+                user.send_code = send_push(request.POST.get('token'))
+            else:
+                code = get_otp()
+                user.send_code = code
+                SendSMS(phone, f"code: {code}").send
         user.verify_date = datetime.datetime.now()
         user.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        cache.set(user.send_code, phone, settings.SMS_CODE_TIME, version=type)
+        return Response(status=status.HTTP_200_OK)
 
 
 class RegisterCodeVerifyView(generics.GenericAPIView):
@@ -91,15 +97,13 @@ class PasswordResetVerifyView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid()
+        phone = serializer.data['phone']
+        code = serializer.data['code']
         try:
-            verify_id_token(serializer.data['token'])
-        except:
-            return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            user = User.objects.get(phone=serializer.data['phone'])
+            user = User.objects.get(phone=phone, send_code=code)
             user.set_password(serializer.data['password'])
             user.save()
-            return Response(user.tokens(), status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'message': 'Неверный номер'}, status=status.HTTP_404_NOT_FOUND)
 

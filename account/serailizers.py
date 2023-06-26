@@ -39,23 +39,24 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return instance
 
 
-class UserSendCodeSerializer(serializers.Serializer):
-    phone = serializers.CharField(validators=[PhoneValidator], required=True)
-    token = serializers.CharField()
+# class UserSendCodeSerializer(serializers.Serializer):
+#     phone = serializers.CharField(validators=[PhoneValidator], required=True)
+#     # token = serializers.CharField(required=False)
+#     type = serializers.ChoiceField(choices=SendCodeType.choices, default=1, required=False)
+#
+#     class Meta:
+#         fields = ('phone', 'token', 'type')
+#
+#     def validate(self, attrs):
+#         print('*' * 50, attrs)
+#         if attrs["type"] == SendCodeType.RESET_PHONE:
+#             return attrs
+#         try:
+#             self.instance = User.objects.get(phone=attrs["phone"])
+#             return attrs
+#         except User.DoesNotExist:
+#             raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
 
-    class Meta:
-        fields = ('phone', 'token')
-    # type = serializers.ChoiceField(choices=SendCodeType.choices, required=True)
-
-    # def validate(self, attrs):
-    #     if attrs["type"] == SendCodeType.RESET_PHONE:
-    #         return attrs
-    #     try:
-    #         self.instance = User.objects.get(phone=attrs["phone"])
-    #         return attrs
-    #     except User.DoesNotExist:
-    #         raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
-    #
     # def send_otp_code(self):
     #     data = self.validated_data
     #     phone = data["phone"]
@@ -145,8 +146,15 @@ class PasswordUpdateSerializer(serializers.ModelSerializer):
 
 
 class PasswordResetVerifySerializer(serializers.ModelSerializer):
-    token = serializers.CharField()
+    code = serializers.IntegerField(required=True)
     password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        phone = cache.get(attrs["code"], version=SendCodeType.RESET_PASSWORD)
+        if phone is not None:
+            self.instance = User.objects.get(phone=phone)
+            return attrs
+        raise ValidationError(ErrorMessage.WRONG_OTP.value)
 
     def validate_password(self, password):
         try:
@@ -157,7 +165,7 @@ class PasswordResetVerifySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('phone', 'token', 'password')
+        fields = ('phone', 'code', 'password')
 
 
 class PhoneResetVerifySerializer(serializers.Serializer):
