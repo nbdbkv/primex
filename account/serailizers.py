@@ -40,24 +40,28 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class UserSendCodeSerializer(serializers.Serializer):
     phone = serializers.CharField(validators=[PhoneValidator], required=True)
-    type = serializers.ChoiceField(choices=SendCodeType.choices, required=True)
+    token = serializers.CharField()
 
-    def validate(self, attrs):
-        if attrs["type"] == SendCodeType.RESET_PHONE:
-            return attrs
-        try:
-            self.instance = User.objects.get(phone=attrs["phone"])
-            return attrs
-        except User.DoesNotExist:
-            raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
+    class Meta:
+        fields = ('phone', 'token')
+    # type = serializers.ChoiceField(choices=SendCodeType.choices, required=True)
 
-    def send_otp_code(self):
-        data = self.validated_data
-        phone = data["phone"]
-        code = get_otp()
-        print(code)
-        cache.set(code, phone, settings.SMS_CODE_TIME, version=data["type"])
-        SendSMS(phone, f"code: {code}").send
+    # def validate(self, attrs):
+    #     if attrs["type"] == SendCodeType.RESET_PHONE:
+    #         return attrs
+    #     try:
+    #         self.instance = User.objects.get(phone=attrs["phone"])
+    #         return attrs
+    #     except User.DoesNotExist:
+    #         raise ValidationError(ErrorMessage.USER_NOT_EXISTS.value)
+    #
+    # def send_otp_code(self):
+    #     data = self.validated_data
+    #     phone = data["phone"]
+    #     code = get_otp()
+    #     print(code)
+    #     cache.set(code, phone, settings.SMS_CODE_TIME, version=data["type"])
+    #     SendSMS(phone, f"code: {code}").send
 
 
 class RegisterCodeVerifySerializer(serializers.Serializer):

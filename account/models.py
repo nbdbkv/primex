@@ -56,6 +56,7 @@ class User(AbstractUser):
             "Unselect this instead of deleting accounts."
         ),
     )
+    send_code = models.CharField(null=True, blank=True, max_length=8)
 
     def __str__(self) -> str:
         return self.phone

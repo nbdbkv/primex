@@ -2,12 +2,33 @@ import random
 from io import BytesIO
 from random import randint
 from uuid import uuid4
-
+from firebase_admin.messaging import Message, Notification
 import qrcode
 import requests
 from django.conf import settings
 from django.core.files import File
 from transliterate import translit
+from account.models import User
+
+
+def user_verify(user):
+    user.is_active = True
+    user.save()
+    generate_qr(user)
+    generate_code_logistic(user)
+
+
+def send_push(device):
+    code = get_otp()
+    device.send_message(
+        Message(
+            notification=Notification(
+                title='Taura Express',
+                body=f'{code}'
+            )
+        )
+    )
+    return code
 
 
 class SendSMS:
@@ -65,7 +86,7 @@ class SendSMS:
 
 
 def get_otp() -> int:
-    return randint(10000, 99999)
+    return randint(100000, 999999)
 
 
 def generate_qr(user, code=None):

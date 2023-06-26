@@ -1,15 +1,13 @@
-from rest_framework import generics, status, permissions
-from rest_framework.generics import UpdateAPIView, GenericAPIView
+from rest_framework import generics, status
+from rest_framework.generics import UpdateAPIView, GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
-from django.utils.translation import gettext_lazy as _
 from fcm_django.models import FCMDevice
 from firebase_admin.auth import verify_id_token
 
 from account.messages import Message
-from account.permissions import IsOwner
 from account.models import District, Village, Region, User
 from account.serailizers import (
     VillagesSerializer,
@@ -25,7 +23,7 @@ from account.serailizers import (
     DistrictsSerializer, FcmCreateSerializer,
     PhoneVerifySerializer,
 )
-from account.utils import generate_qr, generate_code_logistic
+from account.utils import generate_qr, generate_code_logistic, send_push, user_verify
 
 
 class UserRegisterView(generics.CreateAPIView):
@@ -57,8 +55,12 @@ class UserSendCodeView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.send_otp_code()
-        return Response(Message.CODE_SENT.value, status=status.HTTP_202_ACCEPTED)
+        device = get_object_or_404(FCMDevice, registration_id=serializer.data['token'])
+        code = send_push(device)
+        user = get_object_or_404(User, phone=serializer.data['phone'])
+        user.send_code = code
+        user.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class RegisterCodeVerifyView(generics.GenericAPIView):
@@ -194,16 +196,14 @@ class PhoneVerifyView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid()
+        if serializer.data['token'].isdigit() and len(serializer.data['token']):
+            user = get_object_or_404(User, phone=serializer.data['phone'])
+            user = user_verify(user)
+            return Response(user.tokens(), status=status.HTTP_200_OK)
         try:
             verify_id_token(serializer.data['token'])
         except:
             return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            user = User.objects.get(phone=serializer.data['phone'])
-            user.is_active = True
-            user.save()
-            generate_qr(user)
-            generate_code_logistic(user)
-            return Response(user.tokens(), status=status.HTTP_200_OK)
-        except User.DoesNotExist:
-            return Response({'message': 'Неверный номер'}, status=status.HTTP_404_NOT_FOUND)
+        user = get_object_or_404(User, phone=serializer.data['phone'])
+        user = user_verify(user)
+        return Response(user.tokens(), status=status.HTTP_200_OK)
