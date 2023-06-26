@@ -32,7 +32,7 @@ def send_push(token):
             'registration_ids': [token],
             'notification': {
                 'title': "Taura Express",
-                'body': f"{code}",
+                'body': f"Код подтверждения : {code}",
             },
             'data': {
                 'code': f'{code}',
