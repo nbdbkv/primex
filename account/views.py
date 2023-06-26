@@ -47,7 +47,7 @@ class UserRegisterView(generics.CreateAPIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         except User.DoesNotExist:
             User.objects.create(phone=serializer.data['phone'], password=serializer.data['password'],
-                                info=serializer.data['info'], region=serializer.data['region'])
+                                info=serializer.data['info'], region_id=serializer.data['region'])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
