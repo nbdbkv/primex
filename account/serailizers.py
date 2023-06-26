@@ -16,7 +16,7 @@ from account.validators import PhoneValidator
 from account.utils import SendSMS, get_otp
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
-from account.models import District, Village, Region, User
+from account.models import District, Village, Region, User, MobileCode
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -24,12 +24,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ("phone", "password", "info", "region")
 
-    # def validate_password(self, password):
-    #     try:
-    #         validate_password(password)
-    #         return password
-    #     except BaseException as err:
-    #         raise ValidationError(ErrorMessage.PASSWORD_VALID.value)
+    def validate_phone(self, phone):
+        code = phone[3:6]
+        mobile_code = MobileCode.objects.filter(operator=code)
+        if not mobile_code:
+            raise ValidationError(ErrorMessage.PHONE_VERIFY.value)
+        else:
+            return phone
 
     def create(self, validated_data):
         instance = super().create(validated_data)

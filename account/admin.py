@@ -2,7 +2,7 @@ from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
 from django.utils.translation import gettext_lazy as _
 from account.roles.mixins import UserAdminMixin
-from account.models import User, Region, District, Village
+from account.models import User, Region, District, Village, MobileCode
 from django.contrib.auth.forms import UserChangeForm
 
 
@@ -48,6 +48,12 @@ class DistrictAdmin(DoubleGisAdmin):
 
 class VillageAdmin(DoubleGisAdmin):
     multiple_markers = False
+
+
+@admin.register(MobileCode)
+class MobileCodeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'operator')
+    list_display_links = list_display
 
 
 admin.site.register(Region, RegionAdmin)

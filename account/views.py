@@ -34,7 +34,7 @@ class UserRegisterView(generics.CreateAPIView):
     
     def create(self, request, *args,  **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
+        serializer.is_valid(raise_exception=True)
         try:
             user = User.objects.get(phone=serializer.data['phone'])
             if user.is_active:

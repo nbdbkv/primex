@@ -14,3 +14,4 @@ class ErrorMessage(Enum):
     WRONG_OTP = {"message": _("Wrong otp code")}
     PASSWORD_VALID = {"message": _("Provide a strong password!")}
     PASSWORD_ERROR = {"message": _("Invalid current password.")}
+    PHONE_VERIFY = {"message": _("Invalid phone number.")}

@@ -123,3 +123,14 @@ class Village(models.Model):
     class Meta:
         verbose_name = _("Village")
         verbose_name_plural = _("Villages")
+
+
+class MobileCode(models.Model):
+    operator = models.CharField(verbose_name='Оператор', max_length=3)
+
+    def __str__(self):
+        return f'{self.operator}'
+
+    class Meta:
+        verbose_name = 'Мобильный оператор'
+        verbose_name_plural = verbose_name
