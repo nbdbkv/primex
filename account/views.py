@@ -31,6 +31,18 @@ from account.utils import generate_qr, generate_code_logistic
 class UserRegisterView(generics.CreateAPIView):
     queryset = User
     serializer_class = UserRegisterSerializer
+    
+    def create(self, request, *args,  **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        try:
+            user = User.objects.get(phone=serializer.data['phone'])
+            if user.is_active:
+                return Response({'message': 'Пользователь существует'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except User.DoesNotExist:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class UserSendCodeView(generics.GenericAPIView):
