@@ -20,8 +20,8 @@ from flight.forms import (
     FlightBoxModelForm, FlightModelForm
 )
 from flight.models import (
-    Archive, Arrival, BaseParcel, Box, Contact, Delivery, DeliveryBaseParcel, Destination, Flight, Media, Rate, Unknown,
-    OrderDescription,
+    Archive, Arrival, BaseParcel, Box, Contact, Delivery, DeliveryBaseParcel, ArchiveBaseParcel, Destination, Flight,
+    Media, Rate, Unknown, OrderDescription,
 )
 from flight.utils import make_add_box_to_flight_action
 
@@ -575,6 +575,45 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
         return box
 
 
+@admin.register(ArchiveBaseParcel)
+class ArchiveBaseParcelAdmin(admin.ModelAdmin):
+    list_display = (
+        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'cost_kgs', 'note', 'delivered_at', 'status',
+    )
+    list_display_links = list_display
+    readonly_fields = ('arrived_at', *list_display)
+    exclude = ('box', 'barcode')
+    search_fields = ('box__flight__code', 'box__code', 'track_code', 'client_code', 'phone')
+    date_hierarchy = 'delivered_at'
+    ordering = ('delivered_at',)
+    list_filter = (('delivered_at', DateFieldListFilter), ('delivered_at', DateTimeRangeFilter))
+    change_list_template = 'admin/archive_parcel_change_list.html'
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.filter(status=5)
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description=_('Код рейса'))
+    def get_flight(self, obj):
+        flight = Flight.objects.get(box__base_parcel=obj.id)
+        return flight.code
+
+    @admin.display(description=_('Код коробки'))
+    def get_box(self, obj):
+        box = Box.objects.get(base_parcel=obj.id)
+        return box
+
+
 class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
     form = BaseParcelModelForm
@@ -714,10 +753,11 @@ class AdminSiteExtension(AdminSite):
             'DeliveryBaseParcel': 6,
             "Unknown": 7,
             "Archive": 8,
-            "Media": 9,
-            'OrderDescription': 10,
-            'Rate': 11,
-            "Contact": 12,
+            "ArchiveBaseParcel": 9,
+            "Media": 10,
+            'OrderDescription': 11,
+            'Rate': 12,
+            "Contact": 13,
 
         }
         for idx, app in enumerate(app_list):

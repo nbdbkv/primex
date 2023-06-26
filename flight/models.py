@@ -134,7 +134,9 @@ class BaseParcel(TimeStampedModel):
     cost_usd = models.DecimalField(
         max_digits=8, decimal_places=2,  null=True, blank=True, verbose_name=_('Стоимость в $'),
     )
-    cost_kgs = models.IntegerField(null=True, blank=True, verbose_name=_('Стоимость в сомах'))
+    cost_kgs = models.DecimalField(
+        max_digits=10, decimal_places=2,  null=True, blank=True, verbose_name=_('Стоимость в сомах'),
+    )
     note = models.CharField(max_length=128, null=True, blank=True, verbose_name=_('Примечание'))
     delivered_at = models.DateTimeField(db_index=True, null=True, blank=True, verbose_name=_('Дата выдачи'))
     status = models.PositiveIntegerField(default=StatusChoices.FORMING, null=True, blank=True, choices=get_status())
@@ -155,7 +157,7 @@ class BaseParcel(TimeStampedModel):
         code = COD128(f'{self.track_code}', writer=ImageWriter()).write(rv)
         self.barcode.save(f'{self.track_code}.png', File(rv), save=False)
         currency = self.box.destination.currency
-        self.cost_kgs = int(float(self.cost_usd) * float(currency))
+        self.cost_kgs = float(self.cost_usd) * float(currency)
         super(BaseParcel, self).save(*args, **kwargs)
 
 
@@ -174,6 +176,15 @@ class DeliveryBaseParcel(BaseParcel):
         proxy = True
         verbose_name = _('готовую к выдаче посылку')
         verbose_name_plural = _('Распечатка посылок')
+
+
+class ArchiveBaseParcel(BaseParcel):
+    # Архив посылок
+
+    class Meta:
+        proxy = True
+        verbose_name = _('выданную посылку')
+        verbose_name_plural = _('Архив посылок')
 
 
 class Media(models.Model):
