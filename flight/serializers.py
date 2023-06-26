@@ -26,7 +26,6 @@ class OrderDescriptionSerializer(serializers.ModelSerializer):
         fields = ('description',)
 
 
-
 class RateSerializer(serializers.ModelSerializer):
 
     class Meta:

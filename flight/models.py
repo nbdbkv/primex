@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.fields import RichTextUploadingField
 from solo.models import SingletonModel
 
-from flight.choices import StatusChoices, get_status
+from flight.choices import StatusChoices, get_status, PaymentChoices, get_payment
 
 
 class TimeStampedModel(models.Model):
@@ -140,6 +140,9 @@ class BaseParcel(TimeStampedModel):
     note = models.CharField(max_length=128, null=True, blank=True, verbose_name=_('Примечание'))
     delivered_at = models.DateTimeField(db_index=True, null=True, blank=True, verbose_name=_('Дата выдачи'))
     status = models.PositiveIntegerField(default=StatusChoices.FORMING, null=True, blank=True, choices=get_status())
+    payment = models.PositiveIntegerField(
+        default=PaymentChoices.CASH, null=True, blank=True, choices=get_payment(), verbose_name=_('Способ оплаты'),
+    )
 
     class Meta:
         verbose_name = _('base_parcel')
@@ -157,7 +160,7 @@ class BaseParcel(TimeStampedModel):
         code = COD128(f'{self.track_code}', writer=ImageWriter()).write(rv)
         self.barcode.save(f'{self.track_code}.png', File(rv), save=False)
         currency = self.box.destination.currency
-        self.cost_kgs = int(float(self.cost_usd) * float(currency))
+        self.cost_kgs = float(self.cost_usd) * float(currency)
         super(BaseParcel, self).save(*args, **kwargs)
 
 

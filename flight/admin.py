@@ -37,7 +37,7 @@ class DestinationAdmin(admin.ModelAdmin):
 class FlightBaseParcelInline(nested_admin.NestedTabularInline):
     model = BaseParcel
     form = FlightBaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'note', 'delivered_at')
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'note', 'delivered_at', 'payment')
     template = 'admin/flight_baseparcel_tabular.html'
     extra = 0
     classes = ('collapse',)
@@ -153,7 +153,7 @@ class BaseParcelNestedInline(nested_admin.NestedTabularInline):
 class ArchiveBaseParcelNestedInline(nested_admin.NestedTabularInline):
     model = BaseParcel
     readonly_fields = (
-        'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd', 'cost_kgs', 'note',
+        'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd', 'cost_kgs', 'payment', 'note',
         'delivered_at', 'status',
     )
     exclude = ('arrived_at', 'barcode')
@@ -522,9 +522,9 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
 class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     list_display = (
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
-        'cost_kgs', 'note', 'arrived_at',
+        'cost_kgs', 'payment', 'note', 'arrived_at'
     )
-    list_editable = ('price', 'weight', 'cost_usd', 'cost_kgs', 'note')
+    list_editable = ('price', 'weight', 'cost_usd', 'cost_kgs', 'payment', 'note')
     list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
@@ -578,7 +578,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
 class ArchiveBaseParcelAdmin(admin.ModelAdmin):
     list_display = (
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
-        'cost_kgs', 'note', 'delivered_at', 'status',
+        'cost_kgs', 'payment', 'note', 'delivered_at', 'status'
     )
     list_display_links = list_display
     readonly_fields = ('arrived_at', *list_display)
@@ -587,7 +587,7 @@ class ArchiveBaseParcelAdmin(admin.ModelAdmin):
     # date_hierarchy = 'delivered_at'
     ordering = ('delivered_at',)
     # list_filter = (('delivered_at', DateFieldListFilter), ('delivered_at', DateTimeRangeFilter))
-    list_filter = (('delivered_at', DateTimeRangeFilter),)
+    list_filter = (('delivered_at', DateTimeRangeFilter), 'payment')
     change_list_template = 'admin/archive_parcel_change_list.html'
 
     def get_queryset(self, request):
@@ -636,7 +636,7 @@ class ArchiveBaseParcelAdmin(admin.ModelAdmin):
 class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
     form = BaseParcelModelForm
-    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'note', 'delivered_at')
+    exclude = ('shelf', 'status', 'arrived_at', 'barcode', 'cost_kgs', 'payment', 'note', 'delivered_at')
     template = 'admin/box_baseparcel_tabular.html'
     max_num = 500
 

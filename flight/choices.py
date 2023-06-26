@@ -16,3 +16,15 @@ class StatusChoices(models.IntegerChoices):
 def get_status():
     statuses = tuple((choice.value, choice.label) for choice in StatusChoices)
     return statuses
+
+
+class PaymentChoices(models.IntegerChoices):
+    # Способы оплаты
+    CASH = 0, _('Наличные')
+    OPTIMABANK = 1, _('Оптима Банк')
+    MBANK = 2, _('MBANK')
+
+
+def get_payment():
+    payments = tuple((choice.value, choice.label) for choice in PaymentChoices)
+    return payments
