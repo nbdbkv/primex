@@ -13,6 +13,7 @@ import qrcode
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
 from account.models import District, Village, Region, User, MobileCode
+from django.contrib import auth
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -45,11 +46,8 @@ class UserLoginSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         phone = attrs.get('phone')
         password = attrs.get('password')
-        try:
-            user = User.objects.get(phone=phone)
-        except User.DoesNotExist:
-            raise AuthenticationFailed('Такой пользователь не существует')
-        if not check_password(password, user.password):
+        user = auth.authenticate(phone=phone, password=password)
+        if not user:
             raise AuthenticationFailed('Не верный пароль или номер')
         if not user.is_active:
             raise AuthenticationFailed('Аккаунт не активный')
