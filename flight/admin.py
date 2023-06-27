@@ -116,7 +116,16 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
         super(FlightAdmin, self).save_model(request, obj, form, change)
 
     def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
+        swap_count = 0
+        for key, value in formset.data.items():
+            if 'swap' in key and value:
+                index = re.findall(r'\d+', key)
+                if formset.data.get(f'box-{int(*index)}-flight') != formset.data.get(f'box-{int(*index)}-swap'):
+                    swap_count += 1
+        if swap_count > 0:
+            formset.save(commit=False)
+        else:
+            formset.save()
 
     def if_change(self, obj):
         if obj.status == 2:

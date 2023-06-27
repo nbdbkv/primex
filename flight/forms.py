@@ -52,8 +52,8 @@ class FlightBaseParcelModelForm(forms.ModelForm):
     class Meta:
         widgets = {
             'track_code': forms.TextInput(attrs={'size': '20', 'readonly': 'readonly'}),
-            'client_code': forms.TextInput(attrs={'size': '12', 'readonly': 'readonly'}),
-            'phone': forms.TextInput(attrs={'size': '18', 'readonly': 'readonly'}),
+            'client_code': forms.TextInput(attrs={'size': '12'}),
+            'phone': forms.TextInput(attrs={'size': '18'}),
             'price': forms.NumberInput(attrs={'style': 'width:6ch', 'readonly': 'readonly'}),
             'weight': forms.NumberInput(attrs={'style': 'width:9ch', 'readonly': 'readonly'}),
             'cost_usd': forms.NumberInput(attrs={'style': 'width:8ch', 'readonly': 'readonly'}),
