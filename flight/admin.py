@@ -587,7 +587,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
 class ArchiveBaseParcelAdmin(admin.ModelAdmin):
     list_display = (
         'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
-        'cost_kgs', 'payment', 'note', 'delivered_at', 'status'
+        'cost_kgs', 'payment', 'note', 'delivered_at'
     )
     list_display_links = list_display
     readonly_fields = ('arrived_at', *list_display)
@@ -605,21 +605,57 @@ class ArchiveBaseParcelAdmin(admin.ModelAdmin):
 
     def changelist_view(self, request, extra_context=None):
         query_dict = request.GET
-        if query_dict.get('delivered_at__range__gte_0') and query_dict.get('delivered_at__range__lte_0'):
-            start_datetime = get_start_datetime(query_dict)
-            end_datetime = get_end_datetime(query_dict)
+        start_date = query_dict.get('delivered_at__range__gte_0')
+        end_date = query_dict.get('delivered_at__range__lte_0')
+        payment = query_dict.get('payment__exact')
+
+        if start_date and end_date and payment:
+            start_datetime = get_start_datetime(query_dict, start_date)
+            end_datetime = get_end_datetime(query_dict, end_date)
             baseparcels = BaseParcel.objects.filter(
-                Q(delivered_at__gte=start_datetime) & Q(delivered_at__lte=end_datetime)
+                Q(status=5) &
+                Q(delivered_at__gte=start_datetime) &
+                Q(delivered_at__lte=end_datetime) &
+                Q(payment=payment)
             )
             extra_context = get_extra_context(baseparcels)
-        elif query_dict.get('delivered_at__range__gte_0'):
-            start_datetime = get_start_datetime(query_dict)
-            baseparcels = BaseParcel.objects.filter(delivered_at__gte=start_datetime)
+
+        elif start_date and end_date:
+            start_datetime = get_start_datetime(query_dict, start_date)
+            end_datetime = get_end_datetime(query_dict, end_date)
+            baseparcels = BaseParcel.objects.filter(
+                Q(status=5) & Q(delivered_at__gte=start_datetime) & Q(delivered_at__lte=end_datetime)
+            )
             extra_context = get_extra_context(baseparcels)
-        elif query_dict.get('delivered_at__range__lte_0'):
-            end_datetime = get_end_datetime(query_dict)
-            baseparcels = BaseParcel.objects.filter(delivered_at__lte=end_datetime)
+
+        elif start_date and payment:
+            start_datetime = get_start_datetime(query_dict, start_date)
+            baseparcels = BaseParcel.objects.filter(
+                Q(status=5) & Q(delivered_at__gte=start_datetime) & Q(payment=payment)
+            )
             extra_context = get_extra_context(baseparcels)
+
+        elif start_date:
+            start_datetime = get_start_datetime(query_dict, start_date)
+            baseparcels = BaseParcel.objects.filter(Q(status=5) & Q(delivered_at__gte=start_datetime))
+            extra_context = get_extra_context(baseparcels)
+
+        elif end_date and payment:
+            end_datetime = get_end_datetime(query_dict, end_date)
+            baseparcels = BaseParcel.objects.filter(
+                Q(status=5) & Q(delivered_at__lte=end_datetime) & Q(payment=payment)
+            )
+            extra_context = get_extra_context(baseparcels)
+
+        elif end_date:
+            end_datetime = get_end_datetime(query_dict, end_date)
+            baseparcels = BaseParcel.objects.filter(Q(status=5) & Q(delivered_at__lte=end_datetime))
+            extra_context = get_extra_context(baseparcels)
+
+        elif payment:
+            baseparcels = BaseParcel.objects.filter(Q(status=5) & Q(payment=payment))
+            extra_context = get_extra_context(baseparcels)
+
         return super().changelist_view(request, extra_context)
 
     def has_change_permission(self, request, obj=None):

@@ -1,7 +1,13 @@
+import pytz
 from datetime import datetime
 
 from django.contrib import messages
 from django.db.models import Sum
+
+from core import settings
+
+bishkek_timezone = pytz.timezone(settings.TIME_ZONE)
+format_string = "%Y-%m-%d %H:%M:%S"
 
 
 def make_add_box_to_flight_action(flight):
@@ -15,22 +21,24 @@ def make_add_box_to_flight_action(flight):
     return add_box_to_flight
 
 
-def get_start_datetime(query_dict):
-    if query_dict.get('delivered_at__range__gte_1'):
-        start_date_string = query_dict.get('delivered_at__range__gte_0')
-        start_time_string = query_dict.get('delivered_at__range__gte_1')
-        start_datetime_string = start_date_string + ' ' + start_time_string
-        format_string = "%Y-%m-%d %H:%M:%S"
-        return datetime.strptime(start_datetime_string, format_string)
+def get_start_datetime(query_dict, start_date):
+    start_time_string = query_dict.get('delivered_at__range__gte_1')
+    if start_time_string:
+        start_datetime_string = start_date + ' ' + start_time_string
+    else:
+        start_datetime_string = start_date + ' 00:00:00'
+    start_datetime = datetime.strptime(start_datetime_string, format_string)
+    return bishkek_timezone.localize(start_datetime)
 
 
-def get_end_datetime(query_dict):
-    if query_dict.get('delivered_at__range__lte_1'):
-        end_date_string = query_dict.get('delivered_at__range__lte_0')
-        end_time_string = query_dict.get('delivered_at__range__lte_1')
-        end_datetime_string = end_date_string + ' ' + end_time_string
-        format_string = "%Y-%m-%d %H:%M:%S"
-        return datetime.strptime(end_datetime_string, format_string)
+def get_end_datetime(query_dict, end_date):
+    end_time_string = query_dict.get('delivered_at__range__lte_1')
+    if end_time_string:
+        end_datetime_string = end_date + ' ' + end_time_string
+    else:
+        end_datetime_string = end_date + ' 00:00:00'
+    end_datetime = datetime.strptime(end_datetime_string, format_string)
+    return bishkek_timezone.localize(end_datetime)
 
 
 def get_extra_context(baseparcels):
