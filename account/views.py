@@ -24,9 +24,19 @@ from account.serailizers import (
     UserRetrieveSerializer,
     RegionsSerializer,
     DistrictsSerializer, FcmCreateSerializer,
-    PhoneVerifySerializer,
+    PhoneVerifySerializer, UserLoginSerializer,
 )
 from account.utils import generate_qr, generate_code_logistic, send_push, user_verify, get_otp, SendSMS
+
+
+class UserLoginView(GenericAPIView):
+    serializer_class = UserLoginSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data['tokens'], status=status.HTTP_200_OK)
 
 
 class UserRegisterView(generics.CreateAPIView):

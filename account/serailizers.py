@@ -1,19 +1,15 @@
 from io import BytesIO
 import random
 from django.core.files import File
-
+from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import serializers
 from transliterate import translit
-from django.utils.translation import gettext_lazy as _
 from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
-from django.conf import settings
 from fcm_django.models import FCMDevice
-from firebase_admin.auth import verify_id_token
 import qrcode
-from account.validators import PhoneValidator
-from account.utils import SendSMS, get_otp
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
 from account.models import District, Village, Region, User, MobileCode
@@ -37,6 +33,27 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data["password"])
         instance.save()
         return instance
+
+
+class UserLoginSerializer(serializers.ModelSerializer):
+    phone = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ('phone', 'password')
+
+    def validate(self, attrs):
+        phone = attrs.get('phone')
+        password = attrs.get('password')
+        try:
+            user = User.objects.get(phone=phone)
+        except User.DoesNotExist:
+            raise AuthenticationFailed('Такой пользователь не существует')
+        if not check_password(password, user.password):
+            raise AuthenticationFailed('Не верный пароль или номер')
+        if not user.is_active:
+            raise AuthenticationFailed('Аккаунт не активный')
+        return {'tokens': user.tokens()}
 
 
 # class UserSendCodeSerializer(serializers.Serializer):
