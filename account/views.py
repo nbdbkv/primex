@@ -24,19 +24,9 @@ from account.serailizers import (
     UserRetrieveSerializer,
     RegionsSerializer,
     DistrictsSerializer, FcmCreateSerializer,
-    PhoneVerifySerializer, UserLoginSerializer,
+    PhoneVerifySerializer,
 )
 from account.utils import generate_qr, generate_code_logistic, send_push, user_verify, get_otp, SendSMS
-
-
-class UserLoginView(GenericAPIView):
-    serializer_class = UserLoginSerializer
-    permission_classes = [AllowAny]
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data['tokens'], status=status.HTTP_200_OK)
 
 
 class UserRegisterView(generics.CreateAPIView):
@@ -57,8 +47,10 @@ class UserRegisterView(generics.CreateAPIView):
                 user.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         except User.DoesNotExist:
-            User.objects.create(phone=serializer.data['phone'], password=serializer.data['password'],
-                                info=serializer.data['info'], region_id=serializer.data['region'])
+            user = User.objects.create(phone=serializer.data['phone'], info=serializer.data['info'],
+                                       region_id=serializer.data['region'])
+            user.set_password(serializer.data['password'])
+            user.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

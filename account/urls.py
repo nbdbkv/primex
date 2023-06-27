@@ -19,7 +19,7 @@ from account.views import (
     UpdateUserInfoView,
     RegionsView,
     DistrictsView, FcmDeleteView, FcmCreateView,
-    PhoneVerifyView, UserLoginView,
+    PhoneVerifyView,
 )
 
 router = DefaultRouter()
@@ -29,7 +29,7 @@ router.register("devices", FCMDeviceAuthorizedViewSet)
 urlpatterns = [
     path("device/", FcmCreateView.as_view(), name="fcm-create"),
     path("device/<int:device_id>/", FcmDeleteView.as_view(), name='fcm_delete'),
-    path("token/", UserLoginView.as_view()),
+    path("token/", TokenObtainPairView.as_view()),
     path("token/refresh/", TokenRefreshView.as_view()),
     path("register/", UserRegisterView.as_view()),
     path("code/send/", UserSendCodeView.as_view()),

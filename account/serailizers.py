@@ -36,24 +36,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return instance
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
-    phone = serializers.CharField()
-
-    class Meta:
-        model = User
-        fields = ('phone', 'password')
-
-    def validate(self, attrs):
-        phone = attrs.get('phone')
-        password = attrs.get('password')
-        user = auth.authenticate(phone=phone, password=password)
-        if not user:
-            raise AuthenticationFailed('Не верный пароль или номер')
-        if not user.is_active:
-            raise AuthenticationFailed('Аккаунт не активный')
-        return {'tokens': user.tokens()}
-
-
 # class UserSendCodeSerializer(serializers.Serializer):
 #     phone = serializers.CharField(validators=[PhoneValidator], required=True)
 #     # token = serializers.CharField(required=False)
