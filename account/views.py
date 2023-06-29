@@ -167,11 +167,12 @@ class VillagesView(generics.ListAPIView):
 
 
 class AppVersionView(generics.GenericAPIView):
-    queryset = AppVersion.objects.first()
+    queryset = AppVersion.objects.all()
     serializer_class = AppVersionSerializer
 
     def get(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.queryset, many=False)
+        data = AppVersion.objects.first()
+        serializer = self.get_serializer(data, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
