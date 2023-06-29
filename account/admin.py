@@ -2,7 +2,7 @@ from django.contrib import admin
 from django_2gis_maps.admin import DoubleGisAdmin
 from django.utils.translation import gettext_lazy as _
 from account.roles.mixins import UserAdminMixin
-from account.models import User, Region, District, Village, MobileCode
+from account.models import User, Region, District, Village, MobileCode, AppVersion
 from django.contrib.auth.forms import UserChangeForm
 
 
@@ -53,6 +53,12 @@ class VillageAdmin(DoubleGisAdmin):
 @admin.register(MobileCode)
 class MobileCodeAdmin(admin.ModelAdmin):
     list_display = ('id', 'operator')
+    list_display_links = list_display
+
+
+@admin.register(AppVersion)
+class AppVersionAdmin(admin.ModelAdmin):
+    list_display = ('android_version', 'android_is_updated', 'ios_version', 'ios_is_updated')
     list_display_links = list_display
 
 

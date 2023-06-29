@@ -13,9 +13,10 @@ from fcm_django.models import FCMDevice
 from firebase_admin.auth import verify_id_token
 
 from account.messages import Message
-from account.models import District, Village, Region, User
+from account.models import District, Village, AppVersion, Region, User
 from account.serailizers import (
     VillagesSerializer,
+    AppVersionSerializer,
     PasswordResetVerifySerializer,
     RegisterCodeVerifySerializer,
     PasswordUpdateSerializer,
@@ -163,6 +164,11 @@ class VillagesView(generics.ListAPIView):
     queryset = Village.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["region"]
+
+
+class AppVersionView(generics.ListAPIView):
+    queryset = AppVersion.objects.all()
+    serializer_class = AppVersionSerializer
 
 
 class FcmCreateView(UpdateAPIView):

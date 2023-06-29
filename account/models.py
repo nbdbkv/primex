@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from django_2gis_maps import fields as map_fields
 from django_2gis_maps.mixins import DoubleGisMixin
 from rest_framework_simplejwt.tokens import RefreshToken
+from solo.models import SingletonModel
+
 from account.validators import PhoneValidator, RegionCodeValidator
 from account.managers import UserManager
 from account.choices import UserRole
@@ -134,3 +136,17 @@ class MobileCode(models.Model):
     class Meta:
         verbose_name = 'Мобильный оператор'
         verbose_name_plural = verbose_name
+
+
+class AppVersion(SingletonModel):
+    android_version = models.CharField(max_length=32, null=True, blank=True, verbose_name='Android версия',)
+    android_is_updated = models.BooleanField(default=False, verbose_name=_('Android версия обновлена'))
+    ios_version = models.CharField(max_length=32, null=True, blank=True, verbose_name='iOS версия',)
+    ios_is_updated = models.BooleanField(default=False, verbose_name=_('iOS версия обновлена'))
+
+    def __str__(self):
+        return self.android_version
+
+    class Meta:
+        verbose_name = _('версию приложения')
+        verbose_name_plural = _('Версии приложения')

@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 from account.telegram import tg_message_handler
 from account.views import (
     VillagesView,
+    AppVersionView,
     GetUserView,
     UserRegisterView,
     UserSendCodeView,
@@ -40,6 +41,7 @@ urlpatterns = [
     path("regions/", RegionsView.as_view()),
     path("districts/", DistrictsView.as_view()),
     path("villages/", VillagesView.as_view()),
+    path("app_version/", AppVersionView.as_view()),
     path("telegram/", tg_message_handler),
     path('phone/verify/', PhoneVerifyView.as_view()),
 ]

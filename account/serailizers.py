@@ -16,7 +16,7 @@ from transliterate import translit
 
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
-from account.models import District, MobileCode, Region, User, Village
+from account.models import District, MobileCode, Region, User, Village, AppVersion
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -227,6 +227,12 @@ class VillagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Village
         fields = "__all__"
+
+
+class AppVersionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AppVersion
+        fields = ('android_version', 'android_is_updated', 'ios_version', 'ios_is_updated')
 
 
 class RegionsSerializer(serializers.ModelSerializer):
