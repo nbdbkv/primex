@@ -1,9 +1,6 @@
 from django.urls import path, include
 from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
 from account.telegram import tg_message_handler
@@ -16,6 +13,7 @@ from account.views import (
     PasswordUpdateView,
     PasswordResetVerifyView,
     PhoneResetVerifyView,
+    CustomTokenObtainPairView,
     UpdateUserInfoView,
     RegionsView,
     DistrictsView, FcmDeleteView, FcmCreateView,
@@ -29,7 +27,7 @@ router.register("devices", FCMDeviceAuthorizedViewSet)
 urlpatterns = [
     path("device/", FcmCreateView.as_view(), name="fcm-create"),
     path("device/<int:device_id>/", FcmDeleteView.as_view(), name='fcm_delete'),
-    path("token/", TokenObtainPairView.as_view()),
+    path("token/", CustomTokenObtainPairView.as_view()),
     path("token/refresh/", TokenRefreshView.as_view()),
     path("register/", UserRegisterView.as_view()),
     path("code/send/", UserSendCodeView.as_view()),

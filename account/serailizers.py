@@ -1,19 +1,22 @@
-from io import BytesIO
 import random
-from django.core.files import File
-from django.contrib.auth.hashers import check_password
-from django.core.exceptions import ValidationError
-from rest_framework.exceptions import AuthenticationFailed
-from rest_framework import serializers
-from transliterate import translit
-from django.core.cache import cache
-from django.contrib.auth.password_validation import validate_password
-from fcm_django.models import FCMDevice
+from io import BytesIO
+
 import qrcode
+from django.contrib import auth
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.password_validation import validate_password
+from django.core.cache import cache
+from django.core.exceptions import ValidationError
+from django.core.files import File
+from django.utils.translation import ugettext_lazy as _
+from fcm_django.models import FCMDevice
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from transliterate import translit
+
 from account.choices import SendCodeType
 from account.messages import ErrorMessage
-from account.models import District, Village, Region, User, MobileCode
-from django.contrib import auth
+from account.models import District, MobileCode, Region, User, Village
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -179,6 +182,13 @@ class PhoneResetVerifySerializer(serializers.Serializer):
         instance.phone = self.validated_data["new_phone"]
         instance.save()
         return instance
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    default_error_messages = {
+        'no_active_account': _('Неверный телефон или пароль.')
+    }
 
 
 class UpdateUserInfoSerializer(serializers.ModelSerializer):

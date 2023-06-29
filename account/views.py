@@ -6,6 +6,7 @@ from rest_framework import generics, status
 from rest_framework.generics import UpdateAPIView, GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django_filters.rest_framework import DjangoFilterBackend
 
 from fcm_django.models import FCMDevice
@@ -19,6 +20,7 @@ from account.serailizers import (
     RegisterCodeVerifySerializer,
     PasswordUpdateSerializer,
     PhoneResetVerifySerializer,
+    CustomTokenObtainPairSerializer,
     UpdateUserInfoSerializer,
     UserRegisterSerializer,
     UserRetrieveSerializer,
@@ -122,6 +124,10 @@ class PhoneResetVerifyView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.update(instance=self.get_object())
         return Response(Message.PHONE_CHANGED.value, status=status.HTTP_202_ACCEPTED)
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 class UpdateUserInfoView(generics.UpdateAPIView):
