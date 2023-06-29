@@ -166,9 +166,13 @@ class VillagesView(generics.ListAPIView):
     filterset_fields = ["region"]
 
 
-class AppVersionView(generics.ListAPIView):
-    queryset = AppVersion.objects.all()
+class AppVersionView(generics.GenericAPIView):
+    queryset = AppVersion.objects.first()
     serializer_class = AppVersionSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.queryset, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class FcmCreateView(UpdateAPIView):
