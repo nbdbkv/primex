@@ -58,6 +58,7 @@ class User(AbstractUser):
             "Unselect this instead of deleting accounts."
         ),
     )
+    uid = models.CharField(verbose_name='Уникальный иденфикатор', null=True, blank=True, max_length=255)
     send_code = models.CharField(null=True, blank=True, max_length=8)
     verify_date = models.DateTimeField(null=True, blank=True)
 

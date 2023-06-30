@@ -18,7 +18,7 @@ from account.views import (
     UpdateUserInfoView,
     RegionsView,
     DistrictsView, FcmDeleteView, FcmCreateView,
-    PhoneVerifyView,
+    PhoneVerifyView, LoginGoogleView,
 )
 
 router = DefaultRouter()
@@ -44,4 +44,5 @@ urlpatterns = [
     path("app_version/", AppVersionView.as_view()),
     path("telegram/", tg_message_handler),
     path('phone/verify/', PhoneVerifyView.as_view()),
+    path('login_google_appleID/', LoginGoogleView.as_view()),
 ]

@@ -256,3 +256,12 @@ class PhoneVerifySerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('phone', 'token')
+
+
+class LoginGoogleSerializer(serializers.ModelSerializer):
+    token = serializers.CharField()
+    full_name = serializers.CharField(required=False)
+
+    class Meta:
+        model = User
+        fields = ('token', 'full_name')

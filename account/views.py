@@ -27,7 +27,7 @@ from account.serailizers import (
     UserRetrieveSerializer,
     RegionsSerializer,
     DistrictsSerializer, FcmCreateSerializer,
-    PhoneVerifySerializer,
+    PhoneVerifySerializer, LoginGoogleSerializer,
 )
 from account.utils import generate_qr, generate_code_logistic, send_push, user_verify, get_otp, SendSMS
 
@@ -235,3 +235,28 @@ class PhoneVerifyView(GenericAPIView):
         user = get_object_or_404(User, phone=serializer.data['phone'])
         user_verify(user)
         return Response(user.tokens(), status=status.HTTP_200_OK)
+
+
+class LoginGoogleView(GenericAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = LoginGoogleSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid()
+        try:
+            decoded_token = verify_id_token(serializer.data['token'])
+        except:
+            return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
+        uid = decoded_token['uid']
+        try:
+            user = User.objects.get(uid=uid)
+            return Response({'tokens': user.tokens()}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            full_name = serializer.data['full_name'].split(" ")
+            first_name, last_name = full_name[0], " ".join(full_name[1:])
+            user = User.objects.create(first_name=first_name, last_name=last_name, uid=uid, is_active=True)
+            generate_qr(user)
+            generate_code_logistic(user)
+            return Response({'tokens': user.tokens(), 'is_registered': True}, status=status.HTTP_201_CREATED)
