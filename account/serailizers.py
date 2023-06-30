@@ -265,3 +265,9 @@ class LoginGoogleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('token', 'full_name')
+
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('phone', 'first_name', 'last_name', 'region')

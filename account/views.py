@@ -27,9 +27,9 @@ from account.serailizers import (
     UserRetrieveSerializer,
     RegionsSerializer,
     DistrictsSerializer, FcmCreateSerializer,
-    PhoneVerifySerializer, LoginGoogleSerializer,
+    PhoneVerifySerializer, LoginGoogleSerializer, LoginSerializer,
 )
-from account.utils import generate_qr, generate_code_logistic, send_push, user_verify, get_otp, SendSMS
+from account.utils import generate_qr, generate_code_logistic, send_push, user_verify, get_otp, SendSMS, user_update
 
 
 class UserRegisterView(generics.CreateAPIView):
@@ -260,3 +260,17 @@ class LoginGoogleView(GenericAPIView):
             generate_qr(user)
             generate_code_logistic(user)
             return Response({'tokens': user.tokens(), 'is_registered': True}, status=status.HTTP_201_CREATED)
+
+
+class LoginView(generics.GenericAPIView):
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = request.user
+        user_update(phone=serializer.data['phone'], first_name=serializer.data['first_name'],
+                    last_name=serializer.data['last_name'], region=serializer.data['region'], user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
