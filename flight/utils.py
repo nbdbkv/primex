@@ -85,7 +85,7 @@ class FieldSum:
             box_quantity = cache.get(key)
         else:
             box_quantity = Box.objects.filter(flight_id=obj.id).count()
-            cache.set(key, box_quantity, timeout=600)
+            cache.set(key, box_quantity, timeout=480)
         return box_quantity
 
     @admin.display(description=_('Вес коробок'))
@@ -95,7 +95,7 @@ class FieldSum:
             box_weight = {'weight__sum': cache.get(key)}
         else:
             box_weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
-            cache.set(key, box_weight['weight__sum'], timeout=600)
+            cache.set(key, box_weight['weight__sum'], timeout=420)
         return box_weight['weight__sum']
 
     @admin.display(description=_('Кол. посылок'))
@@ -105,7 +105,7 @@ class FieldSum:
             baseparcel_quantity = cache.get(key)
         else:
             baseparcel_quantity = BaseParcel.objects.filter(box_id=obj.id).count()
-            cache.set(key, baseparcel_quantity, timeout=600)
+            cache.set(key, baseparcel_quantity, timeout=360)
         return baseparcel_quantity
 
     @admin.display(description=_('Вес посылок'))
@@ -115,7 +115,7 @@ class FieldSum:
             baseparcel_weight = {'weight__sum': cache.get(key)}
         else:
             baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
-            cache.set(key, baseparcel_weight['weight__sum'], timeout=600)
+            cache.set(key, baseparcel_weight['weight__sum'], timeout=540)
         return baseparcel_weight['weight__sum']
 
     @admin.display(description=_('Стоим. посылок в $'))
@@ -147,7 +147,7 @@ class FieldSum:
             baseparcel_weight_distributed = BaseParcel.objects.filter(
                 box__flight_id=obj.id, status=5
             ).aggregate(Sum('weight'))
-            cache.set(key, baseparcel_weight_distributed['weight__sum'], timeout=600)
+            cache.set(key, baseparcel_weight_distributed['weight__sum'], timeout=300)
         return baseparcel_weight_distributed['weight__sum']
 
     @admin.display(description=_('Код рейса'))
