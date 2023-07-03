@@ -252,7 +252,7 @@ class LoginGoogleView(GenericAPIView):
         uid = decoded_token['uid']
         try:
             user = User.objects.get(uid=uid)
-            return Response({'tokens': user.tokens()}, status=status.HTTP_200_OK)
+            return Response({'tokens': user.tokens(), 'is_registered': False}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             full_name = serializer.data['full_name'].split(" ")
             first_name, last_name = full_name[0], " ".join(full_name[1:])
