@@ -128,6 +128,16 @@ class FieldSum:
             cache.set(key, baseparcel_cost['cost_usd__sum'], timeout=600)
         return baseparcel_cost['cost_usd__sum']
 
+    @admin.display(description=_('Стоим. посылок в $'))
+    def sum_box_baseparcel_cost(self, obj):
+        key = str(obj) + '_' + 'box_baseparcel_cost'
+        if key in cache:
+            box_baseparcel_cost = {'cost_usd__sum': cache.get(key)}
+        else:
+            box_baseparcel_cost = BaseParcel.objects.filter(box_id=obj.id).aggregate(Sum('cost_usd'))
+            cache.set(key, box_baseparcel_cost['cost_usd__sum'], timeout=300)
+        return box_baseparcel_cost['cost_usd__sum']
+
     @admin.display(description=_('Вес (выдан)'))
     def sum_baseparcel_weight_distributed(self, obj):
         key = str(obj) + '_' + 'baseparcel_weight_distributed'

@@ -602,7 +602,7 @@ class BoxAdminResource(resources.ModelResource):
 class BoxAdmin(FieldSum, ImportExportModelAdmin):
     form = BoxModelForm
     list_display = (
-        'number', 'created_at', 'code', 'track_code', 'weight', 'sum_baseparcel_quantity', 'sum_baseparcel_cost',
+        'number', 'created_at', 'code', 'track_code', 'weight', 'sum_baseparcel_quantity', 'sum_box_baseparcel_cost',
     )
     list_display_links = ('number', 'created_at', 'code', 'track_code',)
     exclude = ('number', 'box', 'status', 'arrived_at',)
