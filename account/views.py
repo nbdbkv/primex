@@ -256,9 +256,7 @@ class LoginGoogleView(GenericAPIView):
         except User.DoesNotExist:
             full_name = serializer.data['full_name'].split(" ")
             first_name, last_name = full_name[0], " ".join(full_name[1:])
-            user = User.objects.create(first_name=first_name, last_name=last_name, uid=uid, is_active=True)
-            generate_qr(user)
-            generate_code_logistic(user)
+            user = User.objects.create(first_name=first_name, last_name=last_name, uid=uid)
             return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_201_CREATED)
 
 
@@ -273,4 +271,6 @@ class LoginView(generics.GenericAPIView):
         user = request.user
         user_update(phone=serializer.data['phone'], first_name=serializer.data['first_name'],
                     last_name=serializer.data['last_name'], region=serializer.data['region'], user=user)
+        generate_qr(user)
+        generate_code_logistic(user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

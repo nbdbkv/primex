@@ -17,6 +17,7 @@ def user_update(phone, first_name, last_name, region, user):
     user.first_name = first_name
     user.last_name = last_name
     user.region_id = region
+    user.is_active = True
     user.save()
 
 
