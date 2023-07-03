@@ -370,6 +370,7 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
     readonly_fields = ('numeration', 'code', 'arrived_at', 'status')
     fields = [readonly_fields]
     change_form_template = "admin/archive_change_form.html"
+    list_per_page = 50
 
     def get_queryset(self, request):
         return Archive.objects.filter(is_archive=True)
@@ -484,6 +485,7 @@ class ArchiveBaseParcelAdmin(FieldSum, admin.ModelAdmin):
     list_filter = (('delivered_at', DateTimeRangeFilter), 'payment')
     change_list_template = 'admin/archive_parcel_change_list.html'
     list_select_related = ('box',)
+    list_per_page = 100
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
