@@ -1,10 +1,13 @@
 import pytz
 from datetime import datetime
 
-from django.contrib import messages
+from django.contrib import admin, messages
+from django.core.cache import cache
 from django.db.models import Sum
+from django.utils.translation import gettext_lazy as _
 
 from core import settings
+from flight.models import BaseParcel, Box, Flight
 
 bishkek_timezone = pytz.timezone(settings.TIME_ZONE)
 format_string = "%Y-%m-%d %H:%M:%S"
@@ -51,3 +54,98 @@ def get_extra_context(baseparcels):
         'total_cost_kgs': total_cost_kgs['cost_kgs__sum']
     }
     return extra_context
+
+
+def get_field(field_str, i, query_dict):
+    base_parcel_id = i.split('_')[-1]
+    field = query_dict.get(f'{field_str}_{base_parcel_id}')
+    if field:
+        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+        match field_str:
+            case 'shelf':
+                base_parcel.shelf = field
+            case 'price':
+                base_parcel.price = field
+            case 'weight':
+                base_parcel.weight = field
+            case 'cost_usd':
+                base_parcel.cost_usd = field
+            case 'cost_kgs':
+                base_parcel.cost_kgs = field
+            case 'note':
+                base_parcel.note = field
+        base_parcel.save()
+
+
+class FieldSum:
+    @admin.display(description=_('Кол. коробок'))
+    def sum_box_quantity(self, obj):
+        key = str(obj) + '_' + 'box_quantity'
+        if key in cache:
+            box_quantity = cache.get(key)
+        else:
+            box_quantity = Box.objects.filter(flight_id=obj.id).count()
+            cache.set(key, box_quantity, timeout=600)
+        return box_quantity
+
+    @admin.display(description=_('Вес коробок'))
+    def sum_box_weight(self, obj):
+        key = str(obj) + '_' + 'box_weight'
+        if key in cache:
+            box_weight = {'weight__sum': cache.get(key)}
+        else:
+            box_weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
+            cache.set(key, box_weight['weight__sum'], timeout=600)
+        return box_weight['weight__sum']
+
+    @admin.display(description=_('Кол. посылок'))
+    def sum_baseparcel_quantity(self, obj):
+        key = str(obj) + '_' + 'baseparcel_quantity'
+        if key in cache:
+            baseparcel_quantity = cache.get(key)
+        else:
+            baseparcel_quantity = BaseParcel.objects.filter(box_id=obj.id).count()
+            cache.set(key, baseparcel_quantity, timeout=600)
+        return baseparcel_quantity
+
+    @admin.display(description=_('Вес посылок'))
+    def sum_baseparcel_weight(self, obj):
+        key = str(obj) + '_' + 'baseparcel_weight'
+        if key in cache:
+            baseparcel_weight = {'weight__sum': cache.get(key)}
+        else:
+            baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
+            cache.set(key, baseparcel_weight['weight__sum'], timeout=600)
+        return baseparcel_weight['weight__sum']
+
+    @admin.display(description=_('Стоим. посылок в $'))
+    def sum_baseparcel_cost(self, obj):
+        key = str(obj) + '_' + 'baseparcel_cost'
+        if key in cache:
+            baseparcel_cost = {'cost_usd__sum': cache.get(key)}
+        else:
+            baseparcel_cost = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('cost_usd'))
+            cache.set(key, baseparcel_cost['cost_usd__sum'], timeout=600)
+        return baseparcel_cost['cost_usd__sum']
+
+    @admin.display(description=_('Вес (выдан)'))
+    def sum_baseparcel_weight_distributed(self, obj):
+        key = str(obj) + '_' + 'baseparcel_weight_distributed'
+        if key in cache:
+            baseparcel_weight_distributed = {'weight__sum': cache.get(key)}
+        else:
+            baseparcel_weight_distributed = BaseParcel.objects.filter(
+                box__flight_id=obj.id, status=5
+            ).aggregate(Sum('weight'))
+            cache.set(key, baseparcel_weight_distributed['weight__sum'], timeout=600)
+        return baseparcel_weight_distributed['weight__sum']
+
+    @admin.display(description=_('Код рейса'))
+    def get_flight(self, obj):
+        if obj in cache:
+            flight_code = cache.get(obj)
+        else:
+            flight = Flight.objects.get(box__base_parcel=obj.id)
+            flight_code = flight.code
+            cache.set(obj, flight_code, timeout=6000)
+        return flight_code

@@ -23,7 +23,10 @@ from flight.models import (
     Archive, Arrival, BaseParcel, Box, Contact, Delivery, DeliveryBaseParcel, ArchiveBaseParcel, Destination, Flight,
     Media, Rate, Unknown, OrderDescription,
 )
-from flight.utils import make_add_box_to_flight_action, get_start_datetime, get_end_datetime, get_extra_context
+from flight.utils import (
+    make_add_box_to_flight_action, get_start_datetime, get_end_datetime, get_extra_context, FieldSum, get_field,
+    # make_add_baseparcel_to_box_action,
+)
 
 original_get_app_list = AdminSite.get_app_list
 admin.site.site_header = 'Taura Express'
@@ -64,7 +67,7 @@ class FlightBoxInline(nested_admin.NestedTabularInline):
 
 
 @admin.register(Flight)
-class FlightAdmin(nested_admin.NestedModelAdmin):
+class FlightAdmin(FieldSum, nested_admin.NestedModelAdmin):
     form = FlightModelForm
     list_display = (
         'numeration', 'code', 'sum_box_quantity', 'sum_box_weight', 'sum_baseparcel_weight', 'sum_baseparcel_cost',
@@ -79,26 +82,6 @@ class FlightAdmin(nested_admin.NestedModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.filter(status__in=[0, 1])
-
-    @admin.display(description=_('Кол. коробок'))
-    def sum_box_quantity(self, obj):
-        box_quantity = Box.objects.filter(flight_id=obj.id).count()
-        return box_quantity
-
-    @admin.display(description=_('Вес коробок'))
-    def sum_box_weight(self, obj):
-        weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
-        return weight['weight__sum']
-
-    @admin.display(description=_('Вес посылок'))
-    def sum_baseparcel_weight(self, obj):
-        baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
-        return baseparcel_weight['weight__sum']
-
-    @admin.display(description=_('Стоим. посылок в $'))
-    def sum_baseparcel_cost(self, obj):
-        baseparcel_price = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('cost_usd'))
-        return baseparcel_price['cost_usd__sum']
 
     def save_model(self, request, obj, form, change):
         form_data = form.data
@@ -201,10 +184,10 @@ class ArchiveBoxNestedInline(nested_admin.NestedTabularInline):
 
 
 @admin.register(Arrival)
-class ArrivalAdmin(nested_admin.NestedModelAdmin):
+class ArrivalAdmin(FieldSum, nested_admin.NestedModelAdmin):
     form = ArrivalModelForm
     list_display = (
-        'numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_weight',
+        'numeration', 'arrived_at', 'code', 'sum_box_quantity', 'sum_box_weight', 'sum_baseparcel_weight',
         'sum_baseparcel_cost', 'status',
     )
     list_display_links = ('numeration', 'arrived_at', 'code',)
@@ -215,34 +198,9 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
     date_hierarchy = 'arrived_at'
     ordering = ('arrived_at',)
     list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
-    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights')
+    readonly_fields = ('numeration', 'code', 'sum_box_quantity', 'sum_baseparcel_weight')
     fields = [readonly_fields, 'status']
     change_form_template = "admin/arrival_change_form.html"
-
-    @admin.display(description=_('Кол. коробок'))
-    def sum_boxes(self, obj):
-        boxes = Box.objects.filter(flight_id=obj.id).count()
-        return boxes
-
-    @admin.display(description=_('Вес коробок'))
-    def sum_box_weight(self, obj):
-        weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
-        return weight['weight__sum']
-
-    @admin.display(description=_('Вес посылок'))
-    def sum_baseparcel_weight(self, obj):
-        baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
-        return baseparcel_weight['weight__sum']
-
-    @admin.display(description=_('Стоим. посылок в $'))
-    def sum_baseparcel_cost(self, obj):
-        baseparcel_price = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('cost_usd'))
-        return baseparcel_price['cost_usd__sum']
-
-    @admin.display(description=_('Вес посылок'))
-    def sum_parcel_weights(self, obj):
-        weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
-        return weight['weight__sum']
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -298,10 +256,10 @@ class ArrivalAdmin(nested_admin.NestedModelAdmin):
 
 
 @admin.register(Delivery)
-class DeliveryAdmin(nested_admin.NestedModelAdmin):
+class DeliveryAdmin(FieldSum, nested_admin.NestedModelAdmin):
     form = DeliveryModelForm
     list_display = (
-        'numeration', 'arrived_at', 'code', 'sum_boxes', 'sum_box_weight', 'sum_baseparcel_weight',
+        'numeration', 'arrived_at', 'code', 'sum_box_quantity', 'sum_box_weight', 'sum_baseparcel_weight',
         'sum_baseparcel_cost', 'status',
     )
     list_display_links = ('numeration', 'arrived_at', 'code',)
@@ -312,7 +270,9 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
     date_hierarchy = 'arrived_at'
     ordering = ('arrived_at',)
     list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
-    readonly_fields = ('numeration', 'code', 'sum_boxes', 'sum_parcel_weights', 'sum_parcel_weights_distributed')
+    readonly_fields = (
+        'numeration', 'code', 'sum_box_quantity', 'sum_baseparcel_weight', 'sum_baseparcel_weight_distributed'
+    )
     fields = [readonly_fields, 'status']
     change_form_template = "admin/delivery_change_form.html"
 
@@ -324,36 +284,6 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
             return HttpResponseRedirect(url)
         else:
             return super().changelist_view(request, extra_context)
-
-    @admin.display(description=_('Кол. коробок'))
-    def sum_boxes(self, obj):
-        boxes = Box.objects.filter(flight_id=obj.id).count()
-        return boxes
-
-    @admin.display(description=_('Вес коробок'))
-    def sum_box_weight(self, obj):
-        weight = Box.objects.filter(flight_id=obj.id).aggregate(Sum('weight'))
-        return weight['weight__sum']
-
-    @admin.display(description=_('Вес посылок'))
-    def sum_baseparcel_weight(self, obj):
-        baseparcel_weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
-        return baseparcel_weight['weight__sum']
-
-    @admin.display(description=_('Стоим. посылок в $'))
-    def sum_baseparcel_cost(self, obj):
-        baseparcel_price = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('cost_usd'))
-        return baseparcel_price['cost_usd__sum']
-
-    @admin.display(description=_('Вес посылок'))
-    def sum_parcel_weights(self, obj):
-        weight = BaseParcel.objects.filter(box__flight_id=obj.id).aggregate(Sum('weight'))
-        return weight['weight__sum']
-
-    @admin.display(description=_('Вес (выдан)'))
-    def sum_parcel_weights_distributed(self, obj):
-        weight = BaseParcel.objects.filter(box__flight_id=obj.id, status=5).aggregate(Sum('weight'))
-        return weight['weight__sum']
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -395,47 +325,17 @@ class DeliveryAdmin(nested_admin.NestedModelAdmin):
 
             for i in query_dict:
                 if 'shelf' in i:
-                    base_parcel_id = i.split('_')[-1]
-                    shelf = query_dict.get(f'shelf_{base_parcel_id}')
-                    if shelf:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.shelf = shelf
-                        base_parcel.save()
+                    get_field('shelf', i, query_dict)
                 if 'price' in i:
-                    base_parcel_id = i.split('_')[-1]
-                    price = query_dict.get(f'price_{base_parcel_id}')
-                    if price:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.price = price
-                        base_parcel.save()
+                    get_field('price', i, query_dict)
                 if 'weight' in i:
-                    base_parcel_id = i.split('_')[-1]
-                    weight = query_dict.get(f'weight_{base_parcel_id}')
-                    if weight:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.weight = weight
-                        base_parcel.save()
+                    get_field('weight', i, query_dict)
                 if 'cost_usd' in i:
-                    base_parcel_id = i.split('_')[-1]
-                    cost_usd = query_dict.get(f'cost_usd_{base_parcel_id}')
-                    if cost_usd:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.cost_usd = cost_usd
-                        base_parcel.save()
-                if 'cost_kgs' in i:
-                    base_parcel_id = i.split('_')[-1]
-                    cost_kgs = query_dict.get(f'cost_kgs_{base_parcel_id}')
-                    if cost_kgs:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.cost_kgs = cost_kgs
-                        base_parcel.save()
+                    get_field('cost_usd', i, query_dict)
+                if 'cost_kgs'in i:
+                    get_field('cost_kgs', i, query_dict)
                 if 'note' in i:
-                    base_parcel_id = i.split('_')[-1]
-                    note = query_dict.get(f'note_{base_parcel_id}')
-                    if note:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.note = note
-                        base_parcel.save()
+                    get_field('note', i, query_dict)
 
             for i in query_dict.getlist('base_parcels'):
                 base_parcel = BaseParcel.objects.get(id=int(eval(i)['base_parcel']))
@@ -490,14 +390,14 @@ class ArchiveAdmin(nested_admin.NestedModelAdmin):
 
 
 @admin.register(Unknown)
-class UnknownAdmin(nested_admin.NestedModelAdmin):
+class UnknownAdmin(FieldSum, nested_admin.NestedModelAdmin):
     list_display = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'arrived_at',
     )
-    list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
+    list_display_links = ('get_flight', 'box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'arrived_at',
     )
     fields = [readonly_fields, 'status']
@@ -506,6 +406,7 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
     ordering = ('arrived_at',)
     list_filter = (('arrived_at', DateFieldListFilter), ('arrived_at', DateTimeRangeFilter))
     change_form_template = "admin/unknown_change_form.html"
+    list_select_related = ('box',)
 
     def get_queryset(self, request):
         return Unknown.objects.filter(status=7)
@@ -516,27 +417,17 @@ class UnknownAdmin(nested_admin.NestedModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    @admin.display(description=_('Код рейса'))
-    def get_flight(self, obj):
-        flight = Flight.objects.get(box__base_parcel=obj.id)
-        return flight.code
-
-    @admin.display(description=_('Код коробки'))
-    def get_box(self, obj):
-        box = Box.objects.get(base_parcel=obj.id)
-        return box
-
 
 @admin.register(DeliveryBaseParcel)
-class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
+class DeliveryBaseParcelAdmin(FieldSum, nested_admin.NestedModelAdmin):
     list_display = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'payment', 'note', 'arrived_at'
     )
     list_editable = ('price', 'weight', 'cost_usd', 'cost_kgs', 'payment', 'note')
-    list_display_links = ('get_flight', 'get_box', 'track_code', 'client_code', 'phone')
+    list_display_links = ('get_flight', 'box', 'track_code', 'client_code', 'phone')
     readonly_fields = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'arrived_at',
     )
     fields = [readonly_fields, 'status']
@@ -549,6 +440,7 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     formfield_overrides = {
         models.DecimalField: {'widget': forms.NumberInput(attrs={'style': 'width:10ch'})},
     }
+    list_select_related = ('box',)
 
     @admin.action(description='Распечатать')
     def print_baseparcel(self, request, queryset):
@@ -572,25 +464,18 @@ class DeliveryBaseParcelAdmin(nested_admin.NestedModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    @admin.display(description=_('Код рейса'))
-    def get_flight(self, obj):
-        flight = Flight.objects.get(box__base_parcel=obj.id)
-        return flight.code
-
-    @admin.display(description=_('Код коробки'))
-    def get_box(self, obj):
-        box = Box.objects.get(base_parcel=obj.id)
-        return box
-
 
 @admin.register(ArchiveBaseParcel)
-class ArchiveBaseParcelAdmin(admin.ModelAdmin):
+class ArchiveBaseParcelAdmin(FieldSum, admin.ModelAdmin):
     list_display = (
-        'get_flight', 'get_box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'payment', 'note', 'delivered_at'
     )
     list_display_links = list_display
-    readonly_fields = ('arrived_at', *list_display)
+    readonly_fields = (
+        'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
+        'cost_kgs', 'payment', 'note', 'delivered_at',
+    )
     exclude = ('box', 'barcode')
     search_fields = ('box__flight__code', 'box__code', 'track_code', 'client_code', 'phone')
     # date_hierarchy = 'delivered_at'
@@ -598,6 +483,7 @@ class ArchiveBaseParcelAdmin(admin.ModelAdmin):
     # list_filter = (('delivered_at', DateFieldListFilter), ('delivered_at', DateTimeRangeFilter))
     list_filter = (('delivered_at', DateTimeRangeFilter), 'payment')
     change_list_template = 'admin/archive_parcel_change_list.html'
+    list_select_related = ('box',)
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -667,16 +553,6 @@ class ArchiveBaseParcelAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    @admin.display(description=_('Код рейса'))
-    def get_flight(self, obj):
-        flight = Flight.objects.get(box__base_parcel=obj.id)
-        return flight.code
-
-    @admin.display(description=_('Код коробки'))
-    def get_box(self, obj):
-        box = Box.objects.get(base_parcel=obj.id)
-        return box
-
 
 class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
@@ -723,7 +599,7 @@ class BoxAdminResource(resources.ModelResource):
 
 
 @admin.register(Box)
-class BoxAdmin(ImportExportModelAdmin):
+class BoxAdmin(FieldSum, ImportExportModelAdmin):
     form = BoxModelForm
     list_display = (
         'number', 'created_at', 'code', 'track_code', 'weight', 'sum_baseparcel_quantity', 'sum_baseparcel_cost',
@@ -770,11 +646,6 @@ class BoxAdmin(ImportExportModelAdmin):
             else:
                 obj.number = 1
         super(BoxAdmin, self).save_model(request, obj, form, change)
-
-    @admin.display(description=_('Кол. посылок'))
-    def sum_baseparcel_quantity(self, obj):
-        baseparcel_quantity = BaseParcel.objects.filter(box_id=obj.id).count()
-        return baseparcel_quantity
 
     @admin.display(description=_('Стоим. посылок в $'))
     def sum_baseparcel_cost(self, obj):
