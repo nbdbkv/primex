@@ -252,7 +252,10 @@ class LoginGoogleView(GenericAPIView):
         uid = decoded_token['uid']
         try:
             user = User.objects.get(uid=uid)
-            return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
+            if not user.phone:
+                return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_200_OK)
+            else:
+                return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             full_name = serializer.data['full_name'].split(" ")
             first_name, last_name = full_name[0], " ".join(full_name[1:])
