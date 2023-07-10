@@ -17,6 +17,7 @@ def user_update(phone, first_name, last_name, region, user):
     user.first_name = first_name
     user.last_name = last_name
     user.region_id = region
+    user.info = last_name + ' ' + first_name
     user.save()
 
 
