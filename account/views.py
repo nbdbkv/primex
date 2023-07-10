@@ -239,7 +239,7 @@ class PhoneVerifyView(GenericAPIView):
 
 class LoginGoogleView(GenericAPIView):
     queryset = User.objects.all()
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     serializer_class = LoginGoogleSerializer
 
     def post(self, request, *args, **kwargs):
@@ -250,13 +250,13 @@ class LoginGoogleView(GenericAPIView):
         except:
             return Response({'message': 'Токен не действителен'}, status=status.HTTP_400_BAD_REQUEST)
         uid = decoded_token['uid']
-        try:
-            user = User.objects.get(uid=uid)
+        user = User.objects.filter(uid=uid).first()
+        if user:
             if not user.phone:
                 return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_200_OK)
             else:
                 return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
-        except User.DoesNotExist:
+        else:
             full_name = serializer.data['full_name'].split(" ")
             first_name, last_name = full_name[0], " ".join(full_name[1:])
             user = User.objects.create(first_name=first_name, last_name=last_name, uid=uid, is_active=True)
