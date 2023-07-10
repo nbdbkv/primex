@@ -265,7 +265,7 @@ class LoginGoogleView(GenericAPIView):
 
 class LoginView(generics.GenericAPIView):
     queryset = User.objects.all()
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
