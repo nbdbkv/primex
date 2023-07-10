@@ -2,7 +2,6 @@ import datetime
 
 from django.conf import settings
 from django.core.cache import cache
-from django.core.exceptions import FieldDoesNotExist
 from rest_framework import generics, status
 from rest_framework.generics import UpdateAPIView, GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -36,7 +35,7 @@ from account.utils import generate_qr, generate_code_logistic, send_push, user_v
 class UserRegisterView(generics.CreateAPIView):
     queryset = User
     serializer_class = UserRegisterSerializer
-    
+
     def create(self, request, *args,  **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -253,11 +252,10 @@ class LoginGoogleView(GenericAPIView):
         uid = decoded_token['uid']
         try:
             user = User.objects.get(uid=uid)
-            try:
-                phone = user.phone
-                return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
-            except FieldDoesNotExist:
+            if not user.phone:
                 return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_200_OK)
+            else:
+                return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             full_name = serializer.data['full_name'].split(" ")
             first_name, last_name = full_name[0], " ".join(full_name[1:])
