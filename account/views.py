@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import FieldDoesNotExist
 from rest_framework import generics, status
 from rest_framework.generics import UpdateAPIView, GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -252,9 +253,10 @@ class LoginGoogleView(GenericAPIView):
         uid = decoded_token['uid']
         try:
             user = User.objects.get(uid=uid)
-            if user.phone:
+            try:
+                phone = user.phone
                 return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
-            else:
+            except FieldDoesNotExist:
                 return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             full_name = serializer.data['full_name'].split(" ")
