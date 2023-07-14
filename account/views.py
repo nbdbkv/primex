@@ -253,7 +253,7 @@ class LoginGoogleView(GenericAPIView):
         uid = decoded_token['uid']
         user = User.objects.filter(uid=uid).first()
         if user:
-            if not user.phone:
+            if user.phone[:6] == '996000':
                 return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_200_OK)
             else:
                 return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
