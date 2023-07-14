@@ -257,8 +257,13 @@ class LoginGoogleView(GenericAPIView):
             else:
                 return Response({'access': user.tokens()['access'], 'is_registered': False}, status=status.HTTP_200_OK)
         else:
-            full_name = serializer.data['full_name'].split(" ")
-            first_name, last_name = full_name[0], " ".join(full_name[1:])
+            full_name = serializer.data['full_name']
+            if full_name:
+                full_name = full_name.split(" ")
+                first_name, last_name = full_name[0], " ".join(full_name[1:])
+            else:
+                first_name = None
+                last_name = None
             user = User.objects.create(first_name=first_name, last_name=last_name, uid=uid, is_active=True)
             return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_201_CREATED)
 
