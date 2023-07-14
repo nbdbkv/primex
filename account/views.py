@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from django.conf import settings
 from django.core.cache import cache
@@ -264,7 +265,10 @@ class LoginGoogleView(GenericAPIView):
             else:
                 first_name = None
                 last_name = None
-            user = User.objects.create(first_name=first_name, last_name=last_name, uid=uid, is_active=True)
+            phone = '996000' + str(random.randint(000000, 999999))
+            user = User.objects.create(
+                first_name=first_name, last_name=last_name, uid=uid, phone=phone, is_active=True
+            )
             return Response({'access': user.tokens()['access'], 'is_registered': True}, status=status.HTTP_201_CREATED)
 
 
