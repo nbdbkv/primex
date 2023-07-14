@@ -14,10 +14,8 @@ from core.settings import FCM_DJANGO_SETTINGS
 
 def user_update(phone, first_name, last_name, region, user):
     user.phone = phone
-    if first_name:
-        user.first_name = first_name
-    if last_name:
-        user.last_name = last_name
+    user.first_name = first_name
+    user.last_name = last_name
     user.region_id = region
     if first_name and last_name:
         user.info = last_name + ' ' + first_name

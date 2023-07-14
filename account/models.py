@@ -25,6 +25,8 @@ class User(AbstractUser):
             "unique": _("A user with that phone number already exists."),
         },
     )
+    first_name = models.CharField(_('first name'), max_length=150, blank=True, null=True)
+    last_name = models.CharField(_('last name'), max_length=150, blank=True, null=True)
     code_logistic = models.CharField(verbose_name=_("Код логистики"), max_length=200, null=True, blank=True)
     qr_phone = models.ImageField(
         verbose_name=_("QR-Код телефона"), upload_to='account/user/qrcode/phone', null=True, blank=True,
