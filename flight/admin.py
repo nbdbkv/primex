@@ -228,8 +228,20 @@ class ArrivalAdmin(FieldSum, nested_admin.NestedModelAdmin):
             query_dict = request.POST
 
             for i in query_dict:
+                base_parcel_id = i.split('_')[-1]
+                if 'client_code' in i:
+                    client_code = query_dict.get(f'client_code_{base_parcel_id}')
+                    if client_code:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.client_code = client_code
+                        base_parcel.save()
+                if 'phone' in i:
+                    phone = query_dict.get(f'phone_{base_parcel_id}')
+                    if phone:
+                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                        base_parcel.phone = phone
+                        base_parcel.save()
                 if 'shelf' in i:
-                    base_parcel_id = i.split('_')[-1]
                     shelf = query_dict.get(f'shelf_{base_parcel_id}')
                     if shelf:
                         base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
@@ -425,8 +437,8 @@ class DeliveryBaseParcelAdmin(FieldSum, nested_admin.NestedModelAdmin):
         'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'payment', 'note', 'arrived_at'
     )
-    list_editable = ('price', 'weight', 'cost_usd', 'cost_kgs', 'payment', 'note')
-    list_display_links = ('get_flight', 'box', 'track_code', 'client_code', 'phone')
+    list_editable = ('client_code', 'phone', 'price', 'weight', 'cost_usd', 'cost_kgs', 'payment', 'note')
+    list_display_links = ('get_flight', 'box', 'track_code', )
     readonly_fields = (
         'get_flight', 'box', 'track_code', 'client_code', 'phone', 'shelf', 'price', 'weight', 'cost_usd',
         'cost_kgs', 'arrived_at',
@@ -440,6 +452,7 @@ class DeliveryBaseParcelAdmin(FieldSum, nested_admin.NestedModelAdmin):
     actions = ('print_baseparcel', 'set_baseparcel_status')
     formfield_overrides = {
         models.DecimalField: {'widget': forms.NumberInput(attrs={'style': 'width:10ch'})},
+        models.CharField: {'widget': forms.TextInput(attrs={'size': '12'})},
     }
     list_select_related = ('box',)
 

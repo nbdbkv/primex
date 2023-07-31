@@ -119,8 +119,10 @@
                                 <tbody>
                                 <tr>
                                     <td>{% if child.track_code %}{{ child.track_code }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.client_code %}{{ child.client_code }}{% else %}-{% endif %}</td>
-                                    <td>{% if child.phone %}{{ child.phone }}{% else %}-{% endif %}</td>
+                                    <td><input type="text" name="client_code_{{ child.id }}" size="8" maxlength="16" id="id_client_code_{{ child.id }}"
+                                               value="{% if child.client_code %}{{ child.client_code }}{% else %}{% endif %}"></td>
+                                    <td><input type="text" name="phone_{{ child.id }}" size="12" maxlength="16" id="id_phone_{{ child.id }}"
+                                               value="{% if child.phone %}{{ child.phone }}{% else %}{% endif %}"></td>
                                     <td><input type="text" name="shelf_{{ child.id }}" size="6" maxlength="16" id="id_shelf_{{ child.id }}"
                                                value="{% if child.shelf %}{{ child.shelf }}{% else %}{% endif %}"></td>
                                     <td>{% if child.price %}{{ child.price }}{% else %}-{% endif %}</td>

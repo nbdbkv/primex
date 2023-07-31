@@ -88,8 +88,10 @@
                         <tr>
                             <td>{% if baseparcel.box.code %}{{ baseparcel.box.code }}{% else %}-{% endif %}</td>
                             <td>{% if baseparcel.track_code %}{{ baseparcel.track_code }}{% else %}-{% endif %}</td>
-                            <td>{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}-{% endif %}</td>
-                            <td>{% if baseparcel.phone %}{{ baseparcel.phone }}{% else %}-{% endif %}</td>
+                            <td><input type="text" name="client_code_{{ baseparcel.id }}" size="8" maxlength="16" id="id_client_code_{{ baseparcel.id }}"
+                                       value="{% if baseparcel.client_code %}{{ baseparcel.client_code }}{% else %}{% endif %}"></td>
+                            <td><input type="text" name="phone_{{ baseparcel.id }}" size="12" maxlength="16" id="id_phone_{{ baseparcel.id }}"
+                                       value="{% if baseparcel.phone %}{{ baseparcel.phone }}{% else %}{% endif %}"></td>
                             <td><input type="text" name="shelf_{{ baseparcel.id }}" size="6" maxlength="16" id="id_shelf_{{ baseparcel.id }}"
                                        value="{% if baseparcel.shelf %}{{ baseparcel.shelf }}{% else %}{% endif %}"></td>
                             <td>{% if baseparcel.price %}{{ baseparcel.price }}{% else %}-{% endif %}</td>
