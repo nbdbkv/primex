@@ -204,6 +204,9 @@ class ArrivalAdmin(FieldSum, nested_admin.NestedModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
+        user = request.user
+        if str(user) == '996322232223':
+            return queryset.filter(status__in=[2, 3], numeration__startswith='OSH')
         return queryset.filter(status__in=[2, 3])
 
     def has_add_permission(self, request):
@@ -297,6 +300,9 @@ class DeliveryAdmin(FieldSum, nested_admin.NestedModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
+        user = request.user
+        if str(user) == '996322232224':
+            return queryset.filter(status=4, numeration__startswith='OSH')
         return queryset.filter(status=4)
 
     def has_add_permission(self, request):
@@ -420,7 +426,11 @@ class UnknownAdmin(FieldSum, nested_admin.NestedModelAdmin):
     list_select_related = ('box',)
 
     def get_queryset(self, request):
-        return Unknown.objects.filter(status=7)
+        queryset = super().get_queryset(request)
+        user = request.user
+        if str(user) == '996322232224':
+            return queryset.filter(status=7, box__flight__numeration__startswith='OSH')
+        return queryset.filter(status=7)
 
     def has_add_permission(self, request):
         return False
@@ -468,7 +478,13 @@ class DeliveryBaseParcelAdmin(FieldSum, nested_admin.NestedModelAdmin):
             messages.info(request, f"Статус посылки {baseparcel.id} изменен на Выдан")
 
     def get_queryset(self, request):
-        return DeliveryBaseParcel.objects.filter(box__flight__status__in=[2, 3, 4], status=4)
+        queryset = super().get_queryset(request)
+        user = request.user
+        if str(user) == '996322232224':
+            return queryset.filter(
+                box__flight__status__in=[2, 3, 4], status=4, box__flight__numeration__startswith='OSH'
+            )
+        return queryset.filter(box__flight__status__in=[2, 3, 4], status=4)
 
     def has_add_permission(self, request):
         return False
