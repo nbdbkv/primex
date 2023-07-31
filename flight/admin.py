@@ -231,16 +231,14 @@ class ArrivalAdmin(FieldSum, nested_admin.NestedModelAdmin):
                 base_parcel_id = i.split('_')[-1]
                 if 'client_code' in i:
                     client_code = query_dict.get(f'client_code_{base_parcel_id}')
-                    if client_code:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.client_code = client_code
-                        base_parcel.save()
+                    base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                    base_parcel.client_code = client_code
+                    base_parcel.save()
                 if 'phone' in i:
                     phone = query_dict.get(f'phone_{base_parcel_id}')
-                    if phone:
-                        base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
-                        base_parcel.phone = phone
-                        base_parcel.save()
+                    base_parcel = BaseParcel.objects.get(id=int(base_parcel_id))
+                    base_parcel.phone = phone
+                    base_parcel.save()
                 if 'shelf' in i:
                     shelf = query_dict.get(f'shelf_{base_parcel_id}')
                     if shelf:
