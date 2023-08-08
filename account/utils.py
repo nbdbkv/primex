@@ -9,6 +9,8 @@ import requests
 from django.conf import settings
 from django.core.files import File
 from transliterate import translit
+
+from account.models import User
 from core.settings import FCM_DJANGO_SETTINGS
 
 
@@ -140,7 +142,11 @@ def generate_qr(user, code=None):
 def generate_code_logistic(user):
     startswith = user.region.name
     text = translit(startswith, language_code='ru', reversed=True)
-    code_logistic = text.upper()[:4] + str(random.randint(11111, 99999))
-    user.code_logistic = code_logistic
-    user.save()
+    random_number = random.randint(11111, 99999)
+    while User.objects.filter(code_logistic__endswith=str(random_number)).exists():
+        random_number -= 1
+    else:
+        code_logistic = text.upper()[:4] + str(random_number)
+        user.code_logistic = code_logistic
+        user.save()
     generate_qr(user, code_logistic)
