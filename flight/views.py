@@ -6,11 +6,13 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
-from rest_framework import generics, filters, views
+from rest_framework import generics, filters, views, status
+from rest_framework.response import Response
 
 from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact, TrackCode, OrderDescription
 from flight.serializers import (
     MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSerializer, OrderDescriptionSerializer,
+    BaseParcelCreateSerializer,
 )
 
 
@@ -151,3 +153,22 @@ def ajax_get_track_code_view(request):
         'code': str(track_code.code).zfill(6)
     }
     return JsonResponse(response)
+
+
+class BaseParcelCreateView(generics.CreateAPIView):
+    queryset = BaseParcel
+    serializer_class = BaseParcelCreateSerializer
+
+    def create(self, request, *args,  **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        box_id = request.data['box_id']
+        track_code = serializer.data['track_code']
+        client_code = serializer.data['client_code']
+        phone = serializer.data['phone']
+        weight = serializer.data['weight']
+        price = Box.objects.get(id=box_id).destination.price_per_kg
+        BaseParcel.objects.create(
+            box_id=box_id, track_code=track_code, client_code=client_code, phone=phone, weight=weight, price=price,
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

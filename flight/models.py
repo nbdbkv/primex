@@ -159,8 +159,9 @@ class BaseParcel(TimeStampedModel):
         rv = BytesIO()
         code = COD128(f'{self.track_code}', writer=ImageWriter()).write(rv)
         self.barcode.save(f'{self.track_code}.png', File(rv), save=False)
-        currency = self.box.destination.currency
-        self.cost_kgs = float(self.cost_usd) * float(currency)
+        if self.cost_usd and self.box.destination.currency:
+            currency = self.box.destination.currency
+            self.cost_kgs = float(self.cost_usd) * float(currency)
         super(BaseParcel, self).save(*args, **kwargs)
 
 

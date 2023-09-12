@@ -51,3 +51,11 @@ class BaseParcelSerializer(serializers.ModelSerializer):
             'created_at', 'arrived_at', 'track_code', 'barcode', 'client_code', 'phone', 'price', 'weight', 'cost_usd',
             'cost_kgs', 'status', 'status_label', 'flight_code',
         )
+
+
+class BaseParcelCreateSerializer(serializers.ModelSerializer):
+    box_id = serializers.CharField(source='box.id', read_only=True)
+
+    class Meta:
+        model = BaseParcel
+        fields = ('box_id', 'track_code', 'client_code', 'phone', 'weight',)
