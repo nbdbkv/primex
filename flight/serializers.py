@@ -54,8 +54,7 @@ class BaseParcelSerializer(serializers.ModelSerializer):
 
 
 class BaseParcelCreateSerializer(serializers.ModelSerializer):
-    box_id = serializers.CharField(source='box.id', read_only=True)
 
     class Meta:
         model = BaseParcel
-        fields = ('box_id', 'track_code', 'client_code', 'phone', 'weight',)
+        fields = ('track_code', 'client_code', 'phone', 'weight',)

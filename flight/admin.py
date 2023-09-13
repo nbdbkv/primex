@@ -583,6 +583,18 @@ class ArchiveBaseParcelAdmin(FieldSum, admin.ModelAdmin):
         return False
 
 
+@admin.register(BaseParcel)
+class BaseParcelAdmin(admin.ModelAdmin):
+    list_display = ('track_code', 'client_code', 'phone', 'weight', 'price', 'status')
+    list_per_page = 50
+    readonly_fields = ('box', 'track_code', 'client_code', 'phone', 'weight', 'price', 'status')
+    exclude = ('barcode', 'shelf', 'price', 'cost_usd', 'cost_kgs', 'note', 'delivered_at', 'arrived_at', 'payment')
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.filter(status=0, box_id=None)
+
+
 class BaseParcelInline(admin.TabularInline):
     model = BaseParcel
     form = BaseParcelModelForm

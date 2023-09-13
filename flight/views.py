@@ -162,13 +162,9 @@ class BaseParcelCreateView(generics.CreateAPIView):
     def create(self, request, *args,  **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        box_id = request.data['box_id']
         track_code = serializer.data['track_code']
         client_code = serializer.data['client_code']
         phone = serializer.data['phone']
         weight = serializer.data['weight']
-        price = Box.objects.get(id=box_id).destination.price_per_kg
-        BaseParcel.objects.create(
-            box_id=box_id, track_code=track_code, client_code=client_code, phone=phone, weight=weight, price=price,
-        )
+        BaseParcel.objects.create(track_code=track_code, client_code=client_code, phone=phone, weight=weight, price=0)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
