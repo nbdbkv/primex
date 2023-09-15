@@ -29,7 +29,7 @@ def make_add_baseparcel_to_box_action(box):
         for baseparcel in queryset:
             baseparcel.box = box
             baseparcel.save()
-            messages.info(request, f"Посылка {baseparcel.id} добавлена в коробку {box.code}")
+            messages.info(request, f"Посылка {baseparcel.track_code} добавлена в коробку {box.code}")
     add_baseparcel_to_box.short_description = f"Добавить в коробку {box.code}"
     add_baseparcel_to_box.__name__ = f"add_baseparcel_to_box_{box.id}"
     return add_baseparcel_to_box
