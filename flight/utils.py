@@ -24,6 +24,17 @@ def make_add_box_to_flight_action(flight):
     return add_box_to_flight
 
 
+def make_add_baseparcel_to_box_action(box):
+    def add_baseparcel_to_box(modeladmin, request, queryset):
+        for baseparcel in queryset:
+            baseparcel.box = box
+            baseparcel.save()
+            messages.info(request, f"Посылка {baseparcel.id} добавлена в коробку {box.code}")
+    add_baseparcel_to_box.short_description = f"Добавить в коробку {box.code}"
+    add_baseparcel_to_box.__name__ = f"add_baseparcel_to_box_{box.id}"
+    return add_baseparcel_to_box
+
+
 def get_start_datetime(query_dict, start_date):
     start_time_string = query_dict.get('delivered_at__range__gte_1')
     if start_time_string:

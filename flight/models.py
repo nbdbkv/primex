@@ -103,7 +103,9 @@ class Box(TimeStampedModel):
         max_digits=10, decimal_places=3, verbose_name=_('Вес с коробкой'), null=True, blank=True,
     )
     comment = models.TextField(max_length=128, verbose_name=_('Комментарий'), null=True, blank=True)
-    status = models.PositiveIntegerField(choices=get_status()[2:7], verbose_name=_('Статус'), null=True, blank=True,)
+    status = models.PositiveIntegerField(
+        default=StatusChoices.FORMING, choices=get_status()[2:7], verbose_name=_('Статус'), null=True, blank=True,
+    )
 
     class Meta:
         verbose_name = _('коробку')

@@ -25,7 +25,7 @@ from flight.models import (
 )
 from flight.utils import (
     make_add_box_to_flight_action, get_start_datetime, get_end_datetime, get_extra_context, FieldSum, get_field,
-    # make_add_baseparcel_to_box_action,
+    make_add_baseparcel_to_box_action,
 )
 
 original_get_app_list = AdminSite.get_app_list
@@ -593,6 +593,14 @@ class BaseParcelAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.filter(status=0, box_id=None)
+
+    def get_actions(self, request):
+        actions = super(BaseParcelAdmin, self).get_actions(request)
+        boxes = Box.objects.filter(status=0, flight_id=None)
+        for box in boxes:
+            action = make_add_baseparcel_to_box_action(box)
+            actions[action.__name__] = (action, action.__name__, action.short_description)
+        return actions
 
 
 class BaseParcelInline(admin.TabularInline):
