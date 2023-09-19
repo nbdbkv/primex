@@ -11,6 +11,7 @@ function updateOnlineStatus(event) {
 
 let destination  = document.getElementById('id_destination');
 let track_codes = document.querySelectorAll("td.field-track_code input");
+let clientCodes = document.querySelectorAll("td.field-client_code input");
 let phones = document.querySelectorAll("td.field-phone input");
 let prices = document.querySelectorAll("td.field-price input");
 let weights = document.querySelectorAll("td.field-weight input");
@@ -129,6 +130,44 @@ track_codes.forEach(track_code => {
     })
 });
 
+clientCodes.forEach((clientCode, index) => {
+    clientCode.addEventListener('input', () => {
+        let clientCodeValue = clientCode.value
+        if (clientCodeValue.length === 8 && clientCodeValue.slice(0, 3) === 'OSH') {
+            fetch(window.location.origin + `/flight/phone/?search=${clientCodeValue}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(response => {
+                    const id = clientCode.id
+                    let number = id.replace(/[^0-9]/g,"");
+                    document.getElementById(`id_base_parcel-${number}-phone`).value = response['phone'];
+                })
+                .catch(error => {
+                    alert(`У ${clientCodeValue} отсутствует номер телефона`)
+                });
+        } else if (clientCodeValue.length === 9 && clientCodeValue.slice(0, 4) === 'BISH') {
+            fetch(window.location.origin + `/flight/phone/?search=${clientCodeValue}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(response => {
+                    const id = clientCode.id
+                    let number = id.replace(/[^0-9]/g,"");
+                    document.getElementById(`id_base_parcel-${number}-phone`).value = response['phone'];
+                }).catch(error => {
+                alert(`У ${clientCodeValue} отсутствует номер телефона`)
+            });
+        }
+    })
+});
+
 phones.forEach(phone => {
     phone.addEventListener('input', () => {
         let value = phone.value
@@ -136,6 +175,22 @@ phones.forEach(phone => {
             phone.value = "996" + value
         } else if (value === '996') {
             phone.value = ''
+        }
+        if (value.length === 12) {
+            fetch(window.location.origin + `/flight/client_code/?search=${phone.value}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(response => {
+                    const id = phone.id
+                    let number = id.replace(/[^0-9]/g,"");
+                    document.getElementById(`id_base_parcel-${number}-client_code`).value = response['client_code'];
+                }).catch(error => {
+                alert(`У ${value} отсутствует код клиента`)
+            });
         }
     })
 });

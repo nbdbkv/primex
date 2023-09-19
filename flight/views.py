@@ -4,11 +4,12 @@ from wsgiref.util import FileWrapper
 
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.template.loader import render_to_string
 from rest_framework import generics, filters, views, status
 from rest_framework.response import Response
 
+from account.models import User
 from flight.models import Flight, Box, BaseParcel, Media, Rate, Contact, TrackCode, OrderDescription
 from flight.serializers import (
     MediaSerializer, RateSerializer, ContactSerializer, BaseParcelSerializer, OrderDescriptionSerializer,
@@ -173,3 +174,17 @@ class BaseParcelCreateView(generics.CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+def ajax_get_phone_view(request):
+    client_code = request.GET.get('search')
+    phone = get_object_or_404(User, code_logistic=client_code).phone
+    response = {'phone': phone}
+    return JsonResponse(response)
+
+
+def ajax_get_client_code_view(request):
+    phone = request.GET.get('search')
+    client_code = get_object_or_404(User, phone=phone).code_logistic
+    response = {'client_code': client_code}
+    return JsonResponse(response)
