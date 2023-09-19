@@ -166,5 +166,10 @@ class BaseParcelCreateView(generics.CreateAPIView):
         client_code = serializer.data['client_code']
         phone = serializer.data['phone']
         weight = serializer.data['weight']
-        BaseParcel.objects.create(track_code=track_code, client_code=client_code, phone=phone, weight=weight, price=0)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        parcel, created = BaseParcel.objects.update_or_create(
+            track_code=track_code, client_code=client_code, phone=phone, defaults={'weight': weight}, price=0
+        )
+        if created:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.data, status=status.HTTP_200_OK)
