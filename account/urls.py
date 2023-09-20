@@ -19,7 +19,7 @@ from account.views import (
     RegionsView,
     DistrictsView, FcmDeleteView, FcmCreateView,
     PhoneVerifyView, LoginGoogleView, LoginView,
-    UserSearchAPIView,
+    UserSearchListView,
 )
 
 router = DefaultRouter()
@@ -47,5 +47,5 @@ urlpatterns = [
     path('phone/verify/', PhoneVerifyView.as_view()),
     path('login_google_appleID/', LoginGoogleView.as_view()),
     path('login_create/', LoginView.as_view()),
-    path('user_search/', UserSearchAPIView.as_view()),
+    path('user_search/', UserSearchListView.as_view()),
 ]

@@ -4,7 +4,7 @@ import random
 from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Q
-from rest_framework import generics, status, views
+from rest_framework import generics, status, filters
 from rest_framework.generics import UpdateAPIView, GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -290,13 +290,13 @@ class LoginView(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class UserSearchAPIView(views.APIView):
+class UserSearchListView(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    search_fields = ('code_logistic', 'phone')
+    filter_backends = (filters.SearchFilter,)
+    serializer_class = UserSearchSerializer
 
-    def get(self, request, *args, **kwargs):
-        search = request.query_params.get('search', '')
-        queryset = User.objects.filter(Q(code_logistic=search) | Q(phone=search))
-        serializer = UserSearchSerializer(queryset, many=True)
-        if not serializer.data:
-            return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response(serializer.data[0], status=status.HTTP_200_OK)
+    def get_queryset(self):
+        search = self.request.GET.get('search', '')
+        user = User.objects.filter(Q(code_logistic=search) | Q(phone=search))
+        return user
