@@ -275,3 +275,9 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('phone', 'first_name', 'last_name', 'region')
+
+
+class UserSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("code_logistic",  "phone")
