@@ -586,9 +586,11 @@ class ArchiveBaseParcelAdmin(FieldSum, admin.ModelAdmin):
 @admin.register(BaseParcel)
 class BaseParcelAdmin(admin.ModelAdmin):
     list_display = ('track_code', 'client_code', 'phone', 'weight', 'price', 'status')
+    list_editable = ('client_code', 'phone')
     list_per_page = 50
     readonly_fields = ('box', 'track_code', 'client_code', 'phone', 'weight', 'price', 'status')
     exclude = ('barcode', 'shelf', 'price', 'cost_usd', 'cost_kgs', 'note', 'delivered_at', 'arrived_at', 'payment')
+    change_list_template = 'admin/baseparcel_change_list.html'
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
